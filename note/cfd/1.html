@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Hanfeng Zhai</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Fluid Mechanics, Applied Mathematics" />
+  
+  
+  
+  
+  <meta name="description" content="CFD  	     .line-limit-length { 	display: -webkit-box; 	-webkit-box-orient: vertical; 	-webkit-line-clamp: 2; 	word-break: break-all; 	overflow: hidden; }  .content { 	word-break: break-a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hanfeng Zhai">
+<meta property="og:url" content="www.hanfengzhai.net/note/cfd/1.html">
+<meta property="og:site_name" content="Hanfeng Zhai">
+<meta property="og:description" content="CFD  	     .line-limit-length { 	display: -webkit-box; 	-webkit-box-orient: vertical; 	-webkit-line-clamp: 2; 	word-break: break-all; 	overflow: hidden; }  .content { 	word-break: break-a">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="www.hanfengzhai.net/note/cfd/CFD_files/2759f722f31f4b2a81319e17cefbb6cc.png">
+<meta property="og:image" content="www.hanfengzhai.net/note/cfd/CFD_files/b2e7224b6440437cb2b46fcbb4e564c9.jpg">
+<meta property="og:image" content="www.hanfengzhai.net/note/cfd/CFD_files/5f48b2d9da974208ae3c54b65a2b42ca.jpg">
+<meta property="og:image" content="www.hanfengzhai.net/note/cfd/CFD_files/59fbf67c4f1148c887d419aa2bbb6fe6.jpg">
+<meta property="og:image" content="www.hanfengzhai.net/note/cfd/CFD_files/8b65006abcf14ced81086877fa24d166.jpg">
+<meta property="og:image" content="www.hanfengzhai.net/note/cfd/CFD_files/67eb4a06242f45d3b68af494f13f0a29.jpg">
+<meta property="og:image" content="www.hanfengzhai.net/note/cfd/CFD_files/8275156e38e04d0792fdfe51cfbf9c11.jpg">
+<meta property="og:image" content="www.hanfengzhai.net/note/cfd/CFD_files/d42ed21d3ec04b13848cad87f1e6c051.jpg">
+<meta property="og:image" content="www.hanfengzhai.net/note/cfd/CFD_files/9df02841e0214c5bac3a09d0f5992ee6.jpg">
+<meta property="og:image" content="www.hanfengzhai.net/note/cfd/CFD_files/b15b58fe9c0c40b294bcbdfc469537c8.jpg">
+<meta property="article:published_time" content="2020-10-15T12:34:12.451Z">
+<meta property="article:modified_time" content="2020-10-01T04:53:42.929Z">
+<meta property="article:author" content="Theoretical and Applied Mechanics, Department of Mechanics, School of Mechanics and Engineering Science, Shanghai University">
+<meta property="article:tag" content="Fluid Mechanics,Solid Mechanics,Machine Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="www.hanfengzhai.net/note/cfd/CFD_files/2759f722f31f4b2a81319e17cefbb6cc.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hanfeng Zhai" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/avatar.jpg">
+  <link rel="apple-touch-icon" href="/css/images/avatar.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+    <link rel="stylesheet" href="/css/archive.css" >
+  
+  
+  
+
+</head>
+
+
+
+  <body>
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                 >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/avatar.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">-home-</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">-bio-</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories/project">-project-</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories/publications">-publications-</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories/note">-note-</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="page-"  class="article article-type-page" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+    <div class="article-meta">
+      
+	<a href="/note/cfd/1.html" class="article-date">
+	  <time datetime="2020-10-15T12:34:12.451Z" itemprop="datePublished">2020-10-15</time>
+	</a>
+
+      
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!DOCTYPE html>
+<!-- saved from url=(0100)http://biji.changyan.com/xbew-webserver/getSharePage.action?shareId=97d201c1f1c04a9b926e230a702f0b23 -->
+<html lang="en" style="font-size: 56px;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<!--iphone设备中的safari私有meta标签，它表示：允许全屏模式浏览；-->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<!--iphone的私有标签，它指定的iphone中safari顶端的状态条的样式；-->
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<!--告诉设备忽略将页面中的数字识别为电话号码-->
+<meta name="format-detection" content="telephone=no">
+<!--用于忽略将页面中邮件地址-->
+<meta name="format-detection" content="email=no">
+<title>CFD</title>
+<link rel="stylesheet" href="./CFD_files/common.css">
+	<link rel="stylesheet" href="./CFD_files/iconfont.css">
+<!--研发自定义样式-->
+<link rel="stylesheet" href="./CFD_files/custom.css">
+<link rel="stylesheet" type="text/css" href="./CFD_files/audioplayer.css">
+<style type="text/css">
+.line-limit-length {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	word-break: break-all;
+	overflow: hidden;
+}
+
+.content {
+	word-break: break-all;
+	word-wrap: break-word;
+}
+</style>
+
+</head>
+<body>
+
+	<input type="hidden" value="97d201c1f1c04a9b926e230a702f0b23" id="shareId">
+	<input type="hidden" value="" id="wchattext">
+	<input type="hidden" value="CFD" id="wchatWeikeName">
+	<input type="hidden" value="http://oss-beijing-m8.openstorage.cn/public/image/2759f722f31f4b2a81319e17cefbb6cc.png" id="wchatVideoPreview">
+
+	<!--
+1、对于插入的图片宽或高超过外部盒子sxb-picture的宽高的，样式为sxb-picu；
+2、对于插入的图片宽或高都小于外部盒子sxb-picture的宽高的，样式为sxb-picu-w(按宽度)或sxb-picu-h(按高度)，需要研发同学进行判断；
+-->
+	<!--容器-->
+	<div class="sxb-wrap ">
+<!-- <div class="sxb-top-tips">
+        <p><b>温馨提示：</b>接有关部门通知，暂时停止北京鲁谷机房的多媒体文件共享服务（云端部署服务器所在地），预计五月初可以恢复，给您带来的不便，敬请谅解。</p>
+        <font><button class="btn-ghost" onclick="hiddenTip()"><i class="iconfont icon-close"></i></button></font>
+    </div> -->
+		<!--主题内容-->
+		<section class="sxb-content-notes">
+			<!--滚动容器-->
+			<div class="sxb-scroll">
+				<div class="sxb-content-wrap" id="share_detail">
+					<!--头部-->
+<!-- 					<header class="sxb-action-bar"> -->
+
+
+<!-- 					</header> -->
+					
+				<div class="sxb-content mixed-notes sxb-whitebox"><div class="sxb-tit"><div class="sxb-tit-picture"><p><img src="./CFD_files/2759f722f31f4b2a81319e17cefbb6cc.png" alt="" class="auto-img"></p></div> </div> <div class="sxb-picture sxb-auto-height"><div class="sxb-picu"><p onclick="weixinClick(&#39;http://oss-beijing-m8.openstorage.cn/public/aiNoteShareimage/b2e7224b6440437cb2b46fcbb4e564c9.jpg&#39;)" id="handimg0" class="bg-line-mid"><img class="imgView" src="./CFD_files/b2e7224b6440437cb2b46fcbb4e564c9.jpg" alt=""></p></div></div><div class="sxb-page"><span>1/9</span></div></div><div class="sxb-content mixed-notes sxb-whitebox pt30 "> <div class="sxb-picture sxb-auto-height"><div class="sxb-picu"><p onclick="weixinClick(&#39;http://oss-beijing-m8.openstorage.cn/public/aiNoteShareimage/5f48b2d9da974208ae3c54b65a2b42ca.jpg&#39;)" id="handimg1" class="bg-line-mid"><img class="imgView" src="./CFD_files/5f48b2d9da974208ae3c54b65a2b42ca.jpg" alt=""></p></div></div><div class="mt30"><audio controls="controls" src="http://oss-beijing-m8.openstorage.cn/public/aiNoteShareaudio/5ba8c9cb4d104b639bfcd7981a6784ec.mp3" preload="auto" id="audio">您的浏览器不支持 audio 标签</audio></div><div class="sxb-page"><span>2/9</span></div></div><div class="sxb-content mixed-notes sxb-whitebox pt30 "> <div class="sxb-picture sxb-auto-height"><div class="sxb-picu"><p onclick="weixinClick(&#39;http://oss-beijing-m8.openstorage.cn/public/aiNoteShareimage/59fbf67c4f1148c887d419aa2bbb6fe6.jpg&#39;)" id="handimg2" class="bg-line-mid"><img class="imgView" src="./CFD_files/59fbf67c4f1148c887d419aa2bbb6fe6.jpg" alt=""></p></div></div><div class="sxb-page"><span>3/9</span></div></div><div class="sxb-content mixed-notes sxb-whitebox pt30 "> <div class="sxb-picture sxb-auto-height"><div class="sxb-picu"><p onclick="weixinClick(&#39;http://oss-beijing-m8.openstorage.cn/public/aiNoteShareimage/8b65006abcf14ced81086877fa24d166.jpg&#39;)" id="handimg3" class="bg-line-mid"><img class="imgView" src="./CFD_files/8b65006abcf14ced81086877fa24d166.jpg" alt=""></p></div></div><div class="sxb-page"><span>4/9</span></div></div><div class="sxb-content mixed-notes sxb-whitebox pt30 "> <div class="sxb-picture sxb-auto-height"><div class="sxb-picu"><p onclick="weixinClick(&#39;http://oss-beijing-m8.openstorage.cn/public/aiNoteShareimage/67eb4a06242f45d3b68af494f13f0a29.jpg&#39;)" id="handimg4" class="bg-line-mid"><img class="imgView" src="./CFD_files/67eb4a06242f45d3b68af494f13f0a29.jpg" alt=""></p></div></div><div class="sxb-page"><span>5/9</span></div></div><div class="sxb-content mixed-notes sxb-whitebox pt30 "> <div class="sxb-picture sxb-auto-height"><div class="sxb-picu"><p onclick="weixinClick(&#39;http://oss-beijing-m8.openstorage.cn/public/aiNoteShareimage/8275156e38e04d0792fdfe51cfbf9c11.jpg&#39;)" id="handimg6" class="bg-line-mid"><img class="imgView" src="./CFD_files/8275156e38e04d0792fdfe51cfbf9c11.jpg" alt=""></p></div></div><div class="sxb-page"><span>6/9</span></div></div><div class="sxb-content mixed-notes sxb-whitebox pt30 "> <div class="sxb-picture sxb-auto-height"><div class="sxb-picu"><p onclick="weixinClick(&#39;http://oss-beijing-m8.openstorage.cn/public/aiNoteShareimage/d42ed21d3ec04b13848cad87f1e6c051.jpg&#39;)" id="handimg8" class="bg-line-mid"><img class="imgView" src="./CFD_files/d42ed21d3ec04b13848cad87f1e6c051.jpg" alt=""></p></div></div><div class="sxb-page"><span>7/9</span></div></div><div class="sxb-content mixed-notes sxb-whitebox pt30 "> <div class="sxb-picture sxb-auto-height"><div class="sxb-picu"><p onclick="weixinClick(&#39;http://oss-beijing-m8.openstorage.cn/public/aiNoteShareimage/9df02841e0214c5bac3a09d0f5992ee6.jpg&#39;)" id="handimg9" class="bg-line-mid"><img class="imgView" src="./CFD_files/9df02841e0214c5bac3a09d0f5992ee6.jpg" alt=""></p></div></div><div class="sxb-page"><span>8/9</span></div></div><div class="sxb-content mixed-notes sxb-whitebox pt30 "> <div class="sxb-picture sxb-auto-height"><div class="sxb-picu"><p onclick="weixinClick(&#39;http://oss-beijing-m8.openstorage.cn/public/aiNoteShareimage/b15b58fe9c0c40b294bcbdfc469537c8.jpg&#39;)" id="handimg12" class="bg-line-mid"><img class="imgView" src="./CFD_files/b15b58fe9c0c40b294bcbdfc469537c8.jpg" alt=""></p></div></div><div class="sxb-page"><span>9/9</span></div></div><footer class="sxb-footer-wrap copyright"><div class="border-1px"></div><div class="sxb-footer"><p>出口成章，跃然纸上</p><span>Powered by iFlytek</span></div></footer></div>
+			</div>
+		</section>
+
+	</div>
+
+
+	<script src="./CFD_files/jquery-1.12.4.min.js"></script>
+	<script src="./CFD_files/fastclick.js"></script>
+	
+	<script src="./CFD_files/bscroll.min.js"></script>
+	<script src="./CFD_files/adapter.js"></script>
+
+	<!--project js start-->
+	<script src="./CFD_files/mixed-notes.js"></script>
+	<script type="text/javascript" src="./CFD_files/ajaxSetup.js"></script>
+
+	<script type="text/javascript" src="./CFD_files/audio.js"></script>
+<!-- 	<script type="text/javascript" -->
+
+	<script src="./CFD_files/jweixin-1.1.0.js" type="text/javascript" charset="utf-8"></script>
+     <script type="text/javascript" src="./CFD_files/wxShare_data.js"></script>
+	 <script type="text/javascript">
+	
+	/* window.onload = function(){
+		alert("接有关部门通知，暂时停止北京鲁谷机房的多媒体文件共享服务（云端部署服务器所在地），预计五月初可以恢复，给您带来的不便，敬请谅解。");
+	} */
+	</script>
+     <script type="text/javascript">
+     var wxData=new WxData();
+ 	chatJSON = $('#wchattext').val();
+ 	var realDesc="";
+//  	if(chatJSON.length>2){
+//  		jsobj = JSON.parse(chatJSON);
+//  		for(i=0;i<jsobj.length;i++){
+//  			substr = jsobj[i].text;
+//  	 		if(realDesc.length>35){
+//  	 			realDesc=realDesc.substr(0,35);
+//  	 			realDesc+="...";
+//  	 			break;
+//  	 		}else{
+//  	 			realDesc += substr;
+//  	 		}
+//  		}
+//  	}
+ 	wxData.get_all_token(window.location.href);
+    function confirmEnding(str, target) {
+ 	   // 请把你的代码写在这里
+ 	   var start = str.length-target.length;
+ 	   var arr = str.substr(start,target.length);
+ 	   if(arr == target){
+ 	     return true;
+ 	   }
+ 	}
+    videoImgUrl=$("#wchatVideoPreview").val();
+   // alert(videoImgUrl);
+	if(confirmEnding(videoImgUrl, '/')){
+		videoImgUrl=videoImgUrl.substring(0,videoImgUrl.lastIndexOf('/'))
+	}
+ 	//alert(videoImgUrl);
+ 	wxData.populate(videoImgUrl,$("#wchatWeikeName").val(),realDesc);
+     </script>
+ 	 
+  <!-- 微信分享时调用对应的接口js文件-->
+    <script type="text/javascript" src="./CFD_files/wxShare.js"></script>
+     
+
+
+	<!--project js end-->
+	<script>
+	    function hiddenTip(){
+			$(".sxb-top-tips").hide();
+		}
+		function weixinImgClick() {
+			var imgsurl = [];
+			var nowurl = '';
+			var imgObj = $(".imgView");
+			for (var i = 0; i < imgObj.length; i++) {
+				imgsurl[i] = imgObj[i].src;
+				console.log(imgObj[i].src);
+				nowurl=imgObj[i].src;
+// 				imgObj[i].onclick = function() {
+// 					nowurl = this.src;
+// 					console.log(1);
+// 					wx.previewImage({
+// 						current : nowurl,
+// 						urls : imgsurl
+// 					});
+// 				}
+				$("#handimg"+i).click (function() {
+					wx.previewImage({
+						current : nowurl,
+						urls : imgsurl
+					});
+				});
+			}
+		}
+
+		function weixinClick(nowSrc){
+			var imgsurl = [];
+			var nowurl = '';
+			var imgObj = $(".imgView");
+			for (var i = 0; i < imgObj.length; i++) {
+				imgsurl[i] = imgObj[i].src;
+			}
+			wx.previewImage({
+				current : nowSrc,
+				urls : imgsurl
+			});
+		};
+		
+		
+		$(function() {
+			var rootPath = getRootPath();
+			//点击穿透解决方案
+			FastClick.attach(document.body);
+
+			var noteId = "";
+			noteId = '97d201c1f1c04a9b926e230a702f0b23';
+
+			var u = navigator.userAgent;
+			var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+			var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+			var os = "android";
+			if (isiOS) {
+				os = "ios";
+			}
+			
+			$.ajax({
+				url : rootPath + '/noteShareHtml.action',
+				type : 'POST',
+				async : false,
+				dataType : 'html',
+				data : {
+
+					shareId : noteId,
+					osType : os
+				},
+				success : function(result) {
+// 					$('#share_detail').html(result);
+                   var need = result.indexOf("<p hidden>needRefresh</p>")>-1;
+                   if(need){
+                	   setTimeout(function(){  //使用  setTimeout（）方法设定定时2000毫秒
+                		   window.location.reload();//页面刷新
+                		},30000);
+                   }
+					$('#share_detail').append(result);
+					if (isiOS) {
+						audios = $('.audio').audioPlayer();
+// 						$('.audioplayer').each(function(){
+// 							var thisPlayer = this;
+// 							$(this).find('.audioplayer-playpause').on('click',function(){
+// 								myaudio = audios[0];
+// 								myaudio.pause();
+// 							})
+// 						});
+						return;
+					}
+					var audios = document.getElementsByTagName("audio");
+					// 暂停函数
+					function pauseAll() {
+					    var self = this;
+					    [].forEach.call(audios, function (i) {
+					        // 将audios中其他的audio全部暂停
+					        i !== self && i.pause();
+					    })
+					}
+					// 给play事件绑定暂停函数
+					[].forEach.call(audios, function (i) {
+					    i.addEventListener("play", pauseAll.bind(i));
+					})
+// 					weixinImgClick();
+
+				},
+				error : function() {
+
+				}
+			});
+			
+// 			setTimeout(function() {
+// 					var myScroll = new BScroll('.sxb-scroll', {
+// 						scrollbar : {
+// 							fade : true,
+// 							interactive : false
+// 						// 1.8.0 新增
+// 						}
+// 					});
+// 			}, 2000);
+		});
+	</script>
+	
+
+</body></html>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          Copyright 2020 Hanfeng Zhai | <a target="_blank" rel="noopener" href="http://hanfengzhai.net/"> www.hanfengzhai.net </a>
+         
+        </ul>
+<div>
+
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+  
+</article>
+
+<!-- Table of Contents -->
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hiker</a> </p>
+	      
+        <p id="copyRightEn"> &copy; 2020 Hanfeng Zhai, All Rights Reserved.</p>
+	      
+        <p> (+86) 180-2102-7596 | <a href="mailto:Hanfeng.Zhai@outlook.com"> Hanfeng.Zhai@outlook.com </a> </p>
+        
+        <p> <a target="_blank" rel="noopener" href="https://www.researchgate.net/profile/Hanfeng_Zhai"> ResearchGate </a> | <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/hanfengzhai/"> LinkedIn </a> | <a target="_blank" rel="noopener" href="https://www.facebook.com/profile.php?id=100023812350047"> Facebook </a> | <a target="_blank" rel="noopener" href="https://github.com/hanfengzhai"> GitHub </a> | <a target="_blank" rel="noopener" href="https://twitter.com/HanfengZhai"> Twitter </a> | <a target="_blank" rel="noopener" href="https://scholar.google.com/citations?user=S5jCDXcAAAAJ&hl=en"> Google Scholar </a> | <a target="_blank" rel="noopener" href="https://shu-cn.academia.edu/FrankZhai"> Academia </a> | <a target="_blank" rel="noopener" href="https://orcid.org/0000-0003-1511-7597"> ORCiD </a> | <a target="_blank" rel="noopener" href="https://space.bilibili.com/355677660"> BiliBili </a> | <a target="_blank" rel="noopener" href="https://www.youtube.com/channel/UCn7UKJez4SV9VkO8pNqI5Pw?view_as=subscriber"> YouTube </a>
+        </p>
+
+
+        <p> <a target="_blank" rel="noopener" href="https://smes.shu.edu.cn/"> School of Mechanics and Engineering Science</a>, <a target="_blank" rel="noopener" href="https://www.shu.edu.cn/"> Shanghai University </a> | 99 Shangda Rd., Shanghai 200444, PRC </p>
+
+	      <a target="_blank" rel="noopener" href="https://info.flagcounter.com/x6ta"><img src="https://s11.flagcounter.com/count2/x6ta/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+
+        <p> <font size=3.6, color="blue"> Shanghai University </p> 
+
+        <p> <a target="_blank" rel="noopener" href="https://www.baidu.com/"><img src="http://hanfengzhai.net/css/images/footerlogo.jpg" height="25" border="0"></a> </p>
+
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+
+
+
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">-Home-</a>
+  
+    <a href="/about" class="mobile-nav-link">-Bio-</a>
+  
+    <a href="/categories/project" class="mobile-nav-link">-Project-</a>
+  
+    <a href="/categories/publications" class="mobile-nav-link">-Publications-</a>
+  
+    <a href="/categories/note" class="mobile-nav-link">-Note-</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Hanfeng Zhai
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 Theoretical and Applied Mechanics, Department of Mechanics, School of Mechanics and Engineering Science, Shanghai University All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+</body>
+</html>
