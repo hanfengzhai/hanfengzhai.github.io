@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Hanfeng Zhai</title>
+  <icon>https://www.gravatar.com/avatar/2efeca58387dc60dcd5330b39862ac6e</icon>
+  <subtitle>ein denken Mensch</subtitle>
+  <link href="www.hanfengzhai.net/atom.xml" rel="self"/>
+  
+  <link href="www.hanfengzhai.net/"/>
+  <updated>2020-11-17T12:31:01.192Z</updated>
+  <id>www.hanfengzhai.net/</id>
+  
+  <author>
+    <name>Theoretical and Applied Mechanics, Department of Mechanics, School of Mechanics and Engineering Science, Shanghai University</name>
+    <email>frankzhai0@gmail.com</email>
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>HOME</title>
+    <link href="www.hanfengzhai.net/2020/10/23/index/"/>
+    <id>www.hanfengzhai.net/2020/10/23/index/</id>
+    <published>2020-10-22T16:00:00.000Z</published>
+    <updated>2020-11-17T12:31:01.192Z</updated>
+    
+    <content type="html"><![CDATA[<hr><font size=5><center>Welcome to <font color="blue">Hanfeng</font> <font color="darkblue">Zhai</font>'s page!</center></font><font size=1, color="red"> <center> ________________________________________________________________ </center></font><hr><font size=3.9, color="black"><p>I am currently a <strong>Bachelor of Science</strong> student studying mechanics and its applications in computer science, biophysics, chemistry, etc. I have engaged in couple research projects from biomechanical bahavior to fluidic phenomena. Some of my highlighted previous research projects are listed below. For more details, please visit my <a href="http://hanfengzhai.net/about/">bio</a>. </p></font><hr><font size=3.9, color="black"><center><img src="/assets/img/cad-method.jpg" /><img src="/assets/img/cad-result6.jpg" height="700" width="700" /><img src="/assets/img/cad-result9.jpg" /><p>We design biomaterials with high mechanical behaviors inspired from nacre and enamel.</p><hr><img src="/assets/img/d-method.jpg" /><img src="/assets/img/d-result2.jpg" /><p>We investigate the fracture resistance of dentin microstructure.</p><hr><img src="/assets/img/enamel.jpg" /><p>The team studying the high fracture resistance of enamel microstructure.</p><hr><img src="/assets/img/w-method1.jpg" /><img src="/assets/img/w-result4.jpg" /><p>We study the water discharge out of a bottle with neural networks.</p></font><hr><!-- <p align="left"><h1 style="text-align:left"> --></font><font size=5, color="blue"><h1 id="Recent-News"><a href="#Recent-News" class="headerlink" title=" Recent News "></a><center> Recent News </center></h1><font size=1, color="red"> <center> ________________________________ </center><h1 style="text-align:left"><font size=3.6, color="black"><ul><li>[<font color="dark blue"><em>Oct. 11th, 2020</em><font color="black">]: New page version is updated.</li></ul><ul><li><p>[<font color="dark blue"><em>Aug. 5th, 2020</em><font color="black">]: Our poster for <u>Design of Intelligent Tuning Equipment for Stringed Instruments</u> is selected as backup poster of <a href="shu.edu.cn">Shanghai University</a> for <u>National College Student Innovation Forum</u>. See our <a href="/assets/img/guitar.jpg">poster</a>.</p></li><li><p>[<font color="dark blue"><em>Feb. 30th, 2020</em><font color="black">]: Hanfeng delivered a online course for the students of <a href="https://smes.shu.edu.cn/">Department of Mechanics</a> as a course project of <u>Theory of Elasticity</u>. <a href="https://www.bilibili.com/video/BV197411V7As">Click</a> for backup video.</p></li><li><p>[<font color="dark blue"><em>Oct. 28th, 2019</em><font color="black">]: Our poster for <u>The Design of The Lightweight Compressive Interlayer</u> is displayed in the <u>Virtural Simulation Lab</u> at <a href="https://smes.shu.edu.cn/">School of Mechanics and Engineering Science</a>. See <a href="/assets/img/compress.jpg">poster</a> and <a href="/assets/img/poster_pic.jpg">photo</a>.</p></li></ul><font size=2.5, color="black">]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;hr&gt;
+&lt;font size=5&gt;
+
+
+
+&lt;center&gt;Welcome to &lt;font color=&quot;blue&quot;&gt;Hanfeng&lt;/font&gt; &lt;font color=&quot;darkblue&quot;&gt;Zhai&lt;/font&gt;&#39;s page!&lt;/center&gt;
+
+
+
+&lt;/font&gt;
+
+
+</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+</feed>
