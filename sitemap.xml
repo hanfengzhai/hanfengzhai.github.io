@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>www.hanfengzhai.net/categories/links.html</loc>
+    
+    <lastmod>2020-12-23</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>www.hanfengzhai.net/categories/note.html</loc>
     
     <lastmod>2020-12-23</lastmod>
@@ -40,13 +47,6 @@
     <loc>www.hanfengzhai.net/about/template.html</loc>
     
     <lastmod>2020-12-08</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>www.hanfengzhai.net/categories/links.html</loc>
-    
-    <lastmod>2020-10-11</lastmod>
     
   </url>
   
