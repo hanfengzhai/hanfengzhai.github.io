@@ -2,7 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>www.hanfengzhai.net/2019/11/30/index/</loc>
+    <loc>www.hanfengzhai.net/categories/publications.html</loc>
+    
+    <lastmod>2020-12-31</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>www.hanfengzhai.net/categories/note.html</loc>
     
     <lastmod>2020-12-31</lastmod>
     
@@ -10,6 +17,13 @@
   
   <url>
     <loc>www.hanfengzhai.net/categories/project.html</loc>
+    
+    <lastmod>2020-12-31</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>www.hanfengzhai.net/2019/11/30/index/</loc>
     
     <lastmod>2020-12-31</lastmod>
     
@@ -33,20 +47,6 @@
     <loc>www.hanfengzhai.net/categories/links.html</loc>
     
     <lastmod>2020-12-23</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>www.hanfengzhai.net/categories/note.html</loc>
-    
-    <lastmod>2020-12-23</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>www.hanfengzhai.net/categories/publications.html</loc>
-    
-    <lastmod>2020-12-09</lastmod>
     
   </url>
   
