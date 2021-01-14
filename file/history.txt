@@ -1,0 +1,1001 @@
+(base) user@AMAX5801G-04:~/HanfengZhai/space_time_pde/experiments/rb2d$ history
+ 1014  cd ..
+ 1015  cd data2/aimy/P1-4/
+ 1016  make
+ 1017  mpirun -np 8 iefem
+ 1018  cd ..
+ 1019  cd P1-4/
+ 1020  make
+ 1021  mpirun -np 8 iefem
+ 1022  cd ..
+ 1023  cd P1-4/
+ 1024  make
+ 1025  mpirun -np 8 iefem
+ 1026  cd ..
+ 1027  cd data2/aimy/P4-3/
+ 1028  make
+ 1029  mpirun -np 8 iefem
+ 1030  cd ..
+ 1031  cd P2-1/
+ 1032  make
+ 1033  mpirun -np 8 iefem
+ 1034  cd ..
+ 1035  cd P2-1/
+ 1036  make
+ 1037  mpirun -np 8 iefem
+ 1038  cd ..
+ 1039  cd data2/aimy/P1-1/
+ 1040  make
+ 1041  mpirun -np 8 iefem
+ 1042  cd ..
+ 1043  cd P1-1/
+ 1044  make
+ 1045  mpirun -np 8 iefem
+ 1046  cd ..
+ 1047  cd P1-1/
+ 1048  make
+ 1049  mpirun -np 8 iefem
+ 1050  cd ..
+ 1051  cd P1-1/
+ 1052  make
+ 1053  mpirun -np 8 iefem
+ 1054  cd ..
+ 1055  cd data2/aimy/P4-5/
+ 1056  make
+ 1057  mpirun -np 8 iefem
+ 1058  cd ..
+ 1059  cd P2-2/
+ 1060  make
+ 1061  mpirun -np 8 iefem
+ 1062  cd ..
+ 1063  cd P2-2/
+ 1064  make
+ 1065  mpirun -np 8 iefem
+ 1066  cd ..
+ 1067  cd data2/aimy/P4-10/
+ 1068  make
+ 1069  mpirun -np 8 iefem
+ 1070  cd ..
+ 1071  cd P2-4/
+ 1072  make
+ 1073  mpirun -np 8 iefem
+ 1074  cd ..
+ 1075  cd P2-4/
+ 1076  make
+ 1077  mpirun -np 8 iefem
+ 1078  cd ..
+ 1079  cd data2/aimy/P4-8/
+ 1080  make
+ 1081  mpirun -np 8 iefem
+ 1082  cd ..
+ 1083  cd P2-3/
+ 1084  make
+ 1085  mpirun -np 8 iefem
+ 1086  cd ..
+ 1087  cd P2-3/
+ 1088  make
+ 1089  mpirun -np 8 iefem
+ 1090  cd ..
+ 1091  cd data2/aimy/P2-4/
+ 1092  make
+ 1093  mpirun -np 8 iefem
+ 1094  cd ..
+ 1095  cd data2/aimy/P1-1/
+ 1096  make
+ 1097  mpirun -np 8 iefem
+ 1098  cd ..
+ 1099  cd data2/ai
+ 1100  cd data2/aimy/P2-3/
+ 1101  make
+ 1102  mpirun -np 8 iefem
+ 1103  cd ..
+ 1104  cd data2/aimy/P1-3/
+ 1105  make
+ 1106  mpirun -np 8 iefem
+ 1107  cd ..
+ 1108  cd data2/aimy/P2-1/
+ 1109  mpirun -np 8 iefem
+ 1110  cd ..
+ 1111  cd data2/aimy/P1-2/
+ 1112  make
+ 1113  mpirun -np 8 iefem
+ 1114  cd ..
+ 1115  cd data2/aimy/P2-2/
+ 1116  make
+ 1117  mpirun -np 8 iefem
+ 1118  cd ..
+ 1119  cd data2/aimy/P1-4/
+ 1120  make
+ 1121  mpirun -np 8 iefem
+ 1122  cd ..
+ 1123  cd data2/aimy/P1
+ 1124  make
+ 1125  mpirun -np 8 iefem
+ 1126  cd ..
+ 1127  cd data2/aimy/
+ 1128  cd P2
+ 1129  make
+ 1130  mpirun -np 8 iefem
+ 1131  top
+ 1132  cd yulu/3-mybrowndynamic/
+ 1133  ls
+ 1134  mpirun -np 1 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.dpd
+ 1135  free
+ 1136  free n-m
+ 1137  free -m
+ 1138  top
+ 1139  cd yulu/lammps-16Mar18/src/
+ 1140  top
+ 1141  make mpi -j 16
+ 1142  cd yulu/lammps-16Mar18/a
+ 1143  cd yulu/lammps-16Mar18/src/
+ 1144  make mpi -j 8
+ 1145  cd yulu/lammps-16Mar18/src/
+ 1146  make mpi -j 61
+ 1147  make mpi -j 16
+ 1148  cd /home/user/yulu/SEDPD
+ 1149  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1150  mpirun -np 1 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1151  clear
+ 1152  mpirun -np 1 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1153  gdp /home/user/yulu/lammps-16Mar18/src/lmp_mpi
+ 1154  gdb
+ 1155  gdb /home/user/yulu/lammps-16Mar18/src/lmp_mpi
+ 1156  mpirun -np 1 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1157  gdb /home/user/yulu/lammps-16Mar18/src/lmp_mpi
+ 1158  mpirun -np 1 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1159  gdb /home/user/yulu/lammps-16Mar18/src/lmp_mpi
+ 1160  mpirun -np 1 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1161  gdb /home/user/yulu/lammps-16Mar18/src/lmp_mpi
+ 1162  mpirun -np 1 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1163  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1164  mpirun -np 1 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1165  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1166  mpirun -np 1 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1167  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1168  mpirun -np 32 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1169  cd yulu/SEDPD/
+ 1170  ls
+ 1171  cd NanoParticle/
+ 1172  ls
+ 1173  vi in.DPD
+ 1174  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.DPD
+ 1175  cd yulu/SEDPD/
+ 1176  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.DPD
+ 1177  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1178  cd yulu/lammps-16Mar18/src/
+ 1179  make mpi -j 8
+ 1180  cd /home/user/yulu/SEDPD
+ 1181  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1182  cd NanoParticle/
+ 1183  ls
+ 1184  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.DPD
+ 1185  cd ../PPFM/
+ 1186  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.DPD
+ 1187  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1188  cd ..
+ 1189  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1190  cd /home/user/yulu/SEDPD/thermophoresis
+ 1191  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1192  nohup /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1193  top
+ 1194  cd yulu/SEDPD/thermophoresis/
+ 1195  ls
+ 1196  nohup mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1197  top
+ 1198  nohup mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow &
+ 1199  top
+ 1200  cd /home/user/yulu/SEDPD/thermophoresis
+ 1201  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1202  ls
+ 1203  g++ compute.cpp DPDF.cpp
+ 1204  ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 50
+ 1205  cd /home/user/yulu/SEDPD/thermophoresis
+ 1206  ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 50
+ 1207  cd /home/user/yulu/SEDPD/thermophoresis
+ 1208  g++ compute.cpp DPDF.cpp
+ 1209  ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 50
+ 1210  cd /home/user/yulu/SEDPD/thermophoresis
+ 1211  ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 2
+ 1212  cd /home/user/yulu/SEDPD/thermophoresis
+ 1213  ls
+ 1214  g++ compute.cpp DPDF.cpp
+ 1215  ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 50
+ 1216  cd /home/user/yulu/SEDPD/thermophoresis
+ 1217  ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 50
+ 1218  cd /home/user/yulu/SEDPD/thermophoresis/TRJ_data
+ 1219  cd ..
+ 1220  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 17 100 &
+ 1221  top
+ 1222  cd /home/user/yulu/lammps-16Mar18/src
+ 1223  make mpi -j 8
+ 1224  cd /home/user/yulu/SEDPD/thermophoresis
+ 1225  g++ compute.cpp DPDF.cpp
+ 1226  ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 50
+ 1227  cd /home/user/yulu/SEDPD/thermophoresis
+ 1228  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.dpd
+ 1229  ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 50
+ 1230  cd /home/user/yulu/SEDPD/thermophoresis
+ 1231  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.dpd
+ 1232  cd /home/user/yulu/SEDPD/thermophoresis
+ 1233  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.dpd
+ 1234  cd /home/user/yulu/lammps-16Mar18/src
+ 1235  make mpi -j 8
+ 1236  cd /home/user/yulu/SEDPD/thermophoresis
+ 1237  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.dpd
+ 1238  ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 50
+ 1239  cd /home/user/yulu/SEDPD/thermophoresis
+ 1240  ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 50
+ 1241  cd /home/user/yulu/SEDPD/thermophoresis
+ 1242  ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 50
+ 1243  cd /home/user/yulu/SEDPD/thermophoresis
+ 1244  ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 50
+ 1245  cd /home/user/yulu/SEDPD/thermophoresis
+ 1246  ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 50
+ 1247  cd /home/user/yulu/SEDPD/thermophoresis
+ 1248  ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 50
+ 1249  cd /home/user/yulu/SEDPD/thermophoresis
+ 1250  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.dpd
+ 1251  ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 50
+ 1252  cd /home/user/yulu/SEDPD/thermophoresis
+ 1253  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.dpd
+ 1254  ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 50
+ 1255  cd /home/user/yulu/lammps-16Mar18/src
+ 1256  make mpi -j 8'
+ 1257  make mpi -j 8
+ 1258  cd /home/user/yulu/SEDPD/thermophoresis
+ 1259  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 16 50 &
+ 1260  cd /home/user/yulu/lammps-16Mar18/src
+ 1261  make mpi -j 8
+ 1262  cd /home/user/yulu/SEDPD/thermophoresis
+ 1263  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 50 &
+ 1264  cd /home/user/yulu/lammps-16Mar18/src
+ 1265  make mpi -j 8
+ 1266  pkill a.out
+ 1267  pkill lmp_mpi
+ 1268  cd /home/user/yulu/SEDPD/thermophoresis
+ 1269  ls
+ 1270  top
+ 1271  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.dpd
+ 1272  top
+ 1273  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.dpd
+ 1274  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 50 &
+ 1275  pkill a.out
+ 1276  pkill lmp_mpi
+ 1277  top
+ 1278  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.dpd
+ 1279  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 50 &
+ 1280  top
+ 1281  pkill lmp_mpi
+ 1282  pkill a.out
+ 1283  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 50 &
+ 1284  top
+ 1285  cd /home/user/yulu/SEDPD/thermophoresis/B-1500-R1.5
+ 1286  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 50 &
+ 1287  cd /home/user/yulu/1-gel-anomalous-diffusion/1-choose-asf
+ 1288  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.dpd
+ 1289  cd /home/user/yulu/SEDPD/thermophoresis/B-1500-R1.5
+ 1290  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 51 100 &
+ 1291  cd /home/user/yulu/SEDPD/thermophoresis/B-1500-R1.5
+ 1292  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.dpd
+ 1293  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1294  pkill a.out
+ 1295  pkill lmp_mpi
+ 1296  cd /home/user/yulu/SEDPD/thermophoresis/B-5062.5-R1.0
+ 1297  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 5 &
+ 1298  top
+ 1299  pkill lmp_mpi
+ 1300  top
+ 1301  pkill a.out
+ 1302  pkill lmp_mpi
+ 1303  top
+ 1304  cd /home/user/yulu/SEDPD/thermophoresis/B-3000-R1.5
+ 1305  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 5 &
+ 1306  cd /home/user/yulu/SEDPD/thermophoresis/B-3000-R1.5
+ 1307  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 5 &
+ 1308  top
+ 1309  sensors
+ 1310  q
+ 1311  top
+ 1312  cd /home/user/yulu/SEDPD/thermophoresis/B-3000-R1.5
+ 1313  ls
+ 1314  top
+ 1315  pkill a.out
+ 1316  pkill lmp_mpi
+ 1317  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 5 10 &
+ 1318  pkill a.out
+ 1319  pkill lmp_mpi
+ 1320  ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 5 10
+ 1321  top
+ 1322  cd /home/user/yulu/SEDPD/thermophoresis/B-3000-R1.5
+ 1323  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 6 10 &
+ 1324  top
+ 1325  cd
+ 1326  hf
+ 1327  hl -f
+ 1328  df -h
+ 1329  ls
+ 1330  du -sm yulu/
+ 1331  du -sm anaconda2/
+ 1332  cd /data1
+ 1333  ls
+ 1334  cd /data2
+ 1335  ls
+ 1336  cd /data3
+ 1337  ls
+ 1338  cd
+ 1339  ls
+ 1340  du -sh
+ 1341  cd jing/
+ 1342  du -sh
+ 1343  cd
+ 1344  cd ShenSY1/
+ 1345  du -sh
+ 1346  cd ..
+ 1347  cd wangyuyi/
+ 1348  du -sh
+ 1349  ls
+ 1350  rm -rf
+ 1351  ls
+ 1352  cd ../yulu/
+ 1353  du -sh
+ 1354  ls
+ 1355  cd 1-gel-anomalous-diffusion/
+ 1356  du -sh
+ 1357  cd ../2-anomalous-diffusion-in-polymer/
+ 1358  du -sh
+ 1359  df
+ 1360  df -h
+ 1361  cd
+ 1362  ls
+ 1363  mv -f yulu/1-gel-anomalous-diffusion/ /data3/yulu_data/
+ 1364  mv -f yulu/2-anomalous-diffusion-in-polymer/ /data3/yulu_data/
+ 1365  df -h
+ 1366  cd yulu/
+ 1367  ls
+ 1368  cd 11-entangled-gel/
+ 1369  dh -sm
+ 1370  dh
+ 1371  df -h
+ 1372  du -sh
+ 1373  cd ..
+ 1374  mv -f 11-entangled-gel/ /data3/yulu_data/
+ 1375  df -h
+ 1376  df -h
+ 1377  cd /home/user/yulu/SEDPD/thermophoresis/B-3000-R1.5
+ 1378  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 10 11 &
+ 1379  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 11 20 &
+ 1380  top
+ 1381  pkill a.out
+ 1382  pkill lmp_mpi
+ 1383  cd /home/user/yulu/SEDPD/thermophoresis/B-1000-R1.5
+ 1384  g++ compute.cpp DPDF.cpp
+ 1385  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1386  top
+ 1387  cd /home/user/yulu/SEDPD/thermophoresis/B-1500-R1.2
+ 1388  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1389  g++ compute.cpp DPDF.cpp
+ 1390  top
+ 1391  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1392  top
+ 1393  cd /home/user/yulu/SEDPD/thermophoresis/B-1500-R1.0
+ 1394  g++ compute.cpp DPDF.cpp
+ 1395  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1396  cd /home/user/yulu/SEDPD/thermophoresis/B-1500-R0.7
+ 1397  g++ compute.cpp DPDF.cpp
+ 1398  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1399  cd /home/user/yulu/SEDPD/thermophoresis/B-1500-R0.5
+ 1400  g++ compute.cpp DPDF.cpp
+ 1401  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1402  top
+ 1403  df -h
+ 1404  pkill a.out
+ 1405  pkill lmp_mpi
+ 1406  ls
+ 1407  top
+ 1408  cd /home/user/yulu/SEDPD/thermophoresis/B-1500-R0.5
+ 1409  g++ compute.cpp DPDF.cpp
+ 1410  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1411  pkill a.out
+ 1412  pkill lmp_mpi
+ 1413  cd /home/user/yulu/SEDPD/thermophoresis/B3000-varyR/B-3000-R0.7
+ 1414  g++ compute.cpp DPDF.cpp
+ 1415  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1416  top
+ 1417  cd /home/user/yulu/SEDPD/thermophoresis/B3000-varyR/B-3000-R1.2
+ 1418  g++ compute.cpp DPDF.cpp
+ 1419  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1420  top
+ 1421  cd /home/user/yulu/SEDPD/thermophoresis/B3000-varyR/B-3000-R1.0
+ 1422  g++ compute.cpp DPDF.cpp
+ 1423  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1424  pkill a.out
+ 1425  pkill lmp_mpi
+ 1426  clean
+ 1427  clear
+ 1428  cd /home/user/yulu/SEDPD/thermophoresis/B3000-varyR/B-3000-R0.7
+ 1429  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1430  cd /home/user/yulu/SEDPD/thermophoresis/B3000-varyR/B-3000-R1.0
+ 1431  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1432  cd /home/user/yulu/SEDPD/thermophoresis/B3000-varyR/B-3000-R1.2
+ 1433  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1434  cd /home/user/yulu/SEDPD/thermophoresis/B3000-varyR/B-3000-R1.5
+ 1435  g++ compute.cpp DPDF.cpp
+ 1436  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1437  top
+ 1438  pkill a.out
+ 1439  pkill lmp_mpi
+ 1440  cd /home/user/yulu/SEDPD/thermophoresis/B3000-varyR/B-3000-R0.7
+ 1441  g++ compute.cpp DPDF.cpp
+ 1442  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1443  pkill a.out
+ 1444  pkill lmp_mpi
+ 1445  cd /home/user/yulu/SEDPD/thermophoresis/B5000-varyR/B-5000-R1.5
+ 1446  g++ compute.cpp DPDF.cpp
+ 1447  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1448  top
+ 1449  cd /home/user/yulu/SEDPD/thermophoresis/B5000-varyR/B-5000-R1.2
+ 1450  g++ compute.cpp DPDF.cpp
+ 1451  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 5 &
+ 1452  top
+ 1453  pkill a.out
+ 1454  pkill lmp_mpi
+ 1455  clear
+ 1456  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 5 &
+ 1457  ls
+ 1458  g++ compute.cpp DPDF.cpp
+ 1459  top
+ 1460  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1461  cd /home/user/yulu/SEDPD/thermophoresis/B5000-varyR/B-5000-R1.0
+ 1462  g++ compute.cpp DPDF.cpp
+ 1463  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1464  cd /home/user/yulu/SEDPD/thermophoresis/B5000-varyR/B-5000-R0.5
+ 1465  g++ compute.cpp DPDF.cpp
+ 1466  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1467  cd /home/user/yulu/SEDPD/thermophoresis/B1500-varyR/B-1500-R0.5
+ 1468  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 7 20 &
+ 1469  top
+ 1470  cd /home/user/yulu/SEDPD/thermophoresis/B3000-varyR/B-3000-R0.5
+ 1471  g++ compute.cpp DPDF.cpp
+ 1472  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1473  cd /home/user
+ 1474  df -h
+ 1475  cd /data1/
+ 1476  cd -h
+ 1477  df
+ 1478  du
+ 1479  df
+ 1480  yum list installed
+ 1481  gfortran
+ 1482  pwd
+ 1483  cd..
+ 1484  cd
+ 1485  gfortran
+ 1486  which gfortran
+ 1487  which openfoam
+ 1488  openfoam
+ 1489  ansys
+ 1490  which fluent
+ 1491  which gfortran
+ 1492  fluent
+ 1493  clear
+ 1494  cd /data1/
+ 1495  cd /wk/
+ 1496  touch test.f90
+ 1497  gfortran test.f90
+ 1498  cd /wangkang/
+ 1499  cd /data1/wangkang/
+ 1500  touch test.f90
+ 1501  cd /data1/wangkang/test.f90
+ 1502  gfortran test.f90
+ 1503  ./a.out
+ 1504  cd /data1
+ 1505  CLEAR
+ 1506  clear
+ 1507  cd /data1/wangkang/
+ 1508  gfortran
+ 1509  touch my_first_program
+ 1510  touch my_first_program.f90
+ 1511  gfortran my_first_program.f90
+ 1512  ./a.out
+ 1513  gfortran test.f90
+ 1514  ./a.out
+ 1515  clear
+ 1516  cd /home/user
+ 1517  ls
+ 1518  top
+ 1519  cd yulu/
+ 1520  ls
+ 1521  cd lammps-16Mar18/
+ 1522  ls
+ 1523  cd src/
+ 1524  ls
+ 1525  make
+ 1526  make mpi -j 8
+ 1527  make clean-all
+ 1528  make mpi -j 8
+ 1529  cd
+ 1530  cd yulu/SEDPD/PPFM/
+ 1531  ls
+ 1532  mpirun -np 16 /home/user/yulu/SEDPD/PPFM
+ 1533  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1534  cd /home/user/yulu/SEDPD/thermophoresis/B5000-varyR/B-5000-R1.5
+ 1535  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.dpd
+ 1536  sudo apt-get install openmpi
+ 1537  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.dpd
+ 1538  cd /home/user/yulu/lammps-16Mar18/src
+ 1539  ls
+ 1540  make mpi -j 8
+ 1541  make mpi
+ 1542  cd /home/user/yulu/SEDPD/thermophoresis/B5000-varyR/B-5000-R1.5
+ 1543  g++ compute.cpp DPDF.cpp
+ 1544  ls
+ 1545  cd /home/user/yulu/SEDPD/thermophoresis_gel
+ 1546  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.dpd
+ 1547  cd /home/user/yulu/SEDPD/thermophoresis_gel
+ 1548  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.dpd
+ 1549  cd /home/user/yulu/SEDPD/thermophoresis_gel/B5000-varyR/R1.0
+ 1550  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10
+ 1551  top
+ 1552  cd /home/user/yulu/SEDPD/thermophoresis_gel/B5000-varyR/R1.0
+ 1553  ls
+ 1554  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.dpd
+ 1555  clear
+ 1556  ls
+ 1557  g++ compute.cpp DPDF.cpp
+ 1558  ls
+ 1559  ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10
+ 1560  top
+ 1561  pkill a.out
+ 1562  pkill lmp_mpi
+ 1563  cd /home/user/yulu/SEDPD/thermophoresis_gel/B5000-varyR/R1.0
+ 1564  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1565  top
+ 1566  pkill a.out
+ 1567  pkill lmp_mpi
+ 1568  g++ compute.cpp DPDF.cpp
+ 1569  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 10 &
+ 1570  top
+ 1571  pwd
+ 1572  ls
+ 1573  cd yulu
+ 1574  ls
+ 1575  cd lammps-16Mar18/
+ 1576  ls
+ 1577  cd src
+ 1578  pkill a.out
+ 1579  cd ..
+ 1580  cd src
+ 1581  cd ..
+ 1582  cd ..
+ 1583  cd SEDPD
+ 1584  cd PPFM
+ 1585  vim in.flow
+ 1586  open in.flow
+ 1587  open -a /Applications/Sublime Text\ in.flow
+ 1588  open -a /Applications/Sublime\ Text.app/ in.flow
+ 1589  sublime in.flow
+ 1590  open -a sublime in.flow
+ 1591  open -t in.flow
+ 1592  open in.flow
+ 1593  sublime in.flow
+ 1594  TextEdit in.flow
+ 1595  open in.flow
+ 1596  open -v /Applications/Sublime\ Text.app/ in.flow
+ 1597  cd /data1/wangkang
+ 1598  clear
+ 1599  gfortran array_io.f90
+ 1600  ./a.out
+ 1601  ./b.out
+ 1602  gfortran array_io.f90
+ 1603  ./b.out
+ 1604  ./a.out
+ 1605  gfortran my_first_program.f90
+ 1606  ./a.out
+ 1607  my_first_program.f90
+ 1608  cd /home/user/yulu/SEDPD/thermophoresis_gel/B5000-varyR/R1.0
+ 1609  top
+ 1610  ls
+ 1611  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 11 30 &
+ 1612  cd
+ 1613  pwd
+ 1614  cd HanfengZhai
+ 1615  pwd
+ 1616  ls
+ 1617  pip3 install torch
+ 1618  pip install torch
+ 1619  pip -v
+ 1620  pip -V
+ 1621  pip3 -V
+ 1622  python3 setup.py build
+ 1623  python3 setup.py install
+ 1624  python3 -V
+ 1625  pip install numpy
+ 1626  cd ..
+ 1627  cd anaconda2/
+ 1628  cd python2.7
+ 1629  cd lib
+ 1630  cd python2.7/
+ 1631  cd site-packages/
+ 1632  pwd
+ 1633  ls
+ 1634  cd ..
+ 1635  wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tgz
+ 1636  pwd
+ 1637  cd yulu
+ 1638  ls
+ 1639  cd SEDPD
+ 1640  ls
+ 1641  cd dp.txt
+ 1642  open dp.txt
+ 1643  vim PPFM
+ 1644  cd ..
+ 1645  ls
+ 1646  cd RB-convection/
+ 1647  ls
+ 1648  open temp.txt
+ 1649  vim edpd
+ 1650  cd ..
+ 1651  cd edpd
+ 1652  ls
+ 1653  cd PPFM
+ 1654  ls
+ 1655  vim in.flow
+ 1656  open in.flow
+ 1657  cd ..
+ 1658  cd lammps-16Mar18/
+ 1659  cd src
+ 1660  make
+ 1661  mpirun -np
+ 1662  cd ..
+ 1663  ls
+ 1664  cd doc
+ 1665  ls
+ 1666  open Manual.pdf
+ 1667  vim Manual.pdf
+ 1668  cd /data1/wangkang
+ 1669  gfortran read_file.f90
+ 1670  ./a.out
+ 1671  ./A.OUT
+ 1672  ./a.out
+ 1673  gfortran my_first_program.f90
+ 1674  ./a.out
+ 1675  df
+ 1676  cd/
+ 1677  #cd/
+ 1678  # cd/
+ 1679  cd
+ 1680  cd/data1
+ 1681  cd data1
+ 1682  cd/data1/
+ 1683  cd /data1/
+ 1684  cd
+ 1685  cd /data1/wangkang/
+ 1686  apt-get update && apt-get install wget gpg
+ 1687  wget http://www.nektar.info/nektar-apt.gpg -O - | apt-key add -
+ 1688  pwd
+ 1689  cd yulu
+ 1690  cd ..
+ 1691  cd HanfengZhai
+ 1692  apt-get update && apt-get install wget gpg
+ 1693  wget http://www.nektar.info/nektar-apt.gpg -O - | apt-key add -
+ 1694  apt-get update && apt-get install nektar++
+ 1695  touch nektar
+ 1696  cd nektar
+ 1697  cd nektar++-5.0.0/
+ 1698  make
+ 1699  mpirun -np
+ 1700  cd ..
+ 1701  cd yulu/
+ 1702  cd ..
+ 1703  cd HanfengZhai/
+ 1704  cd nektar++-5.0.0/
+ 1705  cd src
+ 1706  ls
+ 1707  cd doc
+ 1708  cd docs
+ 1709  ls
+ 1710  cd ..
+ 1711  cd lammps-16Mar18/
+ 1712  ls
+ 1713  cd src
+ 1714  make
+ 1715  mpirun -np
+ 1716  cd /home/user/yulu/SEDPD/thermophoresis_gel
+ 1717  top
+ 1718  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.dpd
+ 1719  cd /home/user/yulu/SEDPD/thermophoresis_gel/B5000-varyR/R1.0-test
+ 1720  g++ compute.cpp DPDF.cpp
+ 1721  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 50
+ 1722  ls
+ 1723  cd HanfengZhai
+ 1724  ls
+ 1725  cd lammps-16Mar18/
+ 1726  make
+ 1727  cd ..
+ 1728  cd yulu
+ 1729  cd lammps-16Mar18/
+ 1730  cd ..
+ 1731  cd HanfengZhai/
+ 1732  cd lammps-16Mar18/
+ 1733  cd src/
+ 1734  make
+ 1735  cd ..
+ 1736  mkdir -p data
+ 1737  wget island.me.berkeley.edu/stsres/rb2d_ra1e6_s42.npz && mv rb2d_ra1e6_s42.npz data
+ 1738  wget island.me.berkeley.edu/stsres/rb2d_ra1e6_s42.npz
+ 1739  config ip
+ 1740  ip
+ 1741  nvidia-smi
+ 1742  cd ..
+ 1743  pwd
+ 1744  ls
+ 1745  wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+ 1746  wget -V
+ 1747  vim /etc/resolv.conf
+ 1748  sudo nameserver 8.8.8.8 #google/etc/resolv.conf
+ 1749  e
+ 1750  sudo vim /etc/resolv.conf
+ 1751  wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+ 1752  sh Miniconda3-latest-Linux-x86_64.sh
+ 1753  source .bashrc
+ 1754  python
+ 1755  nvidia-smi
+ 1756  pip install torch==1.6.0+cpu torchvision==0.7.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+ 1757  pwd
+ 1758  cd HanfengZhai
+ 1759  cd space_time_pde/
+ 1760  ls
+ 1761  cd experiments/
+ 1762  ls
+ 1763  cd rb2d/
+ 1764  ls
+ 1765  bash run_experiment.sh
+ 1766  cd ..
+ 1767  git clone https://github.com/maziarraissi/PINNs.git
+ 1768  top
+ 1769  pkill a.out
+ 1770  pkill lmp_mpi
+ 1771  cd /home/user/yulu/SEDPD/thermophoresis_gel/B5000-varyR/R1.0
+ 1772  python
+ 1773  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 50 &
+ 1774  top
+ 1775  pkill a.out
+ 1776  pkill lmp_mpi
+ 1777  cd /home/user/yulu/SEDPD/thermophoresis_gel/B5000-varyR/R0.5
+ 1778  g++ compute.cpp DPDF.cpp
+ 1779  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 20
+ 1780  cd /home/user/yulu/SEDPD/thermophoresis_gel/B5000-varyR
+ 1781  ls
+ 1782  mv ../R1.0
+ 1783  mv ./R1.0
+ 1784  mv ./R1.0_B5000/ ../R1.0_B5000/
+ 1785  top
+ 1786  ls
+ 1787  mv ./R0.5/ ../R0.5/
+ 1788  ls
+ 1789  cd ..
+ 1790  ls
+ 1791  cd /home/user/yulu/SEDPD/PPFM
+ 1792  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.flow
+ 1793  cd /home/user/yulu/SEDPD/thermophoresis_gel/R1.0_B2000
+ 1794  ls
+ 1795  g++ compute.cpp DPDF.cpp
+ 1796  nuhuo ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 30 &
+ 1797  top
+ 1798  cd /home/user/yulu/SEDPD/thermophoresis_gel/R1.0_B2000
+ 1799  nuhup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 30 &
+ 1800  cd /home/user/yulu/SEDPD/thermophoresis_gel/R1.0_B2000
+ 1801  ls
+ 1802  top
+ 1803  ls
+ 1804  mpirun -np 16 /home/user/yulu/lammps-16Mar18/src/lmp_mpi <in.dpd
+ 1805  nuhup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 30 &
+ 1806  cd /home/user/yulu/SEDPD/thermophoresis_gel/R1.0_B2000
+ 1807  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 30 &
+ 1808  top
+ 1809  cd /home/user/yulu/lammps-16Mar18/src
+ 1810  ls
+ 1811  make mpi -j 8
+ 1812  pkill a.out
+ 1813  pkill lmp_mpi
+ 1814  g++ compute.cpp DPDF.cpp
+ 1815  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 15 &
+ 1816  pkill a.out
+ 1817  pkill lmp_mpi
+ 1818  nohup ./a.out /home/user/yulu/lammps-16Mar18/src/lmp_mpi 1 15 &
+ 1819  top
+ 1820  ls
+ 1821  cd HanfengZhai/
+ 1822  cd space_time_pde/
+ 1823  ls
+ 1824  cd experiments/
+ 1825  cd rb2d/
+ 1826  bash run_experiment.sh
+ 1827  pip3 install torch
+ 1828  conda install torch
+ 1829  bash run_experiment.sh
+ 1830  root@ubuntu:/dvr# strings  /lib/x86_64-linux-gnu/libc.so.6 | grep GLIBC_
+ 1831  #rpm -qa |grep glibc
+ 1832  #yum  list installed |grep glibc
+ 1833  # rpm -qa |grep glibc
+ 1834  #yumdownloader glibc
+ 1835  glibc -V
+ 1836  GLIBC
+ 1837  cd .. .. ..
+ 1838  cd ..
+ 1839  ls
+ 1840  cd ..
+ 1841  ls
+ 1842  cd lib
+ 1843  cd ..
+ 1844  cd home
+ 1845  cd user
+ 1846  cd HanfengZhai/
+ 1847  cd space_time_pde/
+ 1848  cd experiments/
+ 1849  cd rb2d/
+ 1850  ls
+ 1851  python3 train.py
+ 1852  bash run_experiment.sh
+ 1853  cd ..
+ 1854  cd miniconda3/
+ 1855  cd x86_64-conda_cos6-linux-gnu/
+ 1856  cd sysroot/
+ 1857  cd lib
+ 1858  cd glibc-2.17/
+ 1859  mkdir build
+ 1860  cd build
+ 1861  ../configure --prefix=/usr --disable-profile --enable-add-ons --with-headers=/usr/include --with-binutils=/usr/bin
+ 1862  sudo
+ 1863  sudo su
+ 1864  cd HanfengZhai/
+ 1865  cd space_time_pde/
+ 1866  ls
+ 1867  cd experiments/
+ 1868  ls
+ 1869  cd rb2d/
+ 1870  bash run_experiment.sh
+ 1871  cd ..
+ 1872  ls
+ 1873  git clone https://github.com/maziarraissi/PINNs.git
+ 1874  cd HanfengZhai/
+ 1875  cd space_time_pde/
+ 1876  cd experiments/
+ 1877  cd rb2d/
+ 1878  bash run_experiment.sh
+ 1879  top
+ 1880  cd HanfengZhai/
+ 1881  cd space_time_pde/
+ 1882  cd experiments/
+ 1883  cd rb2d/
+ 1884  python3 train
+ 1885  python3 train.py
+ 1886  sudo apt install tmate
+ 1887  sudo apt-get install tmate
+ 1888  uname -a
+ 1889  tv
+ 1890  cat /etc/issue
+ 1891  sudo apt-get update
+ 1892  sudo apt search gdebi
+ 1893  sudo apt-get search gdebi
+ 1894  sudo apt-cache search gdebi
+ 1895  sudo apt-get install gdebi
+ 1896  sudo apt-cache search libc6*
+ 1897  ls
+ 1898  wget http://launchpadlibrarian.net/137699836/libc6-i386_2.17-0ubuntu5_amd64.deb
+ 1899  sudo gdebi libc6-i386_2.17-0ubuntu5_amd64.deb
+ 1900  wget http://launchpadlibrarian.net/137699837/libc6-dev-i386_2.17-0ubuntu5_amd64.deb
+ 1901  sudo gdebi libc6-dev-i386_2.17-0ubuntu5_amd64.deb
+ 1902  sudo gdebi libc6-i386_2.17-0ubuntu5_amd64.deb
+ 1903  sudo apt install -f
+ 1904  sudo apt-get install -f
+ 1905  sudo apt-get autoremove libc6-dev-i386
+ 1906  sudo gdebi libc6-i386_2.17-0ubuntu5_amd64.deb
+ 1907  wget http://launchpadlibrarian.net/137699828/libc6_2.17-0ubuntu5_amd64.deb
+ 1908  sudo gdebi libc6_2.17-0ubuntu5_amd64.deb
+ 1909  sudo apt-get autoremove libc-dev-bin
+ 1910  sudo gdebi libc6_2.17-0ubuntu5_amd64.deb
+ 1911  sudo apt-get autoremove libc6 libc6-i386
+ 1912  sudo apt-get install build-essential g++ g++-4.6 gfortran gfortran-4.6 lib32gomp1 lib32quadmath0 libatlas-base-dev libatlas-dev libatlas3gf-base libblas-dev libblas3gf libc-dev-bin
+ 1913  sudo apt-get install build-essential g++ g++-4.6 gfortran gfortran-4.6 lib32gomp1 lib32quadmath0 libatlas-base-dev libatlas-dev libatlas3gf-base libblas-dev libblas3gf libc-dev-bin libc6-dev libexpat1-dev libssl-dev libssl-doc libstdc++6-4.6-dev lsb lsb-core lsb-cxx lsb-desktop lsb-graphics lsb-printing python-all python-all-dev python-dev python2.7-dev zlib1g-dev
+ 1914  sudo apt-get install libc6*
+ 1915  sudo apt-get install libc6
+ 1916  sudo apt-get install libc6-i386
+ 1917  sudo apt-get autoremove
+ 1918  sudo apt-get install libc6*
+ 1919  sudo apt-get install build-essential g++ g++-4.6 gfortran gfortran-4.6 lib32gomp1 lib32quadmath0 libatlas-base-dev libatlas-dev libatlas3gf-base libblas-dev libblas3gf libc-dev-bin libc6-dev libexpat1-dev libssl-dev libssl-doc libstdc++6-4.6-dev lsb lsb-core lsb-cxx lsb-desktop lsb-graphics lsb-printing python-all python-all-dev python-dev python2.7-dev zlib1g-dev
+ 1920  sudo apt-get install -f
+ 1921  ls
+ 1922  python3 train.py
+ 1923  ls
+ 1924  sudo dpkg -i libc6-i386_2.17-0ubuntu5_amd64.deb
+ 1925  sudo dpkg -i libc6_2.17-0ubuntu5_amd64.deb
+ 1926  sudo dpkg -i libc6-i386_2.17-0ubuntu5_amd64.deb
+ 1927  ls
+ 1928  sudo dpkg -i libc6-dev-i386_2.17-0ubuntu5_amd64.deb
+ 1929  wget http://launchpadlibrarian.net/137699829/libc6-dev_2.17-0ubuntu5_amd64.deb
+ 1930  python3 train.py
+ 1931  pip install tensorboard
+ 1932  python3 train.py
+ 1933  pip3 install train_utils
+ 1934  sudo apt-get install build-essential g++ g++-4.6 gfortran gfortran-4.6 lib32gomp1 lib32quadmath0 libatlas-base-dev libatlas-dev libatlas3gf-base libblas-dev libblas3gf libc-dev-bin libc6-dev libexpat1-dev libssl-dev libssl-doc libstdc++6-4.6-dev lsb lsb-core lsb-cxx lsb-desktop lsb-graphics lsb-printing python-all python-all-dev python-dev python2.7-dev zlib1g-dev
+ 1935  bash run_experiment.sh
+ 1936  pip3 install matplotlib
+ 1937  bash run_experiment.sh
+ 1938  pip3 install scipy
+ 1939  bash run_experiment.sh
+ 1940  pip3 install sympy
+ 1941  bash run_experiment.sh
+ 1942  ls
+ 1943  sudo rm -rf libc6*
+ 1944  ls
+ 1945  top
+ 1946  cd HanfengZhai/
+ 1947  cd space_time_pde/
+ 1948  cd experiments/
+ 1949  cd rb2d/
+ 1950  bash run_experiment.sh
+ 1951  cd ..
+ 1952  git clone https://github.com/maziarraissi/PINNs.git
+ 1953  cd PINNs
+ 1954  ls
+ 1955  cd main
+ 1956  ls
+ 1957  cd continuous_time_identification\ \(Navier-Stokes\)/
+ 1958  ls
+ 1959  python3 NavierStokes.py
+ 1960  pip3 install tensorflow
+ 1961  python3 NavierStokes.py
+ 1962  sudo pip3 uninstall tensorflow
+ 1963  pip3 uninstall tensorflow
+ 1964  pip3 install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.5.0rc1-cp35-cp35m-linux_x86_64.whl
+ 1965  pip3 install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-2.4.0rc1-cp35-cp35m-linux_x86_64.whl
+ 1966  python3 NavierStokes.py
+ 1967  pip3 install tensorflow
+ 1968  pip3 install pyDOE
+ 1969  pip3 install plotting
+ 1970  cd ..
+ 1971  cd continuous_time_inference\ \(Schrodinger\)/
+ 1972  ls
+ 1973  python3 Schrodinger.py
+ 1974  cd /home/user
+ 1975  cd /data1/
+ 1976  cd /data1/wangkang/
+ 1977  gfortran 101.f90
+ 1978  gfortran test.f90
+ 1979  cd /data1/wangkang
+ 1980  ./a.out
+ 1981  gfortran my_first_program.f90
+ 1982  sudo apt-get install gfortran
+ 1983  cd HanfengZhai/
+ 1984  cd space_time_pde/
+ 1985  cd exp
+ 1986  cd experiments/
+ 1987  cd rb2d/
+ 1988  python3 train.py
+ 1989  cd ..
+ 1990  cd PINNs/
+ 1991  ls
+ 1992  cd Utilities/
+ 1993  ls
+ 1994  cd /home/user/yulu/SEDPD/thermophoresis_gel/R1.0_B3500_eida1.8368
+ 1995  ls
+ 1996  top
+ 1997  ls
+ 1998  g++ compute.cpp DPDF.cpp
+ 1999  sudo apt-get install g++
+ 2000  cd HanfengZhai/
+ 2001  cd space_time_pde/
+ 2002  cd experiments/
+ 2003  cd rb2d/
+ 2004  bash run_experiment.sh
+ 2005  python3 train.py
+ 2006  bash run_experiment.sh
+ 2007  clear
+ 2008  bash download_data.sh
+ 2009  bash run_experiment.sh
+ 2010  top
+ 2011  clear
+ 2012  bash run_experiment.sh
+ 2013  history
