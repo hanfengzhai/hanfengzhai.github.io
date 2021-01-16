@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>www.hanfengzhai.net/categories/note.html</loc>
+    
+    <lastmod>2021-01-16</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>www.hanfengzhai.net/AeroNN.html</loc>
+    
+    <lastmod>2021-01-16</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>www.hanfengzhai.net/2019/11/30/index/</loc>
     
     <lastmod>2021-01-15</lastmod>
@@ -19,20 +33,6 @@
     <loc>www.hanfengzhai.net/categories/UGAF_Talk.html</loc>
     
     <lastmod>2021-01-12</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>www.hanfengzhai.net/AeroNN.html</loc>
-    
-    <lastmod>2021-01-06</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>www.hanfengzhai.net/categories/note.html</loc>
-    
-    <lastmod>2021-01-04</lastmod>
     
   </url>
   
@@ -130,7 +130,7 @@
 
   <url>
     <loc>www.hanfengzhai.net</loc>
-    <lastmod>2021-01-15</lastmod>
+    <lastmod>2021-01-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
