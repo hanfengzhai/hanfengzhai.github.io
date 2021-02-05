@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Hanfeng Zhai</title>
+  <title></title>
   <icon>https://www.gravatar.com/avatar/2efeca58387dc60dcd5330b39862ac6e</icon>
-  <subtitle>ein denken Mensch</subtitle>
+  
   <link href="www.hanfengzhai.net/atom.xml" rel="self"/>
   
   <link href="www.hanfengzhai.net/"/>
   <updated>2021-01-16T01:55:07.780Z</updated>
   <id>www.hanfengzhai.net/</id>
-  
-  <author>
-    <name>Computational Fluid Dynamics | Micro &amp; Nano Mechanics | Machine Learning</name>
-    <email>frankzhai0@gmail.com</email>
-  </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
   
