@@ -11,10 +11,10 @@ html{
 	height:100%;
 }
 
-#header {
+/*#header {
 	height: 100%;
     overflow: hidden;
-}
+}*/
 
 .section-intro {
 	display: table;
