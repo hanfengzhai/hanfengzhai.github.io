@@ -5,11 +5,11 @@
 	border: 1px solid rgba(0, 0, 0, 0.2);
 	border-radius: 0px;
 }
-.modal-body {
+/*.modal-body {
 	text-align: center;
 	position: relative;
 	margin: 0;
-}
+}*/
 .modal-title {
 	color: #000;
     font-family: Arial,"黑体",Sans-Serif;
