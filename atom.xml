@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title></title>
+  <title>Hanfeng Zhai</title>
   <icon>https://www.gravatar.com/avatar/2efeca58387dc60dcd5330b39862ac6e</icon>
   
   <link href="www.hanfengzhai.net/atom.xml" rel="self"/>
@@ -8,6 +8,11 @@
   <link href="www.hanfengzhai.net/"/>
   <updated>2021-02-06T02:54:52.138Z</updated>
   <id>www.hanfengzhai.net/</id>
+  
+  <author>
+    <name>Bachelor Student @ Shanghai University</name>
+    <email>frankzhai0@gmail.com</email>
+  </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
   
