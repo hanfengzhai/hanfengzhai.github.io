@@ -152,7 +152,7 @@ html{
 	text-transform: uppercase;
 }
     
-.thumb{
+/*.thumb{
 	display: block;
     height: auto;
     max-width: 100%;
@@ -163,7 +163,7 @@ html{
     border: 1px solid #fff;
     -webkit-transition: all 0.5s ease-in-out;
     transition: all 0.5s ease-in-out;
-}
+}*/
 .thumb:hover{
 	opacity: 0.95;
 }
