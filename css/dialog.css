@@ -1,10 +1,10 @@
 
-.modal-content {
+/*.modal-content {
 	background-color: #ffffff;
 	border: 1px solid #999999;
 	border: 1px solid rgba(0, 0, 0, 0.2);
 	border-radius: 0px;
-}
+}*/
 /*.modal-body {
 	text-align: center;
 	position: relative;
@@ -12,7 +12,7 @@
 }*/
 .modal-title {
 	color: #000;
-    font-family: Arial,"黑体",Sans-Serif;
+    font-family: Sans-Serif;
     text-align: center;
     font-weight: bold;
 }
