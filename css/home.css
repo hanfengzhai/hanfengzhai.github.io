@@ -59,7 +59,7 @@ html{
     -khtml-user-select: none;
     user-select: none;
 }
-/*.intro-logo:before{
+.intro-logo:before{
     content: "";
     display: block;
     top: 0;
@@ -73,8 +73,8 @@ html{
     background-image: linear-gradient(-45deg,#a83279,#d38312);
     opacity: .7;
     filter: alpha(opacity=70);
-}*/
-/*.intro-navigate>p{
+}
+.intro-navigate>p{
 	text-align: center;
 	margin: 0px;
 }
@@ -87,7 +87,7 @@ html{
     z-index: 99;
     background: rgba(255,255,255,.95);
     transition: background 2s;
-}*/
+}
 .navigater-list{
 	font-family: "Microsoft YaHei","微软雅黑",Arial,simsun,"宋体";
 	color:#444444;
