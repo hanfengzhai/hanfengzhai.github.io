@@ -164,9 +164,9 @@ html{
     -webkit-transition: all 0.5s ease-in-out;
     transition: all 0.5s ease-in-out;
 }*/
-.thumb:hover{
+/*.thumb:hover{
 	opacity: 0.95;
-}
+}*/
 .image{
 	height: 200px; 
 	width: auto; 
