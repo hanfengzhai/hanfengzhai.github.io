@@ -30,7 +30,7 @@
   </url>
   
   <url>
-    <loc>www.hanfengzhai.net/categories/note.html</loc>
+    <loc>www.hanfengzhai.net/note.html</loc>
     
     <lastmod>2021-01-16</lastmod>
     
@@ -44,14 +44,14 @@
   </url>
   
   <url>
-    <loc>www.hanfengzhai.net/categories/publications.html</loc>
+    <loc>www.hanfengzhai.net/publications.html</loc>
     
     <lastmod>2020-12-31</lastmod>
     
   </url>
   
   <url>
-    <loc>www.hanfengzhai.net/categories/project.html</loc>
+    <loc>www.hanfengzhai.net/project.html</loc>
     
     <lastmod>2020-12-31</lastmod>
     
@@ -72,9 +72,9 @@
   </url>
   
   <url>
-    <loc>www.hanfengzhai.net/categories/links.html</loc>
+    <loc>www.hanfengzhai.net/bio.html</loc>
     
-    <lastmod>2020-12-23</lastmod>
+    <lastmod>2020-12-30</lastmod>
     
   </url>
   
@@ -108,13 +108,6 @@
   
   <url>
     <loc>www.hanfengzhai.net/categories/news.html</loc>
-    
-    <lastmod>2020-10-09</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>www.hanfengzhai.net/tags/index.html</loc>
     
     <lastmod>2020-10-09</lastmod>
     
