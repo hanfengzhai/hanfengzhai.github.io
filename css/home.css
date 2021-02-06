@@ -112,7 +112,7 @@ html{
 	-o-background-size: cover;
 }
 
-.blur{	
+/*.blur{	
     filter: url(blur.svg#blur); /* FireFox, Chrome, Opera */
     
     -webkit-filter: blur(5px); /* Chrome, Opera */
@@ -121,7 +121,7 @@ html{
             filter: blur(5px);
     
     filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=5, MakeShadow=false); /* IE6~IE9 */
-}
+}*/
 
 .homelogo{
 	max-width: 400px;
