@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>www.hanfengzhai.net/2019/11/30/index/</loc>
+    
+    <lastmod>2021-04-05</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>www.hanfengzhai.net/note.html</loc>
     
     <lastmod>2021-03-28</lastmod>
@@ -17,13 +24,6 @@
   
   <url>
     <loc>www.hanfengzhai.net/BD-PINN.html</loc>
-    
-    <lastmod>2021-03-14</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>www.hanfengzhai.net/2019/11/30/index/</loc>
     
     <lastmod>2021-03-14</lastmod>
     
@@ -130,7 +130,7 @@
 
   <url>
     <loc>www.hanfengzhai.net</loc>
-    <lastmod>2021-03-28</lastmod>
+    <lastmod>2021-04-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
