@@ -11,18 +11,18 @@
   
   
   
-  <meta name="description" content="*A deep learning framework for inferring microbubble dynamics*   [Hanfeng Zhai](https:&#x2F;&#x2F;hanfengzhai.net&#x2F;) &amp; [Guohui Hu](https:&#x2F;&#x2F;smes.shu.edu.cn&#x2F;info&#x2F;1033&#x2F;1145.htm)  [[Code](https:&#x2F;&#x2F;github.com&#x2F;han">
+  <meta name="description" content="*A deep learning framework for inferring microbubble dynamics*   [Hanfeng Zhai](https:&#x2F;&#x2F;hanfengzhai.net&#x2F;) &amp; [Guohui Hu](https:&#x2F;&#x2F;smes.shu.edu.cn&#x2F;info&#x2F;1033&#x2F;1145.htm)   [[Code](https:&#x2F;&#x2F;github.com&#x2F;ha">
 <meta property="og:type" content="website">
 <meta property="og:title" content="BubbleNet">
 <meta property="og:url" content="www.hanfengzhai.net/BubbleNet.html">
 <meta property="og:site_name" content="Hanfeng Zhai">
-<meta property="og:description" content="*A deep learning framework for inferring microbubble dynamics*   [Hanfeng Zhai](https:&#x2F;&#x2F;hanfengzhai.net&#x2F;) &amp; [Guohui Hu](https:&#x2F;&#x2F;smes.shu.edu.cn&#x2F;info&#x2F;1033&#x2F;1145.htm)  [[Code](https:&#x2F;&#x2F;github.com&#x2F;han">
+<meta property="og:description" content="*A deep learning framework for inferring microbubble dynamics*   [Hanfeng Zhai](https:&#x2F;&#x2F;hanfengzhai.net&#x2F;) &amp; [Guohui Hu](https:&#x2F;&#x2F;smes.shu.edu.cn&#x2F;info&#x2F;1033&#x2F;1145.htm)   [[Code](https:&#x2F;&#x2F;github.com&#x2F;ha">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="/assets/img/bubblenet.jpeg">
 <meta property="og:image" content="/assets/img/bubblenet-1.jpeg">
 <meta property="og:image" content="/assets/img/bubblenet-2.jpeg">
 <meta property="article:published_time" content="2019-11-29T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-05-13T11:34:55.249Z">
+<meta property="article:modified_time" content="2021-05-13T11:47:36.655Z">
 <meta property="article:author" content="Bachelor Student @ Shanghai University">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="/assets/img/bubblenet.jpeg">
@@ -207,6 +207,7 @@
 
 [Hanfeng Zhai](https://hanfengzhai.net/) & [Guohui Hu](https://smes.shu.edu.cn/info/1033/1145.htm)
 
+
 [[Code](https://github.com/hanfengzhai/BubbleNet)] | [[Paper](https://arxiv.org)] | [[Video](https://youtube.com/)]
 
 
@@ -218,8 +219,11 @@
 <p>Bubbly flows is a classic fluid mechanics problem, specifically at the mesoscale. The bubble pinch-off effect confined in microtube is one of the most studied problems in fluid mechanics (<a target="_blank" rel="noopener" href="https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.100.034504">Dollet et al.</a>, <a target="_blank" rel="noopener" href="https://www.cambridge.org/core/journals/journal-of-fluid-mechanics/article/analysis-of-the-drippingjetting-transition-in-compound-capillary-jets/8209BF4D32F87E4647C181727FCDFA5B?__cf_chl_jschl_tk__=7d71e87cb91a5e24af707925bb66a7b98d6df963-1620896799-0-AfTf8hcALuYeTzPZeznSMLdPeSmC5klxfYdedAotMmdI4WtMuSHLwglLMFq5jB0L1mpqWsLOhrYiWWg0pSStjC89Am8TIRV4CLXRuH-v7bI6xUOwUbta2YaprNaeW9bBTdiDuZfrd1LlGolllLDUJ9C7Fd4vY-o7WxLfVzoeqPxvECoJtftkMNjv2iH92AoPjssWCDtDT2WACtB6EndbW8HdVitzDCig79GOIE1CQP7_spnBpwofgH9pNPvR18jADQ8HqMhlUycmrMGZF8m4cHDZlw9g9o1vBASD8zlAVQzGU_gOXp54sSt4OLdA4w8BouOqEjNz2Z6XWicM_oZJD7qZ4g3AGqaYTReXa-0pxVKKQ-SQfoG8i6p8c7wlVhBTFPaDFjEEI1c-TykKQqPPIXknB_Uu9mJ6Q81--QNc-1Zik0bAV7k7ytXL1JterhDczD-5kELTaT89tdloXiAVredGy4RTePPrEJ5yV6wN5QLrRH_NOD0_JgE-cEMjTwt7U4-52lbrBbSmMIHiA2gKujgcdRKihfJjyDuGYqGYdO7TdXx0vKD1DZ3XfxUgzGbNJkNIoKoxu6IkCD530O3AU4MM3gaovH8xUaao0dnC6PcDSqCESl2bFmPpf10ii3cwoj3vMRwl-r_GiAOWwuQcvWo">Herrada et al.</a>, <a target="_blank" rel="noopener" href="https://aip.scitation.org/doi/full/10.1063/1.3631323">van Hoeve et al.</a>, <a target="_blank" rel="noopener" href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.89.063012">Vega et al.</a>, <a target="_blank" rel="noopener" href="https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.120.084501">Zhao et al.</a>), depicting deformation and movement of single bubble dynamics. Single bubble movement has also been studied for investigating blood-brain barrier (<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2677346/">Miao et al.</a>, <a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3765296/">Hosseinkhah et al.</a>, <a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4406873/">Hosseinkhah et al.</a>). Bubbly flow with multiple bubbles displays complexity due to the interactions between bubbles (<a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2556210/">Talu et al.</a>, <a target="_blank" rel="noopener" href="https://pubs.rsc.org/en/content/articlelanding/2019/ra/c9ra04212a#!divAbstract">Tenjimbayashi et al.</a>), which are also widely studied for drug delivery (<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S0001868614000293">Papadopoulou et al.</a>, <a target="_blank" rel="noopener" href="https://pubs.rsc.org/en/content/articlelanding/2012/lc/c2lc40634a#!divAbstract">Peyman et al.</a>).</p>
 <p>Acknowledging the importance and numerous applications of bubbly flow, and realizing the powerful tool of physics based machine learning, we here apply machine learning to infer and predict the bubbly flow. Our work is inspired by <a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S0021999118307125">Raissi et al.</a> and <a target="_blank" rel="noopener" href="https://aip.scitation.org/doi/full/10.1063/5.0041203">Lin et al.</a> using physics-informed deep learning to infer bubble dynamics. Different from <a target="_blank" rel="noopener" href="https://aip.scitation.org/doi/full/10.1063/5.0041203">Lin et al.</a>‘s approach, we do not adopt the theoretical model optimized for modeling bubble (i.e., the Rayleigh-Plesset equation). Instead, we directly compute how bubble moves through numerical simulations of multiphase flow. Based on <a target="_blank" rel="noopener" href="https://maziarraissi.github.io/PINNs/">PINNs</a>, we also propose a new deep learning architecture, called <strong>BubbleNet</strong>, which entails three main parts: deep neural networks (DNN) with sub nets for predicting different physics fields; the physics-informed part, with the fluid continuum condition encoded within; the time discretized normalizer (TDN), an algorithm to normalize field data per time step before training. We apply the traditional DNN and our BubbleNet to train the simulation data and predict the physics fields of both the two bubbly flow cases.</p>
 <h2 id="Methods-amp-Results"><a href="#Methods-amp-Results" class="headerlink" title="Methods &amp; Results"></a>Methods &amp; Results</h2><p>Two cases were set up for investigating the bubble flow: $^1$ single bubble flow and $^2$ multiple bubbles flow, confined in a microtube. For the single bubble case: the microbubble diameter is set to be $d = 4\mu \rm m$; the micro-tube has a length of 15$\mu$m and diameter of $5\mu \rm m$; we set up periodic boundary conditions (BCs) as $\Delta p = 10 \rm Pa$, and the tube is confined at the end as constant pressure $p = 799.932 \rm Pa$ (6mmHg), corresponding to the pressure in human interstitial fluid. the initial conditions (ICs) is set as the pressure $p_0 = 799.932Pa$, with room temperature as $293.15K$. For the multiple bubbles flow: 60 micro-bubbles are randomly distributed in a 2D micro-tube with a length of $100\mu \rm m$ and a diameter of $50 \mu \rm m$, with each micro-bubble of the diameter of $3\mu \rm m$. The BCs and ICs are same with the single bubble case: $ \Delta p = 10 \rm Pa$, constant pressure at tube end $p = 799.932 \rm Pa$ and $p_0 = 799.932 \rm Pa$, with room temperature as $293.15K$. Both the meshing of the two bubbly flows are set to be extremely fine. For a single bubble case, the simulation is run for $5000 \mu \rm s$, and for the multiple bubbles case, the simulation is run for $3000 \mu \rm s$.</p>
-<p><video width="500" height="320" controls></p>
-<p><source src="https://hanfengzhai.net/vid/sbubble.mp4"><br>&lt;/video&gt;</p>
+<video width="500" height="320" controls>
+<source src="https://hanfengzhai.net/vid/sbubble.mp4">
+</video>
+
+
 <center>
 
 *Simulation for the single bubble flow case.* 
@@ -227,8 +231,11 @@
 </center>
 
 
-<p><video width="500" height="320" controls></p>
-<p><source src="https://hanfengzhai.net/vid/mbubble.mp4"><br>&lt;/video&gt;</p>
+<video width="500" height="320" controls>
+<source src="https://hanfengzhai.net/vid/mbubble.mp4">
+</video>
+
+
 <center> 
 
 *Simulation for the multiple bubbles flow case.*
