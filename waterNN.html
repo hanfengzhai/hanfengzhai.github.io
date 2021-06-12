@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-<title>Hanfeng Zhai</title>
+<title>an optimized algorithm for the prediction of the water emptying time on bpnn | Hanfeng Zhai</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
     <meta name="keywords" content="Fluid Mechanics, Applied Mathematics" />
@@ -11,24 +11,28 @@
   
   
   
-  <meta name="description" content="Bio      Born and raised in Beijing, China, Hanfeng received his B.S. in Theoretical &amp; Applied Mechanics from Shanghai University, as Outstanding Graduate of Shanghai. He is a The Third Middle">
+  <meta name="description" content="Author: Hanfeng Zhai 𝐚, Kai Wang 𝐛, Zhenyu Liu 𝐜Supervisor: Dr. Reza Alam, at UC Berkeley  𝐚 Department of Mechanics, School of Mechanics and Engineering Science, Shanghai University, Shanghai, Ch">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Hanfeng Zhai">
-<meta property="og:url" content="www.hanfengzhai.net/about/index.html">
+<meta property="og:title" content="An optimized algorithm for the prediction of the water emptying time on BPNN">
+<meta property="og:url" content="www.hanfengzhai.net/waterNN.html">
 <meta property="og:site_name" content="Hanfeng Zhai">
-<meta property="og:description" content="Bio      Born and raised in Beijing, China, Hanfeng received his B.S. in Theoretical &amp; Applied Mechanics from Shanghai University, as Outstanding Graduate of Shanghai. He is a The Third Middle">
+<meta property="og:description" content="Author: Hanfeng Zhai 𝐚, Kai Wang 𝐛, Zhenyu Liu 𝐜Supervisor: Dr. Reza Alam, at UC Berkeley  𝐚 Department of Mechanics, School of Mechanics and Engineering Science, Shanghai University, Shanghai, Ch">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="/assets/img/icon.jpg">
-<meta property="og:image" content="/assets/img/cornell.gif">
-<meta property="og:image" content="https://www.mae.cornell.edu/mae">
-<meta property="og:image" content="/assets/img/fb.png">
-<meta property="og:image" content="/assets/img/bb.jpg">
-<meta property="og:image" content="/assets/img/boc.png">
-<meta property="article:published_time" content="2019-11-29T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-06-12T01:49:59.990Z">
+<meta property="og:image" content="/assets/img/w-method1.png">
+<meta property="og:image" content="/assets/img/w-method2.png">
+<meta property="og:image" content="/assets/img/w-result1.png">
+<meta property="og:image" content="/assets/img/w-result2.png">
+<meta property="og:image" content="/assets/img/w-result3.png">
+<meta property="og:image" content="/assets/img/w-result4.png">
+<meta property="og:image" content="/assets/img/w-further.png">
+<meta property="article:published_time" content="2020-08-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-10-08T23:53:48.132Z">
 <meta property="article:author" content="Bachelor Student @ Shanghai University">
+<meta property="article:tag" content="Fluid Mechanics">
+<meta property="article:tag" content="Neural Networks">
+<meta property="article:tag" content="Algorithm">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="/assets/img/icon.jpg">
+<meta name="twitter:image" content="/assets/img/w-method1.png">
   
     <link rel="alternate" href="/atom.xml" title="Hanfeng Zhai" type="application/atom+xml">
   
@@ -172,56 +176,6 @@
 
 
 
-  
-    <section class="awSlider">
-      <div class="carousel slide carousel-fade " data-ride="carousel">
-
-        <!-- Wrapper for slides -->
-        <div class="carousel-inner">
-           
-              
-                <div class="item active" style="max-height:600px; overflow: hidden;">
-              
-                <img id="carousel-img0" src="/css/images/1.jpg">
-              </div>
-
-              <!-- 自适应大图 -->
-              <script>
-              	  var carouselResize = function() {
-              	  	  var h = document.body.clientHeight / 3;
-	                  var img0 = new Image();
-	                  var imageTag0 = document.getElementById("carousel-img0");
-	                  img0.src = imageTag0.src;
-	                  img0.onload=function(){
-	                    if (img0.width / img0.height <= document.body.clientWidth / h) {
-	                      imageTag0.style.width = document.body.clientWidth + "px";
-	                    } else {
-	                      imageTag0.style.height = h + "px";
-	                      imageTag0.style.marginLeft = -(h * img0.width / img0.height - document.body.clientWidth) / 2 + "px";
-	                    }
-	                  };
-              	  };
-                  carouselResize();
-              </script>
-            
-        </div>
-
-        <!-- Controls -->
-        <a class="left carousel-control" href=".carousel" role="button" data-slide="prev">
-          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-          <span class="sr-only">Geri</span>
-        </a>
-        <a class="right carousel-control" href=".carousel" role="button" data-slide="next">
-          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-          <span class="sr-only">İleri</span>
-        </a>
-      </div>
-    </section>
-    
-  
-
-
-
       
             
       <div id="content" class="outer">
@@ -229,6 +183,16 @@
           <section id="main" style="float:none;"><article id="page-"  class="article article-type-page" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      An optimized algorithm for the prediction of the water emptying time on BPNN
+    </h1>
+  
+
+      </header>
     
     <div class="article-meta">
       
@@ -239,40 +203,23 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <font size=5, color="black">
-
-
-<h1 id="Bio"><a href="#Bio" class="headerlink" title=" Bio "></a><center> Bio </center></h1><hr>
-<!-- <div align="center">
-<img src="/assets/img/icon.jpg" height="100" width="390" >
-</div> -->
-<font size=3.9, color="black">
-
-
-<p>Born and raised in Beijing, China, Hanfeng received his B.S. in <a target="_blank" rel="noopener" href="https://smes.shu.edu.cn/#">Theoretical &amp; Applied Mechanics</a> from <a target="_blank" rel="noopener" href="https://en.shu.edu.cn/">Shanghai University</a>, as <strong>Outstanding Graduate of Shanghai</strong>. He is a <a target="_blank" rel="noopener" href="http://hd123z.bjedu.cn/cms/hd123z/index.htm">The Third Middle School of BNU</a> ‘17 and <a target="_blank" rel="noopener" href="http://www.rdfz.cn/en/">RDFZ</a> ‘14. In high school he won the <a target="_blank" rel="noopener" href="https://hanfengzhai.net/assets/img/debate.jpg">Outstanding Speaker</a> award in <a target="_blank" rel="noopener" href="https://www.nhsdlc.com/">National High School Academic Debate</a>. During middle school, he casts a short movie called <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1MK4y1Z7KY">Operation Empty Plate</a> in 2013. He also played for the class team and won the RDFZ 2013 basketball competition <a target="_blank" rel="noopener" href="https://hanfengzhai.net/assets/img/basketball.jpeg">championship</a>. He grew up and recieved his primary education in <a target="_blank" rel="noopener" href="http://www.eps.bnu.edu.cn/">Experimental Primary School of BNU</a>, in which he started learning playing tuba, <a target="_blank" rel="noopener" href="https://hanfengzhai.net/Art">doing arts</a> and <a target="_blank" rel="noopener" href="https://v.youku.com/v_show/id_XNTI0MzM1MTA4.html?m=yunfan">playing magic tricks</a>. </p>
-<p>Interested in fluid mechanics, deep learning, soft materials &amp; biomechanics, he conducted research on mechanical properties of enamel microstructure with <a target="_blank" rel="noopener" href="https://smes.shu.edu.cn/info/1033/2059.htm">Dongsheng Zhang</a> &amp; <a target="_blank" rel="noopener" href="https://mse.washington.edu/facultyfinder/dwayne-d-arola">Dwayne D. Arola</a> from 2018 to 2020, during which they observe a specific band structure that proved to resist fracture verified through simulations. Later on, he worked with <a target="_blank" rel="noopener" href="https://siamm.shu.edu.cn/info/1016/1468.htm">Guohui Hu</a> on developing deep learning algorithms applied to microfluids, specifically on microbubble flows. He then developed <a target="_blank" rel="noopener" href="https://hanfengzhai.net/BubbleNet">BubbleNet</a>. His previous undergraduate research projects can be viewed in his <a target="_blank" rel="noopener" href="https://hanfengzhai.net/research">research</a>.</p>
-<p>During his four years as a undergraduate, he played Denfensive End &amp; Linebacker at <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E4%B8%8A%E6%B5%B7%E5%A4%A7%E5%AD%A6%E7%88%86%E7%A0%B4%E8%80%85%E6%A9%84%E6%A6%84%E7%90%83%E9%98%9F/15453135?fr=aladdin">Bombers Football Team</a> from <a target="_blank" rel="noopener" href="https://hanfengzhai.net/assets/img/fb.png">2017 to 2019</a> (<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1V64y127RT?share_source=copy_web">Football Collection</a>). And he has trained with <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Russell_Wilson">Russell Wilson</a> at <a target="_blank" rel="noopener" href="https://www.thepassacademy.com/">RW3 Passing Academy</a> in <a target="_blank" rel="noopener" href="https://hanfengzhai.net/assets/img/RW3.jpeg">2018</a> (Media coverage on <a target="_blank" rel="noopener" href="https://www.americanfootballinternational.com/russell-wilson-wraps-up-china-tour-reflects-on-football-growth/">AFInt</a>). He has won the 1st and 3rd place at <a target="_blank" rel="noopener" href="https://hanfengzhai.net/vid/BodyBuilding.mov">SHU bodybuilding contest</a> in <a target="_blank" rel="noopener" href="https://hanfengzhai.net/assets/img/bb.jpg">2018</a> and <a target="_blank" rel="noopener" href="https://hanfengzhai.net/assets/img/bb2.jpg">2019</a>. He has experience in financial training at <a target="_blank" rel="noopener" href="https://www.boclife.com.hk/en/">Bank of China Life</a> at Hong Kong on <a target="_blank" rel="noopener" href="https://hanfengzhai.net/assets/img/boc.png">Feburary 2018</a>. In his spare time, he loves watching movies and hit the gym, and he also love history, philosophy, and social science. </p>
-<center>
-
+        <p><strong>Author:</strong> Hanfeng Zhai 𝐚, Kai Wang 𝐛, Zhenyu Liu 𝐜<br><strong>Supervisor:</strong> Dr. Reza Alam, at UC Berkeley </p>
+<p>𝐚 Department of Mechanics, School of Mechanics and Engineering Science, Shanghai University, Shanghai, China<br>𝐛 Process Equipment and Control Engineering, College of Energy Engineering, Zhejiang University, Zhejiang, China<br>𝐜 Mechanical Engineering, School of Mechanical Engineering, Zhejiang University, Zhejiang, China</p>
+<p><a href="/file/water_nn.pdf">[PDF]</a> | <a target="_blank" rel="noopener" href="https://www.researchgate.net/publication/343361322_An_optimized_algorithm_for_the_prediction_of_the_water_emptying_time_on_BPNN?_sg%5B0%5D=7timbjhrN_hKlQN7Uu7JWDtMiXTKH-yFAYyHIiUhDfAeMG_rDk8M-1mJD4juiKrbsGEcVddZOKUGwO2MDorwESE96c_Dn7858KKNofoz.bzrtMgJEK1xpTWGY7qGuUxhsdf2Lq6huyshuk-70tmkxbr5TcN_-ptH6PAYC1eWQkcb5MCBh_5fKEwxXAZIxHQ">[Link]</a> | <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1FT4y1772m">[Presentation]</a></p>
 <hr>
-<h1 id="Education"><a href="#Education" class="headerlink" title="Education"></a>Education</h1><p><img src="/assets/img/cornell.gif" width="60" />    M.S. in <a target="_blank" rel="noopener" href="https://www.mae.cornell.edu/mae">Mechanical Engineering</a>, <a target="_blank" rel="noopener" href="https://www.cornell.edu/">Cornell University</a>, incoming</p>
-<p><img src="/assets/img/shu.png" src="https://www.mae.cornell.edu/mae" width="50"/>    B.S. in <a target="_blank" rel="noopener" href="https://smes.shu.edu.cn/#">Theoretical &amp; Applied Mechanics</a>, <a target="_blank" rel="noopener" href="https://en.shu.edu.cn/">Shanghai University</a>, 2017 - 2021</p>
-<hr>
-<font size=2, color="grey">
-
-<p><em>If you have any difficulty with regards to the English content, feel free to visit the</em> <a target="_blank" rel="noopener" href="https://hanfengzhai.net/cn">Chinese Version 中文版</a>!</p>
-<!-- 
-# Gallery
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2>
+<p>
+The water discharge problem is a classic fluid mechanics problem yet hard to resolve due to its complex nature involves water-air interactions that generate air bubbles and vortexes. Here, based on the momentum conservation and influx equation, we present an analytical solution for a square pipe water discharge, showing that the water emptying time is quadratically proportional to water height and pipe length, and the solution is distributed on a surface in the time – height – length space. <a id="more"></a>We also carry out experiments changing the angles for different bottles to measure the water emptying time, and hence calculate the discharge rate. It is found that the water discharge rate is the highest for the Nongfu spring bottle and lowest for the Pocalri bottle, while higher with bigger angles. The phenomenon is explained with bottle shape, consisting the bottleneck shape and bottle-body trough. We qualitatively show that with a bottle shape depicted by \(n>1\) with equation \(y=x^n\), or with a trough on the bottle-body, there is more likely to generate vortexes and friction to slow the discharge. Moreover, the bottle-body trough plays a major role in our approach. A regression model is built based on our experimental data of the water discharge with back-propagation neural network (BPNN) to obtain the satisfied network through running a loop with \(10^5\) epochs. We obtain that for our data the best BPNN parameters are: neuron \(ξ=1\) and learning rate \(α={10^-}^3\). The generated satiated network with our algorithm shows good accuracy, with determining factor \(R^2=0.96902\). We also implement a randomly generated dataset to get a prediction from the network.
 
 
 
-<img src="/assets/img/fb.png" width="760"/>
+<h2 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h2><p>Here, we first introduce the water discharge problem and our approaches through the schematics as shown below, and we also provide an analytical solution for the simplified model as shown in the given form.<br><img src="/assets/img/w-method1.png" /><br>We hence introduce the ideology of how we tackle this problem, throught he regression model as shown running with the given algorithms.<br><img src="/assets/img/w-method2.png" /></p>
+<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p><img src="/assets/img/w-result1.png" /><br><img src="/assets/img/w-result2.png" /><br><img src="/assets/img/w-result3.png" /><br><img src="/assets/img/w-result4.png" /></p>
+<h2 id="Further-Discussion"><a href="#Further-Discussion" class="headerlink" title="Further Discussion"></a>Further Discussion</h2><p>After the beyond works and discussion with Prof. Alam, we therefore move our works forward to qualitatively provide a method to optimize the bottle shape for faster discharge rate as shown from the comparing the bottle parameters based on our experiments.<br><img src="/assets/img/w-further.png" /></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] P. B. Whalley. Flooding, slugging and bottle emptying. Int. J. Multiphase Flow 13(5), 723 (1987).<br>[2] Chunyang Ding. An Increasing Flow of Knowledge: Investigating Torricelli’s Law, or the Effect of Height on Flow Rate. Physics Internal Assessment: Experiment Report. May 2014.<br>[3] C. I. Ossai. Pump-off identification with time series analysis of transient water T discharge rate. Journal of Petroleum Science and Engineering 181 (2019) 106203<br>[4] H. Mayer. Bottle Emppying: A Fluid Mechanics and Measurements Exercise for Engineering Undergraduate Students. Fluids 2019, 4, 183<br>[5] G. Liu, F. Tong, B. Tian, J. Gong. Finite element analysis of flood discharge atomization based on water–air two-phase flow. Applied Mathematical Modelling 81 (2020) 473–486.<br>[6] F. Geiger, K. Velten, and F.-J. Methner. 3D CFD simulation of bottle emptying processes. J. Food Eng. 109(3), 609 (2012).<br>[7] C. Clanet and G. Searby. On the glug-glug of ideal bottles. J. Fluid Mech. 510, 145 (2004).<br>[8] G. B. Deane and H. Czerski. A mechanism stimulating sound production from air bubbles released from a nozzle. J. Acoust. Soc. Am. 123(6), EL126 (2008).<br>[9] L. Rohilla, A. K. Das. Fluidics in an emptying bottle during breaking and making of interacting interfaces. Phys. Fluids 32, 042102 (2020).<br>[10] T.F. Brooks, D.S. Pope, and A.M. Marcolini. Airfoil self-noise and prediction. Technical report, NASA RP-1218, July 1989.<br>[11] K. Lau. A neural networks approach for aerofoil noise prediction. Masterâ€TMs thesis, Department of Aeronautics. Imperial College of Science, Technology and Medicine (London, United Kingdom), 2006.<br>[12] R. Lopez. Neural Networks for Variational Problems in Engineering. PhD Thesis, Technical University of Catalonia, 2008.</p>
+<h2 id="Authorship-contribution-statement"><a href="#Authorship-contribution-statement" class="headerlink" title="Authorship contribution statement"></a>Authorship contribution statement</h2><p>H. Zhai contributes to drafting the manuscript, providing the algorithms (BPNN) and conceive the results; K. Wang contributes to designing and carrying out the experiments; Z. Liu contributes to providing the analytical solution and carrying out the experiments.</p>
+<h2 id="Appendix-Code-data-and-supplementary-materials"><a href="#Appendix-Code-data-and-supplementary-materials" class="headerlink" title="Appendix. Code, data and supplementary materials"></a>Appendix. Code, data and supplementary materials</h2><p>The code including Algorithm 1 and Algorithm 2, the raw and the operated database, and other related materials is uploaded on <a target="_blank" rel="noopener" href="https://github.com/fzhai0/code">https://github.com/fzhai0/code</a>.</p>
 
-
-<img src="/assets/img/bb.jpg" width="730"/>
-
-<img src="/assets/img/boc.png" width="750"/> -->
-<font size=2.5, color="black">
       
     </div>
     <footer class="article-footer">
