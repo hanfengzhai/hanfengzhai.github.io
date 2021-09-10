@@ -1,1 +1,557 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<title>Janus Fluids Robotics | Hanfeng Zhai</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Fluid Mechanics, Applied Mathematics" />
+  
+  
+  
+  
+  <meta name="description" content="The role of rod decussation on crack deflection in enamelSiyong Liu, Hanfeng Zhai, Yuanzhi Xu, Bingbing An$^*$, Dongsheng Zhang$^*$, Dwayne D. Arola$^*$  STATEMENT: This is a joint project betwe">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hanfeng Zhai">
+<meta property="og:url" content="www.hanfengzhai.net/EnamelFrac.html">
+<meta property="og:site_name" content="Hanfeng Zhai">
+<meta property="og:description" content="The role of rod decussation on crack deflection in enamelSiyong Liu, Hanfeng Zhai, Yuanzhi Xu, Bingbing An$^*$, Dongsheng Zhang$^*$, Dwayne D. Arola$^*$  STATEMENT: This is a joint project betwe">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="/assets/img/enamel-abs.jpg">
+<meta property="og:image" content="/assets/img/enamel.001.jpeg">
+<meta property="og:image" content="/assets/img/enamel.002.jpeg">
+<meta property="og:image" content="/assets/img/enamel.003.jpeg">
+<meta property="og:image" content="/assets/img/enamel.004.jpeg">
+<meta property="og:image" content="/assets/img/enamel.005.jpeg">
+<meta property="og:image" content="/assets/img/enamel.006.jpeg">
+<meta property="og:image" content="/assets/img/enamel.007.jpeg">
+<meta property="og:image" content="/assets/img/enamel.008.jpeg">
+<meta property="og:image" content="/assets/img/enamel.009.jpeg">
+<meta property="og:image" content="/assets/img/enamel.010.jpeg">
+<meta property="og:image" content="/assets/img/enamel1.jpeg">
+<meta property="og:image" content="/assets/img/enamel2.jpeg">
+<meta property="og:image" content="/assets/img/enamel3.jpeg">
+<meta property="og:image" content="/assets/img/ref_enamel.png">
+<meta property="og:image" content="/assets/img/enamel4.jpeg">
+<meta property="og:image" content="/assets/img/enamel5.jpeg">
+<meta property="og:image" content="/assets/img/enamel6.jpeg">
+<meta property="article:published_time" content="2019-11-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-12T02:38:58.814Z">
+<meta property="article:author" content="Bachelor Student @ Shanghai University">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/assets/img/enamel-abs.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Hanfeng Zhai" type="application/atom+xml">
+  
 
+  
+
+  <link rel="icon" href="/css/images/avatar.jpg">
+  <link rel="apple-touch-icon" href="/css/images/avatar.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+    <link rel="stylesheet" href="/css/archive.css" >
+  
+  
+  
+
+</head>
+
+
+
+  <body>
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button> 
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                 >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/avatar.jpg">
+              </a>
+            
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Hοme</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">Abοut</a> </li>
+		      
+		  <li> <a class="main-nav-link" href="/awards">Awards</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/research">Research</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/note">Note</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/software">Software</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: 'Hanfeng Zhai',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="page-"  class="article article-type-page" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+    <div class="article-meta">
+      
+      
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/assets/img/enamel-abs.jpg"></p>
+<font size=3.9, color="black">
+
+
+
+
+<h1 id="The-role-of-rod-decussation-on-crack-deflection-in-enamel"><a href="#The-role-of-rod-decussation-on-crack-deflection-in-enamel" class="headerlink" title="The role of rod decussation on crack deflection in enamel"></a>The role of rod decussation on crack deflection in enamel</h1><p><a href="mailto:837071262@qq.com">Siyong Liu</a>, <strong><a target="_blank" rel="noopener" href="https://hanfengzhai.net">Hanfeng Zhai</a></strong>, <a target="_blank" rel="noopener" href="https://www.researchgate.net/profile/Xu-Yuanzhi">Yuanzhi Xu</a>, <a target="_blank" rel="noopener" href="https://www.researchgate.net/profile/Bingbing-An">Bingbing An</a>$^*$, <a target="_blank" rel="noopener" href="https://www.researchgate.net/profile/Dongsheng-Zhang-5">Dongsheng Zhang</a>$^*$, <a target="_blank" rel="noopener" href="https://mse.washington.edu/facultyfinder/dwayne-d-arola">Dwayne D. Arola</a>$^*$</p>
+<blockquote>
+<p><strong>STATEMENT</strong>: This is a joint project between <a target="_blank" rel="noopener" href="https://www.shu.edu.cn/">SHU</a> and <a target="_blank" rel="noopener" href="https://www.washington.edu/">UW</a> by Profs. Dongsheng Zhang &amp; Dwayne Arola. Siyong Liu is a PhD student under the supervision of Prof. Dongsheng Zhang. Hanfeng joined the project in 2019 and involved during most of his junior year, he assists Siyong in preparing the enamel specimen, observing the microstructures through SEM, modeling the enamel microstructure and conduct numerical simulations. The results shown on this site are generated by both Siyong, Hanfeng, and Bingbing. </p>
+</blockquote>
+<hr>
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>Enamel possesses ingenious hierarchical structure which gives rise to superior fracture resistance. Despite considerable efforts devoted to characterization of fracture behavior of enamel, the role of rod decussation in fracture of enamel is largely unknown. In this study, the features of rod decussation in the inner enamel are experimentally identified, and analyses of crack growth in enamel are carried out using a micromechanical model of enamel, in which the structural features of the outer enamel and rod decussation of the inner enamel are incorporated. We carry out calculations within a framework based on the extended finite element method, and the crack growth and crack path selection are natural outcomes of imposed loading. We show that crack deflection in enamel is controlled by rod decussation. For crack growth in the parazone, the crack path is oriented along the axis of enamel rods, leading to gross crack deflection. The microstructure of inner enamel with intermediate decussation angle enables multiple crack deflections, giving rise to enhanced toughness. For crack growth in the diazone, the transition in orientation of crack deflection occurs as decussation angle of enamel rods increases. The relatively straight crack path emerges in the case of the microstructure of enamel with intermediate decussation angle, leading to weak fracture resistance. It is further found that compared with the diazone, the gross crack deflection in the parazone provides greater contribution to fracture resistance of enamel. The findings of this study provide a good mechanistic understanding of the role of rod decussation in enamel.</p>
+<hr>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2>
+
+<p>Enamel is a biological composite with ingenious hierarchical structure. At the nanoscale, enamel is composed of stiff mineral crystals embedded in soft protein matrix (<a target="_blank" rel="noopener" href="https://europepmc.org/article/med/22762906">Bar-On and Wagner 2012</a>; <a target="_blank" rel="noopener" href="https://aip.scitation.org/doi/10.1063/1.2245439">Zhou and Hsiung, 2006</a>). The nanoscale mineral crystals are further assembled into enamel rods at the microscale, where non-uniform arrangement of mineral crystals is observed (<a target="_blank" rel="noopener" href="https://pubmed.ncbi.nlm.nih.gov/22743111/">An et al., 2012</a>; <a target="_blank" rel="noopener" href="https://linkinghub.elsevier.com/retrieve/pii/S002192900900089X">Xie et al., 2009</a>). The rods are wrapped by thin organic layers and exhibit unique arrangement in enamel (<a target="_blank" rel="noopener" href="https://linkinghub.elsevier.com/retrieve/pii/S1742706114002979">Chai, 2014</a>; <a target="_blank" rel="noopener" href="https://linkinghub.elsevier.com/retrieve/pii/S1751616107000082">He and Swain, 2008</a>). In the outer enamel which is close to occlusal plane, the rods are organized in a parallel manner while rod decussation, which is associated with the crossing of rod bundles, emerges in the inner enamel near the dentin-enamel junction (<a target="_blank" rel="noopener" href="https://royalsocietypublishing.org/doi/10.1098/rsif.2013.0266">Cox, 2013</a>; <a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1751616116302454?via%3Dihub">Weng et al., 2016</a>). Such rod decussation leads to formation of the parazone and diazone (<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1742706109001688?via%3Dihub">Bajaj and Arola, 2009</a>; <a target="_blank" rel="noopener" href="https://linkinghub.elsevier.com/retrieve/pii/S0109564119308097">Thompson, 2020</a>).</p>	
+
+<p>The fascinating hierarchical structure endows enamel with extraordinary fracture resistance. It was experimentally reported that cracks tend to propagate within the protein-rich sheaths of enamel, giving rise to crack branching and emergence of meandering cracks, which leads to the rising fracture resistance curves b(<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S0142961209009806?via%3Dihub">Bechtle et al., 2010</a>). <a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1742706109001688?via%3Dihub">Bajaj and Arola, 2019</a> conducted incremental crack growth measurements of enamel, showing that fracture toughness of the inner enamel is higher than that of the outer enamel; such an amplified fracture toughness of inner enamel is attributed to various toughening mechanisms associated with rod arrangement. Crack bridging caused by uncracked ligaments in the crack wake can reduce the stress intensity of crack tip and increase the propensity of crack closure, serving as a potent toughening mechanism of the inner enamel (<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S014296120900413X?via%3Dihub">Bajaj and Arola, 2009</a>; <a target="_blank" rel="noopener" href="https://www.nature.com/articles/nmat2221">Koester et al., 2008</a>). In addition, rod decussation enables the emergence of oblique interrod regions ahead of the crack tip, leading to development of microcracks in these interrod regions and thereby giving rise to loosening of rod bundles (<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S014296120900413X?via%3Dihub">Bajaj and Arola, 2009</a>b). Such a mechanism is capable of dissipating a large amount of energy, promoting fracture toughness of the inner enamel. The study by <a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1751616116302454?via%3Dihub">Weng et al., 2016</a> identified that when crack nucleating in the outer enamel extends into the inner enamel, the protein-rich rod sheaths within the decussated region provide preferred channels for crack growth, leading to crack deflection and crack twisting, both of which are responsible for enhanced fracture resistance of the inner enamel. <a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1742706109001688">Yahyazadehfar et al., 2013</a> experimentally characterized the degree of decussation of enamel rods and quantified the relationship between fracture toughness and degree of rod decussation. It was found that fracture toughness increases with increasing degree of rod decussation; the large degree of rod decussation suppresses crack initiation in enamel (<a target="_blank" rel="noopener" href="https://linkinghub.elsevier.com/retrieve/pii/S1742706112004576">Yahyazadehfar et al., 2013</a>). To elucidate the effect of rod decussation in enamel, <a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1742706119303010?via%3Dihub">Pro and Barthelat, 2019</a> developed a discrete element model which is capable of characterizing interfacial debonding between the adjacent enamel rods and rupture of rods. The numerical simulations using the discrete element model showed that for the decussated region in enamel, the non-planar crack configuration emerges and yielding of interfaces between enamel rods takes place, giving rise to the formation of a large fracture process zone ahead of the main crack tip, which plays an important role in energy dissipation (<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1742706119303010?via%3Dihub">Pro and Barthelat, 2019</a>). The volume of fracture process zone increases as the decussation angle increases, indicating that large decussation angle of enamel plays a role in mitigating fracture (<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1742706119303010?via%3Dihub">Pro and Barthelat, 2019</a>). Furthermore, it was found that large stiffness contrast between enamel rods and interfaces provides contribution to formation of amplified fracture process zone, thereby enhancing fracture toughness of enamel (<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1742706119303010?via%3Dihub">Pro and Barthelat, 2019</a>).</p>
+	
+<p>Although previous investigations provide a good understanding of the relationship between microstructure and fracture resistance of enamel, the role of rod decussation is still elusive. It is well known that the crossing of rod bundles generates the parazone and diazone in the inner enamel (<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1742706109001688?via%3Dihub">Bajaj and Arola, 2009</a>; <a target="_blank" rel="noopener" href="https://linkinghub.elsevier.com/retrieve/pii/S1742706114002979">Chai, 2014</a>); however, crack growth in the parazone or diazone of enamel has been essentially unexplored. How does the diazone contribute to fracture resistance of enamel? What is the role of the parazone of enamel? How does crack interact with the two distinct zones in enamel? These questions call for a good understanding of the effect of rod decussation on fracture of enamel. The primary goal of this study is to unveil the individual roles of the parazone and diazone on crack growth in enamel. The structural features of rod decussation are experimentally explored, and motivated by the experimental observations, calculations are carried out for propagation of a crack initiating in the outer enamel into the inner enamel. The effects of structural features of rod decussation including decussation angle of rods are revealed, and the mechanisms of crack interacting with the parazone and diazone are identified.</p>
+
+<h2 id="Methods-amp-Results"><a href="#Methods-amp-Results" class="headerlink" title="Methods &amp; Results"></a>Methods &amp; Results</h2><h3 id="Stage-I-Specimen-Preparation"><a href="#Stage-I-Specimen-Preparation" class="headerlink" title="Stage I: Specimen Preparation"></a>Stage I: Specimen Preparation</h3>
+<p>Human third molars are acquired from participating dental hospitals in Shanghai, China with the approved protocols issued by the International Review Board of Shanghai University. The molars are sectioned bucco-lingually using a digital slicer machine (EC400, Shenyang Kejing Instrument Co., Ltd. China) and a total of 8 slices are obtained. The surfaces of teeth slices are polished using the abrasive papers with mesh size ranging from #600 to #5000. The scanning electronic microscope (Helios Nanolab 600i, FEI, USA) is employed to scrutinize enamel microstructure.</p>
+<p><img src="/assets/img/enamel.001.jpeg"></p>
+<center style="font-size:14px;color:#333333;text-decoration:underline">$\mathbf{Fig. 1.}$ Tooth specimen prepared for observation in three different directions.</center>
+
+
+
+<p><img src="/assets/img/enamel.002.jpeg"></p>
+<center style="font-size:14px;color:#333333;text-decoration:underline">$\mathbf{Fig. 2.}$ Schematic diagram for observation of tooth microstructure in the Polar coordinates, where the right squared cell is the unit cell we hope to model for the tooth microstructure.</center>
+
+
+
+<p><img src="/assets/img/enamel.003.jpeg"></p>
+<center style="font-size:14px;color:#333333;text-decoration:underline">$\mathbf{Fig. 3.}$ Scanning electron microscope (SEM) photos of tooth microstructure in different areas.</center>
+
+
+
+<p><img src="/assets/img/enamel.004.jpeg" width="800" ></p>
+<center style="font-size:14px;color:#333333;text-decoration:underline">$\mathbf{Fig. 4.}$ The band distance of the decussation measurement of the tooth enamel microstructure.</center>
+
+
+
+<p><img src="/assets/img/enamel.005.jpeg" width="800" ></p>
+<center style="font-size:14px;color:#333333;text-decoration:underline">$\mathbf{Fig. 5.}$ The rod angle of the decussation measurement of the tooth enamel microstructure.</center>
+
+<p>From the above figures we observe there are two bands in enamel decussation structure, which are defined as parazone and diazone. In the parazone, enamel rods are parallel to each other, while dome-shaped rod heads are observed in the diazone. We have further quantified geometric features of the parazone and diazone. It is found that the enamel rods in the parazone are inclined with the angle between rod axis and tooth axis being 10$^{\circ}$ ~ 35$^{\circ}$. Here, such an inclination angle is defined as decussation angle of enamel rods (<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1742706119303010?via%3Dihub">Pro and Barthelat, 2019</a>). The width of parazone is approximately 50.2 $\mu m$ ~ 78.8$\mu m$, and the diazone has width of 58.0 $\mu m$ ~ 111.9 $\mu m$.</p>
+
+<h3 id="Stage-II-SEM-Observation-amp-Modeling"><a href="#Stage-II-SEM-Observation-amp-Modeling" class="headerlink" title="Stage II: SEM Observation &amp; Modeling"></a>Stage II: SEM Observation &amp; Modeling</h3>
+
+<p>Based on experimental observations, calculations are carried out for single edge cracked specimens of enamel. The specimen contains the outer enamel and inner enamel, and the parazone and diazone are explicitly introduced. In the parazone, enamel rods are assembled so that the long axis of rods is inclined with respect to x2-direction. Here, three values of decussation angle ($\theta$ = $10^{\circ}$, $20^{\circ}$ and $25^{\circ}$) are considered. The dome-shaped rod heads in the diazone are taken to be the projections of inclined enamel rods onto a plane, and hence the length of long axes of ellipses representing rod heads for $\theta = 25^{\circ}$, $\theta = 20 ^{\circ}$ and $\theta = 10^{\circ}$ are, respectively, $10 \mu m$, $15 \mu m$ and $29 \mu m$. The length of short axis of these ellipses is fixed at $5\mu m$ and the thickness of rod sheaths is taken to be $0.5\mu m$. </p>
+
+
+<p><img src="/assets/img/enamel.006.jpeg" width="600" ></p>
+<center style="font-size:14px;color:#333333;text-decoration:underline">$\mathbf{Fig. 6.}$ The measured data of rod angle of the decussation measurement of the tooth enamel microstructure.</center>
+
+
+
+<p><img src="/assets/img/enamel.007.jpeg" width="800" ></p>
+<center style="font-size:14px;color:#333333;text-decoration:underline">$\mathbf{Fig. 7.}$ The measured data of band decussation distance of the decussation measurement of the tooth enamel microstructure.</center>
+
+
+
+<p><img src="/assets/img/enamel.008.jpeg" width="760" ></p>
+<center style="font-size:14px;color:#333333;text-decoration:underline">$\mathbf{Fig. 8.}$ The measured data of band decussation distance of the decussation measurement of the tooth enamel microstructure.</center>
+
+<p>To isolate the roles of parazone and diazone, the calculations are carried out for crack growth in two types of specimens, i.e. specimen P and specimen D. The specimen P indicates that the parazone surrounded by two diazones is located in front of the initial crack tip, and the diazone joining two parazones appears ahead of the crack tip in the specimen D. The length and width of specimens analyzed are 194.5$\mu m$ and 72$\mu m$, respectively, and a crack with initial length of 2$\mu m$ is introduced in the specimens. In the calculations, plane strain conditions are assumed and uniform displacement $u = 2\mu m$ is imposed on the edge $x_1 = 97.25\mu m$. The edge $x_1 = -97.25\mu m$ is fixed.</p>
+
+
+<p><img src="/assets/img/enamel.009.jpeg" width="800" ></p>
+<center style="font-size:14px;color:#333333;text-decoration:underline">$\mathbf{Fig. 9.}$ The schematic diagram for our modeling strategy based on our previous SEM observations.</center>
+
+<p>The enamel rods and rod sheaths are characterized as linear elastic solids. According to the study by <a target="_blank" rel="noopener" href="https://linkinghub.elsevier.com/retrieve/pii/S1751616114003385">An et al., 2015</a>, the anisotropic elastic model for enamel rods is adopted with the material parameters given by $E_1 = E_3 = 41 GPa$, $E_2 = 51.6 GPa$, $G_{12} = 13.5 GPa$, $G_{13} = 15.4 GPa$, $G_{23} = 13.5 GPa$, $\mu_{13} = 0.28$, $\mu_{12} = 0.25$ and $\mu_{23} = 0.25$, where $E$, $G$ and $\mu$ represent elastic modulus, shear modulus and Poisson’s ratio, respectively. The rod sheaths are taken to be an isotropic solid with elastic properties given by $E = 4.3 GPa$ and $\mu = 0.3$ (<a target="_blank" rel="noopener" href="https://journals.sagepub.com/doi/10.1177/00220345970760101101">Spears, 1997</a>).</p> 
+
+
+<p><img src="/assets/img/enamel.010.jpeg"></p>
+<center style="font-size:14px;color:#333333;text-decoration:underline">$\mathbf{Fig. 10.}$ The modeling of the unit cell in SolidWorks (left) and the 3D printed microstructure (right).</center>
+
+<h3 id="Stage-III-Simulation-amp-FEM-Analysis"><a href="#Stage-III-Simulation-amp-FEM-Analysis" class="headerlink" title="Stage III: Simulation &amp; FEM Analysis"></a>Stage III: Simulation &amp; FEM Analysis</h3>
+	
+	
+<p>To delineate fracture behavior of enamel rods and rod sheaths, the cohesive zone model is utilized. Here, for completeness, the model is briefly introduced and the details can be found in our previous studies (<a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.jmbbm.2016.03.008">An and Wagner, 2016</a>; <a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1751616118302194?via%3Dihub">An and Zhang, 2018</a>). In this model, damage initiation is characterized by the maximum nominal stress criterion, which takes the form,<\p>
+
+<p>$\left[{\langle T_n \rangle \over \sigma_n},{ T_s \over \sigma_s},{ T_t \over \sigma_t } \right]= 1$</p>
+<p>where $T_n$ is the normal traction; $T_s$ and $T_t$ are two shear tractions. $\sigma_n$, $\sigma_s$ and $\sigma_t$ are cohesive strengths in the normal and tangential directions, respectively; $\langle \rangle$ represents the McCauley bracket. The damage evolution is controlled by a linear softening law (Wang and Ural, 2018).</p>
+<p>$D = {{\hat{\delta_f}(\hat{\delta_{max}}-\hat{\delta_c})}\over {\hat{\delta_{max}}(\hat{\delta_f}-\hat{\delta_c})}}$</p>
+<p>where $\hat{\delta}$ denotes the effective separation; $\hat{\delta}$ is the separation at complete fracture $f$ and $\hat{\delta_c}$ represents the separation corresponding to the attainment of cohesive strength of the traction. $\hat{\delta_{max}}$ is the maximum separation in the course of deformation.</p>
+
+<p><img src="/assets/img/enamel1.jpeg" width="500" ></p>
+<center style="font-size:14px;color:#333333;text-decoration:underline">$\mathbf{Fig. 11.}$ SEM micrograph of microstructure of the inner enamel consisting of the parazone (P) and diazone (D).</center>
+
+<p>The area under the traction-separation curve is the toughness (<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S0022509605001730">Parmigiani and Thouless, 2006</a>), and the fracture response of the cohesive zone model can be described by the cohesive strength and toughness ($\Gamma$). In the calculations, we set $\sigma_n = \sigma_s = \sigma_t = \sigma$. For the fracture properties of enamel rods and rod sheaths, $\sigma_r = 100 MPa$, $\Gamma_r = 5 N/m$, $\sigma_s = 30 MPa$ and $\Gamma_s = 0.495 N/m$ (<a target="_blank" rel="noopener" href="https://linkinghub.elsevier.com/retrieve/pii/S1751616113001963">Hamed and Jasiuk, 2013</a>; <a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S0021929008000869?via%3Dihub">Siegmund et al., 2008</a>; <a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41598-019-41304-z">Wan et al., 2019</a>) are used, where σr is ultimate strength of enamel rods, $\Gamma_r$ the toughness of enamel rods, $\sigma_s$ ultimate strength of rod sheaths and $\Gamma_s$ the toughness of rod sheaths.</p>
+
+<p><img src="/assets/img/enamel2.jpeg"></p>
+<center style="font-size:14px;color:#333333;text-decoration:underline">$\mathbf{Fig. 12.}$ Micromechanical model of enamel. (a) Schematic illustration of the specimen P and specimen D used in the calculations. $\theta$ denotes decussation angle. (b) Finite element mesh of the specimen with $\theta$ = 25$^{\circ}$.</center>
+
+<p>The boundary value problem is solved using finite element method based on the principle of virtual work. The model is meshed using 4-node bilinear quadrilateral element and a total of approximately 66,000 elements are involved. The cohesive zone models for enamel rods and rod sheaths are implemented within the framework of extended finite element method (XFEM) (Wang and Ural, 2018), so that the crack path is the natural outcomes of imposed loading.</p>
+
+
+<h3 id="Stage-IV-Mechanical-Analysis"><a href="#Stage-IV-Mechanical-Analysis" class="headerlink" title="Stage IV: Mechanical Analysis"></a>Stage IV: Mechanical Analysis</h3>
+
+<p><img src="/assets/img/enamel3.jpeg"></p>
+<center style="font-size:14px;color:#333333;text-decoration:underline">$\mathbf{Fig. 13.}$ Stress-strain curves of (a) specimen P and (b) specimen D for three values of decussation angle.</center>
+
+<p><strong>Fig. 13a</strong> shows the normalized stress versus strain curves for three values of decussation angle of enamel rods corresponding to crack growth in the parazone. Here, the stress is defined as average stress of the specimen, and strain denotes applied strain given by $u/L$ with $L$ being the specimen length. It can be seen that the stress increases with increasing strain in the case of small applied strain. With further increase in the applied strain, the stress reaches a peak value and then drop in stress takes place, which is indicative of crack growth. For the case of large applied strain, the increase in stress with increasing applied strain is subsequently observed, suggesting that crack extends into a region with high toughness. It is found that compared with the cases of $\theta = 10^{\circ}$ and $\theta = 25^{\circ}$, the microstructure of inner enamel with intermediate decussation angle ($\theta = 20^{\circ}$) has a larger failure strain. <strong>Fig. 13b</strong> shows the normalized stress versus strain response of the specimen D for three values of decussation angle of enamel rods. It can be seen that the specimen D also displays a serrated stress-strain response where the increase in stress followed by stress drop and further increase in stress for large strains takes place. The microstructure of enamel with intermediate decussation angle ($\theta = 20^{\circ}$) exhibits smaller failure strain compared with the cases of $\theta = 10^{\circ}$ and $\theta = 25^{\circ}$.</p>
+
+<p><img src="/assets/img/ref_enamel.png" width="500"></p>
+<center style="font-size:14px;color:#333333;text-decoration:underline">$\mathbf{Ref. Fig.}$ A load vs. load-line displacement distribution for forward and reverse growth obtained during stable crack extension within enamel. Region I denotes preloading and Region II distinguishes the portion of response associated with incremental crack extension. Crack growth in the reverse direction resulted in unstable fracture, whereas stable crack growth in the forward direction required incremental increases in the driving force. </center> 
+
+<p>To explore why enamel displays such serrated stress-strain response, we have calculated the stress fields for the microstructure of enamel at two successive time instants. As shown in <strong>Fig. 14a</strong>, the crack grows in the direction along the long axis of enamel rods in the outer enamel (instant $t_A$). At this time instant, the parazone ahead of the crack tip exhibits low stress levels, while high stress develops in the outer enamel. The diazone of the specimen P displays alternating high-stress region and low-stress region. The crack growth leads to the drop in stress (Fig. 3a), and such a stress drop is suppressed when the crack approaches the inner enamel which possesses enhanced fracture resistance. Further crack growth in the inner enamel requires large driving force (instant $t_B$), thereby leading to the increase in overall stress with applied strain. The similar trends in stress fields with crack growth are observed in the specimen D (<strong>Fig. 14b</strong>). Due to the arrangement of parazone and diazone in specimen D, high stress develops in front of the crack tip (instant $t_A$), and crack propagation into the inner enamel is accompanied by increase in overall stress (instant $t_B$). We note that the numerical analyses predict the serrated stress-strain response for crack growth in enamel, which is in good agreement with experimental observations (<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1742706109001688">Bajaj and Arola, 2009</a>). Such a stress-strain response has not been reported in previous numerical simulations (Pro and Barthelat, 2019).</p>
+
+
+<p><img src="/assets/img/enamel4.jpeg"></p>
+<center style="font-size:14px;color:#333333;text-decoration:underline">$\mathbf{Fig. 14.}$ Stress contour plots of (a) specimen P with $\theta$ = 25$^{\circ}$ at two successive time instants $(t_A – t_B)$, and (b) of specimen D with $\theta$ = 25$^{\circ}$ at two successive time instants $(t_A – t_B)$ labeled in Fig. 3b.</center>
+
+<p>The normalized work of fracture ($W / GrS$) for the specimen P and specimen D corresponding to three values of decussation angle of enamel rods is shown in Fig. 5. Here, S denotes the area of cross section of specimen ligament and the work of fracture is used as a measure of toughness. It is found that $W / GrS$ is larger than 1 in all the cases considered here, indicating that there are toughening mechanisms operating in the course of fracture of enamel. For crack growth in the parazone, the microstructure of enamel with decussation angle of $\theta = 20^{\circ}$ shows higher toughness in comparison to the cases of $\theta = 25^{\circ}$ and $\theta = 10^{\circ}$. The normalized work of fracture for $\theta = 25^{\circ}$ is slightly higher than that for $\theta = 10^{\circ}$. For crack growth in the diazone, the microstructure of enamel with intermediate decussation angle ($\theta = 20^{\circ}$) has lowest toughness in the three cases considered in this study. Furthermore, it is found that for the given decussation angle, the toughness of specimen P is higher than that of the specimen D, suggesting that compared with the diazone, the parazone provides greater contribution to fracture resistance of enamel.</p>
+
+<p><img src="/assets/img/enamel5.jpeg" width="500" ></p>
+<center style="font-size:14px;color:#333333;text-decoration:underline">$\mathbf{Fig. 15.}$ Normalized work of fracture for the specimen P and specimen D.</center>
+
+
+<p>To identify the toughening mechanisms responsible for the dependence of fracture resistance on microstructural features of inner enamel, the crack paths in specimen P and specimen D corresponding to three values of decussation angle are calculated. As shown in <strong>Fig. 16</strong>, the crack is oriented along the long axis of enamel rods in the parazone when crack extends into the inner enamel, giving rise to inclined crack path, which indicates that crack deflection is the prominent toughening mechanism. It is important to note that the crack path, which is aligned with the long axis of enamel rods, is in good agreement with experimental observations (<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1742706109001688?via%3Dihub">Bajaj and Arola, 2009</a>; <a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S0142961209009806?via%3Dihub">Bechtle et al., 2010</a>), substantiating that the numerical analyses can capture the major features of fracture in the inner enamel. We recognize that the complex 3D features of crack growth in enamel including crack branching and crack tortuosity can be described by 3D micromechanical models (<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1742706119303010?via%3Dihub">Pro and Barthelat, 2014</a>). We emphasize that although the 2D numerical model is adopted in the present study, the salient features of crack deflection in the inner enamel are captured, which is the important focus of this study. Due to the arrangement of enamel rods in the parazone, the crack deflection angle increases with increasing decussation angle. Interestingly, crack growth in the microstructure of enamel with intermediate decussation angle ($\theta = 20^{\circ}$) can activate multiple crack deflections, leading to the amplified toughness of enamel (shown in <strong>Fig. 15</strong>). According to the study by <a target="_blank" rel="noopener" href="https://www.nature.com/articles/nmat2221">Koester et al., 2008</a>, large crack deflection angle can provide high degree of toughening, and hence the large crack deflection angle in the case of $\theta = 25^{\circ}$ enables slightly higher toughness compared with the case of $\theta = 10^{\circ}$. <strong>Fig. 17</strong> shows crack paths in the specimen D. It can be seen that for $\theta = 10^{\circ}$, the crack deflects towards the right half of the specimen, while deflection of crack path towards the left half of the specimen takes place in the case of large decussation angle ($\theta = 25^{\circ}$). It is interesting to find that crack growth in the microstructure of enamel with intermediate decussation angle ($\theta = 20^{\circ}$) is along the axis of symmetry of the specimen, and crack deflection does not emerge. This suggests that the intermediate decussation angle of enamel rods suppresses crack deflection mechanism, thereby leading to low toughness of enamel. Compared with specimen P, the crack propagating in specimen D undergoes local deflection, giving rise to low degree of crack deflection and thereby leading to relatively low toughness.</p>
+
+
+<p><img src="/assets/img/enamel6.jpeg"></p>
+<center style="font-size:14px;color:#333333;text-decoration:underline">$\mathbf{Fig. 16.}$ Stress contour plots of specimen P & D corresponding to complete fracture of microstructure of enamel for three values of decussation angle.</center>
+
+<p>We note that rod decussation is the major structural feature of the inner enamel, which has significant influence on fracture behavior of enamel. Characterizing the relationship between rod decussation and fracture resistance of enamel poses significant challenges. There are very few attempts to model the effects of rod decussation. In a recent study, the biological growth theory is used to develop the micromechanical model of rod decussation (<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1742706119303010?via%3Dihub">Pro and Barthelat, 2019</a>). However, the structural features described in this model have not been compared with experimental observations, and the parazone and diazone caused by rod decussation have not been included in this model. Our micromechanical model is based on experimental observations and incorporates the two distinct zones, i.e. parazone and diazone, which provides a description of mechanics of crack interacting with rod decussation. The numerical analyses predict crack deflection in the inner enamel, which is in good agreement with experimental findings (<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1742706109001688?via%3Dihub">Bajaj and Arola, 2009</a>; <a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S0142961209009806?via%3Dihub">Bechtle et al., 2010</a>). Although crack deflection is observed in experiments (<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1742706109001688?via%3Dihub">Bajaj and Arola, 2009</a>), the pattern of crack deflection and the role of two distinct zones on crack deflection are unexplored, which is due to the challenges in experimental investigation of individual roles of structural features of rod decussation. Indeed, in the experiments of Bajaj and Arola, crack growth in enamel involves the combined effects of the parazone, the diazone and decussation angle of enamel rods. The combined effects of these structural features also lead to a complex crack profile in enamel, presenting an obstacle to unraveling the dependence of crack deflection pattern on structural features of rod decussation. In this study, using the numerical simulation capability, we have identified the evolution of crack deflection pattern with decussation angle and isolated the roles of parazone and diazone on crack deflection. Furthermore, the relationship between crack deflection pattern and degree of toughening is revealed.</p>
+
+<h3 id="Stage-V-Discussion-amp-Conclusion"><a href="#Stage-V-Discussion-amp-Conclusion" class="headerlink" title="Stage V: Discussion &amp; Conclusion"></a>Stage V: Discussion &amp; Conclusion</h3><p>In this study, we have developed a numerical simulation capability which is capable of delineating the major structural features of rod decussation in the inner enamel and predicting crack paths in microstructure of enamel. Using this numerical simulation capability, we have carried out analyses of growth of a crack initiating in the outer enamel into the inner enamel. It is found that for crack growth in the parazone, rod decussation leads to the deviation of crack path, giving rise to enhanced toughness of enamel. The microstructure of enamel with intermediate decussation angle can activate multiple crack deflections, providing high degree of toughening. For crack propagation in the diazone, the local crack deflection occurs and transition in orientation of crack deflection takes place with increasing decussation angle. The negligible crack deflection is observed in the microstructure of enamel with intermediate decussation angle, which leads to low degree of toughening. It is further revealed that compared with the diazone, gross crack deflection in the parazone enables higher toughness.</p>
+<font size=2.5, color="black">
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          Copyright Hanfeng Zhai | <a target="_blank" rel="noopener" href="https://hanfengzhai.net/"> www.HanfengZhai.net </a>
+         
+        </ul>
+<div>
+
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+  
+</article>
+
+<!-- Table of Contents -->
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hiker</a> </p>
+	      
+        <p id="copyRightEn"> &copy; 2021 Hanfeng Zhai, All Rights Reserved.</p>
+	      
+         <p> (607) 319-1318 | <a href="mailto:Hanfeng.Zhai@outlook.com"> Hanfeng.Zhai@outlook.com </a> </p>
+        
+        <p> <a target="_blank" rel="noopener" href="https://www.researchgate.net/profile/Hanfeng_Zhai"> ResearchGate </a> | <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/hanfengzhai/"> LinkedIn </a> | <a target="_blank" rel="noopener" href="https://www.facebook.com/profile.php?id=100023812350047"> Facebook </a> | <a target="_blank" rel="noopener" href="https://github.com/hanfengzhai"> GitHub </a> | <a target="_blank" rel="noopener" href="https://twitter.com/HanfengZhai"> Twitter </a> | <a target="_blank" rel="noopener" href="https://scholar.google.com/citations?user=S5jCDXcAAAAJ&hl=en"> Google Scholar </a> | <a target="_blank" rel="noopener" href="https://shu-cn.academia.edu/FrankZhai"> Academia </a> | <a target="_blank" rel="noopener" href="https://orcid.org/0000-0003-1511-7597"> ORCiD </a> | <a target="_blank" rel="noopener" href="https://space.bilibili.com/355677660"> BiliBili </a> | <a target="_blank" rel="noopener" href="https://www.youtube.com/channel/UCn7UKJez4SV9VkO8pNqI5Pw?view_as=subscriber"> YouTube </a> | <a target="_blank" rel="noopener" href="https://hanfengzhai.net/cn"> 中文版 </a>
+        </p>
+
+
+        <p> <a target="_blank" rel="noopener" href="https://www.mae.cornell.edu/mae"> Sibley School of Mechanical and Aerospace Engineering</a>, <a target="_blank" rel="noopener" href="https://www.cornell.edu/"> Cornell University </a> | 130 Upson Hall, Ithaca, NY 14853, USA </p>
+
+	      <a target="_blank" rel="noopener" href="https://info.flagcounter.com/x6ta"><img src="https://s11.flagcounter.com/count2/x6ta/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+
+
+
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+
+
+
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">hοme</a>
+  
+    <a href="/about" class="mobile-nav-link">abοut</a>
+  
+    <a href="/research" class="mobile-nav-link">research</a>
+  
+    <a href="/note" class="mobile-nav-link">Note</a>
+  
+    <a href="/software" class="mobile-nav-link">Software</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Hanfeng Zhai
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 Bachelor Student @ Shanghai University All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+</body>
+</html>
