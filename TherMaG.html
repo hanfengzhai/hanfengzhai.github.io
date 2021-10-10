@@ -105,7 +105,73 @@
   <div id="container">
     <div id="wrap">
       
+
         <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                 >
+                  <img width="124px" height="124px" alt="Hike News" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Cornell_University_seal.svg/1200px-Cornell_University_seal.svg.png">
+              </a>
+            
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/TherMaG">TherMaG Project</a> </li>
+		      
+		  <li> <a class="main-nav-link" href="https://www.mae.cornell.edu/faculty-directory/maha-haji">Prof. Maha Haji</a> </li>
+		      
+		  <li> <a class="main-nav-link" href="https://www.coursicle.com/cornell/courses/MAE/5350/">Multidisciplinary Design Optimization</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: 'Hanfeng Zhai',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
             
 
 
@@ -123,6 +189,54 @@
 
 
 
+
+
+  
+    <section class="awSlider">
+      <div class="carousel slide carousel-fade " data-ride="carousel">
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+           
+              
+                <div class="item active" style="max-height:600px; overflow: hidden;">
+              
+                <img id="carousel-img0" src="/css/images/1.jpg">
+              </div>
+
+              <!-- 自适应大图 -->
+              <script>
+              	  var carouselResize = function() {
+              	  	  var h = document.body.clientHeight / 3;
+	                  var img0 = new Image();
+	                  var imageTag0 = document.getElementById("carousel-img0");
+	                  img0.src = imageTag0.src;
+	                  img0.onload=function(){
+	                    if (img0.width / img0.height <= document.body.clientWidth / h) {
+	                      imageTag0.style.width = document.body.clientWidth + "px";
+	                    } else {
+	                      imageTag0.style.height = h + "px";
+	                      imageTag0.style.marginLeft = -(h * img0.width / img0.height - document.body.clientWidth) / 2 + "px";
+	                    }
+	                  };
+              	  };
+                  carouselResize();
+              </script>
+            
+        </div>
+
+        <!-- Controls -->
+        <a class="left carousel-control" href=".carousel" role="button" data-slide="prev">
+          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+          <span class="sr-only">Geri</span>
+        </a>
+        <a class="right carousel-control" href=".carousel" role="button" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+          <span class="sr-only">İleri</span>
+        </a>
+      </div>
+    </section>
+    
       
             
       <div id="content" class="outer">
