@@ -242,30 +242,13 @@
 <img src="/assets/img/bubblenet-2.jpeg">
 
 <hr>
-<h2 id="Tutorial"><a href="#Tutorial" class="headerlink" title="Tutorial"></a>Tutorial</h2><p>BubbleNet is a deep learning package building on top of <a target="_blank" rel="noopener" href="https://www.tensorflow.org/">TensorFlow</a>, install tf before using BubbleNet:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install tensorflow</span><br></pre></td></tr></table></figure>
-<p>To use BubbleNet, you first need to download the code through GitHub (on your customized directory):</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/hanfengzhai/BubbleNet.git</span><br></pre></td></tr></table></figure>
-<p>In our practice, we trained our NNs on <a target="_blank" rel="noopener" href="http://www.blsc.cn/">Beijing Super Cloud Computing Center</a>, (BLSC). We therefore offer bash files can be runned on both BLSC or your lab work station. Here, you can try out the single bubble case and train both the DNN and BubbleNet:</p>
-<p><em>I. For BLSC users, please run</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sbatch runSingleBubble_SuperComputing.sh</span><br></pre></td></tr></table></figure>
-<p><em>II. If you are using the work station at your lab or home:</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash runSingleBubble_WorkStation.sh</span><br></pre></td></tr></table></figure>
-<p><em>III. Or just execute the py files directly:</em></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python bubble_DNN.py <span class="comment"># run it on traditional deep neural net</span></span><br><span class="line">python bubble_PhysNet.py <span class="comment"># run it on BubbleNet</span></span><br></pre></td></tr></table></figure>
-<p>Similarly, training the bubbly flow with multiple bubbles case on NN, run:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sbatch runMultiBubble_SuperComputing.sh <span class="comment"># for BLSC users</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash runMultiBubble_WorkStation.sh <span class="comment"># customized for workstations</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># directly execute the python files</span></span><br><span class="line">python bubblesys_DNN.py <span class="comment"># run it on traditional deep neural net</span></span><br><span class="line">python bubblesys_PhysNet.py <span class="comment"># run it on BubbleNet</span></span><br></pre></td></tr></table></figure>
-<p>After the training, you will see the losses callbacks on your command lines, &amp; the accuracy for the NNs. You will also see the saved files of both the DNN &amp; BubbleNet predictions in your directory. Open these ‘<em>.txt</em>‘ files with matlab and convert them into ‘<em>.mat</em>‘ numerical matrix files.</p>
-<p>Then, execute the ‘<em>.m</em>‘ files to generate figures for the final results, either with <a target="_blank" rel="noopener" href="https://www.mathworks.com/products/matlab.html">MATLAB</a> or <a target="_blank" rel="noopener" href="https://www.gnu.org/software/octave/index">Octave</a>:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">octave figure_preparation.m </span><br><span class="line">octave figure_generation.m </span><br></pre></td></tr></table></figure>
+
 
 	
 <hr>
 <h2 id="Reference-amp-Citation"><a href="#Reference-amp-Citation" class="headerlink" title="Reference &amp; Citation"></a>Reference &amp; Citation</h2><p>Please refer the following work if you wish to employ and customize BubbleNet:</p>
 <blockquote>
-<p>H. Zhai and G. Hu. (2021) Inferring micro-bubble dynamics with physics-informed deep learning. <em>arXiv Preprint</em>. <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2105.07179">arXiv:2105.07179</a></p>
+<p>H. Zhai and T. Sands. (2021) ARXDE: Identifying Gradients in Fluid Physics withAutoregressive Modeling. <em>arXiv Preprint</em>. <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2105.07179">arXiv:2105.07179</a></p>
 </blockquote>
 <p>For (La)TeX users, please refer:</p>
 <figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@misc&#123;zhai2021BubbleNet,</span><br><span class="line">  title=&#123;Inferring micro-bubble dynamics with physics-informed deep learning&#125;,</span><br><span class="line">  author=&#123;Zhai, Hanfeng and Hu, Guohui&#125;,</span><br><span class="line">  year=&#123;2021&#125;,</span><br><span class="line">  eprint=&#123;2105.07179&#125;,</span><br><span class="line">  archivePrefix=&#123;arXiv&#125;,</span><br><span class="line">  primaryClass=&#123;physics.flu-dyn&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -279,7 +262,7 @@
       
       <div>
         <ul class="post-copyright">
-          Copyright Hanfeng Zhai | <a target="_blank" rel="noopener" href="https://hanfengzhai.net/"> www.HanfengZhai.net </a>
+          Copyright &copy Hanfeng Zhai | <a target="_blank" rel="noopener" href="https://hanfengzhai.net/"> www.hanfengzhai.net </a>
          
         </ul>
 <div>
