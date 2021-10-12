@@ -224,9 +224,7 @@
 <source src="https://hanfengzhai.net/data/ARXDE_SupportingVideo.mov">
 </video>
 
-
 <center> 
-
 <p><em>Simulation results of the fluid field velocity magenitude $U$ and pressure $p$.</em></p>
 </center>
 
@@ -238,8 +236,19 @@
 <p>We used traditional deep neural network and our <strong>BubbleNet</strong> to predict the physics fields $u,\ v,\ p,\ \phi$, of bubbly flow. Here, we show the level set phase function $\phi$ prediction for both the bubbly flow of a single bubble and multiple bubbles are shown in the following figures, at $2000 \mu \rm s$ for the single bubble case and $1500 \mu \rm s$ for the single bubble case. Training for 10000 iterations for the single bubble case and 200000 iterations for the multiple bubbles case. Adopting the Adam optimizer and ‘L-BFGS-B’ optimization method.</p>
 
 <img src="/assets/img/arxde_pred.jpg">
+<center> 
+<p><em>Simulation results of the fluid field velocity magenitude $U$ and pressure $p$.</em></p>
+</center>
 
-<img src="/assets/img/bubblenet-2.jpeg">
+<img width="500" height="350" src="/assets/img/cpu.jpg">
+<center> 
+<p><em>The CPU computation time for different gradients i.e. $\nabla u$ &amp $\Delta u$ with $\rm 1st$ and $\rm 2nd$ orders.</em></p>
+</center>
+	
+<img width="500" height="350" src="/assets/img/mse.jpg">
+<center> 
+<p><em>The logarithmic plot of mean square error regarding an increasing order $\mathcal{O} = n+m$.</em></p>
+</center>
 
 <hr>
 
