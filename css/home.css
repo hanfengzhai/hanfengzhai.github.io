@@ -207,7 +207,7 @@ h3 {
     left: 3px;
 }
 hr{
-	margin: 30px 20px;
+	margin: 5px 5px;
 	border-top:2px solid #1C1E26 ;
 	border-bottom:2px solid #38404D;
 }
@@ -219,7 +219,7 @@ hr{
 	display: inline-block;
 	padding-right: 5px;
 	padding-left: 5px;
-	margin-bottom: 10px;
+	margin-bottom: 0px;
 }
 .social-icons .fa {
 	font-size: 1.8em;
