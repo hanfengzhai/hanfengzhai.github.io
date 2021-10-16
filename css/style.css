@@ -2423,4 +2423,12 @@ hr{
 	-o-transform: scale(1.1) rotate(360deg);
 	transform: scale(1.1) rotate(360deg);
 }
- 
+.social-icons .fa-facebook,.social-icons .fa-envelope{background-color:#000000;}  
+.social-icons .fa-facebook,.social-icons .fa-fa-phone{background-color:#000000;}  
+.social-icons .fa-facebook,.social-icons .fa-facebook-square{background-color:#000000;}  
+.social-icons .fa-github,.social-icons .fa-github-alt,.social-icons .fa-github-square{background-color:#000000;} 
+.social-icons .fa-google-plus,.social-icons .fa-google-plus-square{background-color:#000000;} 
+.social-icons .fa-instagram{background-color:#000000;}
+.social-icons .fa-linkedin,.social-icons .fa-linkedin-square{background-color:#000000;} 
+.social-icons .fa-twitter,.social-icons .fa-twitter-square{background-color:#000000;} 
+.social-icons .fa-youtube,.social-icons .fa-youtube-play,.social-icons .fa-youtube-square{background-color:#000000;}
