@@ -274,20 +274,11 @@ Here the objective functions, $J_1, J_2, J_3$, respectively represent <i>overall
 	    
 <h2 id="Optimization & Results"><a href="#Optimization & Results" class="headerlink" title="Optimization & Results"></a>Optimization & Results</h2>
 	
-<h3 id="Single Objective Optimization"><a href="#Single Objective Optimization" class="headerlink" title="Single Objective Optimization"></a>Single Objective Optimization</h3>
-	
-
-<p><img src="assets/img/ga_schematic.jpg" height="200" width="550"></p>
-	    
-	    
-<p><img src="assets/img/gradoptim.jpg" height="200" width="700"></p>
-	    
-	    
-<h3 id="Multi-objective Optimization"><a href="#Multi-objective Optimization" class="headerlink" title="Multi-objective Optimization"></a>Multi-objective Optimization</h3>
-	    
+<p> To be concise, we here only show our results on multi-objective optimization and how we propose our final suggested design. If you are interested in how we carried single objective optimization, please refer to <a target="_blank" rel="noopener" href="https://hanfengzhai.net/file/TherMaG_Report_3.pdf">Report III</a>, <a target="_blank" rel="noopener" href="https://hanfengzhai.net/file/TherMaG_Report_4.pdf">Report IV</a>, and <a target="_blank" rel="noopener" href="https://hanfengzhai.net/file/TherMaG_Paper.pdf">Final Report</a> for details. After successfully implementing optimization algorithms for each of the TMG's individual objectives, the team worked to combine all objectives into one genetic algorithm based optimization. The team opted to use a heuristic method for the three objective optimizations to reduce complications due to inconsistency. We also removed the non-linear constraint, <i>Maximum device volume</i>, which slowed things down unnecessarily due to its nonlinear nature. When run with nonlinear constraints, the genetic algorithm in Matlab will perform many more function evaluations instead of just one per population member in each generation. Effectively, we still have a maximum volume through the bounds on the variables. Anyway, we first explored a genetic algorithm to optimize cost only to verify that it would behave as expected, as a gradient-based method had previously been used to optimize cost. Although the cost GA was not perfectly consistent, it did successfully find the global optimum many times during our testing. Because we already established more complicated issues with applying gradient methods to the power and efficiency objectives, a multi objective genetic algorithm was a clear choice for our problem due to its compatibility with our objectives and ease of implementation. </p>
 	    
 <p><img src="assets/img/pareto.jpg" height="420" width="420"></p>	    
 
+<p>In selecting hyperparameters for the algorithm, we had two main objectives in mind. First, we wanted to find enough points along the Pareto front to easily visualize the geometric changes between each non-dominated point. Second, we needed to the total run time to not exceed 12 hours so that at least one attempt could be made each day while adjusting algorithm hyperparameters or model settings to increase the algorithm's effectiveness. We found that using a larger population size was the easiest way to increase the population density along the Pareto front, and settled on 100 as a balance between high density and increasing run time. We used the same crossover function as for our single objective optimization because we had previously observed good behavior with it. The other parameters are function tolerance and stall generations, which dictate the stopping conditions for the algorithm. When the geometric average of the Pareto front spread across all generations divided by maximum stall generations is less than the function tolerance, the algorithm will halt further optimization. With this in mind, we adjusted function tolerance and max stall generations to achieve a run time of approximately eight hours for the multi objective optimization to create the Pareto front shown in the beyond figure</p>
 
 <p><img src="https://hanfengzhai.net/file/finalFront.gif" height="200" width="550"></p>
 
