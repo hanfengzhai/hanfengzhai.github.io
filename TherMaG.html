@@ -253,19 +253,22 @@
 
 <h2 id="Problem Formulation"><a href="Problem Formulation" class="headerlink" title="Problem Formulation"></a>Problem Formulation</h2><h3 id="Basic modules"><a href="#Basic modules" class="headerlink" title="Basic modules"></a>Basic modules</h3>
 <p>The problem of optimizing a TMG is put into a standard framework follows the standard form by <a target="_blank" rel="noopener" href="https://doi.org/10.1007/s00158-009-0381-5">Agte et al., Struct Multidisc Optim, 2010</a> which is outlined below</p>
-<p>$\min {\bf J}(\mathbf{x}, \mathbf{p}) = [J_1, J_2, J_3]^{\sf T}\\
+<center><p>$\min {\bf J}(\mathbf{x}, \mathbf{p}) = [J_1, J_2, J_3]^{\sf T}\\
             \mathbf{x} = [x_1, ..., x_5]^{\sf T},\ \mathbf{p} = [p_1, ..., p_m]^{\sf T}\\
             x_{i,LB}\leq x_i \leq x_{i,UB},\quad i = 1,2,...,5\\
-	{\rm s.t.}\quad {\bf g(x,p)}<0,\ {\bf g} = [g_1, g_2,  g_3]^{\sf T}\ $</p>
+	{\rm s.t.}\quad {\bf g(x,p)}<0,\ {\bf g} = [g_1, g_2,  g_3]^{\sf T}\ $</p></center>
 Here the objective functions, $J_1, J_2, J_3$, respectively represent \emph{overall power output of the system}, \emph{overall efficiency of the system}, and \emph{overall cost of the system}. The design variables {\bf x} in Table \ref{design_variables} represent geometric quantities and are defined as $\mathbf{x}=\left[x_{i}\right]^{\sf T}$ $=$ $[w_{yk}, h_{yk}, h_{A}, h_{pm}, w_{gap}]$, meaning <em>the width of the yoke</em>, <em>the height of the yoke</em>, <em>the height of the active materials</em>, <em>the height of the permanent magnet</em>, <em>the width of the gap</em>, respectively. The parameters, $\mathbf{p}$, are largely representing the material properties of different parts in TMG. Some of them are embeded in  COMSOL Multiphysics as system settings for simulations. We refer to the COMSOL library for further details. The lower and upper bounds ($x_{i,LB}\ \& \ x_{i,UB}$) are 0.01 and 0.5, respectively. The geometric constraints are all inequality constraints. Note that unless specifically specified, all the units in the problem formulation are in SI Unit.
-	    
+	   
 <p><img src="assets/img/problemformulation_schematic.jpg" height="200" width="420"></p>
-	    
+
+<p>We here consider a full thermo-magnetic system which has a thermal cycle given by the time it takes to heat up and cool down the active material. The thermo-magnetic generator furthermore has a power output which is taken from the change in total magnetic flux streaming through the active material, around which the coil is wrapped, so that a current is induced electromagnetically. </p>
+
+<p>The power output is taken as the energy produced over one thermal cycle through the change in this magnetic flux divided by the time it takes for the thermal cycle to come to completion. The efficiency is the total power produced during a thermal cycle divided by the heat energy that has been put into the system and thus, <em>consumed</em>. The heat energy is taken with respect to the ambient temperature and is thus the exergy loss over a thermal cycle. The total cost of the system is taken as the volumetric sum of all the material that has gone into the device, weighted by the volumetric cost of each type of material, i.e. the expense required to procure all the material for the device. </p>
 	    
 <h3 id="Modeling & Simulation"><a href="#Numerical implementation" class="headerlink" title="Modeling & Simulation"></a>Modeling & Simulation</h3>
 
 
-<p><img src="assets/img/simulation.jpeg" height="200" width="750"></p>
+<p><img src="assets/img/validation.jpg" height="200" width="750"></p>
 	    
 	    
 <h2 id="Optimization & Results"><a href="#Optimization & Results" class="headerlink" title="Optimization & Results"></a>Optimization & Results</h2>
