@@ -1,0 +1,37 @@
+# =================== Thermo_style settings ===================
+
+thermo_style	custom step cpu cpuremain temp density lx ly lz etotal ke pe evdwl ecoul elong ebond eangle
+thermo			${thermo_step}
+thermo_modify	flush yes
+
+# =================== Compute settings ======================
+
+compute		li		Li		msd  #compute mean squared distance for group Li
+compute		n		N		msd  #compute mean squared distance for group N
+compute		o		O		msd  #compute mean squared distance for group O
+
+compute		1		all		rdf 100 1 4 1 6 1 7 #compute radial distribution function for different pairs
+
+# =================== Fix settings ======================
+
+fix			li		Li		ave/time 1000 1 1000 c_li[1] c_li[2] c_li[3] c_li[4] file  msd_li.dat	title1 "t msd msd msd msd_li"	title2 "fs A2 A2 A2 A2" #compute/output global time-average quantities Here we are outputting ith column of the array
+fix			n		N		ave/time 1000 1 1000 c_n[1]  c_n[2]  c_n[3]  c_n[4]  file  msd_n.dat	title1 "t msd msd msd msd_n"	title2 "fs A2 A2 A2 A2"
+fix			o		O		ave/time 1000 1 1000 c_o[1]  c_o[2]  c_o[3]  c_o[4]  file  msd_o.dat	title1 "t msd msd msd msd_o"	title2 "fs A2 A2 A2 A2"
+
+fix			1		all		ave/time $(v_sp_run_step/100) 100 ${sp_run_step} c_1[*] file rdf.dat mode vector
+
+# =================== Dump settings =========================
+
+dump		trj_all	all		custom	$(v_sp_run_step/v_sp_num_dump) all.lammpstrj id element x y z q #dump trajectory file
+dump_modify	trj_all	flush	yes	element ${v_element} sort id
+
+# =================== Sampling run ==========================
+
+velocity all create 333.0 4568459 rot yes dist gaussian
+
+fix			f_eq_r1	all nvt temp 333.0 333.0 100.0
+run			${sp_run_step}
+unfix		f_eq_r1
+
+undump		trj_all
+
