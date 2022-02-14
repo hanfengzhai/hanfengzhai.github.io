@@ -1,5 +1,5 @@
 
-     Program PWSCF v.7.0 starts on 14Feb2022 at 13:22:19 
+     Program PWSCF v.7.0 starts on 14Feb2022 at 16:35:38 
 
      This program is part of the open-source Quantum ESPRESSO suite
      for quantum simulation of materials; please cite
@@ -13,7 +13,7 @@
      Parallel version (MPI), running on     1 processors
 
      MPI processes distributed on     1 nodes
-     87390 MiB available memory on the printing compute node when the environment starts
+     87572 MiB available memory on the printing compute node when the environment starts
  
      Waiting for input...
      Reading input from standard input
@@ -133,7 +133,7 @@ Warning: card / ignored
      starting charge       7.9996, renormalised to       8.0000
      Starting wfcs are    8 randomized atomic wfcs
 
-     total cpu time spent up to now is        3.6 secs
+     total cpu time spent up to now is        3.8 secs
 
      Self-consistent Calculation
 
@@ -141,7 +141,7 @@ Warning: card / ignored
      CG style diagonalization
      ethr =  1.00E-02,  avg # of iterations =  2.7
 
-     total cpu time spent up to now is        4.6 secs
+     total cpu time spent up to now is        4.8 secs
 
      total energy              =     -46.13537228 Ry
      estimated scf accuracy    <       0.15458588 Ry
@@ -150,7 +150,7 @@ Warning: card / ignored
      CG style diagonalization
      ethr =  1.93E-03,  avg # of iterations =  4.3
 
-     total cpu time spent up to now is        5.7 secs
+     total cpu time spent up to now is        5.9 secs
 
      total energy              =     -46.16969152 Ry
      estimated scf accuracy    <       0.04157342 Ry
@@ -159,7 +159,7 @@ Warning: card / ignored
      CG style diagonalization
      ethr =  5.20E-04,  avg # of iterations =  4.1
 
-     total cpu time spent up to now is        6.7 secs
+     total cpu time spent up to now is        6.9 secs
 
      total energy              =     -46.17865769 Ry
      estimated scf accuracy    <       0.00044143 Ry
@@ -168,7 +168,7 @@ Warning: card / ignored
      CG style diagonalization
      ethr =  5.52E-06,  avg # of iterations =  4.7
 
-     total cpu time spent up to now is        7.8 secs
+     total cpu time spent up to now is        8.0 secs
 
      total energy              =     -46.17900140 Ry
      estimated scf accuracy    <       0.00012556 Ry
@@ -177,7 +177,7 @@ Warning: card / ignored
      CG style diagonalization
      ethr =  1.57E-06,  avg # of iterations =  4.1
 
-     total cpu time spent up to now is        8.9 secs
+     total cpu time spent up to now is        9.1 secs
 
      total energy              =     -46.17903153 Ry
      estimated scf accuracy    <       0.00000491 Ry
@@ -186,7 +186,7 @@ Warning: card / ignored
      CG style diagonalization
      ethr =  6.14E-08,  avg # of iterations =  5.2
 
-     total cpu time spent up to now is       10.0 secs
+     total cpu time spent up to now is       10.2 secs
 
      total energy              =     -46.17903532 Ry
      estimated scf accuracy    <       0.00000058 Ry
@@ -195,7 +195,7 @@ Warning: card / ignored
      CG style diagonalization
      ethr =  7.26E-09,  avg # of iterations =  4.9
 
-     total cpu time spent up to now is       11.1 secs
+     total cpu time spent up to now is       11.3 secs
 
      total energy              =     -46.17903560 Ry
      estimated scf accuracy    <       0.00000035 Ry
@@ -204,7 +204,7 @@ Warning: card / ignored
      CG style diagonalization
      ethr =  4.32E-09,  avg # of iterations =  4.6
 
-     total cpu time spent up to now is       12.2 secs
+     total cpu time spent up to now is       12.4 secs
 
      total energy              =     -46.17903574 Ry
      estimated scf accuracy    <       0.00000017 Ry
@@ -213,7 +213,7 @@ Warning: card / ignored
      CG style diagonalization
      ethr =  2.13E-09,  avg # of iterations =  3.9
 
-     total cpu time spent up to now is       13.2 secs
+     total cpu time spent up to now is       13.4 secs
 
      End of self-consistent calculation
 
@@ -280,53 +280,53 @@ Warning: card / ignored
 
      Writing all to output data dir ./BAs_50.save/
  
-     init_run     :      2.14s CPU      2.38s WALL (       1 calls)
-     electrons    :      8.64s CPU      9.61s WALL (       1 calls)
+     init_run     :      2.14s CPU      2.42s WALL (       1 calls)
+     electrons    :      8.68s CPU      9.56s WALL (       1 calls)
      forces       :      0.38s CPU      0.42s WALL (       1 calls)
-     stress       :      3.20s CPU      3.37s WALL (       1 calls)
+     stress       :      3.23s CPU      3.37s WALL (       1 calls)
 
      Called by init_run:
-     wfcinit      :      0.15s CPU      0.20s WALL (       1 calls)
-     potinit      :      0.05s CPU      0.07s WALL (       1 calls)
-     hinit0       :      1.61s CPU      1.69s WALL (       1 calls)
+     wfcinit      :      0.14s CPU      0.21s WALL (       1 calls)
+     potinit      :      0.05s CPU      0.08s WALL (       1 calls)
+     hinit0       :      1.61s CPU      1.72s WALL (       1 calls)
 
      Called by electrons:
-     c_bands      :      2.79s CPU      3.07s WALL (       9 calls)
-     sum_band     :      3.22s CPU      3.53s WALL (       9 calls)
+     c_bands      :      2.79s CPU      3.00s WALL (       9 calls)
+     sum_band     :      3.23s CPU      3.54s WALL (       9 calls)
      v_of_rho     :      0.33s CPU      0.34s WALL (      10 calls)
-     newd         :      2.40s CPU      2.74s WALL (      10 calls)
-     mix_rho      :      0.09s CPU      0.10s WALL (       9 calls)
+     newd         :      2.45s CPU      2.76s WALL (      10 calls)
+     mix_rho      :      0.09s CPU      0.09s WALL (       9 calls)
 
      Called by c_bands:
-     init_us_2    :      0.24s CPU      0.25s WALL (     168 calls)
-     init_us_2:cp :      0.23s CPU      0.25s WALL (     168 calls)
-     ccgdiagg     :      2.18s CPU      2.32s WALL (      72 calls)
-     wfcrot       :      0.61s CPU      0.67s WALL (      72 calls)
+     init_us_2    :      0.23s CPU      0.25s WALL (     168 calls)
+     init_us_2:cp :      0.22s CPU      0.25s WALL (     168 calls)
+     ccgdiagg     :      2.18s CPU      2.34s WALL (      72 calls)
+     wfcrot       :      0.60s CPU      0.67s WALL (      72 calls)
 
      Called by *cgdiagg:
-     h_psi        :      2.36s CPU      2.49s WALL (    1047 calls)
-     s_psi        :      0.13s CPU      0.14s WALL (    2022 calls)
+     h_psi        :      2.33s CPU      2.46s WALL (    1047 calls)
+     s_psi        :      0.15s CPU      0.17s WALL (    2022 calls)
 
      Called by h_psi:
-     h_psi:calbec :      0.14s CPU      0.16s WALL (    1047 calls)
-     vloc_psi     :      2.07s CPU      2.17s WALL (    1047 calls)
-     add_vuspsi   :      0.09s CPU      0.10s WALL (    1047 calls)
-     hs_1psi      :      1.93s CPU      2.03s WALL (     975 calls)
-     s_1psi       :      0.17s CPU      0.18s WALL (     975 calls)
+     h_psi:calbec :      0.15s CPU      0.17s WALL (    1047 calls)
+     vloc_psi     :      2.02s CPU      2.12s WALL (    1047 calls)
+     add_vuspsi   :      0.10s CPU      0.11s WALL (    1047 calls)
+     hs_1psi      :      1.91s CPU      2.03s WALL (     975 calls)
+     s_1psi       :      0.18s CPU      0.20s WALL (     975 calls)
 
      General routines
-     calbec       :      0.20s CPU      0.23s WALL (    2134 calls)
+     calbec       :      0.22s CPU      0.25s WALL (    2134 calls)
      fft          :      0.20s CPU      0.23s WALL (      66 calls)
-     ffts         :      0.01s CPU      0.02s WALL (      19 calls)
-     fftw         :      1.99s CPU      2.08s WALL (    2878 calls)
+     ffts         :      0.02s CPU      0.02s WALL (      19 calls)
+     fftw         :      1.95s CPU      2.05s WALL (    2878 calls)
      interpolate  :      0.05s CPU      0.05s WALL (      10 calls)
  
      Parallel routines
  
-     PWSCF        :     15.15s CPU     17.43s WALL
+     PWSCF        :     15.23s CPU     17.62s WALL
 
  
-   This run was terminated on:  13:22:36  14Feb2022            
+   This run was terminated on:  16:35:56  14Feb2022            
 
 =------------------------------------------------------------------------------=
    JOB DONE.
