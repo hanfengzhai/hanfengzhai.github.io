@@ -1,5 +1,5 @@
 
-     Program PWSCF v.7.0 starts on 14Feb2022 at 13:22:19 
+     Program PWSCF v.7.0 starts on 14Feb2022 at 16:42:50 
 
      This program is part of the open-source Quantum ESPRESSO suite
      for quantum simulation of materials; please cite
@@ -13,7 +13,7 @@
      Parallel version (MPI), running on     1 processors
 
      MPI processes distributed on     1 nodes
-     88357 MiB available memory on the printing compute node when the environment starts
+     89496 MiB available memory on the printing compute node when the environment starts
  
      Waiting for input...
      Reading input from standard input
@@ -133,7 +133,7 @@ Warning: card / ignored
      starting charge       7.9996, renormalised to       8.0000
      Starting wfcs are    8 randomized atomic wfcs
 
-     total cpu time spent up to now is        5.4 secs
+     total cpu time spent up to now is        5.6 secs
 
      Self-consistent Calculation
 
@@ -141,7 +141,7 @@ Warning: card / ignored
      CG style diagonalization
      ethr =  1.00E-02,  avg # of iterations =  2.6
 
-     total cpu time spent up to now is        8.2 secs
+     total cpu time spent up to now is        8.4 secs
 
      total energy              =     -46.13697924 Ry
      estimated scf accuracy    <       0.15201227 Ry
@@ -150,7 +150,7 @@ Warning: card / ignored
      CG style diagonalization
      ethr =  1.90E-03,  avg # of iterations =  4.3
 
-     total cpu time spent up to now is       11.3 secs
+     total cpu time spent up to now is       11.5 secs
 
      total energy              =     -46.17026975 Ry
      estimated scf accuracy    <       0.04083437 Ry
@@ -159,7 +159,7 @@ Warning: card / ignored
      CG style diagonalization
      ethr =  5.10E-04,  avg # of iterations =  4.1
 
-     total cpu time spent up to now is       14.3 secs
+     total cpu time spent up to now is       14.6 secs
 
      total energy              =     -46.17927584 Ry
      estimated scf accuracy    <       0.00046958 Ry
@@ -168,7 +168,7 @@ Warning: card / ignored
      CG style diagonalization
      ethr =  5.87E-06,  avg # of iterations =  4.8
 
-     total cpu time spent up to now is       17.5 secs
+     total cpu time spent up to now is       17.8 secs
 
      total energy              =     -46.17963512 Ry
      estimated scf accuracy    <       0.00013318 Ry
@@ -177,7 +177,7 @@ Warning: card / ignored
      CG style diagonalization
      ethr =  1.66E-06,  avg # of iterations =  4.3
 
-     total cpu time spent up to now is       20.6 secs
+     total cpu time spent up to now is       20.9 secs
 
      total energy              =     -46.17967419 Ry
      estimated scf accuracy    <       0.00001081 Ry
@@ -186,7 +186,7 @@ Warning: card / ignored
      CG style diagonalization
      ethr =  1.35E-07,  avg # of iterations =  5.4
 
-     total cpu time spent up to now is       23.9 secs
+     total cpu time spent up to now is       24.3 secs
 
      total energy              =     -46.17968561 Ry
      estimated scf accuracy    <       0.00000184 Ry
@@ -195,7 +195,7 @@ Warning: card / ignored
      CG style diagonalization
      ethr =  2.29E-08,  avg # of iterations =  3.8
 
-     total cpu time spent up to now is       26.9 secs
+     total cpu time spent up to now is       27.2 secs
 
      total energy              =     -46.17968369 Ry
      estimated scf accuracy    <       0.00000296 Ry
@@ -204,7 +204,7 @@ Warning: card / ignored
      CG style diagonalization
      ethr =  2.29E-08,  avg # of iterations =  4.7
 
-     total cpu time spent up to now is       30.1 secs
+     total cpu time spent up to now is       30.4 secs
 
      total energy              =     -46.17968491 Ry
      estimated scf accuracy    <       0.00000256 Ry
@@ -213,7 +213,7 @@ Warning: card / ignored
      CG style diagonalization
      ethr =  2.29E-08,  avg # of iterations =  3.4
 
-     total cpu time spent up to now is       32.9 secs
+     total cpu time spent up to now is       33.3 secs
 
      total energy              =     -46.17968502 Ry
      estimated scf accuracy    <       0.00000056 Ry
@@ -222,7 +222,7 @@ Warning: card / ignored
      CG style diagonalization
      ethr =  7.00E-09,  avg # of iterations =  3.1
 
-     total cpu time spent up to now is       35.7 secs
+     total cpu time spent up to now is       36.2 secs
 
      total energy              =     -46.17968493 Ry
      estimated scf accuracy    <       0.00000042 Ry
@@ -231,7 +231,7 @@ Warning: card / ignored
      CG style diagonalization
      ethr =  5.24E-09,  avg # of iterations =  3.3
 
-     total cpu time spent up to now is       38.5 secs
+     total cpu time spent up to now is       39.0 secs
 
      total energy              =     -46.17968501 Ry
      estimated scf accuracy    <       0.00000011 Ry
@@ -240,7 +240,7 @@ Warning: card / ignored
      CG style diagonalization
      ethr =  1.42E-09,  avg # of iterations =  3.2
 
-     total cpu time spent up to now is       41.3 secs
+     total cpu time spent up to now is       41.8 secs
 
      total energy              =     -46.17968491 Ry
      estimated scf accuracy    <       0.00000018 Ry
@@ -249,7 +249,7 @@ Warning: card / ignored
      CG style diagonalization
      ethr =  1.42E-09,  avg # of iterations =  4.3
 
-     total cpu time spent up to now is       44.4 secs
+     total cpu time spent up to now is       44.9 secs
 
      End of self-consistent calculation
 
@@ -316,53 +316,53 @@ Warning: card / ignored
 
      Writing all to output data dir ./BAs_100.save/
  
-     init_run     :      3.78s CPU      4.14s WALL (       1 calls)
-     electrons    :     36.14s CPU     39.03s WALL (       1 calls)
+     init_run     :      3.81s CPU      4.19s WALL (       1 calls)
+     electrons    :     36.51s CPU     39.44s WALL (       1 calls)
      forces       :      1.06s CPU      1.15s WALL (       1 calls)
-     stress       :      9.01s CPU      9.30s WALL (       1 calls)
+     stress       :      9.04s CPU      9.37s WALL (       1 calls)
 
      Called by init_run:
-     wfcinit      :      0.49s CPU      0.55s WALL (       1 calls)
-     potinit      :      0.14s CPU      0.19s WALL (       1 calls)
-     hinit0       :      2.18s CPU      2.28s WALL (       1 calls)
+     wfcinit      :      0.49s CPU      0.56s WALL (       1 calls)
+     potinit      :      0.14s CPU      0.18s WALL (       1 calls)
+     hinit0       :      2.18s CPU      2.31s WALL (       1 calls)
 
      Called by electrons:
-     c_bands      :     12.19s CPU     12.82s WALL (      13 calls)
-     sum_band     :     13.29s CPU     14.40s WALL (      13 calls)
-     v_of_rho     :      1.33s CPU      1.37s WALL (      14 calls)
-     newd         :      9.47s CPU     10.59s WALL (      14 calls)
-     mix_rho      :      0.36s CPU      0.38s WALL (      13 calls)
+     c_bands      :     12.30s CPU     12.85s WALL (      13 calls)
+     sum_band     :     13.51s CPU     14.67s WALL (      13 calls)
+     v_of_rho     :      1.35s CPU      1.37s WALL (      14 calls)
+     newd         :      9.53s CPU     10.72s WALL (      14 calls)
+     mix_rho      :      0.36s CPU      0.37s WALL (      13 calls)
 
      Called by c_bands:
-     init_us_2    :      0.92s CPU      0.94s WALL (     232 calls)
-     init_us_2:cp :      0.91s CPU      0.94s WALL (     232 calls)
-     ccgdiagg     :      9.23s CPU      9.63s WALL (     104 calls)
-     wfcrot       :      2.92s CPU      3.02s WALL (     104 calls)
+     init_us_2    :      0.92s CPU      0.95s WALL (     232 calls)
+     init_us_2:cp :      0.92s CPU      0.94s WALL (     232 calls)
+     ccgdiagg     :      9.30s CPU      9.74s WALL (     104 calls)
+     wfcrot       :      2.95s CPU      3.07s WALL (     104 calls)
 
      Called by *cgdiagg:
-     h_psi        :     10.68s CPU     10.97s WALL (    1361 calls)
-     s_psi        :      0.65s CPU      0.76s WALL (    2618 calls)
+     h_psi        :     10.81s CPU     11.13s WALL (    1361 calls)
+     s_psi        :      0.63s CPU      0.74s WALL (    2618 calls)
 
      Called by h_psi:
-     h_psi:calbec :      0.40s CPU      0.43s WALL (    1361 calls)
-     vloc_psi     :      9.79s CPU     10.00s WALL (    1361 calls)
-     add_vuspsi   :      0.38s CPU      0.43s WALL (    1361 calls)
-     hs_1psi      :      8.32s CPU      8.60s WALL (    1257 calls)
-     s_1psi       :      0.66s CPU      0.74s WALL (    1257 calls)
+     h_psi:calbec :      0.39s CPU      0.43s WALL (    1361 calls)
+     vloc_psi     :      9.93s CPU     10.18s WALL (    1361 calls)
+     add_vuspsi   :      0.37s CPU      0.42s WALL (    1361 calls)
+     hs_1psi      :      8.42s CPU      8.71s WALL (    1257 calls)
+     s_1psi       :      0.64s CPU      0.72s WALL (    1257 calls)
 
      General routines
-     calbec       :      0.69s CPU      0.79s WALL (    2762 calls)
-     fft          :      0.68s CPU      0.71s WALL (      90 calls)
+     calbec       :      0.67s CPU      0.77s WALL (    2762 calls)
+     fft          :      0.69s CPU      0.72s WALL (      90 calls)
      ffts         :      0.07s CPU      0.07s WALL (      27 calls)
-     fftw         :      9.52s CPU      9.68s WALL (    3826 calls)
+     fftw         :      9.64s CPU      9.83s WALL (    3826 calls)
      interpolate  :      0.17s CPU      0.19s WALL (      14 calls)
  
      Parallel routines
  
-     PWSCF        :     50.85s CPU   1m 0.74s WALL
+     PWSCF        :     51.21s CPU     55.97s WALL
 
  
-   This run was terminated on:  13:23:20  14Feb2022            
+   This run was terminated on:  16:43:46  14Feb2022            
 
 =------------------------------------------------------------------------------=
    JOB DONE.
