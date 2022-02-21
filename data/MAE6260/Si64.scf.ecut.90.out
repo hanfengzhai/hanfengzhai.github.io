@@ -1,0 +1,402 @@
+
+     Program PWSCF v.7.0 starts on 21Feb2022 at  9:41:45 
+
+     This program is part of the open-source Quantum ESPRESSO suite
+     for quantum simulation of materials; please cite
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 21 395502 (2009);
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 29 465901 (2017);
+         "P. Giannozzi et al., J. Chem. Phys. 152 154105 (2020);
+          URL http://www.quantum-espresso.org", 
+     in publications or presentations arising from this work. More details at
+     http://www.quantum-espresso.org/quote
+
+     Parallel version (MPI), running on     1 processors
+
+     MPI processes distributed on     1 nodes
+     88746 MiB available memory on the printing compute node when the environment starts
+ 
+     Reading input from Si64.scf.ecut.90.in
+Warning: card  SI   0.3669964855000001  0.8669964855000001  0.0000000000000000 ignored
+Warning: card  SI   0.8669964855000001  0.8669964855000001  0.0000000000000000 ignored
+Warning: card  SI   0.3669964855000001  0.3669964855000001  0.5000000000000000 ignored
+Warning: card  SI   0.8669964855000001  0.3669964855000001  0.5000000000000000 ignored
+Warning: card  SI   0.3669964855000001  0.8669964855000001  0.5000000000000000 ignored
+Warning: card  SI   0.8669964855000001  0.8669964855000001  0.5000000000000000 ignored
+Warning: card  SI   0.0000000000000000  0.0000000000000000  0.0000000000000000 ignored
+Warning: card  SI   0.5000000000000000  0.0000000000000000  0.0000000000000000 ignored
+Warning: card  SI   0.0000000000000000  0.5000000000000000  0.0000000000000000 ignored
+Warning: card  SI   0.5000000000000000  0.5000000000000000  0.0000000000000000 ignored
+Warning: card  SI   0.0000000000000000  0.0000000000000000  0.5000000000000000 ignored
+Warning: card  SI   0.5000000000000000  0.0000000000000000  0.5000000000000000 ignored
+Warning: card  SI   0.0000000000000000  0.5000000000000000  0.5000000000000000 ignored
+Warning: card  SI   0.5000000000000000  0.5000000000000000  0.5000000000000000 ignored
+Warning: card  SI   0.3669964855000001  0.0000000000000000  0.3669964855000001 ignored
+Warning: card  SI   0.8669964855000001  0.0000000000000000  0.3669964855000001 ignored
+Warning: card  SI   0.3669964855000001  0.5000000000000000  0.3669964855000001 ignored
+Warning: card  SI   0.8669964855000001  0.5000000000000000  0.3669964855000001 ignored
+Warning: card  SI   0.3669964855000001  0.0000000000000000  0.8669964855000001 ignored
+Warning: card  SI   0.8669964855000001  0.0000000000000000  0.8669964855000001 ignored
+Warning: card  SI   0.3669964855000001  0.5000000000000000  0.8669964855000001 ignored
+Warning: card  SI   0.8669964855000001  0.5000000000000000  0.8669964855000001 ignored
+Warning: card  SI   0.0000000000000000  0.3669964855000001  0.3669964855000001 ignored
+Warning: card  SI   0.5000000000000000  0.3669964855000001  0.3669964855000001 ignored
+Warning: card  SI   0.0000000000000000  0.8669964855000001  0.3669964855000001 ignored
+Warning: card  SI   0.5000000000000000  0.8669964855000001  0.3669964855000001 ignored
+Warning: card  SI   0.0000000000000000  0.3669964855000001  0.8669964855000001 ignored
+Warning: card  SI   0.5000000000000000  0.3669964855000001  0.8669964855000001 ignored
+Warning: card  SI   0.0000000000000000  0.8669964855000001  0.8669964855000001 ignored
+Warning: card  SI   0.5000000000000000  0.8669964855000001  0.8669964855000001 ignored
+Warning: card  SI   0.0504947279999999  0.0504947279999999  0.6834982425000000 ignored
+Warning: card  SI   0.5504947279999999  0.0504947279999999  0.6834982425000000 ignored
+Warning: card  SI   0.0504947279999999  0.5504947279999999  0.6834982425000000 ignored
+Warning: card  SI   0.5504947279999999  0.5504947279999999  0.6834982425000000 ignored
+Warning: card  SI   0.0504947279999999  0.0504947279999999  0.1834982425000000 ignored
+Warning: card  SI   0.5504947279999999  0.0504947279999999  0.1834982425000000 ignored
+Warning: card  SI   0.0504947279999999  0.5504947279999999  0.1834982425000000 ignored
+Warning: card  SI   0.5504947279999999  0.5504947279999999  0.1834982425000000 ignored
+Warning: card  SI   0.6834982425000000  0.6834982425000000  0.6834982425000000 ignored
+Warning: card  SI   0.1834982425000000  0.6834982425000000  0.6834982425000000 ignored
+Warning: card  SI   0.6834982425000000  0.1834982425000000  0.6834982425000000 ignored
+Warning: card  SI   0.1834982425000000  0.1834982425000000  0.6834982425000000 ignored
+Warning: card  SI   0.6834982425000000  0.6834982425000000  0.1834982425000000 ignored
+Warning: card  SI   0.1834982425000000  0.6834982425000000  0.1834982425000000 ignored
+Warning: card  SI   0.6834982425000000  0.1834982425000000  0.1834982425000000 ignored
+Warning: card  SI   0.1834982425000000  0.1834982425000000  0.1834982425000000 ignored
+Warning: card  SI   0.0504947279999999  0.6834982425000000  0.0504947279999999 ignored
+Warning: card  SI   0.5504947279999999  0.6834982425000000  0.0504947279999999 ignored
+Warning: card  SI   0.0504947279999999  0.1834982425000000  0.0504947279999999 ignored
+Warning: card  SI   0.5504947279999999  0.1834982425000000  0.0504947279999999 ignored
+Warning: card  SI   0.0504947279999999  0.6834982425000000  0.5504947279999999 ignored
+Warning: card  SI   0.5504947279999999  0.6834982425000000  0.5504947279999999 ignored
+Warning: card  SI   0.0504947279999999  0.1834982425000000  0.5504947279999999 ignored
+Warning: card  SI   0.5504947279999999  0.1834982425000000  0.5504947279999999 ignored
+Warning: card  SI   0.6834982425000000  0.0504947279999999  0.0504947279999999 ignored
+Warning: card  SI   0.1834982425000000  0.0504947279999999  0.0504947279999999 ignored
+Warning: card  SI   0.6834982425000000  0.5504947279999999  0.0504947279999999 ignored
+Warning: card  SI   0.1834982425000000  0.5504947279999999  0.0504947279999999 ignored
+Warning: card  SI   0.6834982425000000  0.0504947279999999  0.5504947279999999 ignored
+Warning: card  SI   0.1834982425000000  0.0504947279999999  0.5504947279999999 ignored
+Warning: card  SI   0.6834982425000000  0.5504947279999999  0.5504947279999999 ignored
+Warning: card  SI   0.1834982425000000  0.5504947279999999  0.5504947279999999 ignored
+
+     Current dimensions of program PWSCF are:
+     Max number of different atomic species (ntypx) = 10
+     Max number of k-points (npk) =  40000
+     Max angular momentum in pseudopotentials (lmaxx) =  4
+     Found identity + ( -0.5000  0.0000  0.0000) symmetry
+     This is a supercell, fractional translations are disabled
+
+     Subspace diagonalization in iterative solution of the eigenvalue problem:
+     a serial algorithm will be used
+
+ 
+     G-vector sticks info
+     --------------------
+     sticks:   dense  smooth     PW     G-vecs:    dense   smooth      PW
+     Sum        1333    1333    385                31879    31879    5065
+ 
+     Using Slab Decomposition
+ 
+
+
+     bravais-lattice index     =            2
+     lattice parameter (alat)  =      10.3330  a.u.
+     unit-cell volume          =     275.8159 (a.u.)^3
+     number of atoms/cell      =            2
+     number of atomic types    =            1
+     number of electrons       =         8.00
+     number of Kohn-Sham states=            4
+     kinetic-energy cutoff     =      90.0000  Ry
+     charge density cutoff     =     360.0000  Ry
+     scf convergence threshold =      1.0E-06
+     mixing beta               =       0.7000
+     number of iterations used =            8  plain     mixing
+     Exchange-correlation=  SLA  PW   PBE  PBE
+                           (   1   4   3   4   0   0   0)
+
+     celldm(1)=  10.333000  celldm(2)=   0.000000  celldm(3)=   0.000000
+     celldm(4)=   0.000000  celldm(5)=   0.000000  celldm(6)=   0.000000
+
+     crystal axes: (cart. coord. in units of alat)
+               a(1) = (  -0.500000   0.000000   0.500000 )  
+               a(2) = (   0.000000   0.500000   0.500000 )  
+               a(3) = (  -0.500000   0.500000   0.000000 )  
+
+     reciprocal axes: (cart. coord. in units 2 pi/alat)
+               b(1) = ( -1.000000 -1.000000  1.000000 )  
+               b(2) = (  1.000000  1.000000  1.000000 )  
+               b(3) = ( -1.000000  1.000000 -1.000000 )  
+
+
+     PseudoPot. # 1 for Si read from file:
+     ../Si.pbe-rrkj.UPF
+     MD5 check sum: cf7ab5690cd9a85b22c4813f7e365554
+     Pseudo is Norm-conserving, Zval =  4.0
+     Generated by new atomic code, or converted to UPF format
+     Using radial grid of  883 points,  3 beta functions with: 
+                l(1) =   0
+                l(2) =   0
+                l(3) =   1
+
+     atomic species   valence    mass     pseudopotential
+        Si             4.00    28.08600     Si( 1.00)
+
+     No symmetry found
+
+
+
+   Cartesian axes
+
+     site n.     atom                  positions (alat units)
+         1           Si  tau(   1) = (  -0.1834982   0.1834982   0.3669965  )
+         2           Si  tau(   2) = (  -0.4334982   0.1834982   0.6169965  )
+
+     number of k points=   432
+
+     Number of k-points >= 100: set verbosity='high' to print them.
+
+     Dense  grid:    31879 G-vectors     FFT dimensions: (  45,  45,  45)
+
+     Estimated max dynamical RAM per process >     126.46 MB
+
+     Initial potential from superposition of free atoms
+
+     starting charge       7.9989, renormalised to       8.0000
+     Starting wfcs are    8 randomized atomic wfcs
+
+     total cpu time spent up to now is       25.2 secs
+
+     Self-consistent Calculation
+
+     iteration #  1     ecut=    90.00 Ry     beta= 0.70
+     Davidson diagonalization with overlap
+     ethr =  1.00E-02,  avg # of iterations =  2.0
+
+     Threshold (ethr) on eigenvalues was too large:
+     Diagonalizing with lowered threshold
+
+     Davidson diagonalization with overlap
+     ethr =  8.04E-04,  avg # of iterations =  2.9
+
+     total cpu time spent up to now is      101.7 secs
+
+     total energy              =     -15.37999264 Ry
+     estimated scf accuracy    <       0.10011246 Ry
+
+     iteration #  2     ecut=    90.00 Ry     beta= 0.70
+     Davidson diagonalization with overlap
+     ethr =  1.25E-03,  avg # of iterations =  1.9
+
+     total cpu time spent up to now is      134.2 secs
+
+     total energy              =     -15.38907264 Ry
+     estimated scf accuracy    <       0.00231234 Ry
+
+     iteration #  3     ecut=    90.00 Ry     beta= 0.70
+     Davidson diagonalization with overlap
+     ethr =  2.89E-05,  avg # of iterations =  3.9
+
+     total cpu time spent up to now is      178.8 secs
+
+     total energy              =     -15.39059324 Ry
+     estimated scf accuracy    <       0.00021234 Ry
+
+     iteration #  4     ecut=    90.00 Ry     beta= 0.70
+     Davidson diagonalization with overlap
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     ethr =  2.65E-06,  avg # of iterations =  3.1
+
+     total cpu time spent up to now is      221.5 secs
+
+     total energy              =     -15.39263611 Ry
+     estimated scf accuracy    <       0.00001353 Ry
+
+     iteration #  5     ecut=    90.00 Ry     beta= 0.70
+     Davidson diagonalization with overlap
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     ethr =  1.69E-07,  avg # of iterations =  4.7
+
+     total cpu time spent up to now is      268.4 secs
+
+     total energy              =     -15.39307522 Ry
+     estimated scf accuracy    <       0.00000490 Ry
+
+     iteration #  6     ecut=    90.00 Ry     beta= 0.70
+     Davidson diagonalization with overlap
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     ethr =  6.13E-08,  avg # of iterations =  2.3
+
+     total cpu time spent up to now is      301.4 secs
+
+     total energy              =     -15.39344013 Ry
+     estimated scf accuracy    <       0.00000254 Ry
+
+     iteration #  7     ecut=    90.00 Ry     beta= 0.70
+     Davidson diagonalization with overlap
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     ethr =  3.17E-08,  avg # of iterations =  2.2
+
+     total cpu time spent up to now is      334.0 secs
+
+     total energy              =     -15.39357783 Ry
+     estimated scf accuracy    <       0.00000334 Ry
+
+     iteration #  8     ecut=    90.00 Ry     beta= 0.70
+     Davidson diagonalization with overlap
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     ethr =  3.17E-08,  avg # of iterations =  1.3
+
+     total cpu time spent up to now is      363.5 secs
+
+     total energy              =     -15.39358973 Ry
+     estimated scf accuracy    <       0.00000249 Ry
+
+     iteration #  9     ecut=    90.00 Ry     beta= 0.70
+     Davidson diagonalization with overlap
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     ethr =  3.11E-08,  avg # of iterations =  1.2
+
+     total cpu time spent up to now is      392.8 secs
+
+     total energy              =     -15.39359310 Ry
+     estimated scf accuracy    <       0.00000102 Ry
+
+     iteration # 10     ecut=    90.00 Ry     beta= 0.70
+     Davidson diagonalization with overlap
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     c_bands:  1 eigenvalues not converged
+     ethr =  1.28E-08,  avg # of iterations =  3.1
+
+     total cpu time spent up to now is      435.5 secs
+
+     End of self-consistent calculation
+
+     Number of k-points >= 100: set verbosity='high' to print the bands.
+
+     highest occupied level (ev):     6.8713
+
+!    total energy              =     -15.39359361 Ry
+     estimated scf accuracy    <       0.00000062 Ry
+
+     The total energy is the sum of the following terms:
+     one-electron contribution =       4.16352151 Ry
+     hartree contribution      =       1.27106304 Ry
+     xc contribution           =      -4.82544174 Ry
+     ewald contribution        =     -16.00273642 Ry
+
+     convergence has been achieved in  10 iterations
+
+     Forces acting on atoms (cartesian axes, Ry/au):
+
+     atom    1 type  1   force =     0.00004284    0.00001005   -0.00005477
+     atom    2 type  1   force =    -0.00004284   -0.00001005    0.00005477
+
+     Total force =     0.000099     Total SCF correction =     0.000213
+     SCF correction compared to forces is large: reduce conv_thr to get better values
+
+
+     Computing stress (Cartesian axis) and pressure
+
+          total   stress  (Ry/bohr**3)                   (kbar)     P=      251.27
+   0.00252242  -0.00000730  -0.00223950          371.06       -1.07     -329.44
+  -0.00000730   0.00007245  -0.00000780           -1.07       10.66       -1.15
+  -0.00223950  -0.00000780   0.00252933         -329.44       -1.15      372.08
+
+
+     Writing all to output data dir ./Si2.save/
+ 
+     init_run     :     24.35s CPU     24.94s WALL (       1 calls)
+     electrons    :    399.98s CPU    410.26s WALL (       1 calls)
+     forces       :      1.72s CPU      1.81s WALL (       1 calls)
+     stress       :     14.56s CPU     14.64s WALL (       1 calls)
+
+     Called by init_run:
+     wfcinit      :     23.46s CPU     24.01s WALL (       1 calls)
+     potinit      :      0.15s CPU      0.16s WALL (       1 calls)
+     hinit0       :      0.21s CPU      0.23s WALL (       1 calls)
+
+     Called by electrons:
+     c_bands      :    334.27s CPU    343.26s WALL (      11 calls)
+     sum_band     :     64.26s CPU     65.50s WALL (      11 calls)
+     v_of_rho     :      1.46s CPU      1.49s WALL (      11 calls)
+     mix_rho      :      0.10s CPU      0.11s WALL (      11 calls)
+
+     Called by c_bands:
+     init_us_2    :     23.20s CPU     24.11s WALL (   10800 calls)
+     init_us_2:cp :     22.89s CPU     23.91s WALL (   10800 calls)
+     cegterg      :    317.77s CPU    325.54s WALL (    4752 calls)
+
+     Called by *egterg:
+     cdiaghg      :      4.91s CPU      5.39s WALL (   16739 calls)
+     h_psi        :    316.37s CPU    322.93s WALL (   17603 calls)
+     g_psi        :      1.03s CPU      1.10s WALL (   12419 calls)
+
+     Called by h_psi:
+     h_psi:calbec :      4.88s CPU      5.10s WALL (   17603 calls)
+     vloc_psi     :    305.68s CPU    311.61s WALL (   17603 calls)
+     add_vuspsi   :      4.10s CPU      4.55s WALL (   17603 calls)
+
+     General routines
+     calbec       :      4.95s CPU      5.40s WALL (   19763 calls)
+     fft          :      0.29s CPU      0.30s WALL (     118 calls)
+     ffts         :      0.03s CPU      0.03s WALL (      11 calls)
+     fftw         :    309.14s CPU    314.48s WALL (  131252 calls)
+ 
+     Parallel routines
+ 
+     PWSCF        :   7m21.52s CPU   7m35.84s WALL
+
+ 
+   This run was terminated on:   9:49:21  21Feb2022            
+
+=------------------------------------------------------------------------------=
+   JOB DONE.
+=------------------------------------------------------------------------------=
