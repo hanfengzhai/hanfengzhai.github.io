@@ -1,1 +1,519 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<title>Research | Hanfeng Zhai</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Fluid Mechanics, Applied Mathematics" />
+  
+  
+  
+  
+  <meta name="description" content="Undergraduate Projects     ______________________________________________________      Research Projects   H. Zhai. Inferring Microbubble Dynamics with Physics-Informed Deep Learning. Undergradua">
+<meta property="og:type" content="website">
+<meta property="og:title" content="RESEARCH">
+<meta property="og:url" content="www.hanfengzhai.net/research.html">
+<meta property="og:site_name" content="Hanfeng Zhai">
+<meta property="og:description" content="Undergraduate Projects     ______________________________________________________      Research Projects   H. Zhai. Inferring Microbubble Dynamics with Physics-Informed Deep Learning. Undergradua">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="/assets/img/bubblenetavatar.jpg">
+<meta property="og:image" content="/assets/img/enamel-abs.jpg">
+<meta property="og:image" content="/assets/img/cad-abs.jpg">
+<meta property="og:image" content="/assets/img/plas-abs.jpg">
+<meta property="og:image" content="/assets/img/afml-abs.jpg">
+<meta property="og:image" content="/assets/img/fem-abs.jpg">
+<meta property="og:image" content="/assets/img/exp-abs.jpg">
+<meta property="og:image" content="/assets/img/concrelr-abs.jpg">
+<meta property="og:image" content="/assets/img/dtprop-abs.jpg">
+<meta property="og:image" content="/assets/img/nbay-abs.jpg">
+<meta property="og:image" content="/assets/img/chip-abs.jpg">
+<meta property="og:image" content="/assets/img/guitar-abs.jpg">
+<meta property="og:image" content="/assets/img/waterNN-abs.jpg">
+<meta property="og:image" content="/assets/img/dentin-abs.jpg">
+<meta property="article:published_time" content="2019-11-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-12T02:27:06.755Z">
+<meta property="article:author" content="Bachelor Student @ Shanghai University">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/assets/img/bubblenetavatar.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Hanfeng Zhai" type="application/atom+xml">
+  
 
+  
+
+  <link rel="icon" href="/css/images/avatar.jpg">
+  <link rel="apple-touch-icon" href="/css/images/avatar.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+    <link rel="stylesheet" href="/css/archive.css" >
+  
+  
+  
+
+</head>
+
+
+
+  <body>
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                 >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/avatar.jpg">
+              </a>
+            
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Hοme</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">Abοut</a> </li>
+		      
+                  <li> <a class="main-nav-link" href="/awards">Awards</a> </li>
+		      
+		  <li> <a class="main-nav-link" href="/project">Project</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/note">Note</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/code">Code</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: 'Hanfeng Zhai',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="page-"  class="article article-type-page" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      RESEARCH
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+      
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <font size=5, color="blue">
+
+
+
+<h1 id="Undergraduate-Projects"><a href="#Undergraduate-Projects" class="headerlink" title=" Undergraduate Projects "></a><center> Research Overview </center></h1><font size=1, color="red">
+
+ <center> ______________________________________________________ </center>
+
+<font color="black">
+
+ 
+<blockquote>
+  <p><em>As we go down in size, there are a number of interesting problems that arise. All things do not simply scale down in proportion.</em></p>
+  <center><p><a target="_blank" rel="noopener" href="https://www.fysik.dtu.dk/english">Department of Physics</a>, <a target="_blank" rel="noopener" href="https://www.dtu.dk/english">Technical University of Denmark</a> </p>
+</center>
+</blockquote>
+  
+<div align="center">
+<img src="https://hanfengzhai.net/assets/img/research.png" height="350" width="700" >
+</div> 
+ 
+
+<p>A time-honored objective in engineering sciences is the theoretical and computational understanding of multiscale problems. As the world moves towards sustainability and biofriendly, multiscale computational modeling can greatly accelerate scientific research and industrial productions, e.g., faster drug discovery, efficient battery design, novel energy sources exploration, and systems and materials design. My research goal is to develop computational methods to better model and simulate multiscale engineering phenomena that can brings good for mechanical, materials and systems design with practical applications in energy, bioengineering, and manufacturing. My research briefly lies in the following three aspects.</p>
+  
+  
+<h1 id="Research-Projects"><a href="#Research-Projects" class="headerlink" title="Research Projects"></a>Scientific Machine Learning</h1><font size=3.6, color="black">
+
+<ul>
+<li><strong>H. Zhai</strong>. <a target="_blank" rel="noopener" href="https://hanfengzhai.net/BubbleNet">Inferring Microbubble Dynamics with Physics-Informed Deep Learning</a>. <em>Undergraduate Thesis Project</em> (2021). Supervisor: Prof. <a target="_blank" rel="noopener" href="https://siamm.shu.edu.cn/info/1016/1468.htm">Guohui Hu</a>.</li>
+</ul>
+<div align="center">
+<img src="/assets/img/bubblenetavatar.jpg" height="200" width="700" >
+</div>
+
+
+<ul>
+<li>S. Liu, <strong>H. Zhai</strong>, <em>et al</em>. <a target="_blank" rel="noopener" href="https://hanfengzhai.net/EnamelFrac">Biomechanics Research on Enamel Microstructure</a>. <em>Joint Research Project Between <a target="_blank" rel="noopener" href="https://www.shu.edu.cn/index.htm">SHU</a> and <a target="_blank" rel="noopener" href="http://www.washington.edu/">UW</a></em> (2019). Principle: Profs. <a target="_blank" rel="noopener" href="https://www.researchgate.net/profile/Dongsheng_Zhang">Dongsheng Zhang</a> &amp; <a target="_blank" rel="noopener" href="https://www.engr.washington.edu/facultyfinder/dwayne-d-arola">Dwayne D. Arola</a>.</li>
+</ul>
+<div align="center">
+<img src="/assets/img/enamel-abs.jpg" height="200" width="700" >
+</div>
+
+
+<h1 id="Course-Projects"><a href="#Course-Projects" class="headerlink" title="Course Projects"></a>Course Projects</h1><ul>
+<li><strong>H. Zhai</strong>. <u>Structural design of composite materials with superior mechanical behaviors: lesson from the microstructure of nacre and enamel.</u> <em>CAD Application in Structural Mechanics</em> (2020). Supervisor: Prof. <a target="_blank" rel="noopener" href="https://www.researchgate.net/profile/Bingbing_An">Bingbing An</a>. [<a href="/file/structral_biom.pdf">Paper</a>]</li>
+</ul>
+<div align="center">
+<img src="/assets/img/cad-abs.jpg" height="200" width="700" >
+</div>
+
+<ul>
+<li><strong>H. Zhai</strong>. <u>Formulation and application of rate-independent stress update algorithm of hydrostatic pressure: elastoplastic yielding in composite.</u> <em>Plasticity Theory</em> (2020). Supervisor: Prof. <a target="_blank" rel="noopener" href="https://www.researchgate.net/profile/Bingbing_An">Bingbing An</a>. [<a href="/file/plasti_composite.pdf">Paper</a>]</li>
+</ul>
+<div align="center">
+<img src="/assets/img/plas-abs.jpg" height="200" width="700" >
+</div>
+
+<ul>
+<li><strong>H. Zhai</strong>. <u>Investigation of the mechanics of the airfoil: application of machine learning in the noise prediction of NACA 0012.</u> <em>Research methods (Fluid Physics on Flight)</em> (2020). Supervisor: Profs. <a target="_blank" rel="noopener" href="https://smes.shu.edu.cn/info/1033/1029.htm">Yuhong Dong</a> &amp; <a target="_blank" rel="noopener" href="https://smes.shu.edu.cn/info/1034/1053.htm">Xiaoquan Yang</a>. [<a href="/file/naca_ml.pdf">Report</a>]</li>
+</ul>
+<div align="center">
+<img src="/assets/img/afml-abs.jpg" height="200" width="700" >
+</div>
+
+<ul>
+<li><p><strong>H. Zhai</strong>, S. Weng, B. Liang, C. Tang, Z. Wang. <u>Structural Design of Lightweight Compressive Interlayer (in Chinese).</u> <em>Finite Element and Its Applications</em> (2019). Supervisor: Prof. <a target="_blank" rel="noopener" href="https://www.researchgate.net/profile/Yicheng_Song">Yicheng Song</a>. [<a href="/assets/img/compress.jpg">Poster</a>]</p>
+</li>
+<li><p><strong>H. Zhai</strong>. <u>The FEM Simulation and Estimation of the Library of Shanghai University &amp; The Simulation and Estimation of the Fracture of Taiwan’s Nanfang’ao Bridge (in Chinese).</u> <em>Finite Element and Its Applications</em> (2019). Supervisor: Prof. <a target="_blank" rel="noopener" href="https://www.researchgate.net/profile/Yicheng_Song">Yicheng Song</a>. [<a href="/file/fem_project.pdf">Report</a>]</p>
+</li>
+</ul>
+<div align="center">
+<img src="/assets/img/fem-abs.jpg" height="200" width="700" >
+</div>
+
+
+  
+<font size=2.5, color="black">
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          Copyright &copy Hanfeng Zhai | <a target="_blank" rel="noopener" href="https://hanfengzhai.net/"> www.HanfengZhai.net </a>
+         
+        </ul>
+<div>
+
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+  
+</article>
+
+<!-- Table of Contents -->
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hiker</a> </p>
+	      
+        <p id="copyRightEn"> &copy; 2021 Hanfeng Zhai, All Rights Reserved.</p>
+	      
+      <p> <a target="_blank" rel="noopener" href="https://fcs.cornell.edu/projects/upson-hall">372 Upson Hall</a>, <a target="_blank" rel="noopener" href="https://www.cornell.edu/"> Cornell University </a> |  <a target="_blank" rel="noopener" href="https://goo.gl/maps/i4qDkB2JTGPQq1Jt8">Ithaca, NY 14853, USA</a> </p>
+		
+        <div class="wrapper">
+	    <ul class="social-icons icon-circle list-unstyled list-inline"> 
+        <li> <a href="mailto:hz253@cornell.edu"><i class="fa fa-envelope"></i></a></li>
+		    <li> <a href="tel:6073191318"><i class="fa fa-phone"></i></a></li> 
+	      <li> <a href="https://www.linkedin.com/in/hanfengzhai/"><i class="fa fa-linkedin"></i></a></li> 
+	      <li> <a href="https://twitter.com/HanfengZhai"><i class="fa fa-twitter"></i></a></li>
+        <li> <a href="https://github.com/hanfengzhai"><i class="fa fa-github"></i></a></li> 
+	      <li> <a href="https://scholar.google.com/citations?user=S5jCDXcAAAAJ&hl=en"><i class="fa fa-google-plus"></i></a></li>  
+        <li> <a href="https://www.instagram.com/hanfeng.zhai/"><i class="fa fa-instagram"></i></a></li>
+	      <li> <a href="https://www.facebook.com/hfzhai/"><i class="fa fa-facebook"></i></a></li> 
+	      <li> <a href="https://www.youtube.com/channel/UCn7UKJez4SV9VkO8pNqI5Pw"><i class="fa fa-youtube-play"></i></a></li>
+	  	</ul>
+		<center>
+	  	<img src="https://www.mae.cornell.edu/themes/custom/cornell/assets/img/logos/logo-mae_department.svg" height="120" width="650" >
+		</center>
+	      <a target="_blank" rel="noopener" href="https://info.flagcounter.com/x6ta"><img src="https://s11.flagcounter.com/count2/x6ta/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+	  	<hr>
+
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+
+
+
+
+    </div>
+<!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Hοme</a>
+  
+    <a href="/about" class="mobile-nav-link">Abοut</a>
+  
+    <a href="/research" class="mobile-nav-link">Research</a>
+  
+    <a href="/note" class="mobile-nav-link">Note</a>
+  
+    <a href="/software" class="mobile-nav-link">Software</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Hanfeng Zhai
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 Bachelor Student @ Shanghai University All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+</body>
+</html>
