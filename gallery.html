@@ -1,1 +1,466 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<title>Code | Hanfeng Zhai</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="Fluid Mechanics, Applied Mathematics" />
+  
+  
+  
+  
+  <meta name="description" content="BubbleNetA deep learning framework for inferring bubble dynamics with physics-informed neural network   BubbleNet is a deep learning framework designed for predict and obtain the physics of micro-bu">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Code">
+<meta property="og:url" content="www.hanfengzhai.net/code.html">
+<meta property="og:site_name" content="Hanfeng Zhai">
+<meta property="og:description" content="BubbleNetA deep learning framework for inferring bubble dynamics with physics-informed neural network   BubbleNet is a deep learning framework designed for predict and obtain the physics of micro-bu">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="/assets/img/BubbleNet.jpg">
+<meta property="article:published_time" content="2019-11-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-05-13T10:21:37.165Z">
+<meta property="article:author" content="Bachelor Student @ Shanghai University">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/assets/img/BubbleNet.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Hanfeng Zhai" type="application/atom+xml">
+  
 
+  
+
+  <link rel="icon" href="/css/images/avatar.jpg">
+  <link rel="apple-touch-icon" href="/css/images/avatar.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="/js/jquery-3.1.1.min.js"></script>
+
+  
+<script src="/js/bootstrap.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    
+<link rel="stylesheet" href="/css/dialog.css">
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+    <link rel="stylesheet" href="/css/archive.css" >
+  
+  
+  
+
+</head>
+
+
+
+  <body>
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button> 
+            
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                 >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/avatar.jpg">
+              </a>
+            
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Hοme</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">Abοut</a> </li>
+		      
+		              <li> <a class="main-nav-link" href="/research">Research</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/talk">Talks</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/gallery">Gallery</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/note">Note</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/code">Code</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: 'Hanfeng Zhai',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="page-"  class="article article-type-page" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Gallery
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+      
+      
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <font size=3.9, color="black">
+
+<h1 id="Research-Projects"><a href="#Research-Projects" class="headerlink" title="Research Projects"></a>Cool Research</h1>
+
+<table border="1" width="100%">
+    <tr>
+        <td width="30%"><center><img src="https://hanfengzhai.net/file/finalFront.gif" height="350" width="390" >Genetic algorithm optimization of Thermo-Magnetic Generator (Credit to my great teammate Will Hintlian!)</center></td>
+        <td width="30%"><center><img src="https://hanfengzhai.net/assets/img/biofilm.gif" height="350" width="390" >Discrete element simulation of bacteria cluster flow on adhesive substrate.</center></td>
+        <td width="30%"><center><img src="https://hanfengzhai.net/assets/img/flowphysics.gif" height="350" width="390" >Computational fluid dynamics simulation of the velocity field over two square obstacles.</center></td>
+  </tr>
+</table>
+          
+<table border="1" width="100%">
+    <tr>
+        <td width="30%"><center><img src="https://hanfengzhai.net/assets/img/graphenecrack.gif" height="350" width="390" >Molecular dynamics simulation of crack propagation of single-layer graphene sheet.</center></td>
+        <td width="30%"><center><img src="https://hanfengzhai.net/assets/img/dentein.gif" height="350" width="390" >Finite element simulation of fracture propagation on dentin microstructure.</center></td>
+        <td width="30%"><center><img src="https://hanfengzhai.net/assets/img/bridge.gif" height="350" width="390" >Finite element simulation of structural deformation of Nanfang'ao Bridge.</center></td>
+  </tr>
+</table>
+		
+
+		
+
+<h1 id="Research-Projects"><a href="#Research-Projects" class="headerlink" title="Research Projects"></a>Fun Stuff</h1>
+
+<table border="1" width="100%">
+    <tr>
+        <td width="30%"><center><img src="https://hanfengzhai.net/assets/img/dft.jpeg" height="350" width="390" ></center></td>
+        <td width="70%"><center><a target="_blank" rel="noopener" href="https://github.com/hanfengzhai/MSE5720-HW">Density Functional Theory Computation of Materials</a></center> This is the code & data archive for the course <a target="_blank" rel="noopener" href="https://classes.cornell.edu/browse/roster/SP21/class/MSE/5720">Computational Materials Science</a>, containing <a target="_blank" rel="noopener" href="https://www.quantum-espresso.org/">Quantum ESPRESSO</a> code for running DFT computation of materials electrical, chemical, mechanical, and various properties. The original code was running on the <a target="_blank" rel="noopener" href="https://portal.tacc.utexas.edu/user-guides/stampede2">TACC Stampede2 Super Computing</a> center. Since First-Principle calculation is extremely computational consuming, I would not suggest running these codes on your laptop or even workstations. </td>
+    </tr>
+</table>
+		
+<font size=2.5, color="black">
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      <div>
+        <ul class="post-copyright">
+          Copyright &copy; Hanfeng Zhai | <a target="_blank" rel="noopener" href="https://hanfengzhai.net/"> www.HanfengZhai.net </a>
+         
+        </ul>
+<div>
+
+      
+      
+      
+
+    </footer>
+  </div>
+  
+    
+  
+</article>
+
+<!-- Table of Contents -->
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hiker</a> </p>
+	      
+        <p id="copyRightEn"> &copy; 2021 Hanfeng Zhai, All Rights Reserved.</p>
+	      
+        <p> <a target="_blank" rel="noopener" href="https://fcs.cornell.edu/projects/upson-hall">372 Upson Hall</a>, <a target="_blank" rel="noopener" href="https://www.cornell.edu/"> Cornell University </a> |  <a target="_blank" rel="noopener" href="https://goo.gl/maps/i4qDkB2JTGPQq1Jt8">Ithaca, NY 14853, USA</a> </p>
+		
+        <div class="wrapper">
+	    <ul class="social-icons icon-circle list-unstyled list-inline"> 
+        <li> <a href="mailto:hz253@cornell.edu"><i class="fa fa-envelope"></i></a></li>
+		    <li> <a href="tel:6073191318"><i class="fa fa-phone"></i></a></li> 
+	      <li> <a href="https://www.linkedin.com/in/hanfengzhai/"><i class="fa fa-linkedin"></i></a></li> 
+	      <li> <a href="https://twitter.com/HanfengZhai"><i class="fa fa-twitter"></i></a></li>
+        <li> <a href="https://github.com/hanfengzhai"><i class="fa fa-github"></i></a></li> 
+	      <li> <a href="https://scholar.google.com/citations?user=S5jCDXcAAAAJ&hl=en"><i class="fa fa-google-plus"></i></a></li>  
+        <li> <a href="https://www.instagram.com/hanfeng.zhai/"><i class="fa fa-instagram"></i></a></li>
+	      <li> <a href="https://www.facebook.com/hfzhai/"><i class="fa fa-facebook"></i></a></li> 
+	      <li> <a href="https://www.youtube.com/channel/UCn7UKJez4SV9VkO8pNqI5Pw"><i class="fa fa-youtube-play"></i></a></li>
+	  	</ul>
+	  	<div align="center">
+	  	<img src="https://www.mae.cornell.edu/themes/custom/cornell/assets/img/logos/logo-mae_department.svg" height="120" width="650" >
+		</div>
+
+	      <a target="_blank" rel="noopener" href="https://info.flagcounter.com/x6ta"><img src="https://s11.flagcounter.com/count2/x6ta/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+
+
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+
+
+
+
+    </div>
+<!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Hοme</a>
+  
+    <a href="/about" class="mobile-nav-link">Abοut</a>
+  
+    <a href="/research" class="mobile-nav-link">Research</a>
+  
+    <a href="/note" class="mobile-nav-link">Note</a>
+
+    <a href="/gallery" class="mobile-nav-link">Gallery</a>
+  
+    <a href="/software" class="mobile-nav-link">Software</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Hanfeng Zhai
+          </div>
+          <div class="panel-body">
+            Copyright © 2021 Bachelor Student @ Shanghai University All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+</body>
+</html>
