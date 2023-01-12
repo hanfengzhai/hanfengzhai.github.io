@@ -1,0 +1,1072 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN"
+        "HTMLFiles/xhtml-math11-f.dtd">
+
+<!-- Created with the Wolfram Language : www.wolfram.com -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+ <title>
+  WWS_HanfengZhai
+ </title>
+ <link href="HTMLFiles/WWS23_HanfengZhai.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_1.gif" alt="WWS23_HanfengZhai_1.gif" width="641" height="295" style="vertical-align:middle" />
+</p>
+
+<p class="Title">
+ Characterizing Coarse Graining with Causal Graphs
+</p>
+
+
+
+<p class="Author">
+ Hanfeng Zhai
+</p>
+
+
+
+<p class="Affiliation">
+ Cornell University
+</p>
+
+
+
+<p class="Abstract">
+ <span style='font-weight: bold;'>Abstract</span><br />Causal graphs are ubiquitous as a powerful tool for representing natural and engineered systems, including systems like molecular dynamics, particle and planetary collisions, chemical reactions, etc. Generally speaking, the higher the order, the higher the computational burden is required. In many engineering applications, scaling up the computation to capture the exact system is crucial. A crucial step is to reduce the order of the system with minimal loss of information, by performing a kind of coarse-graining procedure. In this project, we aim to understand and characterize coarse-graining as order reduction for hard sphere gas systems and develop a coarse-grained model for the causal graph derived from particle collision systems. We first examine the properties of spatial coarse-graining by testing various physical properties including density distribution, collision rate, kinetic energy, etc., and further examine their causal graphs by analyzing their adjacency matrices, motifs distributions, etc. We show that under ideal gas law, the proposed coarse-graining models are shown to be consistent in collision rate. We also propose a new method to do temporal coarse-graining on causal graphs retaining the same collision rate and test their motifs and related causal graph statistics. Our work sheds light on multiscale modeling and brings in a deeper understanding of coarse-graining by employing graph-based models.
+</p>
+
+
+
+<p class="Section">
+ Spatial Coarse-Graining for Macro-dynamics
+</p>
+
+
+
+<p class="Subsection">
+ Spatial Coarse-Grain: Survey and Formulation
+</p>
+
+
+
+<p class="Text">
+ For decades, a key problem in computational engineering is the bridge of multiple scales, i.e. multiscale modeling. Physically, considering the length scale in the real world, this stands for bridging over &Aring;ngstr&ouml;m, nanometers, micrometers, meters, etc. Mathematically and numerically, this could mean bridging different scales of order. Multiscale modeling includes bottom-up and top-down approaches. In bottom-up approaches, particle-based simulations are usually the fundamental approach. A central method employed for particle simulations is coarse-graining, i.e., reducing the order of the systems by assuming multiple smaller particles constitute a larger particle (Figure 1). 
+</p>
+
+
+
+<p class="Text">
+ <img src="HTMLFiles/WWS23_HanfengZhai_2.gif" alt="Graphics:PlotLabel /. Options[{GraphicsBox[TagBox[RasterBox[NumericArray[&lt;498,1094,4&gt;, UnsignedInteger8], {{0, 498.}, {1094., 0}}, {0, 255}, ColorFunction -&gt; RGBColor], BoxForm`ImageTag[System`Convert`CommonDump`ConvertText[Byte, System`Convert`HTMLDump`htmlsave, HTMLEntities -&gt; {HTMLBasic}, AltMathOutput -&gt; PlotLabel, WindowSize -&gt; {2000, Automatic}, MathOutput -&gt; PNG, ConvertClosed -&gt; False, ConvertReverseClosed -&gt; False, ConvertLinkedNotebooks -&gt; False, CharacterEncoding -&gt; Automatic, ConversionStyleEnvironment -&gt; None, ConversionRules -&gt; Automatic, HeadAttributes -&gt; {}, HeadElements -&gt; {}, CSS -&gt; Automatic, ConvertLinkedNotebooks -&gt; False, MathOutput -&gt; GIF, GraphicsOutput -&gt; GIF, Graphics3DOutput -&gt; Automatic, ManipulateOutput -&gt; CDF, ConvertClosed -&gt; True, ConvertReverseClosed -&gt; False, FullDocument -&gt; True, AltMathOutput -&gt; FileName, TableOutput -&gt; {TextForm, Automatic}, AnimationOutput -&gt; Automatic, FilesDirectory -&gt; HTMLFiles, LinksDirectory -&gt; HTMLLinks, HTMLEntities -&gt; {HTML}, AllowBlockMathML -&gt; False, ShowStyles -&gt; True, DataUri -&gt; False, MathMLOptions -&gt; {UseUnicodePlane1Characters -&gt; False, IncludeMarkupAnnotations -&gt; False, Entities -&gt; MathML}], ColorSpace -&gt; ColorProfileData[NumericArray[&lt;536&gt;, UnsignedInteger8], System`Convert`CommonDump`ConvertText[RGB, System`Convert`HTMLDump`htmlsave, HTMLEntities -&gt; {HTMLBasic}, AltMathOutput -&gt; PlotLabel, WindowSize -&gt; {2000, Automatic}, MathOutput -&gt; PNG, ConvertClosed -&gt; False, ConvertReverseClosed -&gt; False, ConvertLinkedNotebooks -&gt; False, CharacterEncoding -&gt; Automatic, ConversionStyleEnvironment -&gt; None, ConversionRules -&gt; Automatic, HeadAttributes -&gt; {}, HeadElements -&gt; {}, CSS -&gt; Automatic, ConvertLinkedNotebooks -&gt; False, MathOutput -&gt; GIF, GraphicsOutput -&gt; GIF, Graphics3DOutput -&gt; Automatic, ManipulateOutput -&gt; CDF, ConvertClosed -&gt; True, ConvertReverseClosed -&gt; False, FullDocument -&gt; True, AltMathOutput -&gt; FileName, TableOutput -&gt; {TextForm, Automatic}, AnimationOutput -&gt; Automatic, FilesDirectory -&gt; HTMLFiles, LinksDirectory -&gt; HTMLLinks, HTMLEntities -&gt; {HTML}, AllowBlockMathML -&gt; False, ShowStyles -&gt; True, DataUri -&gt; False, MathMLOptions -&gt; {UseUnicodePlane1Characters -&gt; False, IncludeMarkupAnnotations -&gt; False, Entities -&gt; MathML}], System`Convert`CommonDump`ConvertText[XYZ, System`Convert`HTMLDump`htmlsave, HTMLEntities -&gt; {HTMLBasic}, AltMathOutput -&gt; PlotLabel, WindowSize -&gt; {2000, Automatic}, MathOutput -&gt; PNG, ConvertClosed -&gt; False, ConvertReverseClosed -&gt; False, ConvertLinkedNotebooks -&gt; False, CharacterEncoding -&gt; Automatic, ConversionStyleEnvironment -&gt; None, ConversionRules -&gt; Automatic, HeadAttributes -&gt; {}, HeadElements -&gt; {}, CSS -&gt; Automatic, ConvertLinkedNotebooks -&gt; False, MathOutput -&gt; GIF, GraphicsOutput -&gt; GIF, Graphics3DOutput -&gt; Automatic, ManipulateOutput -&gt; CDF, ConvertClosed -&gt; True, ConvertReverseClosed -&gt; False, FullDocument -&gt; True, AltMathOutput -&gt; FileName, TableOutput -&gt; {TextForm, Automatic}, AnimationOutput -&gt; Automatic, FilesDirectory -&gt; HTMLFiles, LinksDirectory -&gt; HTMLLinks, HTMLEntities -&gt; {HTML}, AllowBlockMathML -&gt; False, ShowStyles -&gt; True, DataUri -&gt; False, MathMLOptions -&gt; {UseUnicodePlane1Characters -&gt; False, IncludeMarkupAnnotations -&gt; False, Entities -&gt; MathML}]], Interleaving -&gt; True, MetaInformation -&gt; Association[System`Convert`CommonDump`ConvertText[XMP, System`Convert`HTMLDump`htmlsave, HTMLEntities -&gt; {HTMLBasic}, AltMathOutput -&gt; PlotLabel, WindowSize -&gt; {2000, Automatic}, MathOutput -&gt; PNG, ConvertClosed -&gt; False, ConvertReverseClosed -&gt; False, ConvertLinkedNotebooks -&gt; False, CharacterEncoding -&gt; Automatic, ConversionStyleEnvironment -&gt; None, ConversionRules -&gt; Automatic, HeadAttributes -&gt; {}, HeadElements -&gt; {}, CSS -&gt; Automatic, ConvertLinkedNotebooks -&gt; False, MathOutput -&gt; GIF, GraphicsOutput -&gt; GIF, Graphics3DOutput -&gt; Automatic, ManipulateOutput -&gt; CDF, ConvertClosed -&gt; True, ConvertReverseClosed -&gt; False, FullDocument -&gt; True, AltMathOutput -&gt; FileName, TableOutput -&gt; {TextForm, Automatic}, AnimationOutput -&gt; Automatic, FilesDirectory -&gt; HTMLFiles, LinksDirectory -&gt; HTMLLinks, HTMLEntities -&gt; {HTML}, AllowBlockMathML -&gt; False, ShowStyles -&gt; True, DataUri -&gt; False, MathMLOptions -&gt; {UseUnicodePlane1Characters -&gt; False, IncludeMarkupAnnotations -&gt; False, Entities -&gt; MathML}] -&gt; Association[]]], Selectable -&gt; False], DefaultBaseStyle -&gt; System`Convert`CommonDump`ConvertText[ImageGraphics, System`Convert`HTMLDump`htmlsave, HTMLEntities -&gt; {HTMLBasic}, AltMathOutput -&gt; PlotLabel, WindowSize -&gt; {2000, Automatic}, MathOutput -&gt; PNG, ConvertClosed -&gt; False, ConvertReverseClosed -&gt; False, ConvertLinkedNotebooks -&gt; False, CharacterEncoding -&gt; Automatic, ConversionStyleEnvironment -&gt; None, ConversionRules -&gt; Automatic, HeadAttributes -&gt; {}, HeadElements -&gt; {}, CSS -&gt; Automatic, ConvertLinkedNotebooks -&gt; False, MathOutput -&gt; GIF, GraphicsOutput -&gt; GIF, Graphics3DOutput -&gt; Automatic, ManipulateOutput -&gt; CDF, ConvertClosed -&gt; True, ConvertReverseClosed -&gt; False, FullDocument -&gt; True, AltMathOutput -&gt; FileName, TableOutput -&gt; {TextForm, Automatic}, AnimationOutput -&gt; Automatic, FilesDirectory -&gt; HTMLFiles, LinksDirectory -&gt; HTMLLinks, HTMLEntities -&gt; {HTML}, AllowBlockMathML -&gt; False, ShowStyles -&gt; True, DataUri -&gt; False, MathMLOptions -&gt; {UseUnicodePlane1Characters -&gt; False, IncludeMarkupAnnotations -&gt; False, Entities -&gt; MathML}], ImageSize -&gt; {449.828, Automatic}, ImageSizeRaw -&gt; {1094., 498.}, PlotRange -&gt; {{0, 1094.}, {0, 498.}}], , Figure 1 : Schematic of Spatial Coarse - Graining .}]" width="450" height="248" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ Such a simple and intuitive approach has been widely adopted in many scientific communities in molecular modeling, computational biology, granular flow, and many others. If one does not assume a new inter-particular forcefield, the hierarchical structure of the microscale particular structure is not preserved, making such a coarse-graining approach not feasible in problems like solid mechanics, soft materials, etc. However, if one is curious about the flow dynamics or thermodynamics of the gas state, just resizing the particle and rearranging the numbers with the same forcefield may also be considered as a way of coarse-graining. Such a method has been widely used in granular flows to study the morphology of multiphase systems that are widely used in 3D printing, manufacturing, etc. Our coarse-graining assumptions are mainly inspired by the work in discrete element simulations [<span><a href="https://doi.org/10.1021/acs.iecr.6b02688"><span class="HyperlinkInline">Lu et al., 2016</span></a></span>; <span><a href="https://doi.org/10.1016/j.powtec.2020.05.063"><span class="HyperlinkInline">Widartiningsih et al., 2020</span></a></span>; <span><a href="https://doi.org/10.1016/j.powtec.2021.02.015"><span class="HyperlinkInline">Kanjilal &amp; Schneiderbauer, 2021</span></a></span>].<br /><br />Here, we adopt such systems and examine the coarse-graining methods in the case of gas dynamics, curious about three core questions: (1) <span style='font-weight: bold;'>Can this coarse-graining approach (order reduction) be applied to hard sphere gas systems?</span> (2) If the answer to (1) is Yes, <span style='font-weight: bold;'>what are the feasibility and limitations of such an approach?</span> (3) <span style='font-weight: bold;'>What are the hidden mechanism of such coarse-graining and can we bring in a deeper understanding with the Wolfram Physics Project?</span> To answer these questions, we begin by carrying out examine the global and local dynamics of different coarse-grained systems, and strive to understand the systems with causal graphs.
+</p>
+
+
+
+<p class="Subsection">
+ Macroscale Dynamics: An Illustrative Case
+</p>
+
+
+
+<p class="Subsubsection">
+ Overall Dynamics
+</p>
+
+
+
+<p class="Text">
+ We begin the study by setting up a classical simulation: a particle cluster was shoot from the left-upper corner to the right-lower corner and scattered into random gas dynamics [<span><a href="https://writings.stephenwolfram.com/2022/03/on-the-concept-of-motion/"><span class="HyperlinkInline">Wolfram, 2022</span></a></span>]. The hypothesis is the original system contains <span><span><span><img src="HTMLFiles/WWS23_HanfengZhai_3.png" alt="WWS23_HanfengZhai_3.png" width="49" height="22" style="vertical-align:middle" /></span></span></span> particles as a cluster, nominated as <span style='font-weight: bold;'>system C</span>. This system can be coarse-grained to a cluster with <span><span><span><img src="HTMLFiles/WWS23_HanfengZhai_4.png" alt="WWS23_HanfengZhai_4.png" width="31" height="22" style="vertical-align:middle" /></span></span></span> particles ( <span><span><span><img src="HTMLFiles/WWS23_HanfengZhai_5.png" alt="WWS23_HanfengZhai_5.png" width="48" height="22" style="vertical-align:middle" /></span></span></span> particle), nominated as <span style='font-weight: bold;'>system B</span>. System C can also be coarse-grained to a cluster with <span><span><span><img src="HTMLFiles/WWS23_HanfengZhai_6.png" alt="WWS23_HanfengZhai_6.png" width="31" height="22" style="vertical-align:middle" /></span></span></span> particles ( <span><span><span><img src="HTMLFiles/WWS23_HanfengZhai_7.png" alt="WWS23_HanfengZhai_7.png" width="57" height="22" style="vertical-align:middle" /></span></span></span> particle), nominated as <span style='font-weight: bold;'>system A</span>. We can then simulate the dynamics of the three systems and observe their corresponding macroscale dynamics as the density profiles. 
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_8.png" alt="WWS23_HanfengZhai_8.png" width="1262" height="144" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_9.gif" alt="WWS23_HanfengZhai_9.gif" width="904" height="351" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_10.gif" alt="WWS23_HanfengZhai_10.gif" width="1688" height="123" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ This whole process can be decomposed into three regimes: (1) the process from the left corner to the right corner, considered as the pseudo-flow dynamics; (2) the moment when the collision happens, considered as the collision dynamics; (3) random motion of the particles within the box, considered as random particle dynamics. The three macro density profiles of the three regimes are shown as flows.
+</p>
+
+
+
+<p class="Text">
+ <span style='font-style: italic;font-weight: bold;color: #800002;'>Regime 1: Particle Cluster Pseudo-Flow Dynamics</span>
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_11.png" alt="WWS23_HanfengZhai_11.png" width="1160" height="207" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_12.gif" alt="WWS23_HanfengZhai_12.gif" width="750" height="272" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ <span style='font-style: italic;font-weight: bold;color: #800002;'>Regime 2 : Particle Cluster Collision Dynamics</span>
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_13.png" alt="WWS23_HanfengZhai_13.png" width="1160" height="207" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_14.gif" alt="WWS23_HanfengZhai_14.gif" width="750" height="272" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ <span style='font-style: italic;font-weight: bold;color: #800002;'>Regime 3 : Discretize Random Particle Dynamics</span>
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_15.gif" alt="WWS23_HanfengZhai_15.gif" width="1748" height="165" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_16.png" alt="WWS23_HanfengZhai_16.png" width="1175" height="60" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_17.gif" alt="WWS23_HanfengZhai_17.gif" width="750" height="272" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ The visualizations above show that for both three regimes, similar density profiles for different coarse-grained systems. However, from the observations, one can only argue that based on rough observations it is difficult to extract the small differences between other systems, but one cannot quantitatively argue that the different coarse-grained systems have similar dynamics under specific criteria. To strengthen the argument, we first need to detect the exact differences between the details of other systems. We decomposed the whole particle motion into snapshots to capture the local dynamics of the motion directly and visualize it as follows.
+</p>
+
+
+
+<p class="Subsubsection">
+ Local Dynamics
+</p>
+
+
+
+<p class="Text">
+ <span style='font-style: italic;font-weight: bold;color: #800002;'>System A</span>
+</p>
+
+
+
+<p class="Text">
+ System A contains 9 particles, and the density profile is extracted based on the spatial distribution of the particle at different time steps.
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_18.png" alt="WWS23_HanfengZhai_18.png" width="1049" height="228" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_19.gif" alt="WWS23_HanfengZhai_19.gif" width="1210" height="128" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_20.png" alt="WWS23_HanfengZhai_20.png" width="949" height="144" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_21.gif" alt="WWS23_HanfengZhai_21.gif" width="1155" height="170" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ <span style='font-style: italic;font-weight: bold;color: #800002;'>System B</span>
+</p>
+
+
+
+<p class="Text">
+ System B contains 36 particles, and the density profile is extracted based on the spatial distribution of the particle at different time steps.
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_22.png" alt="WWS23_HanfengZhai_22.png" width="1057" height="228" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_23.gif" alt="WWS23_HanfengZhai_23.gif" width="1210" height="128" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_24.png" alt="WWS23_HanfengZhai_24.png" width="957" height="144" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_25.gif" alt="WWS23_HanfengZhai_25.gif" width="1155" height="171" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ <span style='font-style: italic;font-weight: bold;color: #800002;'>System C</span>
+</p>
+
+
+
+<p class="Text">
+ System C contains 900 particles, and the density profile is extracted based on the spatial distribution of the particle at different time steps.
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_26.png" alt="WWS23_HanfengZhai_26.png" width="1065" height="228" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_27.gif" alt="WWS23_HanfengZhai_27.gif" width="1210" height="128" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_28.png" alt="WWS23_HanfengZhai_28.png" width="965" height="144" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_29.gif" alt="WWS23_HanfengZhai_29.gif" width="1155" height="170" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ In this section, we directly visualize the physical intuition under particle-based coarse-graining: the macroscale observation, i.e., the density profile, is observed to be similar. However, from both mathematical and physical perspectives, this is not a strong argument as there is no exact quantitative or symbolic analysis directing this evidence. Following the idea, we first show the differences in the local dynamics and are to show how to characterize these different coarse-grained systems using graph models in the following section.
+</p>
+
+
+
+<p class="Section">
+ Characterization of Spatial Coarse-Grain
+</p>
+
+
+
+<p class="Subsection">
+ The Spatial Coarse-Grain Approach for Equilibrium Process
+</p>
+
+
+
+<p class="Text">
+ Following the previous sections, one can deduce that the three regimes of the illustrative example contain two nonequilibrium (flow and collision) and one equilibrium (random motion) process. As we did not modify the forcefield (hard sphere gas models), the larger particle does not preserve the hierarchical dynamics of the smaller particles, i.e., a larger particle cannot represent multiple smaller particles after a collision happens when the motion of smaller particles are randomized at a smaller time scale. This indicates that using this kind of coarse-graining to study the nonequilibrium process is not physically rigorous. <br /><br />However, equilibrium processes, physically different coarse-grained systems confined in the box running for a long time until the overall thermodynamical properties of the systems reach the same, possess clear criteria to study and measure, e.g., Maxwell-Boltzmann function. One may also check the local dynamics of such systems, e.g., the collective behavior of particles in the short time regime.<br /><br />Here, we investigate the equilibrium process. Assuming we have two systems containing 9 and 36 particles respectively. We want to look at both the hypergraphs and causal graphs of the two systems for the examination of the coarse-graining. We first run the two systems until thermodynamic equilibrium.
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_30.png" alt="WWS23_HanfengZhai_30.png" width="1165" height="81" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_31.png" alt="WWS23_HanfengZhai_31.png" width="185" height="17" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_32.gif" alt="WWS23_HanfengZhai_32.gif" width="564" height="332" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ The left visualization corresponds to the case of the 9-particle system and the right corresponds to the case of the 36-particle system.
+</p>
+
+
+
+<p class="Subsubsection">
+ Thermodynamics
+</p>
+
+
+
+<p class="Text">
+ To check the thermodynamical equilibrium of the two systems, one can check the distribution of speeds w.r.t. temperature and fit with the Maxwell-Boltzmann function, shown as follows.
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_33.png" alt="WWS23_HanfengZhai_33.png" width="1231" height="165" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_34.png" alt="WWS23_HanfengZhai_34.png" width="1151" height="144" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_35.png" alt="WWS23_HanfengZhai_35.png" width="232" height="17" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_36.gif" alt="WWS23_HanfengZhai_36.gif" width="700" height="249" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ For a detailed analysis of these equilibrium systems using hypergraphs and causal graphs, please check Supplementary Section I and Supplementary Section II in the Appendix.
+</p>
+
+
+
+<p class="Subsection">
+ Examine the Properties of the Graphs
+</p>
+
+
+
+<p class="Text">
+ Under this equilibrium process, we can then explore the graphs representing the physical systems that strive to dig hidden mechanisms under this process. We explore both the hypergraph, i.e., the graph representing the interactions of the particles; and the causal graphs, i.e., the graph representing the collision events happening in chronological order; to provide more insights into different coarse-grained systems.
+</p>
+
+
+
+<p class="Subsubsection">
+ The Hypergraphs
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_37.png" alt="WWS23_HanfengZhai_37.png" width="1175" height="39" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_38.png" alt="WWS23_HanfengZhai_38.png" width="1191" height="39" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ We can first visualize the hypergraphs:
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_39.png" alt="WWS23_HanfengZhai_39.png" width="924" height="17" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_40.png" alt="WWS23_HanfengZhai_40.png" width="966" height="60" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_41.gif" alt="WWS23_HanfengZhai_41.gif" width="700" height="271" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ It can be deduced from the hypergraph that all the particles within the system interacted thoroughly as the graph nodes are fully connected. However, one may also be cautious that thermodynamically equilibrium is not equivalent to fully connected hypergraphs. 
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_42.gif" alt="WWS23_HanfengZhai_42.gif" width="1063" height="186" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_43.gif" alt="WWS23_HanfengZhai_43.gif" width="1220" height="296" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ Another way to visualize the properties of the graph is through the adjacency and incident matrices. When the graph size is large it is difficult to deduce the connectivity of the hypergraphs, in which the adjacency matrix plays a more important role when scaling up the systems. From the above adjacency matrices, one can reaffirm that the particles fully interacted with each other, as all the elements besides the diagonal possess the value of 1 (marked in orange). The hypergraph matrices stand for the interaction orders between the particles, in which one can hardly deduce any hierarchal orders or similar patterns. Hence, this indicates that interactions between particles are more random, where our spatial coarse-graining approach cannot capture the dynamics. Another important property of the systems is the collision events, which can be preserved in the causal graphs shown below.
+</p>
+
+
+
+<p class="Subsubsection">
+ The Causal Graphs
+</p>
+
+
+
+<p class="Text">
+ <span style='font-style: italic;font-weight: bold;color: #800002;'>Statistics of the Graphs</span>
+</p>
+
+
+
+<p class="Text">
+ Due to the large size of the causal graphs, it is extremely difficult to directly visualize the whole graph. We here only show the statistics hidden within the causal graph by counting the edge number probability distribution. It can be seen that both causal graphs have the most 3-edge nodes, with slightly different 2-edge and 4-edge nodes. This may indicate that the connections between collision events are slightly different for the two coarse-grained systems.
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_44.png" alt="WWS23_HanfengZhai_44.png" width="522" height="17" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_45.png" alt="WWS23_HanfengZhai_45.png" width="1175" height="144" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_46.gif" alt="WWS23_HanfengZhai_46.gif" width="700" height="258" style="vertical-align:middle" />
+</p>
+
+<p class='Text' style='font-style: italic;font-weight: bold;color: #800002;'>
+ Characterization Matrices
+</p>
+
+
+
+<p class="Text">
+ We can also plot the adjacency and incident matrices for the causal graphs. The adjacency matrices for the causal graph stand for the direct connections between the collision events. The incident matrices shall stand for all the different types of connections. Just from purely visual observations, one may find that the coarse-grained system possesses a sparser adjacency matrix with a similar trend and both the incident matrices are observed to be similar. However, this does not indicate a direct connection between the two. The goal here is to provide new insights from the perspective of considering the connections between the events for depicting the local dynamics. (One can also see more in the Supplementary Section for other adjacency and incident matrices of other systems) 
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_47.gif" alt="WWS23_HanfengZhai_47.gif" width="1377" height="165" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_48.gif" alt="WWS23_HanfengZhai_48.gif" width="640" height="324" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_49.gif" alt="WWS23_HanfengZhai_49.gif" width="640" height="310" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ <span style='font-style: italic;font-weight: bold;color: #800002;'>Motifs Representing the Local Graph Dynamics</span>
+</p>
+
+
+
+<p class="Text">
+ Since we care about the local structure of the causal graph representing the connections of collision events. A better way to directly visualize the statistics of those connections is to observe the probability of motifs in the causal graph.&nbsp;&nbsp;Here, we use to {I, II, E, Y, K, A, V} to denote 7 different kinds of motifs: {<span><span><img src="HTMLFiles/WWS23_HanfengZhai_50.gif" alt="WWS23_HanfengZhai_50.gif" width="151" height="19" style="vertical-align:middle" /></span></span>,<span><span><img src="HTMLFiles/WWS23_HanfengZhai_51.gif" alt="WWS23_HanfengZhai_51.gif" width="235" height="21" style="vertical-align:middle" /></span></span>,<span><span><img src="HTMLFiles/WWS23_HanfengZhai_52.gif" alt="WWS23_HanfengZhai_52.gif" width="75" height="40" style="vertical-align:middle" /></span></span>,<span><span><img src="HTMLFiles/WWS23_HanfengZhai_53.gif" alt="WWS23_HanfengZhai_53.gif" width="23" height="44" style="vertical-align:middle" /></span></span>,<span><span><img src="HTMLFiles/WWS23_HanfengZhai_54.gif" alt="WWS23_HanfengZhai_54.gif" width="25" height="48" style="vertical-align:middle" /></span></span>,<span><span><img src="HTMLFiles/WWS23_HanfengZhai_55.gif" alt="WWS23_HanfengZhai_55.gif" width="49" height="49" style="vertical-align:middle" /></span></span><span><span><img src="HTMLFiles/WWS23_HanfengZhai_56.gif" alt="WWS23_HanfengZhai_56.gif" width="46" height="46" style="vertical-align:middle" /></span></span>}. The statistics of the causal graphs are shown below.
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_57.gif" alt="WWS23_HanfengZhai_57.gif" width="908" height="81" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_58.png" alt="WWS23_HanfengZhai_58.png" width="584" height="81" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_59.png" alt="WWS23_HanfengZhai_59.png" width="263" height="17" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_60.gif" alt="WWS23_HanfengZhai_60.gif" width="1279" height="245" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_61.gif" alt="WWS23_HanfengZhai_61.gif" width="1760" height="102" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_62.gif" alt="WWS23_HanfengZhai_62.gif" width="600" height="234" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ Just as the edge number counts, the probability distribution of the motifs is reported to be similar for the two different coarse-grained systems, yet the distribution is slightly different with different ratios of II- and K-typed motifs in the causal graphs. 
+</p>
+
+
+
+<p class="Subsection">
+ Benchmark Cases for Graph Characterizations
+</p>
+
+
+
+<p class="Text">
+ However, based on our previous analysis and examinations, one may ask an intuitive question: does all the causal graph look similar? To answer this, we also adopt some models from the Wolfram Physics project to illustrate some characteristic matrices from the rewriting systems. Taking the simple rule <span><span><span><img src="HTMLFiles/WWS23_HanfengZhai_63.png" alt="WWS23_HanfengZhai_63.png" width="359" height="22" style="vertical-align:middle" /></span></span></span>, we can first visualize the corresponding hypergraph:
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_64.png" alt="WWS23_HanfengZhai_64.png" width="1172" height="63" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_65.gif" alt="WWS23_HanfengZhai_65.gif" width="360" height="284" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_66.gif" alt="WWS23_HanfengZhai_66.gif" width="1462" height="81" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_67.gif" alt="WWS23_HanfengZhai_67.gif" width="960" height="334" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ Taking another case, assuming we have the transformation rule: <span><span><span><img src="HTMLFiles/WWS23_HanfengZhai_68.png" alt="WWS23_HanfengZhai_68.png" width="397" height="22" style="vertical-align:middle" /></span></span></span>
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_69.png" alt="WWS23_HanfengZhai_69.png" width="1268" height="63" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_70.gif" alt="WWS23_HanfengZhai_70.gif" width="360" height="165" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_71.gif" alt="WWS23_HanfengZhai_71.gif" width="1462" height="81" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_72.gif" alt="WWS23_HanfengZhai_72.gif" width="960" height="334" style="vertical-align:middle" />
+</p>
+
+<p class="Section">
+ Spatial and Temporal Coarse-Graining
+</p>
+
+
+
+<p class="Text">
+ There are two ways to do coarse-grain to reduce the order of the system for reduced computational costs, spatial and temporal. For spatial, we take the common approach used in the discrete element communities, which assumes by enlarging the particle size and decreasing the particle numbers in ratio, the macroscopic behavior of the system should roughly be the same. We compare different systems of the same box running with the same time steps but with different particle numbers and radii. We examine this assumption by testing the linear relation between the collision rate and the square root of the temperature. For the temporal coarse-grain approach, we directly operate on the causal graph by uniformly subtracting the &ldquo;extra&rdquo; node (representing the collision events) from the overall causal graph.&nbsp;&nbsp;By resampling the causal and assign with new labels to represent the density of the new nodes, the temporal coarse-grained causal graph is able to preserve the collision rates. <br /><br />The two approaches are introduced and examined in different cases with different particle sizes and numbers. Their corresponding assumptions, verifications, and limitations are then briefly elaborated on and discussed. Most importantly, we indicate under which scenario these coarse-grain approaches then tend to fail, i.e., preserve the physics of the original system.
+</p>
+
+
+
+<p class="Subsection">
+ Examine the Physics from the Causal Graph for Spatial Coarse-Graining
+</p>
+
+
+
+<p class="Text">
+ Beginning with the previous thoughts on resizing the particles and changing the particle numbers, one hopes to preserve the volume fraction between the particles and &ldquo;vacuum&rdquo; space. Under this assumption, we begin exploring physics by testing the relationship between the collision rate and the square root of the temperature.<br /><br />To show how these two physical quantities, we first recall the second law of thermodynamics, according to ideal gas law [<span><a href="https://people.nscl.msu.edu/~thoennes/personal/phy231/p231_notes6.pdf"><span class="HyperlinkInline">Thoennessen, 1995</span></a></span>]: <span><span><span><img src="HTMLFiles/WWS23_HanfengZhai_73.png" alt="WWS23_HanfengZhai_73.png" width="76" height="22" style="vertical-align:middle" /></span></span></span>, where <span><span><span><img src="HTMLFiles/WWS23_HanfengZhai_74.png" alt="WWS23_HanfengZhai_74.png" width="175" height="22" style="vertical-align:middle" /></span></span></span> is the universal gas constant and <span><span><span><img src="HTMLFiles/WWS23_HanfengZhai_75.png" alt="WWS23_HanfengZhai_75.png" width="8" height="19" style="vertical-align:middle" /></span></span></span> corresponds to the quantity of gas in moles. Also, based on the ideal gas approximation, we know: <span><span><img src="HTMLFiles/WWS23_HanfengZhai_76.png" alt="WWS23_HanfengZhai_76.png" width="101" height="22" style="vertical-align:middle" /></span></span>, where <span><span><img src="HTMLFiles/WWS23_HanfengZhai_77.png" alt="WWS23_HanfengZhai_77.png" width="24" height="22" style="vertical-align:middle" /></span></span> is the mean kinetic energy of an individual molecule and <span><span><span><img src="HTMLFiles/WWS23_HanfengZhai_78.png" alt="WWS23_HanfengZhai_78.png" width="11" height="19" style="vertical-align:middle" /></span></span></span> is the total number of molecules in the gas. We also know that the kinetic energy relates to the velocity by its square: <span><span><img src="HTMLFiles/WWS23_HanfengZhai_79.png" alt="WWS23_HanfengZhai_79.png" width="51" height="22" style="vertical-align:middle" /></span></span>, and the velocity is directly related to the collision rate <span><span><span><img src="HTMLFiles/WWS23_HanfengZhai_80.png" alt="WWS23_HanfengZhai_80.png" width="16" height="19" style="vertical-align:middle" /></span></span></span>. Hence, one should expect a linear relationship between the collision rate with the square root of the temperature.<br /><br />To examine this relation, we begin by defining a function that takes a series of different initial velocities (of the particles), varying box sizes, and different particle numbers to obtain the corresponding temperature and collision rate from the hard sphere simulations:
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_81.png" alt="WWS23_HanfengZhai_81.png" width="1204" height="291" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ Given the relationship between the physical quantities, we can define the two simulation systems differently by varying the box sizes and particle radii for spatial coarse-graining, which is equivalent to changing the particles&rsquo; radii and total numbers. The key goal is to keep the volume fraction of the systems roughly the same. Simultaneously, based on the density of the sphere should hold the same before and after we do coarse-graining, the mass of the sphere should also change as we change the box size (the equivalent to changing the sphere radii, holding the volume fraction constant). <br /><br />Now, we can assume 5 different degrees of coarse-graining. Assuming a fine systems with <span><span><span><img src="HTMLFiles/WWS23_HanfengZhai_82.png" alt="WWS23_HanfengZhai_82.png" width="98" height="22" style="vertical-align:middle" /></span></span></span> particles. Denote the original system as system A, this system can also be coarse-grained into (B) <span><span><span><img src="HTMLFiles/WWS23_HanfengZhai_83.png" alt="WWS23_HanfengZhai_83.png" width="48" height="22" style="vertical-align:middle" /></span></span></span> : <span><span><span><img src="HTMLFiles/WWS23_HanfengZhai_84.png" alt="WWS23_HanfengZhai_84.png" width="98" height="22" style="vertical-align:middle" /></span></span></span> particles; (C) <span><span><span><img src="HTMLFiles/WWS23_HanfengZhai_85.png" alt="WWS23_HanfengZhai_85.png" width="48" height="22" style="vertical-align:middle" /></span></span></span> : <span><span><span><img src="HTMLFiles/WWS23_HanfengZhai_86.png" alt="WWS23_HanfengZhai_86.png" width="71" height="22" style="vertical-align:middle" /></span></span></span> particles; (D) <span><span><span><img src="HTMLFiles/WWS23_HanfengZhai_87.png" alt="WWS23_HanfengZhai_87.png" width="48" height="22" style="vertical-align:middle" /></span></span></span> : <span><span><span><img src="HTMLFiles/WWS23_HanfengZhai_88.png" alt="WWS23_HanfengZhai_88.png" width="71" height="22" style="vertical-align:middle" /></span></span></span> particles; (E) <span><span><span><img src="HTMLFiles/WWS23_HanfengZhai_89.png" alt="WWS23_HanfengZhai_89.png" width="48" height="22" style="vertical-align:middle" /></span></span></span> : <span><span><span><img src="HTMLFiles/WWS23_HanfengZhai_90.png" alt="WWS23_HanfengZhai_90.png" width="62" height="22" style="vertical-align:middle" /></span></span></span> particles. Assuming system E has a box size of 10, the corresponding box sizes for the four others are (A) <span><span><img src="HTMLFiles/WWS23_HanfengZhai_91.png" alt="WWS23_HanfengZhai_91.png" width="98" height="38" style="vertical-align:middle" /></span></span>; (B) <span><span><img src="HTMLFiles/WWS23_HanfengZhai_92.png" alt="WWS23_HanfengZhai_92.png" width="90" height="38" style="vertical-align:middle" /></span></span>; (C) <span><span><img src="HTMLFiles/WWS23_HanfengZhai_93.png" alt="WWS23_HanfengZhai_93.png" width="76" height="38" style="vertical-align:middle" /></span></span>; (D) <span><span><img src="HTMLFiles/WWS23_HanfengZhai_94.png" alt="WWS23_HanfengZhai_94.png" width="76" height="38" style="vertical-align:middle" /></span></span>. We can then test the physics of the four systems and check whether they agrees with the second law of thermodynamics with the same fitting coefficients.<br /><br />To get a good sense of how the system may look like, we generate the visualizations as follows:
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_95.png" alt="WWS23_HanfengZhai_95.png" width="1180" height="207" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_96.png" alt="WWS23_HanfengZhai_96.png" width="382" height="17" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_97.gif" alt="WWS23_HanfengZhai_97.gif" width="1253" height="301" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_98.gif" alt="WWS23_HanfengZhai_98.gif" width="633" height="102" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_99.png" alt="WWS23_HanfengZhai_99.png" width="1294" height="332" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_100.gif" alt="WWS23_HanfengZhai_100.gif" width="458" height="239" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_101.png" alt="WWS23_HanfengZhai_101.png" width="1219" height="60" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_102.gif" alt="WWS23_HanfengZhai_102.gif" width="448" height="239" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ A very interesting phenomenon is observed: those different &ldquo;coarse-grained&rdquo; systems (we can think of the original system as a system with a coarse-grain degree of zero) all obey the ideal gas law with very similar fitting parameters (slope)! This indicates that the different coarse-grained systems can be interpreted as a surrogate for each other pertaining to the thermodynamics properties considering collision rate and temperature according to the ideal gas law. However, one may also argue that the short-time collective behavior of those different coarse-grained systems is still different even though their overall relationships are similar. Hence, we generate the following figures to show the velocity correlation (decay of particle velocities correlation w.r.t. time) and kinetic energy evolution w.r.t. time.
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_103.png" alt="WWS23_HanfengZhai_103.png" width="1193" height="39" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_104.png" alt="WWS23_HanfengZhai_104.png" width="1190" height="39" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_105.png" alt="WWS23_HanfengZhai_105.png" width="1186" height="39" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_106.png" alt="WWS23_HanfengZhai_106.png" width="1186" height="39" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_107.png" alt="WWS23_HanfengZhai_107.png" width="1175" height="39" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_108.png" alt="WWS23_HanfengZhai_108.png" width="1261" height="81" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_109.gif" alt="WWS23_HanfengZhai_109.gif" width="1676" height="87" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_110.png" alt="WWS23_HanfengZhai_110.png" width="318" height="17" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_111.gif" alt="WWS23_HanfengZhai_111.gif" width="899" height="247" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ Admittedly, it is intuitive that one may expect a large particle may have a slower velocity correlation than the smaller particles (If not in a coarse-grained system this may be true, e.g., with similar particle numbers). However, the two left figures above show that all five different coarse-grained systems possess similar velocity correlation properties, indicating the collective particle behavior in the short-time regime is similar. Also, the total kinetic energy fluctuation w.r.t. time shows that the collective kinetic energies are preserved well for different coarse-grained systems tested, with no obvious differences detected.<br /><br />Along with the collision rates, this shall be a shred of direct quantitative evidence showing that the spatial coarse-graining preserves physical properties for thermodynamically equilibrium systems.
+</p>
+
+
+
+<p class="Subsection">
+ Examine the Physics from the Causal Graph for Temporal Coarse-Graining
+</p>
+
+
+
+<p class="Text">
+ Now, we directly operate on the causal by cutting out edges for coarse-graining the causal graph. The way we propose to coarse-grain the causal graph is to uniformly sample the node that represent the collision events and cut off by assigned quantities. For example, if one has a list representing the node: {1,2,3,4,5,6,7,8,9,10}, assume this list stand for a causal graph representing a series of events with the ordered label, we can get the coarse-grained causal graph by simply extract by arithmetic order. Say one wants to get the coarse-grained graph preserving half the nodes, i.e., by the order of 2, the new graph writes: {1,3,5,7,9}. Similarly, if one wants to obtain a coarse-grained graph by the order of 3, one obtain a new graph {1,4,7,10}. 
+</p>
+
+
+
+<p class="Text">
+ <img src="HTMLFiles/WWS23_HanfengZhai_112.gif" alt="Graphics:PlotLabel /. Options[{GraphicsBox[TagBox[RasterBox[NumericArray[&lt;1034,1693,4&gt;, UnsignedInteger8], {{0, 1034.}, {1693., 0}}, {0, 255}, ColorFunction -&gt; RGBColor], BoxForm`ImageTag[System`Convert`CommonDump`ConvertText[Byte, System`Convert`HTMLDump`htmlsave, HTMLEntities -&gt; {HTMLBasic}, AltMathOutput -&gt; PlotLabel, WindowSize -&gt; {2000, Automatic}, MathOutput -&gt; PNG, ConvertClosed -&gt; False, ConvertReverseClosed -&gt; False, ConvertLinkedNotebooks -&gt; False, CharacterEncoding -&gt; Automatic, ConversionStyleEnvironment -&gt; None, ConversionRules -&gt; Automatic, HeadAttributes -&gt; {}, HeadElements -&gt; {}, CSS -&gt; Automatic, ConvertLinkedNotebooks -&gt; False, MathOutput -&gt; GIF, GraphicsOutput -&gt; GIF, Graphics3DOutput -&gt; Automatic, ManipulateOutput -&gt; CDF, ConvertClosed -&gt; True, ConvertReverseClosed -&gt; False, FullDocument -&gt; True, AltMathOutput -&gt; FileName, TableOutput -&gt; {TextForm, Automatic}, AnimationOutput -&gt; Automatic, FilesDirectory -&gt; HTMLFiles, LinksDirectory -&gt; HTMLLinks, HTMLEntities -&gt; {HTML}, AllowBlockMathML -&gt; False, ShowStyles -&gt; True, DataUri -&gt; False, MathMLOptions -&gt; {UseUnicodePlane1Characters -&gt; False, IncludeMarkupAnnotations -&gt; False, Entities -&gt; MathML}], ColorSpace -&gt; ColorProfileData[NumericArray[&lt;536&gt;, UnsignedInteger8], System`Convert`CommonDump`ConvertText[RGB, System`Convert`HTMLDump`htmlsave, HTMLEntities -&gt; {HTMLBasic}, AltMathOutput -&gt; PlotLabel, WindowSize -&gt; {2000, Automatic}, MathOutput -&gt; PNG, ConvertClosed -&gt; False, ConvertReverseClosed -&gt; False, ConvertLinkedNotebooks -&gt; False, CharacterEncoding -&gt; Automatic, ConversionStyleEnvironment -&gt; None, ConversionRules -&gt; Automatic, HeadAttributes -&gt; {}, HeadElements -&gt; {}, CSS -&gt; Automatic, ConvertLinkedNotebooks -&gt; False, MathOutput -&gt; GIF, GraphicsOutput -&gt; GIF, Graphics3DOutput -&gt; Automatic, ManipulateOutput -&gt; CDF, ConvertClosed -&gt; True, ConvertReverseClosed -&gt; False, FullDocument -&gt; True, AltMathOutput -&gt; FileName, TableOutput -&gt; {TextForm, Automatic}, AnimationOutput -&gt; Automatic, FilesDirectory -&gt; HTMLFiles, LinksDirectory -&gt; HTMLLinks, HTMLEntities -&gt; {HTML}, AllowBlockMathML -&gt; False, ShowStyles -&gt; True, DataUri -&gt; False, MathMLOptions -&gt; {UseUnicodePlane1Characters -&gt; False, IncludeMarkupAnnotations -&gt; False, Entities -&gt; MathML}], System`Convert`CommonDump`ConvertText[XYZ, System`Convert`HTMLDump`htmlsave, HTMLEntities -&gt; {HTMLBasic}, AltMathOutput -&gt; PlotLabel, WindowSize -&gt; {2000, Automatic}, MathOutput -&gt; PNG, ConvertClosed -&gt; False, ConvertReverseClosed -&gt; False, ConvertLinkedNotebooks -&gt; False, CharacterEncoding -&gt; Automatic, ConversionStyleEnvironment -&gt; None, ConversionRules -&gt; Automatic, HeadAttributes -&gt; {}, HeadElements -&gt; {}, CSS -&gt; Automatic, ConvertLinkedNotebooks -&gt; False, MathOutput -&gt; GIF, GraphicsOutput -&gt; GIF, Graphics3DOutput -&gt; Automatic, ManipulateOutput -&gt; CDF, ConvertClosed -&gt; True, ConvertReverseClosed -&gt; False, FullDocument -&gt; True, AltMathOutput -&gt; FileName, TableOutput -&gt; {TextForm, Automatic}, AnimationOutput -&gt; Automatic, FilesDirectory -&gt; HTMLFiles, LinksDirectory -&gt; HTMLLinks, HTMLEntities -&gt; {HTML}, AllowBlockMathML -&gt; False, ShowStyles -&gt; True, DataUri -&gt; False, MathMLOptions -&gt; {UseUnicodePlane1Characters -&gt; False, IncludeMarkupAnnotations -&gt; False, Entities -&gt; MathML}]], Interleaving -&gt; True, MetaInformation -&gt; Association[System`Convert`CommonDump`ConvertText[XMP, System`Convert`HTMLDump`htmlsave, HTMLEntities -&gt; {HTMLBasic}, AltMathOutput -&gt; PlotLabel, WindowSize -&gt; {2000, Automatic}, MathOutput -&gt; PNG, ConvertClosed -&gt; False, ConvertReverseClosed -&gt; False, ConvertLinkedNotebooks -&gt; False, CharacterEncoding -&gt; Automatic, ConversionStyleEnvironment -&gt; None, ConversionRules -&gt; Automatic, HeadAttributes -&gt; {}, HeadElements -&gt; {}, CSS -&gt; Automatic, ConvertLinkedNotebooks -&gt; False, MathOutput -&gt; GIF, GraphicsOutput -&gt; GIF, Graphics3DOutput -&gt; Automatic, ManipulateOutput -&gt; CDF, ConvertClosed -&gt; True, ConvertReverseClosed -&gt; False, FullDocument -&gt; True, AltMathOutput -&gt; FileName, TableOutput -&gt; {TextForm, Automatic}, AnimationOutput -&gt; Automatic, FilesDirectory -&gt; HTMLFiles, LinksDirectory -&gt; HTMLLinks, HTMLEntities -&gt; {HTML}, AllowBlockMathML -&gt; False, ShowStyles -&gt; True, DataUri -&gt; False, MathMLOptions -&gt; {UseUnicodePlane1Characters -&gt; False, IncludeMarkupAnnotations -&gt; False, Entities -&gt; MathML}] -&gt; Association[]]], Selectable -&gt; False], DefaultBaseStyle -&gt; System`Convert`CommonDump`ConvertText[ImageGraphics, System`Convert`HTMLDump`htmlsave, HTMLEntities -&gt; {HTMLBasic}, AltMathOutput -&gt; PlotLabel, WindowSize -&gt; {2000, Automatic}, MathOutput -&gt; PNG, ConvertClosed -&gt; False, ConvertReverseClosed -&gt; False, ConvertLinkedNotebooks -&gt; False, CharacterEncoding -&gt; Automatic, ConversionStyleEnvironment -&gt; None, ConversionRules -&gt; Automatic, HeadAttributes -&gt; {}, HeadElements -&gt; {}, CSS -&gt; Automatic, ConvertLinkedNotebooks -&gt; False, MathOutput -&gt; GIF, GraphicsOutput -&gt; GIF, Graphics3DOutput -&gt; Automatic, ManipulateOutput -&gt; CDF, ConvertClosed -&gt; True, ConvertReverseClosed -&gt; False, FullDocument -&gt; True, AltMathOutput -&gt; FileName, TableOutput -&gt; {TextForm, Automatic}, AnimationOutput -&gt; Automatic, FilesDirectory -&gt; HTMLFiles, LinksDirectory -&gt; HTMLLinks, HTMLEntities -&gt; {HTML}, AllowBlockMathML -&gt; False, ShowStyles -&gt; True, DataUri -&gt; False, MathMLOptions -&gt; {UseUnicodePlane1Characters -&gt; False, IncludeMarkupAnnotations -&gt; False, Entities -&gt; MathML}], ImageSize -&gt; {519.927, Automatic}, ImageSizeRaw -&gt; {1693., 1034.}, PlotRange -&gt; {{0, 1693.}, {0, 1034.}}], , Figure 2 : Schematic of Temporal Coarse - Graining .}]" width="520" height="361" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ Now, the problem here would be if the node numbers in the graph are small, then by doing this kind of &ldquo;coarse-graining&rdquo; one cannot guarantee the new graph possesses exacting the information memory one hopes to keep. From our previous example by sampling differently the &ldquo;order-3&rdquo; coarse-grained graph contains either 3 or 4 nodes. Putting this in the general case of simulating hard sphere models one concludes that the collision events one stores in the new graph may contain unavoidable errors. But with the increase of causal graph size this error with become relatively smaller until it eventually yields to zero.<br /><br />Here, we begin with a toy example to illustrate what this kind of coarse-graining looks like, and then we implement this coarse-grain technique to particle systems or larger scales. We will briefly elaborate on the pros and cons of such an approach and how this approach may further inspire a graph-based approach to better understand physics. 
+</p>
+
+
+
+<p class="Subsubsection">
+ A Toy Example
+</p>
+
+
+
+<p class="Text">
+ We begin with the System A we just used and run for only 50 steps as it only contains a few collision events so we could better illustrate how the causal graph is coarse-grained.
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_113.png" alt="WWS23_HanfengZhai_113.png" width="1089" height="39" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_114.gif" alt="WWS23_HanfengZhai_114.gif" width="281" height="330" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_115.png" alt="WWS23_HanfengZhai_115.png" width="1145" height="60" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_116.gif" alt="WWS23_HanfengZhai_116.gif" width="437" height="720" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ The causal graph shows the collisions hidden beneath the toy example. The label on each node stands for the labels of the two particles involved in the collision and the third element is the corresponding collision time. One can observe that on this causal graph, each node contains the label of different particles and the corresponding time at each collision. Just from the causal graph, one can directly compute the collision rate by counting the total number of nodes first and dividing by the simulation time. In order to coarse-grain this causal graph, we first assign a value of &ldquo;1&rdquo; at the end of each node element:
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_117.png" alt="WWS23_HanfengZhai_117.png" width="407" height="17" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_118.png" alt="WWS23_HanfengZhai_118.png" width="70" height="17" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_119.png" alt="WWS23_HanfengZhai_119.png" width="1195" height="165" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ We can then count the total number of collisions by summing over the final element of each node:
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_120.png" alt="WWS23_HanfengZhai_120.png" width="301" height="17" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_121.png" alt="WWS23_HanfengZhai_121.png" width="16" height="17" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ We then do the coarse-grained sampling procedure on this causal graph, by the order of 2. We first extract the nodes in arithmetic order using the method we just mentioned and reassign the tale value as 2:
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_122.png" alt="WWS23_HanfengZhai_122.png" width="599" height="17" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ We can then check the total number of collisions by summarizing the tale values:
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_123.png" alt="WWS23_HanfengZhai_123.png" width="271" height="17" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_124.png" alt="WWS23_HanfengZhai_124.png" width="16" height="17" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ The collision numbers deviate from the ground truth by 1, although sometimes they could be the same (as explained previously). We can then compute the collision rates of the two different causal graphs (that are expected to be similar since the total time is the same) to show how the thermodynamics quantities are preserved on the coarse-grained causal graph(s).<br /><br />We start the computation by obtaining the final time of the whole collision process:
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_125.png" alt="WWS23_HanfengZhai_125.png" width="1211" height="17" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_126.png" alt="WWS23_HanfengZhai_126.png" width="98" height="17" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ The collision rate for both the two systems are then:
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_127.gif" alt="WWS23_HanfengZhai_127.gif" width="1208" height="39" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_128.png" alt="WWS23_HanfengZhai_128.png" width="138" height="17" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ The collision rate results deviate a little because the two final times of the two systems are different caused by our sampling. However, these collision rates are expected to be the same under larger systems since the deviation of the time would not matter to the total collisions as much compared to the toy case here with total collisions of only 80. To better understand what we did on the toy system, we visualize the graph from the new collisions compared with the old one.
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_129.png" alt="WWS23_HanfengZhai_129.png" width="974" height="317" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_130.png" alt="WWS23_HanfengZhai_130.png" width="1290" height="39" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_131.gif" alt="WWS23_HanfengZhai_131.gif" width="500" height="518" style="vertical-align:middle" />
+</p>
+
+<p class="Subsubsection">
+ Practice on Coarse-Graining on Causal Graph for Large Scale Systems
+</p>
+
+
+
+<p class="Text">
+ Now we will use a thermodynamical equilibrium system (large system with long time steps) to conduct the causal graph coarse-grain based on our general formulation shown above. We begin with a system of 100 particles running for 5000 time steps and do coarse-graining on its corresponding causal graph.
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_132.png" alt="WWS23_HanfengZhai_132.png" width="1126" height="60" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_133.png" alt="WWS23_HanfengZhai_133.png" width="172" height="17" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_134.gif" alt="WWS23_HanfengZhai_134.gif" width="270" height="319" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ We check the systems reach equilibrium by testing its corresponding Maxwell-Boltzmann fit:
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_135.png" alt="WWS23_HanfengZhai_135.png" width="1325" height="165" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_136.gif" alt="WWS23_HanfengZhai_136.gif" width="400" height="278" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ It can be deduced that this is an equilibrium system. We can hence operate the coarse-graining procedure we did on the toy example to this system. The key is due to the large size of this system, we may not be able to directly visualize the causal graph from the simulation. But we can examine the statistics of the causal graph, which is both mathematical and physically more interesting to understand this &ldquo;sample and filter&rdquo; approach.
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_137.png" alt="WWS23_HanfengZhai_137.png" width="1126" height="60" style="vertical-align:middle" />
+</p>
+
+<p class="Text">
+ We then do the coarse grain on our causal graph with five different degrees, just as what we did for the spatial coarse-grain:
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_138.gif" alt="WWS23_HanfengZhai_138.gif" width="589" height="207" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_139.png" alt="WWS23_HanfengZhai_139.png" width="250" height="17" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_140.png" alt="WWS23_HanfengZhai_140.png" width="60" height="17" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_141.png" alt="WWS23_HanfengZhai_141.png" width="486" height="102" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_142.png" alt="WWS23_HanfengZhai_142.png" width="971" height="17" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_143.gif" alt="WWS23_HanfengZhai_143.gif" width="1276" height="650" style="vertical-align:middle" />
+</p>
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_144.gif" alt="WWS23_HanfengZhai_144.gif" width="1904" height="228" style="vertical-align:middle" />
+</p>
+
+<p class="Output">
+ <img src="HTMLFiles/WWS23_HanfengZhai_145.gif" alt="WWS23_HanfengZhai_145.gif" width="1169" height="192" style="vertical-align:middle" />
+</p>
+
+<p class="Section">
+ Concluding remarks
+</p>
+
+
+
+<p class="Text">
+ In this project, we strive the understand a commonly used approach in multiscale mode as a bottom-up strategy, coarse-graining. Under our context of particle-based simulations, we propose and define coarse-grain as enlarging the particle radii and simultaneously reducing the particle numbers hoping to pertain constant volume fraction to reduce computational costs. We examine the hypothesis, assumptions, and results from numerical experiments for coarse-graining from designed benchmark cases. The goal is to answer key questions from (1) Whether the order reduction coarse-graining approach can be applied to the hard-sphere gas model without rearranging the forcefield. (2) If we can adopt such an approach, what are the limitations? and (3) How to understand such an approach in the context of the Wolfram Physics Project with graph models? In our effort to answer those questions, we obtain the following main conclusions and bring a deeper understanding of such a subject to the physics communities:<br /><br /><span style='font-weight: bold;color: #FD8008;'>1. </span>By employing the order reduction coarse-graining method to hard sphere gas models, one finds the global density distribution is observed to be similar, yet the local density profile is totally different as an&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;observation from the designed particle collision experiments.<br /><span style='font-weight: bold;color: #FD8008;'>2. </span>The assumed coarse-grained systems possess a similar hypergraph structure (with a similar adjacency matrix) under an equilibrium state. The causal graphs of the two systems also possess similar adjacency matrix structures, with similar but slightly different motif distributions within the causal graphs. Note that it is not sufficient for one to determine the coarse-grainability just from the adjacency matrices of&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the hyper-and-causal graphs since the observations were carried out under prior assumptions.<br /><span style='font-weight: bold;color: #FD8008;'>3. </span>We observe that for different coarse-grained systems, the relationships between the collision rate w.r.t. temperature approximately remains the same, leading to the conclusion of different coarse-grained systems can be viewed as surrogates of each other under the ideal gas law.<br /><span style='font-weight: bold;color: #FD8008;'>4.</span><span style='font-weight: bold;'> </span>The velocity correlation function and total kinetic energy fluctuation w.r.t. time are observed to not have evident differences with similar trends for different coarse-grained systems, indicating the collective behavior of particles can be viewed as equivalent in the consistency of time.<br /><span style='font-weight: bold;color: #FD8008;'>5. </span>We propose a novel technique to directly conduct coarse-graining on the causal graphs, by uniformly sampling over the nodes and reassigning the collision properties to retain the same collision rate. Under this effort, we observe that a thermodynamic equilibrium system possesses similar motif probability distribution, with an increasing ratio of branchial motifs (e.g., K-, Y-, and E-typed), indicating that the local structure slightly changes during our causal graph coarse-graining approach.<br /><br />Based on the work we have conducted by far, we not only answer our initial questions proposed in the introduction section but also provide answers for three more new questions: (4) What are the criteria for measuring the coarse-grainability of hard sphere gas systems that can connect with graph models? This question can be the follow-up to both questions (1) and (2), with a measurable collision rate and temperature that bridges real physics to causal graphs. (5) How can we do coarse-grain without operating on the physical systems? The answer would be the temporal coarse-graining on the causal graph we proposed; and (6) Does this causal graph coarse-graining change the local structures of the graph? The answer would be yes but the general distribution of the motifs is still observed to be similar.<br /><br />Based on the work we have already done, several future works can be drawn to make this research more concrete and interesting:<br /><span style='font-weight: bold;color: #804003;'>1. </span>Comparing the coarse-grain approach with the representative volume element (RVE) approach by switching the new boundary conditions of the larger particle simulations to periodic and seeing the difference between coarse-graining and unit-based modeling.<br /><span style='font-weight: bold;color: #804003;'>2. </span>Conduct graph foliations on for a more rigorous and explainable causal graph coarse-graining.<br /><span style='font-weight: bold;color: #804003;'>3. </span>Elicit new properties preserved in the causal graph that can retain the probability distribution of the motifs in the causal graph when conducting temporal coarse-graining.<br />
+</p>
+
+
+
+<p class="Section">
+ <a id="Keywords"></a>
+ Keywords
+</p>
+
+
+
+<p class="Item">
+ Hard Sphere Simulations
+</p>
+
+
+
+<p class="Item">
+ Statistical Mechanics
+</p>
+
+
+
+<p class="Item">
+ Coarse Graining
+</p>
+
+
+
+<p class="Item">
+ Multiscale Modeling
+</p>
+
+
+
+<p class="Item">
+ Causal Graph
+</p>
+
+
+
+<p class="Item">
+ Thermodynamics
+</p>
+
+
+
+<p class="Item">
+ Computational Physics 
+</p>
+
+
+
+<p class="Item">
+ Computational Irreducibility
+</p>
+
+
+
+<p class="Item">
+ Model Reduction
+</p>
+
+
+
+<p class="Section">
+ Acknowledgement
+</p>
+
+
+
+<p class="Text">
+ I would like to thank my mentors Sotiris Michos, Nik Murzin, and James Boyd for constantly providing me with technical guidance, feedback, support, and advice on this project. I would also like to thank Matt Kafker, the developer of hard sphere simulation models in Wolfram language, for his selfless contribution to this project, especially for his key ideas and insight and for taking the time to provide me with tutorials and guidance. I would also like to Stephen Wolfram, for assigning me this project, providing his unique insights on multiscale modeling, and for the amazing discussions during the Winter School. I would also like to thank Zach Shelton, for providing computational and technical support in Wolfram technologies through the Wolfram Student Ambassador Program. The amazing research talks and discussions held during the Winter School lead me to the exciting projects and works conducted at Wolfram Research.
+</p>
+
+
+
+<p class="Section">
+ References
+</p>
+
+
+
+<p class="Item">
+ [Thoennessen, 1995] Michael Thoennessen. Gas Laws and Kinetic Theory. URL: https://people.nscl.msu.edu/~thoennes/personal/phy231/p231_notes6.pdf.
+</p>
+
+
+
+<p class="Item">
+ [Wolfram, 2022] Stephen Wolfram. On the Concept of Motion. URL: https://writings.stephenwolfram.com/2022/03/on-the-concept-of-motion/
+</p>
+
+
+
+<p class="Item">
+ [Kafker, 2020] Matt Kafker. [WSS20] Exploring Networks in Hard Sphere Models. URL: https://community.wolfram.com/groups/-/m/t/2028871
+</p>
+
+
+
+<p class="Item">
+ [Widartiningsih et al., 2020] Putri Mustika Widartiningsih et al. Coarse graining DEM simulations of a powder die-filling system. Powder Technology. URL: https://doi.org/10.1016/j.powtec.2020.05.063
+</p>
+
+
+
+<p class="Item">
+ [Kanjilal &amp; Schneiderbauer, 2021] Suranita Kanjilal and Simon Schneiderbauer. A revised coarse-graining approach for simulation of highly poly-disperse granular flows. Powder Technology. URL: https://doi.org/10.1016/j.powtec.2021.02.015
+</p>
+
+
+
+<p class="Item">
+ [Lu et al., 2016] Liqiang Lu et al. Coarse-Grained-Particle Method for Simulation of Liquid&ndash;Solids Reacting Flows. Ind. Eng. Chem. Res. URL: https://doi.org/10.1021/acs.iecr.6b02688
+</p>
+
+
+
+<p class="Item">
+ [Wolfram, 2002] Stephen Wolfram. A New Kind of Science. URL: https://www.wolframscience.com/nks/
+</p>
+
+
+
+<p class="Section">
+ Appendix
+</p>
+
+
+
+<p class="Subsection">
+ Supplementary Codes
+</p>
+
+
+
+<p class="Subsubsection">
+ Macro-dynamics Analysis
+</p>
+
+
+
+<p class="Subsubsection">
+ Examine the Local Dynamics From Equilibrium Process
+</p>
+
+
+
+<p class="Subsubsection">
+ Exploring the Motifs of Temporal Causal Graph Coarse-Graining
+</p>
+
+
+
+<p class="Section">
+ 
+</p>
+
+
+
+<p class="Input">
+ <img src="HTMLFiles/WWS23_HanfengZhai_146.png" alt="WWS23_HanfengZhai_146.png" width="660" height="17" style="vertical-align:middle" />
+</p>
+
+
+
+
+<div style="font-family:Helvetica; font-size:11px; width:100%; border:1px none #999999; border-top-style:solid; padding-top:2px; margin-top:20px;">
+ <a href="http://www.wolfram.com/language/" style="color:#000; text-decoration:none;">
+  <span style="color:#555555">Created with the Wolfram Language</span> 
+ </a>
+</div>
+</body>
+
+</html>
