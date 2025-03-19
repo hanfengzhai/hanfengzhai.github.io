@@ -119,9 +119,6 @@ button::-moz-focus-inner {
 }
 html,
 body,
-#container {
-  height: 100%;
-}
 body {
   background: none;
   font: 15px Arial, "open sans", "Helvetica Neue", Helvetica Neue, Helvetica, Hiragino Sans GB, sans-serif;
