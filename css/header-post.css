@@ -11,9 +11,8 @@
 }
 
 #allheader {
-	background: linear-gradient(120deg, #155799, #159957);
-	background: transparent;
-	z-index: 2;
+  background: none !important; /* or use transparent */
+  z-index: 2;
 }
 .navbar-default .navbar-nav > li > a {
     color: #555;
