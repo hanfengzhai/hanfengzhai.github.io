@@ -12,8 +12,8 @@ html{
 }
 
 #header {
-	height: 100%;
-    overflow: hidden;
+	height: none;
+        overflow: hidden;
 }
 
 /*.section-intro {
