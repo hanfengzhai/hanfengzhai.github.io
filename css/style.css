@@ -76,6 +76,9 @@ td {
   font-size: 100%;
   vertical-align: baseline;
 }
+#container {
+   height: 100%;
+ }
 body {
   line-height: 1;
   color: #000;
