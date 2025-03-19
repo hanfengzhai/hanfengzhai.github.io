@@ -89,7 +89,7 @@ html{
     transition: background 2s;
 }
 .navigater-list{
-	font-family: Arial,simsun,"宋体""Microsoft YaHei","微软雅黑";
+	font-family: Arial,simsun;
 	color:#444444;
 	font-weight: 100;
 	font-size: 1.2em;
@@ -113,10 +113,6 @@ body, html {
 	bottom: 100px;
 	background: none;
 	background-color: transparent;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	background-size: cover;
-	-o-background-size: cover;
 }
 
 /*.blur{	
