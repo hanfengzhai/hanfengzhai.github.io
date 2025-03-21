@@ -17,8 +17,8 @@ if (toc != null) {
 }
 
 
-var night_model=false;		//夜间阅读模式
-var content_fontsize_big=false;		//夜间阅读模式
+var night_model=false;
+var content_fontsize_big=false;
 
 function getStyle(obj, attri) {
 	if (obj == null) {
@@ -130,7 +130,7 @@ function setBackground(){
 	
 }
 
-function setFontSize() {		//正文字号大小
+function setFontSize() {
 
 	content_fontsize_big = !content_fontsize_big;
 	if(content_fontsize_big == true){
