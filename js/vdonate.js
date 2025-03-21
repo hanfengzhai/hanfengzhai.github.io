@@ -53,8 +53,8 @@
                 }();
             n(2);
             var r = {
-                    title: "如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!",
-                    btnText: "打赏支持"
+                    title: "",
+                    btnText: ""
                 },
                 // d = document.body,
                 d = document.getElementById('donation_div'),
