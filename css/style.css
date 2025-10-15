@@ -113,14 +113,83 @@ button::-moz-focus-inner {
   border: 0;
   padding: 0;
 }
-@import url('https://fonts.cdnfonts.com/css/latin-modern-roman');
-@import url('https://fonts.cdnfonts.com/css/latin-modern-mono');
+@font-face {
+  font-family: 'Computer Modern Serif';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://cdn.jsdelivr.net/npm/computer-modern-web-font@1.0.0/fonts/cmunrm.woff') format('woff');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Computer Modern Serif';
+  font-style: italic;
+  font-weight: 400;
+  src: url('https://cdn.jsdelivr.net/npm/computer-modern-web-font@1.0.0/fonts/cmunti.woff') format('woff');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Computer Modern Serif';
+  font-style: normal;
+  font-weight: 700;
+  src: url('https://cdn.jsdelivr.net/npm/computer-modern-web-font@1.0.0/fonts/cmunbx.woff') format('woff');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Computer Modern Serif';
+  font-style: italic;
+  font-weight: 700;
+  src: url('https://cdn.jsdelivr.net/npm/computer-modern-web-font@1.0.0/fonts/cmunbi.woff') format('woff');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Computer Modern Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://cdn.jsdelivr.net/npm/computer-modern-web-font@1.0.0/fonts/cmunss.woff') format('woff');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Computer Modern Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: url('https://cdn.jsdelivr.net/npm/computer-modern-web-font@1.0.0/fonts/cmunsi.woff') format('woff');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Computer Modern Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: url('https://cdn.jsdelivr.net/npm/computer-modern-web-font@1.0.0/fonts/cmunsx.woff') format('woff');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Computer Modern Typewriter';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://cdn.jsdelivr.net/npm/computer-modern-web-font@1.0.0/fonts/cmuntt.woff') format('woff');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Computer Modern Typewriter';
+  font-style: italic;
+  font-weight: 400;
+  src: url('https://cdn.jsdelivr.net/npm/computer-modern-web-font@1.0.0/fonts/cmunit.woff') format('woff');
+  font-display: swap;
+}
 html,
 body,
 body {
   background: none;
   font-size: 15px;
-  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'Computer Modern Serif', 'Latin Modern Roman', 'Times New Roman', Times, serif;
   -webkit-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
 }
@@ -138,13 +207,13 @@ body,
 .navigater-list > a,
 #header,
 #header a {
-  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'Computer Modern Serif', 'Latin Modern Roman', 'Times New Roman', Times, serif;
 }
 
 code,
 pre,
 tt {
-  font-family: 'Latin Modern Mono', 'Latin Modern Mono Light', 'Courier New', Courier, monospace;
+  font-family: 'Computer Modern Typewriter', 'Latin Modern Mono', 'Courier New', Courier, monospace;
 }
 ::selection {
   background: #414141;
@@ -627,7 +696,7 @@ tt {
   height: 88px;
   line-height: 86px;
   text-transform: capitalize;
-  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'Computer Modern Serif', 'Latin Modern Roman', 'Times New Roman', Times, serif;
   font-weight: bold;
   font-size: 27px;
   letter-spacing: 0.2px;
@@ -702,7 +771,7 @@ tt {
   outline: none !important;
   background: none !important;
   font-size: 14px;
-  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'Computer Modern Serif', 'Latin Modern Roman', 'Times New Roman', Times, serif;
   border: 0px;
 }
 .search-form-input:focus,
@@ -772,7 +841,7 @@ tt {
 .article-inner .h4,
 .article-inner .h5,
 .article-inner .h6 {
-  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'Computer Modern Serif', 'Latin Modern Roman', 'Times New Roman', Times, serif;
 }
 .article-meta {
   text-align: center;
@@ -901,7 +970,7 @@ tt {
 .article-header h1 {
   font-size: 25px;
   font-weight: bold;
-  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'Computer Modern Serif', 'Latin Modern Roman', 'Times New Roman', Times, serif;
 }
 @media screen and (max-width: 479px) {
   .article-header h1 {
@@ -1015,7 +1084,7 @@ a.article-title:hover {
 }
 .article-entry blockquote {
   padding: 0.1px 20px;
-  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'Computer Modern Serif', 'Latin Modern Roman', 'Times New Roman', Times, serif;
   font-size: 1.1em;
   color: rgba(44,44,44,0.6);
   margin: 1.4em 0px;
@@ -1029,7 +1098,7 @@ a.article-title:hover {
 .article-entry blockquote footer {
   font-size: 14px;
   margin: 1.6em 0;
-  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'Computer Modern Serif', 'Latin Modern Roman', 'Times New Roman', Times, serif;
 }
 .article-entry blockquote footer cite:before {
   content: "—";
@@ -1051,7 +1120,7 @@ a.article-title:hover {
   }
 }
 .article-entry .pullquote p {
-  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'Computer Modern Serif', 'Latin Modern Roman', 'Times New Roman', Times, serif;
   font-size: 1.2em;
 }
 .article-entry .pullquote:before {
@@ -1277,7 +1346,7 @@ a.article-title:hover {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   font-size: 15px;
-  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'Computer Modern Serif', 'Latin Modern Roman', 'Times New Roman', Times, serif;
   padding: 0 15px;
   color: #444;
   outline: none;
@@ -1461,7 +1530,7 @@ a.article-title:hover {
   color: #414141;
 }
 .nav-link {
-  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'Computer Modern Serif', 'Latin Modern Roman', 'Times New Roman', Times, serif;
   color: #777;
   padding: 1px !important;
 }
@@ -1673,7 +1742,7 @@ a.article-title:hover {
   margin-right: 15px;
   display: block;
   font-size: 1.1em;
-  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'Computer Modern Serif', 'Latin Modern Roman', 'Times New Roman', Times, serif;
 }
 .archive-article-date:hover {
   color: #414141;
@@ -1812,7 +1881,7 @@ figure.highlight::-webkit-scrollbar-track {
 }
 .article-entry pre,
 .article-entry code {
-  font-family: 'Latin Modern Mono', 'Latin Modern Mono Light', 'Courier New', Courier, monospace;
+  font-family: 'Computer Modern Typewriter', 'Latin Modern Mono', 'Courier New', Courier, monospace;
 }
 .article-entry code {
   white-space: normal;
@@ -1886,7 +1955,7 @@ figure.highlight::-webkit-scrollbar-track {
 }
 .article-entry .gist .gist-file {
   border: none;
-  font-family: 'Latin Modern Mono', 'Latin Modern Mono Light', 'Courier New', Courier, monospace;
+  font-family: 'Computer Modern Typewriter', 'Latin Modern Mono', 'Courier New', Courier, monospace;
   margin: 0;
 }
 .article-entry .gist .gist-file .gist-data {
@@ -1910,7 +1979,7 @@ figure.highlight::-webkit-scrollbar-track {
   background: #f8f8f8;
   color: $highlight-comment;
   font-size: 0.85em;
-  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'Computer Modern Serif', 'Latin Modern Roman', 'Times New Roman', Times, serif;
   text-shadow: 0 0;
   padding: 0;
   margin-top: 1em;
@@ -2126,7 +2195,7 @@ pre .xml .cdata {
   box-sizing: border-box;
   padding: 12px 28px 12px 20px;
   border-bottom: 1px solid #e2e2e2;
-  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'Computer Modern Serif', 'Latin Modern Roman', 'Times New Roman', Times, serif;
 }
 .ins-close {
   top: 50%;
