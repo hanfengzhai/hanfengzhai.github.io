@@ -89,7 +89,7 @@ html{
     transition: background 2s;
 }
 .navigater-list{
-        font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
+        font-family: 'Computer Modern Serif', 'Latin Modern Roman', 'Times New Roman', Times, serif;
         color:#444444;
         font-weight: 100;
         font-size: 1.2em;
@@ -196,14 +196,14 @@ body, html {
 	text-align: center;
 }
 h1 {
-    font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
+    font-family: 'Computer Modern Serif', 'Latin Modern Roman', 'Times New Roman', Times, serif;
     font-weight: bold;
     font-size: 25px;
     margin: 12px 0;
     left: 4px;
 }
 h3 {
-        font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
+        font-family: 'Computer Modern Serif', 'Latin Modern Roman', 'Times New Roman', Times, serif;
     font-weight: normal;
     font-size: 20px;
     margin-bottom: 30px;
@@ -274,7 +274,7 @@ hr{
 }
  
 #beautifont{
-        font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
+        font-family: 'Computer Modern Serif', 'Latin Modern Roman', 'Times New Roman', Times, serif;
 }
 canvas {
     top: 0;
