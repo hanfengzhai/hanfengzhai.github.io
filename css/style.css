@@ -113,20 +113,38 @@ button::-moz-focus-inner {
   border: 0;
   padding: 0;
 }
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
-@font-face {
-  font-family: "Roboto";
-  font-style: normal;
-  font-weight: normal;
-  src: url('https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu4mxP.ttf') format('truetype');
-}
+@import url('https://fonts.cdnfonts.com/css/latin-modern-roman');
+@import url('https://fonts.cdnfonts.com/css/latin-modern-mono');
 html,
 body,
 body {
   background: none;
-  font: 15px Arial, "open sans", "Helvetica Neue", Helvetica Neue, Helvetica, Hiragino Sans GB, sans-serif;
+  font-size: 15px;
+  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
   -webkit-text-size-adjust: 100%;
-  text-rendering: optimizelegibility;
+  text-rendering: optimizeLegibility;
+}
+body,
+.article-entry,
+.article-entry p,
+.article-entry li,
+.article-entry table,
+.article-entry td,
+.article-entry strong,
+.article-entry em,
+.article-entry a,
+.article-entry blockquote,
+.navigater-list,
+.navigater-list > a,
+#header,
+#header a {
+  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
+}
+
+code,
+pre,
+tt {
+  font-family: 'Latin Modern Mono', 'Latin Modern Mono Light', 'Courier New', Courier, monospace;
 }
 ::selection {
   background: #414141;
@@ -609,7 +627,7 @@ body {
   height: 88px;
   line-height: 86px;
   text-transform: capitalize;
-  font-family: serif;
+  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
   font-weight: bold;
   font-size: 27px;
   letter-spacing: 0.2px;
@@ -683,7 +701,8 @@ body {
   line-height: 1.6em;
   outline: none !important;
   background: none !important;
-  font: 14px -apple-system, "Arial", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
   border: 0px;
 }
 .search-form-input:focus,
@@ -753,7 +772,7 @@ body {
 .article-inner .h4,
 .article-inner .h5,
 .article-inner .h6 {
-  font-family: Arial, "Hiragino Sans GB", "Microsoft YaHei Light", "微软雅黑", SimSun, "宋体", Helvetica, Tahoma, "Arial sans-serif";
+  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
 }
 .article-meta {
   text-align: center;
@@ -882,7 +901,7 @@ body {
 .article-header h1 {
   font-size: 25px;
   font-weight: bold;
-  font-family: Arial, "Hiragino Sans GB", SimSun, Helvetica, Tahoma, "Arial sans-serif";
+  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
 }
 @media screen and (max-width: 479px) {
   .article-header h1 {
@@ -996,7 +1015,7 @@ a.article-title:hover {
 }
 .article-entry blockquote {
   padding: 0.1px 20px;
-  font-family: Arial, "open sans", "Helvetica Neue", Helvetica Neue, Helvetica, Hiragino Sans GB, Microsoft Yahei, sans-serif;
+  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
   font-size: 1.1em;
   color: rgba(44,44,44,0.6);
   margin: 1.4em 0px;
@@ -1010,7 +1029,7 @@ a.article-title:hover {
 .article-entry blockquote footer {
   font-size: 14px;
   margin: 1.6em 0;
-  font-family: -apple-system, "Arial", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
 }
 .article-entry blockquote footer cite:before {
   content: "—";
@@ -1032,7 +1051,7 @@ a.article-title:hover {
   }
 }
 .article-entry .pullquote p {
-  font-family: Georgia, Microsoft JhengHei, "sans serif";
+  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
   font-size: 1.2em;
 }
 .article-entry .pullquote:before {
@@ -1257,7 +1276,8 @@ a.article-title:hover {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  font: 15px -apple-system, "Arial", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-size: 15px;
+  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
   padding: 0 15px;
   color: #444;
   outline: none;
@@ -1441,7 +1461,7 @@ a.article-title:hover {
   color: #414141;
 }
 .nav-link {
-  font-family: 'Helvetica Neue', 'Helvetica', 'STHeitiSC-Light', 'Arial', sans-serif;
+  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
   color: #777;
   padding: 1px !important;
 }
@@ -1653,7 +1673,7 @@ a.article-title:hover {
   margin-right: 15px;
   display: block;
   font-size: 1.1em;
-  font-family: "futura-pt", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", sans-serif;
+  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
 }
 .archive-article-date:hover {
   color: #414141;
@@ -1792,7 +1812,7 @@ figure.highlight::-webkit-scrollbar-track {
 }
 .article-entry pre,
 .article-entry code {
-  font-family: "Source Code Pro", Consolas, Monaco, Menlo, Consolas, monospace;
+  font-family: 'Latin Modern Mono', 'Latin Modern Mono Light', 'Courier New', Courier, monospace;
 }
 .article-entry code {
   white-space: normal;
@@ -1866,7 +1886,7 @@ figure.highlight::-webkit-scrollbar-track {
 }
 .article-entry .gist .gist-file {
   border: none;
-  font-family: "Source Code Pro", Consolas, Monaco, Menlo, Consolas, monospace;
+  font-family: 'Latin Modern Mono', 'Latin Modern Mono Light', 'Courier New', Courier, monospace;
   margin: 0;
 }
 .article-entry .gist .gist-file .gist-data {
@@ -1889,7 +1909,8 @@ figure.highlight::-webkit-scrollbar-track {
 .article-entry .gist .gist-file .gist-meta {
   background: #f8f8f8;
   color: $highlight-comment;
-  font: 0.85em -apple-system, "Arial", BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-size: 0.85em;
+  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
   text-shadow: 0 0;
   padding: 0;
   margin-top: 1em;
@@ -2105,7 +2126,7 @@ pre .xml .cdata {
   box-sizing: border-box;
   padding: 12px 28px 12px 20px;
   border-bottom: 1px solid #e2e2e2;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: 'Latin Modern Roman', 'Computer Modern Roman', 'Times New Roman', Times, serif;
 }
 .ins-close {
   top: 50%;
