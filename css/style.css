@@ -141,7 +141,7 @@ button::-moz-focus-inner {
   font-family: 'Latin Modern Roman';
   font-style: italic;
   font-weight: 600;
-  src: url('../assets/fonts/latin-modern-roman/lmromandemi10-oblique.otf') format('opentype');
+  src: url('../assets/fonts/latin-modern-roman/lmroman10-italic.otf') format('opentype');
   font-display: swap;
 }
 
@@ -161,13 +161,6 @@ button::-moz-focus-inner {
   font-display: swap;
 }
 
-@font-face {
-  font-family: 'Latin Modern Roman';
-  font-style: oblique;
-  font-weight: 400;
-  src: url('../assets/fonts/latin-modern-roman/lmromanslant10-regular.otf') format('opentype');
-  font-display: swap;
-}
 html,
 body,
 body {
