@@ -12,7 +12,7 @@
 }*/
 .modal-title {
         color: #000;
-    font-family: 'Computer Modern Serif', 'Latin Modern Roman', 'Times New Roman', Times, serif;
+    font-family: 'Latin Modern Roman', 'Times New Roman', Times, serif;
     text-align: center;
     font-weight: bold;
 }
@@ -53,6 +53,6 @@
 	padding-bottom: 80px;
 }
 .panel-body {
-        font-family: 'Computer Modern Typewriter', 'Latin Modern Mono', 'Courier New', Courier, monospace;
+        font-family: 'Courier New', Courier, monospace;
         color:#333;
 }
