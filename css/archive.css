@@ -81,5 +81,98 @@ hr{
 .social-icons .fa-google-plus,.social-icons .fa-google-plus-square{background-color:#000000;} 
 .social-icons .fa-instagram{background-color:#000000;}
 .social-icons .fa-linkedin,.social-icons .fa-linkedin-square{background-color:#000000;} 
-.social-icons .fa-twitter,.social-icons .fa-twitter-square{background-color:#000000;} 
+.social-icons .fa-twitter,.social-icons .fa-twitter-square{background-color:#000000;}
 .social-icons .fa-youtube,.social-icons .fa-youtube-play,.social-icons .fa-youtube-square{background-color:#000000;}
+
+.scrolling-gallery {
+        margin: 30px 0;
+}
+
+.scrolling-track {
+        display: flex;
+        gap: 20px;
+        overflow-x: auto;
+        padding: 10px 5px 20px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+}
+
+.scrolling-track::-webkit-scrollbar {
+        height: 8px;
+}
+
+.scrolling-track::-webkit-scrollbar-thumb {
+        background: #c5c5c5;
+        border-radius: 4px;
+}
+
+.scrolling-card {
+        flex: 0 0 260px;
+        border: 1px solid #dcdcdc;
+        border-radius: 10px;
+        background-color: #ffffff;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        scroll-snap-align: start;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-align: center;
+}
+
+.scrolling-card:hover,
+.scrolling-card:focus-within {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 30px rgba(0, 0, 0, 0.12);
+}
+
+.scrolling-card figure {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+}
+
+.scrolling-card img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        display: block;
+}
+
+.scrolling-caption {
+        padding: 12px 14px 16px;
+        font-size: 1.4rem;
+        line-height: 1.5;
+        color: #333333;
+}
+
+.scrolling-caption strong {
+        display: block;
+        font-size: 1.5rem;
+        margin-bottom: 6px;
+}
+
+.scrolling-links {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        font-size: 1.3rem;
+}
+
+.scrolling-links a {
+        color: #1a4d8f;
+}
+
+.scrolling-links a:hover,
+.scrolling-links a:focus {
+        text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+        .scrolling-card {
+                flex-basis: 220px;
+        }
+}
