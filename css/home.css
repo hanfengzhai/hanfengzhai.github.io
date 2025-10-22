@@ -207,13 +207,13 @@ body, html {
 
 .timeline-content {
         padding: 20px;
-        font-size: 3.6rem;
+        font-size: 2rem;
         line-height: 1.5;
         color: #333333;
 }
 
 .timeline-year {
-        font-size: 3.6rem;
+        font-size: 2rem;
         font-weight: 600;
         color: #1a4d8f;
         margin-bottom: 10px;
