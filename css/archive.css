@@ -84,16 +84,18 @@ hr{
 .social-icons .fa-twitter,.social-icons .fa-twitter-square{background-color:#000000;}
 .social-icons .fa-youtube,.social-icons .fa-youtube-play,.social-icons .fa-youtube-square{background-color:#000000;}
 
+
 .scrolling-gallery {
         margin: 30px 0;
 }
 
 .scrolling-track {
         display: flex;
-        gap: 20px;
-        overflow-x: auto;
+        gap: 18px;
         padding: 10px 5px 20px;
-        scroll-snap-type: x mandatory;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x proximity;
         -webkit-overflow-scrolling: touch;
 }
 
@@ -102,28 +104,28 @@ hr{
 }
 
 .scrolling-track::-webkit-scrollbar-thumb {
-        background: #c5c5c5;
-        border-radius: 4px;
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 999px;
 }
 
 .scrolling-card {
-        flex: 0 0 260px;
         border: 1px solid #dcdcdc;
         border-radius: 10px;
         background-color: #ffffff;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
         overflow: hidden;
-        scroll-snap-align: start;
         display: flex;
         flex-direction: column;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
         text-align: center;
+        flex: 0 0 220px;
+        scroll-snap-align: start;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .scrolling-card:hover,
 .scrolling-card:focus-within {
         transform: translateY(-4px);
-        box-shadow: 0 16px 30px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 12px 26px rgba(0, 0, 0, 0.15);
 }
 
 .scrolling-card figure {
@@ -135,31 +137,25 @@ hr{
 
 .scrolling-card img {
         width: 100%;
-        height: auto;
+        height: 160px;
         object-fit: cover;
         display: block;
 }
 
 .scrolling-caption {
         padding: 12px 14px 16px;
-        font-size: 1.4rem;
-        line-height: 1.5;
+        font-size: 1.3rem;
+        line-height: 1.4;
         color: #333333;
 }
 
-.scrolling-caption strong {
-        display: block;
-        font-size: 1.5rem;
-        margin-bottom: 6px;
-}
-
 .scrolling-links {
-        margin-top: 10px;
+        margin-top: 6px;
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
-        gap: 10px;
-        font-size: 1.3rem;
+        gap: 8px;
+        font-size: 1.2rem;
 }
 
 .scrolling-links a {
@@ -171,8 +167,12 @@ hr{
         text-decoration: underline;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
         .scrolling-card {
-                flex-basis: 220px;
+                flex-basis: 180px;
+        }
+
+        .scrolling-card img {
+                height: 140px;
         }
 }
