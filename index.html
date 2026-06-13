@@ -12,12 +12,33 @@
     height: 3px;
     margin: 0;
   }
+  .paper-list {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    margin: 1.5em 0;
+  }
+
+  .paper-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #eef1f8;
+  }
+
+  .paper-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
   .paper-schematic-frame {
-    display: inline-flex;
+    flex: 0 0 280px;
+    width: 280px;
+    height: 150px;
+    display: flex;
     align-items: center;
     justify-content: center;
-    width: 250px;
-    height: 110px;
     border: 5px solid lightgray;
     border-radius: 7px;
     box-sizing: border-box;
@@ -25,11 +46,38 @@
     background: #fff;
   }
 
-  .paper-schematic-frame img {
+  .paper-item .paper-schematic-frame img {
     width: 100%;
     height: 100%;
+    max-width: none;
+    margin: 0;
     object-fit: contain;
     display: block;
+  }
+
+  .paper-content {
+    flex: 1;
+    min-width: 0;
+    line-height: 1.55;
+  }
+
+  .paper-content blockquote {
+    margin: 12px 0 0;
+    padding: 10px 16px;
+    font-size: 0.95em;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 720px) {
+    .paper-item {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .paper-schematic-frame {
+      width: 100%;
+      max-width: 320px;
+    }
   }
 </style>
 <meta property="og:type" content="website">
@@ -104,71 +152,48 @@
 <hr class="bg_click">
 <hr>
 <font size=3, color="black">
-<table border="1" width="100%">
-    <tr>
-	<td width="25%"><center><div class="paper-schematic-frame"><img src="/assets/img/linklen_schematic.png" alt="Link statistics schematic"></div></center></td>
-        <td width="5%"></td>
-	<td width="70%">
-	Akhondzadeh$^1$, <strong>Zhai</strong>$^1$, Jian, Sills, Bertin, Cai$^\star$</font>. 
-      	    <a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.jmps.2026.106533">Link Statistics of Dislocation Network during Strain Hardening</a>. <em>Journal of the Mechanics and Physics of Solids</em> (2026). [<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2509.03743">PDF</a>] [<a target="_blank" rel="noopener" href="/file/ref/akhondzadeh2026.html">Cite</a>] [<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=rkU7lEMtu0s">Video</a>] [<a target="_blank" rel="noopener" href="/file/dislocation2025.pdf">Poster</a>]
-      	    <blockquote><font size=3>
-            <strong>$\texttt{TL;DR}$:</strong> Over 100 DDD simulations reveal that inactive slip systems follow single-exponential link length distributions, while active ones evolve into stress-driven double exponentials—explained by a generalized Poisson process.</ul>
-	    </blockquote>
-	</td>
-    </tr>
-</table>
-<table border="1" width="100%">
-    <tr>
-	<td width="25%"><center><div class="paper-schematic-frame"><img src="/assets/img/gnn_fem_compmech.jpeg" alt="GNN FEM polycrystal plasticity schematic"></div></center></td>
-        <td width="5%"></td>
-	<td width="70%">
-	<strong>Zhai</strong></font>. 
-      	    <a target="_blank" rel="noopener" href="https://link.springer.com/article/10.1007/s00466-025-02604-6">Stress predictions in polycrystal plasticity using graph neural networks with subgraph training</a>. <em>Computational Mechanics</em> (2025). [<a target="_blank" rel="noopener" href="/file/zhai_compmech_2025.pdf">PDF</a>] [<a target="_blank" rel="noopener" href="/file/ref/zhai2025.html">Cite</a>] 
-      	    <blockquote><font size=3>
-            <strong>$\texttt{TL;DR}$:</strong> GNNs are used to efficiently predict stress in polycrystal plasticity, achieving over 150x speedup compared to FEM with high accuracy.</ul>
-	    </blockquote>
-	</td>
-    </tr>
-</table>
-<table border="1" width="100%">
-    <tr>
-	<td width="25%"><center><div class="paper-schematic-frame"><img src="/assets/img/FIGURE_MatOpt.png" alt="Materials optimization schematic"></div></center></td>
-        <td width="5%"></td>
-	<td width="70%">
-	<strong>Zhai</strong></font>, Hao, Yeo$^\star$. 
-      	    <a target="_blank" rel="noopener" href="https://doi.org/10.1063/5.0177266">Benchmarking inverse optimization algorithms for materials design</a>. <em>APL Materials</em> (2024). [<a target="_blank" rel="noopener" href="/file/zhai_aplmat_2024.pdf">PDF</a>] [<a target="_blank" rel="noopener" href="/file/ref/zhai2024.html">Cite</a>]
-      	    <blockquote><font size=3>
-            <strong>$\texttt{TL;DR}$:</strong> We benchmarked different heuristic and machine learning optimization algorithms for designing elemental crystals for targeted properties.</ul>
-	    </blockquote>
-	</td>
-    </tr>
-</table>
-<table border="1" width="100%">
-    <tr>
-	<td width="25%"><center><div class="paper-schematic-frame"><img src="/assets/img/AI_BO_biofilm.png" alt="Antimicrobial surface design schematic"></div></center></td>
-	<td width="5%"></td>
-	<td width="70%">
-	<strong>Zhai</strong></font> & Yeo$^\star$. 
-      	    <a target="_blank" rel="noopener" href="https://doi.org/10.1021/acsbiomaterials.2c01079">Computational design of antimicrobial active surfaces via automated Bayesian optimization</a>. <em>ACS Biomat. Sci. & Eng.</em> (2023). [<a target="_blank" rel="noopener" href="/file/zhai_acsbio_2023.pdf">PDF</a>] [<a target="_blank" rel="noopener" href="/file/ref/zhaiyeo2022.html">Cite</a>]
-      	    <blockquote><font size=3>
-            <strong>$\texttt{TL;DR}$:</strong> A new workflow to digitally design antimicrobial surfaces in the mesoscale using Bayesian optimization and discrete element methods.</ul>
-	    </blockquote>
-	</td>
-    </tr>
-</table>
-<table border="1" width="100%">
-    <tr>
-        <td width="25%"><center><div class="paper-schematic-frame"><img src="/assets/img/%E2%80%8Eschematic_bioporous.png" alt="Porous biofilm transport schematic"></div></center></td>
-	<td width="5%"></td>
-	<td width="70%">
-	<strong>Zhai</strong></font> & Yeo$^\star$. 
-      	    <a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.jmbbm.2023.106127">Controlling biofilm transport with porous metamaterials designed with Bayesian learning</a>. <em>J. Mech. Behav. Biomed. Mat.</em> (2023). [<a target="_blank" rel="noopener" href="/file/zhai_2023_jmbbm.pdf">PDF</a>] [<a target="_blank" rel="noopener" href="/file/ref/zhaiyeo2023.html">Cite</a>]
-      	    <blockquote><font size=3>
-            <strong>$\texttt{TL;DR}$:</strong> We use Bayesian optimization to design porous materials with enhanced biomass transport and insights into growth mechanisms.</ul>
-	    </blockquote>
-	</td>
-    </tr>
-</table>
+<div class="paper-list">
+  <article class="paper-item">
+    <div class="paper-schematic-frame"><img src="/assets/img/linklen_schematic.png" alt=""></div>
+    <div class="paper-content">
+      Akhondzadeh$^1$, <strong>Zhai</strong>$^1$, Jian, Sills, Bertin, Cai$^\star$.
+      <a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.jmps.2026.106533">Link Statistics of Dislocation Network during Strain Hardening</a>. <em>Journal of the Mechanics and Physics of Solids</em> (2026). [<a target="_blank" rel="noopener" href="/file/AkhondzadehZhai_2026_JMPS.pdf">PDF</a>] [<a target="_blank" rel="noopener" href="/file/ref/akhondzadeh2026.html">Cite</a>] [<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=rkU7lEMtu0s">Video</a>] [<a target="_blank" rel="noopener" href="/file/dislocation2025.pdf">Poster</a>]
+      <blockquote><strong>$\texttt{TL;DR}$:</strong> Over 100 DDD simulations reveal that inactive slip systems follow single-exponential link length distributions, while active ones evolve into stress-driven double exponentials—explained by a generalized Poisson process.</blockquote>
+    </div>
+  </article>
+  <article class="paper-item">
+    <div class="paper-schematic-frame"><img src="/assets/img/gnn_fem_compmech.jpeg" alt=""></div>
+    <div class="paper-content">
+      <strong>Zhai</strong>.
+      <a target="_blank" rel="noopener" href="https://link.springer.com/article/10.1007/s00466-025-02604-6">Stress predictions in polycrystal plasticity using graph neural networks with subgraph training</a>. <em>Computational Mechanics</em> (2025). [<a target="_blank" rel="noopener" href="/file/zhai_compmech_2025.pdf">PDF</a>] [<a target="_blank" rel="noopener" href="/file/ref/zhai2025.html">Cite</a>]
+      <blockquote><strong>$\texttt{TL;DR}$:</strong> GNNs are used to efficiently predict stress in polycrystal plasticity, achieving over 150x speedup compared to FEM with high accuracy.</blockquote>
+    </div>
+  </article>
+  <article class="paper-item">
+    <div class="paper-schematic-frame"><img src="/assets/img/FIGURE_MatOpt.png" alt=""></div>
+    <div class="paper-content">
+      <strong>Zhai</strong>, Hao, Yeo$^\star$.
+      <a target="_blank" rel="noopener" href="https://doi.org/10.1063/5.0177266">Benchmarking inverse optimization algorithms for materials design</a>. <em>APL Materials</em> (2024). [<a target="_blank" rel="noopener" href="/file/zhai_aplmat_2024.pdf">PDF</a>] [<a target="_blank" rel="noopener" href="/file/ref/zhai2024.html">Cite</a>]
+      <blockquote><strong>$\texttt{TL;DR}$:</strong> We benchmarked different heuristic and machine learning optimization algorithms for designing elemental crystals for targeted properties.</blockquote>
+    </div>
+  </article>
+  <article class="paper-item">
+    <div class="paper-schematic-frame"><img src="/assets/img/AI_BO_biofilm.png" alt=""></div>
+    <div class="paper-content">
+      <strong>Zhai</strong> & Yeo$^\star$.
+      <a target="_blank" rel="noopener" href="https://doi.org/10.1021/acsbiomaterials.2c01079">Computational design of antimicrobial active surfaces via automated Bayesian optimization</a>. <em>ACS Biomat. Sci. & Eng.</em> (2023). [<a target="_blank" rel="noopener" href="/file/zhai_acsbio_2023.pdf">PDF</a>] [<a target="_blank" rel="noopener" href="/file/ref/zhaiyeo2022.html">Cite</a>]
+      <blockquote><strong>$\texttt{TL;DR}$:</strong> A new workflow to digitally design antimicrobial surfaces in the mesoscale using Bayesian optimization and discrete element methods.</blockquote>
+    </div>
+  </article>
+  <article class="paper-item">
+    <div class="paper-schematic-frame"><img src="/assets/img/%E2%80%8Eschematic_bioporous.png" alt=""></div>
+    <div class="paper-content">
+      <strong>Zhai</strong> & Yeo$^\star$.
+      <a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.jmbbm.2023.106127">Controlling biofilm transport with porous metamaterials designed with Bayesian learning</a>. <em>J. Mech. Behav. Biomed. Mat.</em> (2023). [<a target="_blank" rel="noopener" href="/file/zhai_2023_jmbbm.pdf">PDF</a>] [<a target="_blank" rel="noopener" href="/file/ref/zhaiyeo2023.html">Cite</a>]
+      <blockquote><strong>$\texttt{TL;DR}$:</strong> We use Bayesian optimization to design porous materials with enhanced biomass transport and insights into growth mechanisms.</blockquote>
+    </div>
+  </article>
+</div>
 </font>
 
 <hr>
@@ -288,7 +313,7 @@
 	<li> <a href="https://scholar.google.com/citations?hl=en&user=S5jCDXcAAAAJ&view_op=list_works&sortby=pubdate"><i class="fa fa-google-plus"></i></a></li>
 	<li> <a href="https://www.youtube.com/channel/UCn7UKJez4SV9VkO8pNqI5Pw"><i class="fa fa-youtube-play"></i></a></li>
 	</ul>
-	<a target="_blank" rel="noopener" href="https://info.flagcounter.com/x6ta"><img src="https://s05.flagcounter.com/count/x6ta/bg=FFFFFF/txt=000000/border=CCCCCC/columns=2/maxflags=10/viewers=0/labels=0/pageviews=0/flags=0/percent=0/" alt="Flag Counter" border="0"></a>	  	
+	<a target="_blank" rel="noopener" href="https://info.flagcounter.com/x6ta"><img src="https://s11.flagcounter.com/count2/x6ta/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>	  	
 	<hr>
 	</div>
   </div>
