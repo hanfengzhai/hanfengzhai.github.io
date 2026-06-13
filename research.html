@@ -67,41 +67,44 @@
     margin: 0 auto;
   }
 
-  .research-page .research-thrusts {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.85em;
-    margin-top: 0.85em;
+  .research-page .research-section-blocks {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25em;
+    margin: 1em 0 0;
   }
 
-  .research-page .research-thrust-block {
-    padding: 0.85em 0.75em 1em;
+  .research-page .research-section-block {
+    padding: 1.25em 1.5em 1.5em;
     border: 1px solid #e8e2d6;
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.55);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-    text-align: center;
   }
 
-  .research-page .research-thrust-block h3 {
-    margin: 0 0 0.55em;
-    font-size: 1.05rem;
+  .research-page .research-section-block h2 {
+    margin: 0 0 0.75em;
+    font-size: 1.15rem;
     font-weight: bold;
-    line-height: 1.2;
+    line-height: 1.3;
     color: #000;
   }
 
-  .research-page .research-thrust-block img {
-    display: block;
-    width: 100%;
-    height: auto;
-    margin: 0 auto;
+  .research-page .research-section-block ul {
+    margin: 0 0 0 1.5em;
+    padding: 0;
   }
 
-  @media (max-width: 640px) {
-    .research-page .research-thrusts {
-      grid-template-columns: 1fr;
-    }
+  .research-page .research-section-block li {
+    line-height: 1.75;
+    margin: 0 0 0.85em;
+  }
+
+  .research-page .research-section-block li:last-child {
+    margin-bottom: 0;
+  }
+
+  .research-page .article-entry > hr {
+    display: none;
   }
   </style>
   
@@ -216,31 +219,17 @@
   
 <div class="research-figure">
   <div class="research-schematic-frame">
-    <img src="/assets/img/research_main.png" alt="">
-  </div>
-  <div class="research-thrusts" aria-label="Research thrusts">
-    <div class="research-thrust-block">
-      <h3>Biotechnology</h3>
-      <img src="/assets/img/research_thrust_biotech.png" alt="">
-    </div>
-    <div class="research-thrust-block">
-      <h3>Energy</h3>
-      <img src="/assets/img/research_thrust_energy.png" alt="">
-    </div>
-    <div class="research-thrust-block">
-      <h3>Manufacturing</h3>
-      <img src="/assets/img/research_thrust_manufacturing.png" alt="">
-    </div>
+    <img src="/assets/img/research.png" alt="">
   </div>
 </div>
  
 <font size=3.5, color="black">
 <p>A time-honored objective in engineering sciences is the theoretical and computational understanding of multiscale problems. As the world moves towards sustainability, multiscale computational modeling can greatly accelerate scientific research and industrial production, e.g., faster drug discovery, efficient battery design, novel energy sources exploration, and systems and materials design. My research goal is to <strong>develop computational methods</strong> to better model and simulate <strong>multiscale engineering phenomena</strong> that can bring good for mechanical, materials, and systems design with practical applications in <strong>energy</strong>, <strong>bioengineering</strong>, and <strong>manufacturing</strong>. My research briefly focuses on the following three aspects, combined with selected works.</p>
 
-<hr>	
+<div class="research-section-blocks">
 
-<p><strong>Multiscale Physics + Theory:</strong></p>
-
+<section class="research-section-block">
+<h2>Multiscale Physics + Theory:</h2>
 <ul>
 
 <li><p>Akhondzadeh$^1$, <strong>H. Zhai</strong>$^1$, Jian, Sills, Bertin, Cai$^\star$. <u>Link Statistics of Dislocation Network during Strain Hardening</u>. <em>Journal of the Mechanics and Physics of Solids</em> 210, 106533 (2026). DOI:<a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.jmps.2026.106533">10.1016/j.jmps.2026.106533</a>; arXiv:<a href="https://arxiv.org/abs/2509.03743">2509.03743</a>. [<a href="/file/AkhondzadehZhai_2026_JMPS.pdf">PDF</a>] [<a href="/file/ref/akhondzadeh2026.html">Cite</a>]</p></li>
@@ -250,11 +239,10 @@
 <li><p><strong>H. Zhai</strong>, J. Yeo. <u>Multiscale Mechanics of Thermal Gradient Coupled Graphene Fracture: A Molecular Dynamics Study</u>. <em>International Journal of Applied Mechanics</em> (2023). DOI:<a href="https://doi.org/10.1142/S1758825123500448">10.1142/S1758825123500448</a>; arXiv:<a href="https://doi.org/10.48550/arXiv.2212.07897">2212.07897</a>. [<a href="/file/zhaiyeo_2023_graphene_mechanics.pdf">PDF</a>] [<a href="/file/ref/zhaiyeo2023ijam.html">Cite</a>]</p></li>
 
 </ul>
+</section>
 
-<hr>
-
-<p><strong>Computational Mechanics + SciML:</strong></p>
-
+<section class="research-section-block">
+<h2>Computational Mechanics + SciML:</h2>
 <ul>
 
 <li><strong>H. Zhai</strong>. <u>Stress predictions in polycrystal plasticity using graph neural networks with subgraph training.</u> <em>Computational Mechanics</em>. (2025). DOI:<a target="_blank" rel="noopener" href="https://doi.org/10.1007/s00466-025-02604-6">10.1007/s00466-025-02604-6</a>; arXiv:<a href="https://arxiv.org/abs/2409.05169">2409.05169</a>. [<a href="/file/zhai_compmech_2025.pdf">PDF</a>] [<a href="/file/ref/zhai2025.html">Cite</a>]</p></li>
@@ -266,11 +254,10 @@
 <li><p><strong>H. Zhai</strong>, T. Sands. <u>Comparison of deep learning and deterministic algorithms for control modeling.</u> <em>Sensors</em> 22(17), 6362. (2022). DOI:<a target="_blank" rel="noopener" href="https://doi.org/10.3390/s22176362">10.3390/s22176362</a>; arXiv:<a href="https://arxiv.org/abs/2206.08831">2206.08831</a>. [<a href="/file/zhai_sensors_2022.pdf">PDF</a>] [<a href="/file/ref/zhai2022sensors.html">Cite</a>]</p></li>
 
 </ul>
+</section>
 
-<hr>
-
-<p><strong>Computational Materials Science + Inverse Design:</strong></p>
-	
+<section class="research-section-block">
+<h2>Computational Materials Science + Inverse Design:</h2>
 <ul>
 
 <li><p><strong>H. Zhai</strong>, H. Hao, J. Yeo. <u>Benchmarking Inverse Optimization Algorithms for Materials Design</u>. <em>APL Materials</em>, 12, 021107 (2024). DOI:<a href="https://doi.org/10.1063/5.0177266">10.1063/5.0177266</a>; arXiv:<a href="https://arxiv.org/abs/2309.02646">2309.02646</a>. [<a href="/file/zhai_aplmat_2024.pdf">PDF</a>] [<a href="/file/ref/zhai2024.html">Cite</a>]</li>
@@ -282,6 +269,9 @@
 <li><p>Wang, Shi, Li, Zhao, <strong>Zhai</strong>, Korani, & Yeo. <u>Computational and data-driven modeling of solid polymer electrolytes.</u> <em>Digital Discovery</em> (2023). DOI:<a target="_blank" rel="noopener" href="https://doi.org/10.1039/D3DD00078H">10.1039/D3DD00078H</a>. [<a href="/file/wang_dd_2023.pdf">PDF</a>] [<a href="/file/ref/wang2023dd.html">Cite</a>]</p></li>
 
 </ul>
+</section>
+
+</div>
 </article>
 </section>
 </div>
