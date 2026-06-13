@@ -260,8 +260,8 @@ body, html {
 	background: #ebe4d6;
 	text-align: center;
 	color: #88888b;
-	padding: 10px 0 6px;
-	line-height: 1.4;
+	padding: 6px 0 4px;
+	line-height: 1.3;
 }
 .wrapper,.copyright {
 	padding: 4px 8px 0;
@@ -363,10 +363,10 @@ canvas {
 }
 
 footer>.container>.row>p>a {
-	color: #555;
+	color: darkgray;
 }
 footer>.container>.row>p>a:hover  {
-	color: #414141;
+	color: dimgray;
 }
 
 @media (max-width: 680px) {

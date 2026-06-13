@@ -524,7 +524,7 @@ tt {
   text-decoration: none;
 }
 .hr {
-  background: #414141;
+  background: darkgray;
 }
 .carousel-fade .carousel-inner .item {
   max-width: 100%;
@@ -1829,18 +1829,18 @@ a.article-title:hover {
   width: 100%;
   background: #ebe4d6;
   text-align: center;
-  color: #88888b;
-  padding: 10px 0 6px;
-  line-height: 1.4;
+  color: darkgray;
+  padding: 6px 0 4px;
+  line-height: 1.3;
   border-color: #e0e0e0;
-  font-size: 16px;
+  font-size: 13px;
 }
 #footer a {
   text-decoration: none;
-  color: #555;
+  color: darkgray;
 }
 #footer a:hover {
-  color: #414141;
+  color: dimgray;
   text-decoration: none;
 }
 #footer-info {

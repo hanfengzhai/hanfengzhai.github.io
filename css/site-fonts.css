@@ -121,19 +121,21 @@ tt,
 }
 
 #footer #copyRightEn,
-#footer #copyRightEn a {
-  font-size: 16px;
-  line-height: 1.4;
-  color: #555;
+#footer #copyRightEn a,
+#footer #copyRightEn a:link,
+#footer #copyRightEn a:visited {
+  font-size: 13px;
+  line-height: 1.3;
+  color: darkgray;
 }
 
 #footer #copyRightEn a:hover {
-  color: #414141;
+  color: dimgray;
   text-decoration: none;
 }
 
 #footer #copyRightEn {
-  margin: 0 0 4px;
+  margin: 0 0 3px;
 }
 
 #footer .wrapper hr {
@@ -146,18 +148,22 @@ tt,
 }
 
 #footer .social-icons .fa {
-  width: 36px;
-  height: 36px;
-  line-height: 36px;
-  font-size: 1.3em;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  font-size: 1em;
+  background-color: darkgray;
 }
 
 #footer .list-inline li {
-  padding-left: 2px;
-  padding-right: 2px;
+  padding-left: 1px;
+  padding-right: 1px;
   margin-bottom: 0;
 }
 
 #footer .wrapper > a img[alt="Flag Counter"] {
   margin-top: 2px;
+  max-width: 220px;
+  height: auto;
+  display: inline-block;
 }
