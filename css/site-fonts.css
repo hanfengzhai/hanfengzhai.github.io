@@ -1,6 +1,8 @@
 /* Site-wide TeX Gyre Pagella typography. Load after bootstrap.css. */
 :root {
   --page-bg: #f5f0e4;
+  --footer-red: #5c0c0c;
+  --footer-red-hover: #4a0808;
 }
 
 html,
@@ -121,7 +123,7 @@ tt,
 }
 
 #footer {
-  background: #8C1515;
+  background-color: var(--footer-red) !important;
   color: rgba(255, 255, 255, 0.92);
   padding: 14px 0 12px;
 }
@@ -159,13 +161,13 @@ tt,
   line-height: 48px;
   font-size: 1.45em;
   background-color: #fff;
-  color: #8C1515;
+  color: var(--footer-red);
 }
 
 #footer .social-icons .fa:hover,
 #footer .social-icons .fa:active {
   background-color: rgba(255, 255, 255, 0.88);
-  color: #6e1010;
+  color: var(--footer-red-hover);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
 }
 

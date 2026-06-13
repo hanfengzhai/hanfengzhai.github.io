@@ -257,7 +257,7 @@ body, html {
 
 #footer {
 	width: 100%;
-	background: #8C1515;
+	background-color: #5c0c0c !important;
 	text-align: center;
 	color: rgba(255, 255, 255, 0.92);
 	padding: 14px 0 12px;

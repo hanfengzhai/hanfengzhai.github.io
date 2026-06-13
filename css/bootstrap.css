@@ -63,10 +63,10 @@ a:hover {
 }
 
 footer>.container>.row>p>a {
-  color: #555;
+  color: rgba(255, 255, 255, 0.92);
 }
 footer>.container>.row>p>a:hover  {
-  color: #f33;
+  color: #fff;
 }
 
 h1 {
