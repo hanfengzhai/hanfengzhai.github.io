@@ -57,12 +57,7 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    gap: 0.85em 1em;
-    padding: 1.35em 1.5em;
-    border: 1px solid #e8e2d6;
-    border-radius: 10px;
-    background: #ece9e3;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    gap: 1.1em;
   }
 
   .research-page .research-scale-circle {
@@ -70,7 +65,7 @@
     height: 168px;
     border-radius: 50%;
     overflow: hidden;
-    background: #f5f2ec;
+    background: #ece9e3;
     border: 1px solid #ddd8cf;
     flex-shrink: 0;
   }
@@ -84,21 +79,10 @@
     box-sizing: border-box;
   }
 
-  .research-page .research-scale-arrow {
-    color: #8a857c;
-    font-size: 1.35rem;
-    line-height: 1;
-    user-select: none;
-  }
-
   @media (max-width: 620px) {
     .research-page .research-scale-circle {
       width: 132px;
       height: 132px;
-    }
-
-    .research-page .research-scale-arrow {
-      display: none;
     }
   }
 
@@ -268,11 +252,9 @@
     <div class="research-scale-circle">
       <img src="/assets/img/micro_md_w_box.png" alt="Micro scale molecular dynamics">
     </div>
-    <span class="research-scale-arrow" aria-hidden="true">→</span>
     <div class="research-scale-circle">
       <img src="/assets/img/meso_ddd_w_box.png" alt="Mesoscale dislocation dynamics">
     </div>
-    <span class="research-scale-arrow" aria-hidden="true">→</span>
     <div class="research-scale-circle">
       <img src="/assets/img/macro_polycrystal.png" alt="Macroscale polycrystal">
     </div>
