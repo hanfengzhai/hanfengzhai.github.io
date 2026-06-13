@@ -48,15 +48,60 @@
   }
 
   .research-page .research-figure {
+    max-width: 720px;
     margin: 0 auto 0.65em;
+  }
+
+  .research-page .research-schematic-frame {
+    padding: 1em 1.15em;
+    border: 1px solid #e8e2d6;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  }
+
+  .research-page .research-schematic-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .research-page .research-thrusts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.85em;
+    margin-top: 0.85em;
+  }
+
+  .research-page .research-thrust-block {
+    padding: 0.85em 0.75em 1em;
+    border: 1px solid #e8e2d6;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
     text-align: center;
   }
 
-  .research-page .research-figure img {
+  .research-page .research-thrust-block h3 {
+    margin: 0 0 0.55em;
+    font-size: 1.05rem;
+    font-weight: bold;
+    line-height: 1.2;
+    color: #000;
+  }
+
+  .research-page .research-thrust-block img {
     display: block;
-    max-width: 100%;
+    width: 100%;
     height: auto;
     margin: 0 auto;
+  }
+
+  @media (max-width: 640px) {
+    .research-page .research-thrusts {
+      grid-template-columns: 1fr;
+    }
   }
   </style>
   
@@ -170,7 +215,23 @@
 </div>
   
 <div class="research-figure">
-<img src="/assets/img/research.png" height="350" width="700" alt="">
+  <div class="research-schematic-frame">
+    <img src="/assets/img/research_main.png" alt="">
+  </div>
+  <div class="research-thrusts" aria-label="Research thrusts">
+    <div class="research-thrust-block">
+      <h3>Biotechnology</h3>
+      <img src="/assets/img/research_thrust_biotech.png" alt="">
+    </div>
+    <div class="research-thrust-block">
+      <h3>Energy</h3>
+      <img src="/assets/img/research_thrust_energy.png" alt="">
+    </div>
+    <div class="research-thrust-block">
+      <h3>Manufacturing</h3>
+      <img src="/assets/img/research_thrust_manufacturing.png" alt="">
+    </div>
+  </div>
 </div>
  
 <font size=3.5, color="black">

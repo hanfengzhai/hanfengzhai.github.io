@@ -111,3 +111,28 @@ tt,
     overflow-wrap: anywhere;
   }
 }
+
+#footer #copyRightEn {
+  margin: 0 0 6px;
+  font-size: 1em;
+}
+
+#footer .wrapper hr {
+  display: none;
+}
+
+#footer .social-icons .fa {
+  width: 42px;
+  height: 42px;
+  line-height: 42px;
+  font-size: 1.45em;
+}
+
+#footer .list-inline li {
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+#footer .wrapper > a img[alt="Flag Counter"] {
+  margin-top: 4px;
+}
