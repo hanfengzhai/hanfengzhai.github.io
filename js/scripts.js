@@ -99,10 +99,10 @@
   $('.article-entry').each(function(i){
     $(this).find('img').each(function(){
       if ($(this).parent().hasClass('fancybox')) return;
-      if ($(this).closest('.scrolling-gallery, .code-schematic-frame, .paper-schematic-frame, .timeline-image').length) return;
-      if ($(this).closest('figure').find('figcaption').length) return;
+      if ($(this).closest('.scrolling-gallery, .code-list, .paper-list, .code-schematic-frame, .paper-schematic-frame, .timeline-image').length) return;
+      if ($(this).closest('figure').children('figcaption').length) return;
 
-      var alt = this.alt;
+      var alt = $.trim(this.alt);
 
       if (alt) $(this).after('<span class="caption">' + alt + '</span>');
 
