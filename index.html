@@ -18,9 +18,58 @@
   }
 
   .intro-inline-nav {
-    margin: 0.35em auto;
-    padding: 0;
-    line-height: 1.4;
+    margin: 0.75em auto;
+    max-width: 720px;
+  }
+
+  .intro-nav-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 6px 8px;
+    padding: 8px 12px;
+    border: 1px solid #e0d9c8;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .intro-nav-link {
+    display: inline-block;
+    padding: 6px 15px;
+    border-radius: 999px;
+    font-size: 0.96em;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: #0645ad;
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .intro-nav-link:hover,
+  .intro-nav-link:focus {
+    background: rgba(6, 69, 173, 0.1);
+    color: #003d82;
+    text-decoration: none;
+  }
+
+  .intro-nav-link-active {
+    background: rgba(6, 69, 173, 0.14);
+    color: #1a4d8f;
+  }
+
+  @media (max-width: 540px) {
+    .intro-nav-bar {
+      border-radius: 16px;
+      padding: 10px 8px;
+      gap: 6px;
+    }
+
+    .intro-nav-link {
+      padding: 6px 11px;
+      font-size: 0.92em;
+    }
   }
 
   .intro-inline-nav + hr.bg_click {
@@ -182,11 +231,16 @@
 </div>
 
 <hr class="bg_click">
-<div class="intro-inline-nav" align="center">
-<strong>
-<a target="_blank" rel="noopener" href="/">Home</a> | <a target="_blank" rel="noopener" href="/research">Research</a> | <a target="_blank" rel="noopener" href="/talk">Talks</a> | <a target="_blank" rel="noopener" href="/gallery">Gallery</a> | <a target="_blank" rel="noopener" href="/note">Note</a> | <a target="_blank" rel="noopener" href="/code">Code</a>
-</strong>
-</div>
+<nav class="intro-inline-nav" aria-label="Site sections">
+  <div class="intro-nav-bar">
+    <a class="intro-nav-link intro-nav-link-active" href="/">Home</a>
+    <a class="intro-nav-link" href="/research">Research</a>
+    <a class="intro-nav-link" href="/talk">Talks</a>
+    <a class="intro-nav-link" href="/gallery">Gallery</a>
+    <a class="intro-nav-link" href="/note">Note</a>
+    <a class="intro-nav-link" href="/code">Code</a>
+  </div>
+</nav>
 <hr class="bg_click">
 <hr>
 <font size=3, color="black">
@@ -339,8 +393,7 @@
 <footer id="footer">
   <div class="container">
       	<div class="row">
-	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hiker</a> </p>
-        <p id="copyRightEn"> &copy; Hanfeng Zhai, All Rights Reserved.</p>
+	      <p id="copyRightEn">Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> · &copy; Hanfeng Zhai, All Rights Reserved.</p>
         <div class="wrapper">
 	<ul class="social-icons icon-circle list-unstyled list-inline"> 
 	<li> <a href="mailto:hz253@cornell.edu"><i class="fa fa-envelope"></i></a></li>

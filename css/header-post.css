@@ -10,6 +10,31 @@
         letter-spacing: .1px;
 }
 
+#allheader .brand,
+#search-form-wrap {
+  display: none !important;
+}
+
+#allheader .navbar-nav > li:has(#search-form-wrap) {
+  display: none !important;
+}
+
+@media (min-width: 768px) {
+  #allheader .container {
+    text-align: center;
+  }
+
+  #allheader .navbar-collapse {
+    text-align: center;
+  }
+
+  #allheader .hnav {
+    float: none;
+    display: inline-block;
+    margin: 10px 0 6px;
+  }
+}
+
 #allheader {
   background: none !important; /* or use transparent */
   z-index: 2;
@@ -41,7 +66,7 @@
 		background: rgba(48,51,58,0.98);
 		color: #fff;
 		width: 100%;
-		top: 91px;
+		top: 52px;
 		left: 20px;
 		right: 0;
 		margin: 0 0 0 -20px;
@@ -53,7 +78,7 @@
 	}
 	.hnav {
 		float: none;
-		margin: 80px 0 40px 0;
+		margin: 20px 0 40px 0;
 		padding: 0 20%;
 	}
 	.container > .navbar-collapse {
