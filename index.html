@@ -7,7 +7,7 @@
 <meta name="keywords" content="" />
 <style>
   #post-index.article {
-    margin: 0 0 20px;
+    margin: 0 0 8px;
   }
 
   #post-index .article-meta {
@@ -19,7 +19,7 @@
   }
 
   #post-index .intro-inline-nav {
-    margin: 1.35em auto;
+    margin: 1.35em auto 1.55em;
   }
 
   .intro-avatar {
@@ -343,7 +343,7 @@
 </article>
 </section>
 </div>
-<div align="center" style="margin-top: 16px;"><hr class="hr" style="margin:0px; height:3px;"></div>
+<div align="center" style="margin-top: 10px;"><hr class="hr" style="margin:0px; height:3px;"></div>
 <footer id="footer">
   <div class="container">
       	<div class="row">
@@ -363,18 +363,6 @@
 	</div>
   </div>
 </footer>
-<script>
-    var wrapdiv = document.getElementById("wrap");
-    var contentdiv = document.getElementById("content");
-    var allheader = document.getElementById("allheader");
-
-    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
-    if (allheader != null) {
-      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
-    } else {
-      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
-    }
-</script>
 </div>
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({

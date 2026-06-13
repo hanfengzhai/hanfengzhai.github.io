@@ -112,27 +112,52 @@ tt,
   }
 }
 
+#content {
+  min-height: auto !important;
+}
+
+#content .article {
+  margin-bottom: 8px;
+}
+
+#footer #copyRightEn,
+#footer #copyRightEn a {
+  font-size: 16px;
+  line-height: 1.4;
+  color: #555;
+}
+
+#footer #copyRightEn a:hover {
+  color: #414141;
+  text-decoration: none;
+}
+
 #footer #copyRightEn {
-  margin: 0 0 6px;
-  font-size: 1em;
+  margin: 0 0 4px;
 }
 
 #footer .wrapper hr {
   display: none;
 }
 
+#footer .wrapper,
+#footer .copyright {
+  padding: 2px 8px 0;
+}
+
 #footer .social-icons .fa {
-  width: 42px;
-  height: 42px;
-  line-height: 42px;
-  font-size: 1.45em;
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+  font-size: 1.3em;
 }
 
 #footer .list-inline li {
-  padding-left: 3px;
-  padding-right: 3px;
+  padding-left: 2px;
+  padding-right: 2px;
+  margin-bottom: 0;
 }
 
 #footer .wrapper > a img[alt="Flag Counter"] {
-  margin-top: 4px;
+  margin-top: 2px;
 }

@@ -1830,13 +1830,14 @@ a.article-title:hover {
   background: #ebe4d6;
   text-align: center;
   color: #88888b;
-  padding: 16px 0 10px;
-  line-height: 1.45;
+  padding: 10px 0 6px;
+  line-height: 1.4;
   border-color: #e0e0e0;
-  font-size: 1em;
+  font-size: 16px;
 }
 #footer a {
   text-decoration: none;
+  color: #555;
 }
 #footer a:hover {
   color: #414141;
