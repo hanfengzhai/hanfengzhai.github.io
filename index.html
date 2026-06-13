@@ -12,17 +12,31 @@
     height: 3px;
     margin: 0;
   }
+
+  .intro-bio + hr.bg_click {
+    margin-top: 1.5em;
+  }
+
+  .intro-inline-nav {
+    margin: 1.25em auto;
+    padding: 0.75em 0;
+    line-height: 1.8;
+  }
+
+  .intro-inline-nav + hr.bg_click {
+    margin-bottom: 1.5em;
+  }
   .paper-list {
     display: flex;
     flex-direction: column;
     gap: 28px;
-    margin: 1.5em 0;
+    margin: 1.5em 0 1.5em -12px;
   }
 
   .paper-item {
     display: flex;
     align-items: flex-start;
-    gap: 24px;
+    gap: 20px;
     padding-bottom: 28px;
     border-bottom: 1px solid #eef1f8;
   }
@@ -33,9 +47,9 @@
   }
 
   .paper-schematic-frame {
-    flex: 0 0 280px;
-    width: 280px;
-    height: 150px;
+    flex: 0 0 240px;
+    width: 240px;
+    height: 180px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -64,9 +78,9 @@
   .article-entry .paper-content blockquote {
     margin: 10px 0 0;
     padding: 8px 12px;
-    font-size: 0.82em;
-    line-height: 1.45;
-    color: rgba(44, 44, 44, 0.65);
+    font-size: 1em;
+    line-height: 1.55;
+    color: inherit;
   }
 
   .intro-bio p {
@@ -154,7 +168,7 @@
 </div>
 
 <hr class="bg_click">
-<div align="center">
+<div class="intro-inline-nav" align="center">
 <strong>
 <a target="_blank" rel="noopener" href="/">Home</a> | <a target="_blank" rel="noopener" href="/research">Research</a> | <a target="_blank" rel="noopener" href="/talk">Talks</a> | <a target="_blank" rel="noopener" href="/gallery">Gallery</a> | <a target="_blank" rel="noopener" href="/note">Note</a> | <a target="_blank" rel="noopener" href="/code">Code</a>
 </strong>

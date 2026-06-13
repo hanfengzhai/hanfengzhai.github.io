@@ -1,4 +1,24 @@
 /* Site-wide TeX Gyre Pagella typography. Load after bootstrap.css. */
+:root {
+  --page-bg: #faf6ec;
+}
+
+html,
+body,
+#container,
+#wrap,
+#content,
+#main,
+.section-content {
+  background-color: var(--page-bg);
+}
+
+.navbar-default,
+.navbar-inner,
+#allheader {
+  background-color: rgba(250, 246, 236, 0.98);
+}
+
 body,
 font,
 .article-entry,

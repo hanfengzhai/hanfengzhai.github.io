@@ -24,12 +24,40 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
   <style type="text/css">
+  .code-list {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    margin: 1.5em 0 1.5em -12px;
+  }
+
+  .code-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #eef1f8;
+  }
+
+  .code-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .code-item-featured {
+    background: rgba(0, 0, 0, 0.03);
+    padding: 16px;
+    border-radius: 8px;
+    border-bottom: none;
+  }
+
   .code-schematic-frame {
-    display: inline-flex;
+    flex: 0 0 240px;
+    width: 240px;
+    height: 180px;
+    display: flex;
     align-items: center;
     justify-content: center;
-    width: 280px;
-    height: 150px;
     border: 5px solid lightgray;
     border-radius: 7px;
     box-sizing: border-box;
@@ -40,12 +68,39 @@
   .code-schematic-frame img {
     width: 100%;
     height: 100%;
+    max-width: none;
+    margin: 0;
     object-fit: contain;
     display: block;
   }
 
-  .code-entry-featured td {
-    background-color: #f4f4f4;
+  .code-content {
+    flex: 1;
+    min-width: 0;
+    line-height: 1.55;
+    text-align: left;
+  }
+
+  .code-content ul {
+    margin: 0.75em 0 0 1.2em;
+    padding: 0;
+    list-style: disc;
+  }
+
+  .code-content li {
+    margin: 0.25em 0;
+  }
+
+  @media (max-width: 720px) {
+    .code-item {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .code-schematic-frame {
+      width: 100%;
+      max-width: 320px;
+    }
   }
 </style>
   
@@ -151,88 +206,84 @@
 
 <h1 class="headerlink" title="Research Projects"></a>Research</h1>
 
-<table border="1" width="100%" class="code-entry-featured">
-    <tr>
-        <td width="25%"><center><div class="code-schematic-frame"><img src="/assets/img/opendis-logo.png" alt="OpenDiS logo"></div></center></td>
-	<td width="5%"></td>
-        <td width="70%"><center><a target="_blank" rel="noopener" href="https://github.com/OpenDiS/OpenDiS">OpenDiS</a></center> Open Dislocation Simulator - Revolutionizing Dislocation Dynamics Simulations Through Open Source Collaboration. Updated version of <a target="_blank" rel="noopener" href="https://www.llnl.gov/sites/www/files/2020-05/Paradis-STR-Nov-05.pdf">ParaDiS</a>.
-	<li><strong>Interface</strong>: Python3; <strong>Documentation</strong>: <a target="_blank" rel="noopener" href="https://opendis.github.io/OpenDiS/">OpenDiS webpage</a>.</li>
-	<li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="http://doi.org/10.1088/1361-651X/ab3a03">Bertin et al., MSMSE, 2019</a>, <a target="_blank" rel="noopener" href="http://doi.org/10.1088/0965-0393/15/6/001">Arsenlis et al., MSMSE, 2007</a>.</li>
-	</td>
-    </tr>
-</table>
+<div class="code-list">
+  <article class="code-item code-item-featured">
+    <div class="code-schematic-frame"><img src="/assets/img/opendis-logo.png" alt=""></div>
+    <div class="code-content">
+      <p><a target="_blank" rel="noopener" href="https://github.com/OpenDiS/OpenDiS">OpenDiS</a> — Open Dislocation Simulator: revolutionizing dislocation dynamics simulations through open source collaboration. Updated version of <a target="_blank" rel="noopener" href="https://www.llnl.gov/sites/www/files/2020-05/Paradis-STR-Nov-05.pdf">ParaDiS</a>.</p>
+      <ul>
+        <li><strong>Interface</strong>: Python3; <strong>Documentation</strong>: <a target="_blank" rel="noopener" href="https://opendis.github.io/OpenDiS/">OpenDiS webpage</a>.</li>
+        <li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="http://doi.org/10.1088/1361-651X/ab3a03">Bertin et al., MSMSE, 2019</a>, <a target="_blank" rel="noopener" href="http://doi.org/10.1088/0965-0393/15/6/001">Arsenlis et al., MSMSE, 2007</a>.</li>
+      </ul>
+    </div>
+  </article>
 
-<table border="1" width="100%">
-    <tr>
-        <td width="25%"><center><div class="code-schematic-frame"><img src="/assets/img/AI_DislLinks_DDD.png" alt="Dislocation link analysis schematic"></div></center></td>
-	<td width="5%"></td>
-        <td width="70%"><center><a target="_blank" rel="noopener" href="https://gitlab.com/micronano_public/Dislocation_Links">Dislocation Link Analysis</a></center>
-		Analysis toolkit for link statistics of dislocation networks during strain hardening from discrete dislocation dynamics (DDD) simulations.
-	<li><strong>Interface</strong>: Python3.</li>
-	<li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.jmps.2026.106533">Akhondzadeh, Zhai et al., JMPS, 2026</a>.</li>
-	</td>
-    </tr>
-</table>
+  <article class="code-item">
+    <div class="code-schematic-frame"><img src="/assets/img/AI_DislLinks_DDD.png" alt=""></div>
+    <div class="code-content">
+      <p><a target="_blank" rel="noopener" href="https://gitlab.com/micronano_public/Dislocation_Links">Dislocation Link Analysis</a> — Analysis toolkit for link statistics of dislocation networks during strain hardening from discrete dislocation dynamics (DDD) simulations.</p>
+      <ul>
+        <li><strong>Interface</strong>: Python3.</li>
+        <li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.jmps.2026.106533">Akhondzadeh, Zhai et al., JMPS, 2026</a>.</li>
+      </ul>
+    </div>
+  </article>
 
-<table border="1" width="100%">
-    <tr>
-        <td width="25%"><center><div class="code-schematic-frame"><img src="/assets/img/gnn_plasti_fem.png" alt="GNN FEM polycrystal plasticity schematic"></div></center></td>
-	<td width="5%"></td>
-        <td width="70%"><center><a target="_blank" rel="noopener" href="https://gitlab.com/hanfengzhai2/GNN-FEM-PolyPlas">GNN FEM Polycrystal Plasticity</a></center>
-		Using graph neural networks to predict stress in polycrystal plasticity based on finite element meshes to accelerate simulations. 
-		<li><strong>Dependence</strong>: <a target="_blank" rel="noopener" href="https://pypi.org/project/torch/">torch</a>, <a target="_blank" rel="noopener" href="https://pytorch-geometric.readthedocs.io/en/latest/">torch_geometric</a>, <a target="_blank" rel="noopener" href="https://pytorch-scatter.readthedocs.io/en/latest/index.html">Torch Scatter</a>.</li>
-		<li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="https://doi.org/10.1007/s00466-025-02604-6">Zhai, Computational Mechanics, 2025</a>.</li>
-	</td>
-    </tr>
-</table>
+  <article class="code-item">
+    <div class="code-schematic-frame"><img src="/assets/img/gnn_plasti_fem.png" alt=""></div>
+    <div class="code-content">
+      <p><a target="_blank" rel="noopener" href="https://gitlab.com/hanfengzhai2/GNN-FEM-PolyPlas">GNN FEM Polycrystal Plasticity</a> — Using graph neural networks to predict stress in polycrystal plasticity based on finite element meshes to accelerate simulations.</p>
+      <ul>
+        <li><strong>Dependence</strong>: <a target="_blank" rel="noopener" href="https://pypi.org/project/torch/">torch</a>, <a target="_blank" rel="noopener" href="https://pytorch-geometric.readthedocs.io/en/latest/">torch_geometric</a>, <a target="_blank" rel="noopener" href="https://pytorch-scatter.readthedocs.io/en/latest/index.html">Torch Scatter</a>.</li>
+        <li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="https://doi.org/10.1007/s00466-025-02604-6">Zhai, Computational Mechanics, 2025</a>.</li>
+      </ul>
+    </div>
+  </article>
 
-<table border="1" width="100%">
-    <tr>
-        <td width="25%"><center><div class="code-schematic-frame"><img src="/assets/img/code_matdes.png" alt="Materials discovery benchmark schematic"></div></center></td>
-	<td width="5%"></td>
-        <td width="70%"><center><a target="_blank" rel="noopener" href="https://github.com/hanfengzhai/materials-discovery-benchmark/tree/master/inverse_opt">Materials Discovery Benchmark</a></center> 
-		This folder contains a series of optimization methods for materials design and discovery based on <a target="_blank" rel="noopener" href="https://next-gen.materialsproject.org/">Materials Project</a> database with targeted properties.
-		<li><strong>Dependence</strong>: <a target="_blank" rel="noopener" href="https://pymatgen.org/">pymatgen</a>, <a target="_blank" rel="noopener" href="https://github.com/materialsvirtuallab/megnet">MEGNet</a>, <a target="_blank" rel="noopener" href="https://pypi.org/project/mealpy/">MEALPY</a>.</li>
-		<li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="https://doi.org/10.1063/5.0177266">Zhai et al., APL Materials, 2024</a>.</li>
-	</td>
-    </tr>
-</table>
-		
-<table border="1" width="100%">
-    <tr>
-        <td width="25%"><center><div class="code-schematic-frame"><img src="/assets/img/pylamdo.jpeg" alt="PyLAMDO schematic"></div></center></td>
-	<td width="5%"></td>
-        <td width="70%"><center><a target="_blank" rel="noopener" href="https://github.com/hanfengzhai/PyLAMDO">PyLAMDO</a></center> 
-		<strong>Py</strong>thon-<strong>LA</strong>MMPS toolkit for <strong>M</strong>ultiscale, <strong>M</strong>ultiphysics, <strong>M</strong>aterials <strong>D</strong>esign & <strong>O</strong>ptimization. 
-		PyLAMDO has been used for designing antibiofilm active surfaces and porous materials. 
-		<li><strong>Dependence</strong>: <a target="_blank" rel="noopener" href="https://www.lammps.org/">LAMMPS 19.X</a>, <a target="_blank" rel="noopener" href="https://github.com/bayesian-optimization/BayesianOptimization">BayesianOptimization</a>. 
-		<li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="https://doi.org/10.1021/acsbiomaterials.2c01079">Zhai & Yeo, ACS Biomaterials Sci. & Eng., 2023</a>, <a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.jmbbm.2023.106127">Zhai & Yeo, JMBBM, 2023</a>.</li>
-	</td>
-    </tr>
-</table>
+  <article class="code-item">
+    <div class="code-schematic-frame"><img src="/assets/img/code_matdes.png" alt=""></div>
+    <div class="code-content">
+      <p><a target="_blank" rel="noopener" href="https://github.com/hanfengzhai/materials-discovery-benchmark/tree/master/inverse_opt">Materials Discovery Benchmark</a> — Optimization methods for materials design and discovery based on the <a target="_blank" rel="noopener" href="https://next-gen.materialsproject.org/">Materials Project</a> database with targeted properties.</p>
+      <ul>
+        <li><strong>Dependence</strong>: <a target="_blank" rel="noopener" href="https://pymatgen.org/">pymatgen</a>, <a target="_blank" rel="noopener" href="https://github.com/materialsvirtuallab/megnet">MEGNet</a>, <a target="_blank" rel="noopener" href="https://pypi.org/project/mealpy/">MEALPY</a>.</li>
+        <li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="https://doi.org/10.1063/5.0177266">Zhai et al., APL Materials, 2024</a>.</li>
+      </ul>
+    </div>
+  </article>
 
-<table border="1" width="100%">
-    <tr>
-        <td width="25%"><center><div class="code-schematic-frame"><img src="/assets/img/bblnet.png" alt="BubbleNet schematic"></div></center></td>
-	<td width="5%"></td>
-        <td width="70%"><center><a target="_blank" rel="noopener" href="https://github.com/hanfengzhai/BubbleNet">BubbleNet</a></center> 
-		BubbleNet is a deep learning framework designed to predict and obtain the physics of micro-bubble dynamics based on the general structure of <a target="_blank" rel="noopener" href="https://maziarraissi.github.io/PINNs/">PINNs</a>.
-	    	<li><strong>Dependence</strong>: <a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/compat/v1">TensorFlow 1.X</a>, <a target="_blank" rel="noopener" href="https://www.comsol.com/comsol-multiphysics">COMSOL Multiphysics</a> (data). 
-		<li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="https://doi.org/10.1063/5.0079602">Zhai et al., AIP Advances, 2022</a>.</li>
-	</td>
-    </tr>
-</table>
+  <article class="code-item">
+    <div class="code-schematic-frame"><img src="/assets/img/pylamdo.jpeg" alt=""></div>
+    <div class="code-content">
+      <p><a target="_blank" rel="noopener" href="https://github.com/hanfengzhai/PyLAMDO">PyLAMDO</a> — <strong>Py</strong>thon-<strong>LA</strong>MMPS toolkit for <strong>M</strong>ultiscale, <strong>M</strong>ultiphysics, <strong>M</strong>aterials <strong>D</strong>esign &amp; <strong>O</strong>ptimization. Used for designing antibiofilm active surfaces and porous materials.</p>
+      <ul>
+        <li><strong>Dependence</strong>: <a target="_blank" rel="noopener" href="https://www.lammps.org/">LAMMPS 19.X</a>, <a target="_blank" rel="noopener" href="https://github.com/bayesian-optimization/BayesianOptimization">BayesianOptimization</a>.</li>
+        <li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="https://doi.org/10.1021/acsbiomaterials.2c01079">Zhai &amp; Yeo, ACS Biomaterials Sci. &amp; Eng., 2023</a>, <a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.jmbbm.2023.106127">Zhai &amp; Yeo, JMBBM, 2023</a>.</li>
+      </ul>
+    </div>
+  </article>
+
+  <article class="code-item">
+    <div class="code-schematic-frame"><img src="/assets/img/bblnet.png" alt=""></div>
+    <div class="code-content">
+      <p><a target="_blank" rel="noopener" href="https://github.com/hanfengzhai/BubbleNet">BubbleNet</a> — Deep learning framework to predict and obtain the physics of micro-bubble dynamics based on the general structure of <a target="_blank" rel="noopener" href="https://maziarraissi.github.io/PINNs/">PINNs</a>.</p>
+      <ul>
+        <li><strong>Dependence</strong>: <a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/compat/v1">TensorFlow 1.X</a>, <a target="_blank" rel="noopener" href="https://www.comsol.com/comsol-multiphysics">COMSOL Multiphysics</a> (data).</li>
+        <li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="https://doi.org/10.1063/5.0079602">Zhai et al., AIP Advances, 2022</a>.</li>
+      </ul>
+    </div>
+  </article>
+</div>
 
 <h1 id="Research-Projects"><a href="#Research-Projects" class="headerlink" title="Research Projects"></a>Education</h1>
 
-<table border="1" width="100%">
-    <tr>
-        <td width="25%"><center><div class="code-schematic-frame"><img src="/assets/img/dft.jpeg" alt="DFT computation schematic"></div></center></td>
-	<td width="5%"></td>
-        <td width="70%"><center><a target="_blank" rel="noopener" href="https://github.com/hanfengzhai/MSE5720-HW">Density Functional Theory Computation of Materials</a></center> This is the code & data archive for the course <a target="_blank" rel="noopener" href="https://classes.cornell.edu/browse/roster/SP21/class/MSE/5720">Computational Materials Science</a>, containing <a target="_blank" rel="noopener" href="https://www.quantum-espresso.org/">Quantum ESPRESSO</a> code for running DFT computation of materials electrical, chemical, mechanical, and various properties. The original code was running on the <a target="_blank" rel="noopener" href="https://tacc.utexas.edu/systems/stampede2/">TACC Stampede2</a>. </td>
-    </tr>
-</table>
-		
+<div class="code-list">
+  <article class="code-item">
+    <div class="code-schematic-frame"><img src="/assets/img/dft.jpeg" alt=""></div>
+    <div class="code-content">
+      <p><a target="_blank" rel="noopener" href="https://github.com/hanfengzhai/MSE5720-HW">Density Functional Theory Computation of Materials</a> — Code and data archive for <a target="_blank" rel="noopener" href="https://classes.cornell.edu/browse/roster/SP21/class/MSE/5720">Computational Materials Science</a>, containing <a target="_blank" rel="noopener" href="https://www.quantum-espresso.org/">Quantum ESPRESSO</a> workflows for DFT computation of materials properties. Originally run on <a target="_blank" rel="noopener" href="https://tacc.utexas.edu/systems/stampede2/">TACC Stampede2</a>.</p>
+    </div>
+  </article>
+</div>
 </div>
 </article>
 </section>
