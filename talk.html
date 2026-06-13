@@ -24,7 +24,56 @@
 <link rel="apple-touch-icon" href="/css/images/avatar.jpg">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
   <style type="text/css">
-</style>
+  .talk-page.article {
+    margin-top: 8px;
+  }
+
+  .talk-page .article-entry > h1:first-of-type {
+    margin-top: 0;
+    margin-bottom: 0.75em;
+  }
+
+  .talk-blocks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25em;
+    margin: 0.75em 0 1em;
+    align-items: start;
+  }
+
+  .talk-block {
+    padding: 1.25em 1.5em 1.5em;
+    border: 1px solid #e8e2d6;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.55);
+  }
+
+  .talk-block h1 {
+    margin: 0 0 0.75em;
+    font-size: 1.35rem;
+    line-height: 1.2;
+  }
+
+  .talk-block ul {
+    margin: 0 0 0 1.2em;
+    padding: 0;
+  }
+
+  .talk-block li {
+    margin: 0 0 0.85em;
+    line-height: 1.55;
+  }
+
+  .talk-block li:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 960px) {
+    .talk-blocks {
+      grid-template-columns: 1fr;
+    }
+  }
+  </style>
   
 <link rel="stylesheet" href="/css/style.css">
 
@@ -137,19 +186,8 @@
     <a class="intro-nav-link" href="/code">Code</a>
   </div>
 </nav>
-<section id="main" style="float:none;"><article id="page-"  class="article article-type-page" itemscope itemprop="blogPost" >
+<section id="main" style="float:none;"><article id="page-talk" class="article article-type-page talk-page" itemscope itemprop="blogPost" >
 <div id="articleInner" class="article-inner">
-    
-<header class="article-header">
-
-    <h1 class="thumb" class="article-title" itemprop="name">
-      Selected Talks
-    </h1>
-
-</header>
-    
-<div class="article-meta">
-</div>
 
 <div class="article-entry" itemprop="articleBody">
 <font size=3.9, color="black">
@@ -165,6 +203,8 @@
 </table>
 </blockquote>	
 	
+<div class="talk-blocks">
+<section class="talk-block">
 <h1 id="Presentations"><a href="#Presentations" class="headerlink" title="Presentations"></a>Presentations</h1>
 
 <ul>
@@ -184,8 +224,10 @@
 </li>
 <li><p>Computation Methods for Applied Mechanics Problem. [<a target="_blank" rel="noopener" href="/file/SHU_UGAF.pdf">PDF</a>] <em>The 3rd Undergraduate Academic Forum of Shanghai University</em>, Dec. <strong>2020</strong>.</p>
 </li>
-</ul> 
+</ul>
+</section>
 
+<section class="talk-block">
 <h1 id="Posters"><a href="#Posters" class="headerlink" title="Posters"></a>Posters</h1>
 <ul>
 <li><p>Link Statistics of Dislocation Network during Strain Hardening. [<a target="_blank" rel="noopener" href="/file/dislocation2025.pdf">PDF</a>] <em><a target="_blank" rel="noopener" href="https://www.coe.miami.edu/events/dislocations-conference/index.html">Dislocations 2025</a></em>, Nov. <strong>2025</strong>.</p>
@@ -201,7 +243,12 @@
 <li><p>Designing next generation biocompatible materials with Machine Learning + Multiscale & Multiphysics Modeling. [<a target="_blank" rel="noopener" href="/file/biofilm_poster.pdf">PDF</a>] <em><a target="_blank" rel="noopener" href="https://gradschool.cornell.edu/admissions/admitted-students/">Cornell PhD Visit Day</a></em>, Mar. <strong>2022</strong>.</p>
 </li>
 </ul>
+</section>
+</div>
 
+</font>
+</div>
+</div>
 </article>
 </section>
 </div>
