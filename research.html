@@ -20,7 +20,44 @@
   <link rel="apple-touch-icon" href="/css/images/avatar.jpg">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
   <style type="text/css">
-</style>
+  .research-page.article {
+    margin-top: 8px;
+  }
+
+  .research-page .article-header h1 {
+    margin: 0 0 0.35em;
+    font-size: 1.75rem;
+    line-height: 1.2;
+  }
+
+  .research-page .article-header .thumb {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .research-page .research-intro blockquote {
+    margin: 0.25em auto 0.5em;
+    padding: 0.5em 1em;
+    text-align: center;
+  }
+
+  .research-page .research-intro blockquote p {
+    margin: 0.2em 0;
+    line-height: 1.45;
+  }
+
+  .research-page .research-figure {
+    margin: 0.35em auto 0.65em;
+    text-align: center;
+  }
+
+  .research-page .research-figure img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+  </style>
   
 <link rel="stylesheet" href="/css/style.css">
 <script src="/js/jquery-3.1.1.min.js"></script>
@@ -30,6 +67,7 @@
 <link rel="stylesheet" href="/css/header-post.css" >
 <link rel="stylesheet" href="/css/archive.css" >
 <link rel="stylesheet" href="/css/site-fonts.css" >
+<link rel="stylesheet" href="/css/intro-nav.css" >
 </head>
 
 <body>
@@ -101,29 +139,38 @@
 </header>
 
 <div id="content" class="outer"> 
-<section id="main" style="float:none;"><article id="page-"  class="article article-type-page" itemscope itemprop="blogPost" >
+<nav class="intro-inline-nav site-pill-nav" aria-label="Site sections">
+  <div class="intro-nav-bar">
+    <a class="intro-nav-link" href="/">Home</a>
+    <a class="intro-nav-link intro-nav-link-active" href="/research">Research</a>
+    <a class="intro-nav-link" href="/talk">Talks</a>
+    <a class="intro-nav-link" href="/gallery">Gallery</a>
+    <a class="intro-nav-link" href="/note">Note</a>
+    <a class="intro-nav-link" href="/code">Code</a>
+  </div>
+</nav>
+<section id="main" style="float:none;"><article id="page-research" class="article article-type-page research-page" itemscope itemprop="blogPost" >
 <div id="articleInner" class="article-inner">
     
 <header class="article-header">
-    <h1 class="thumb" class="article-title" itemprop="name">
+    <h1 class="thumb article-title" itemprop="name">
       Research Overview
     </h1>
 </header>
 
-<div class="article-meta">
-</div>
 <div class="article-entry" itemprop="articleBody">
 <font color="black">
 
+<div class="research-intro">
 <blockquote>
-  <center><p><em>As we go down in size, there are a number of interesting problems that arise. All things do not simply scale down in proportion.</em></p></center>
-  <center><p><a target="_blank" rel="noopener" href="https://calteches.library.caltech.edu/1976/1/1960Bottom.pdf"><em>There's Plenty of Room at the Bottom</em></a>, <a target="_blank" rel="noopener" href="http://www.feynman.com/">Richard P. Feynman</a>, 1959 </p>
-</center>
+  <p><em>As we go down in size, there are a number of interesting problems that arise. All things do not simply scale down in proportion.</em></p>
+  <p><a target="_blank" rel="noopener" href="https://calteches.library.caltech.edu/1976/1/1960Bottom.pdf"><em>There's Plenty of Room at the Bottom</em></a>, <a target="_blank" rel="noopener" href="http://www.feynman.com/">Richard P. Feynman</a>, 1959</p>
 </blockquote>
+</div>
   
-<div align="center">
-<img src="/assets/img/research.png" height="350" width="700" >
-</div> 
+<div class="research-figure">
+<img src="/assets/img/research.png" height="350" width="700" alt="Research overview schematic">
+</div>
  
 <font size=3.5, color="black">
 <p>A time-honored objective in engineering sciences is the theoretical and computational understanding of multiscale problems. As the world moves towards sustainability, multiscale computational modeling can greatly accelerate scientific research and industrial production, e.g., faster drug discovery, efficient battery design, novel energy sources exploration, and systems and materials design. My research goal is to <strong>develop computational methods</strong> to better model and simulate <strong>multiscale engineering phenomena</strong> that can bring good for mechanical, materials, and systems design with practical applications in <strong>energy</strong>, <strong>bioengineering</strong>, and <strong>manufacturing</strong>. My research briefly focuses on the following three aspects, combined with selected works.</p>

@@ -27,8 +27,8 @@
   .code-list {
     display: flex;
     flex-direction: column;
-    gap: 28px;
-    margin: 1.5em 0;
+    gap: 20px;
+    margin: 0.35em 0 1em;
   }
 
   @media (min-width: 721px) {
@@ -41,7 +41,7 @@
     display: flex;
     align-items: flex-start;
     gap: 20px;
-    padding-bottom: 28px;
+    padding-bottom: 20px;
     border-bottom: 1px solid #eef1f8;
   }
 
@@ -55,6 +55,18 @@
     padding: 16px;
     border-radius: 8px;
     border-bottom: none;
+  }
+
+  .code-page.article {
+    margin-top: 8px;
+  }
+
+  .code-page .article-entry > h1:first-of-type {
+    margin-top: 0;
+  }
+
+  .code-page .article-entry > h1 {
+    margin-bottom: 0.35em;
   }
 
   .code-schematic-frame {
@@ -149,6 +161,7 @@
 <link rel="stylesheet" href="/css/header-post.css" >
 <link rel="stylesheet" href="/css/archive.css" >
 <link rel="stylesheet" href="/css/site-fonts.css" >
+<link rel="stylesheet" href="/css/intro-nav.css" >
 </head>
 <body>
 
@@ -224,24 +237,23 @@
 </header>
 
 <div id="content" class="outer">
-        
-<section id="main" style="float:none;"><article id="page-"  class="article article-type-page" itemscope itemprop="blogPost" >
+<nav class="intro-inline-nav site-pill-nav" aria-label="Site sections">
+  <div class="intro-nav-bar">
+    <a class="intro-nav-link" href="/">Home</a>
+    <a class="intro-nav-link" href="/research">Research</a>
+    <a class="intro-nav-link" href="/talk">Talks</a>
+    <a class="intro-nav-link" href="/gallery">Gallery</a>
+    <a class="intro-nav-link" href="/note">Note</a>
+    <a class="intro-nav-link intro-nav-link-active" href="/code">Code</a>
+  </div>
+</nav>
+<section id="main" style="float:none;"><article id="page-code" class="article article-type-page code-page" itemscope itemprop="blogPost" >
 <div id="articleInner" class="article-inner">
-<header class="article-header">
-
-<h1 class="thumb" class="article-title" itemprop="name">
-      Code and Data
-</h1>
-</header>
-
-<div class="article-meta">
-      
-</div>
 <div class="article-entry" itemprop="articleBody">
       
 <font size=3.5, color="black">
 
-<h1 class="headerlink" title="Research Projects"></a>Research</h1>
+<h1 class="headerlink" title="Research Projects">Research</h1>
 
 <div class="code-list">
   <article class="code-item code-item-featured">
