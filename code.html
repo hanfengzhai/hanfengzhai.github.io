@@ -24,9 +24,28 @@
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
   <style type="text/css">
-  .code-schematic {
+  .code-schematic-frame {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 280px;
+    height: 150px;
     border: 5px solid lightgray;
     border-radius: 7px;
+    box-sizing: border-box;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .code-schematic-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .code-entry-featured td {
+    background-color: #f4f4f4;
   }
 </style>
   
@@ -37,6 +56,7 @@
 <link rel="stylesheet" href="/css/dialog.css">
 <link rel="stylesheet" href="/css/header-post.css" >
 <link rel="stylesheet" href="/css/archive.css" >
+<link rel="stylesheet" href="/css/site-fonts.css" >
 </head>
 <body>
 
@@ -131,9 +151,20 @@
 
 <h1 class="headerlink" title="Research Projects"></a>Research</h1>
 
+<table border="1" width="100%" class="code-entry-featured">
+    <tr>
+        <td width="25%"><center><div class="code-schematic-frame"><img src="/assets/img/opendis-logo.png" alt="OpenDiS logo"></div></center></td>
+	<td width="5%"></td>
+        <td width="70%"><center><a target="_blank" rel="noopener" href="https://github.com/OpenDiS/OpenDiS">OpenDiS</a></center> Open Dislocation Simulator - Revolutionizing Dislocation Dynamics Simulations Through Open Source Collaboration. Updated version of <a target="_blank" rel="noopener" href="https://www.llnl.gov/sites/www/files/2020-05/Paradis-STR-Nov-05.pdf">ParaDiS</a>.
+	<li><strong>Interface</strong>: Python3; <strong>Documentation</strong>: <a target="_blank" rel="noopener" href="https://opendis.github.io/OpenDiS/">OpenDiS webpage</a>.</li>
+	<li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="http://doi.org/10.1088/1361-651X/ab3a03">Bertin et al., MSMSE, 2019</a>, <a target="_blank" rel="noopener" href="http://doi.org/10.1088/0965-0393/15/6/001">Arsenlis et al., MSMSE, 2007</a>.</li>
+	</td>
+    </tr>
+</table>
+
 <table border="1" width="100%">
     <tr>
-        <td width="25%"><center><img src="/assets/img/AI_DislLinks_DDD.png" height="150" width="200" class="code-schematic"></center></td>
+        <td width="25%"><center><div class="code-schematic-frame"><img src="/assets/img/AI_DislLinks_DDD.png" alt="Dislocation link analysis schematic"></div></center></td>
 	<td width="5%"></td>
         <td width="70%"><center><a target="_blank" rel="noopener" href="https://gitlab.com/micronano_public/Dislocation_Links">Dislocation Link Analysis</a></center>
 		Analysis toolkit for link statistics of dislocation networks during strain hardening from discrete dislocation dynamics (DDD) simulations.
@@ -145,18 +176,7 @@
 
 <table border="1" width="100%">
     <tr>
-        <td width="25%"><center><img src="/assets/img/opendis-logo.png" height="100" width="200" class="code-schematic"></center></td>
-	<td width="5%"></td>
-        <td width="70%"><center><a target="_blank" rel="noopener" href="https://github.com/OpenDiS/OpenDiS">OpenDiS</a></center> Open Dislocation Simulator - Revolutionizing Dislocation Dynamics Simulations Through Open Source Collaboration. Updated version of <a target="_blank" rel="noopener" href="https://www.llnl.gov/sites/www/files/2020-05/Paradis-STR-Nov-05.pdf">ParaDiS</a>.
-	<li><strong>Interface</strong>: Python3; <strong>Documentation</strong>: <a target="_blank" rel="noopener" href="https://opendis.github.io/OpenDiS/">OpenDiS webpage</a>.</li>
-	<li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="http://doi.org/10.1088/1361-651X/ab3a03">Bertin et al., MSMSE, 2019</a>, <a target="_blank" rel="noopener" href="http://doi.org/10.1088/0965-0393/15/6/001">Arsenlis et al., MSMSE, 2007</a>.</li>
-	</td>
-    </tr>
-</table>
-
-<table border="1" width="100%">
-    <tr>
-        <td width="25%"><center><img src="/assets/img/gnn_plasti_fem.png" height="150" width="300" class="code-schematic"></center></td>
+        <td width="25%"><center><div class="code-schematic-frame"><img src="/assets/img/gnn_plasti_fem.png" alt="GNN FEM polycrystal plasticity schematic"></div></center></td>
 	<td width="5%"></td>
         <td width="70%"><center><a target="_blank" rel="noopener" href="https://gitlab.com/hanfengzhai2/GNN-FEM-PolyPlas">GNN FEM Polycrystal Plasticity</a></center>
 		Using graph neural networks to predict stress in polycrystal plasticity based on finite element meshes to accelerate simulations. 
@@ -168,7 +188,7 @@
 
 <table border="1" width="100%">
     <tr>
-        <td width="25%"><center><img src="/assets/img/code_matdes.png" height="150" width="300" class="code-schematic"></center></td>
+        <td width="25%"><center><div class="code-schematic-frame"><img src="/assets/img/code_matdes.png" alt="Materials discovery benchmark schematic"></div></center></td>
 	<td width="5%"></td>
         <td width="70%"><center><a target="_blank" rel="noopener" href="https://github.com/hanfengzhai/materials-discovery-benchmark/tree/master/inverse_opt">Materials Discovery Benchmark</a></center> 
 		This folder contains a series of optimization methods for materials design and discovery based on <a target="_blank" rel="noopener" href="https://next-gen.materialsproject.org/">Materials Project</a> database with targeted properties.
@@ -180,7 +200,7 @@
 		
 <table border="1" width="100%">
     <tr>
-        <td width="25%"><center><img src="/assets/img/pylamdo.jpeg" height="150" width="300" class="code-schematic"></center></td>
+        <td width="25%"><center><div class="code-schematic-frame"><img src="/assets/img/pylamdo.jpeg" alt="PyLAMDO schematic"></div></center></td>
 	<td width="5%"></td>
         <td width="70%"><center><a target="_blank" rel="noopener" href="https://github.com/hanfengzhai/PyLAMDO">PyLAMDO</a></center> 
 		<strong>Py</strong>thon-<strong>LA</strong>MMPS toolkit for <strong>M</strong>ultiscale, <strong>M</strong>ultiphysics, <strong>M</strong>aterials <strong>D</strong>esign & <strong>O</strong>ptimization. 
@@ -193,7 +213,7 @@
 
 <table border="1" width="100%">
     <tr>
-        <td width="25%"><center><img src="/assets/img/bblnet.png" height="175" width="300" class="code-schematic"></center></td>
+        <td width="25%"><center><div class="code-schematic-frame"><img src="/assets/img/bblnet.png" alt="BubbleNet schematic"></div></center></td>
 	<td width="5%"></td>
         <td width="70%"><center><a target="_blank" rel="noopener" href="https://github.com/hanfengzhai/BubbleNet">BubbleNet</a></center> 
 		BubbleNet is a deep learning framework designed to predict and obtain the physics of micro-bubble dynamics based on the general structure of <a target="_blank" rel="noopener" href="https://maziarraissi.github.io/PINNs/">PINNs</a>.
@@ -207,7 +227,7 @@
 
 <table border="1" width="100%">
     <tr>
-        <td width="25%"><center><img src="/assets/img/dft.jpeg" height="350" width="390" class="code-schematic"></center></td>
+        <td width="25%"><center><div class="code-schematic-frame"><img src="/assets/img/dft.jpeg" alt="DFT computation schematic"></div></center></td>
         <td width="70%"><center><a target="_blank" rel="noopener" href="https://github.com/hanfengzhai/MSE5720-HW">Density Functional Theory Computation of Materials</a></center> This is the code & data archive for the course <a target="_blank" rel="noopener" href="https://classes.cornell.edu/browse/roster/SP21/class/MSE/5720">Computational Materials Science</a>, containing <a target="_blank" rel="noopener" href="https://www.quantum-espresso.org/">Quantum ESPRESSO</a> code for running DFT computation of materials electrical, chemical, mechanical, and various properties. The original code was running on the <a target="_blank" rel="noopener" href="https://tacc.utexas.edu/systems/stampede2/">TACC Stampede2</a>. </td>
     </tr>
 </table>
@@ -233,7 +253,7 @@
 	      <li> <a href="https://scholar.google.com/citations?hl=en&user=S5jCDXcAAAAJ&view_op=list_works&sortby=pubdate"><i class="fa fa-google-plus"></i></a></li>  
 	      <li> <a href="https://www.youtube.com/channel/UCn7UKJez4SV9VkO8pNqI5Pw"><i class="fa fa-youtube-play"></i></a></li>
 	</ul>
-	      <a target="_blank" rel="noopener" href="https://info.flagcounter.com/x6ta"><img src="https://s11.flagcounter.com/count2/x6ta/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+	      <a target="_blank" rel="noopener" href="https://info.flagcounter.com/x6ta"><img src="https://s05.flagcounter.com/count/x6ta/bg=FFFFFF/txt=000000/border=CCCCCC/columns=2/maxflags=10/viewers=0/labels=0/pageviews=0/flags=0/percent=0/" alt="Flag Counter" border="0"></a>
 	</div>
   </div>
 </footer>

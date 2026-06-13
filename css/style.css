@@ -1007,11 +1007,11 @@ a.article-title:hover {
   padding: 1em 0 0;
 }
 .article-entry a {
-  color: #b53603;
+  color: #0645ad;
   text-decoration: none;
 }
 .article-entry a:hover {
-  color: #8a2902;
+  color: #003d82;
   text-decoration: none;
 }
 .article-entry ul,
