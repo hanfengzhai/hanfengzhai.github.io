@@ -89,6 +89,10 @@ hr{
         margin: 30px 0;
 }
 
+.scrolling-gallery .caption {
+        display: none !important;
+}
+
 .scrolling-track {
         display: flex;
         gap: 18px;
@@ -111,7 +115,7 @@ hr{
 .scrolling-card {
         border: 1px solid #dcdcdc;
         border-radius: 10px;
-        background-color: var(--page-bg, #faf6ec);
+        background-color: var(--page-bg, #f5f0e4);
         box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
         overflow: hidden;
         display: flex;
