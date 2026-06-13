@@ -41,7 +41,7 @@ var all_p = document.getElementsByTagName('p');
 
 var header_bg_d = getStyle(header, "background"),
 	header_border_d = getStyle(header, "border-color"),
-	footer_bg_d = getStyle(footer, "background"),
+	footer_bg_d = '#5c0c0c',
 	body_bg_d = '#fff',
 	article_title_d = '#555555',
 	article_p_d = '#444444';
@@ -51,7 +51,7 @@ var header_bg_d = getStyle(header, "background"),
 
 var header_bg_n = '#161718',
 	header_border_n = '#1f2021',
-	footer_bg_n = header_bg_n,
+	footer_bg_n = '#5c0c0c',
 	body_bg_n = '#1d1e1f',
 	article_title_n = '#9da5ae',
 	article_p_n = '#83868a';
