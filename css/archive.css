@@ -115,7 +115,7 @@ hr{
 .scrolling-card {
         border: 1px solid #dcdcdc;
         border-radius: 10px;
-        background-color: var(--page-bg, #f5f0e4);
+        background-color: #ffffff;
         box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
         overflow: hidden;
         display: flex;
@@ -137,6 +137,7 @@ hr{
         display: flex;
         flex-direction: column;
         height: 100%;
+        background-color: #ffffff;
 }
 
 .scrolling-card img {
@@ -144,6 +145,7 @@ hr{
         height: 240px;
         object-fit: cover;
         display: block;
+        background-color: #ffffff;
 }
 
 .scrolling-caption {
@@ -151,6 +153,7 @@ hr{
         font-size: 0.95rem;
         line-height: 1.4;
         color: #333333;
+        background-color: #ffffff;
 }
 
 .scrolling-links {
