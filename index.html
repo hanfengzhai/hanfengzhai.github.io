@@ -7,51 +7,42 @@
 <meta name="keywords" content="" />
 <style>
   #post-index.article {
-    margin: 8px 0 20px;
+    margin: 0 0 20px;
   }
 
   #post-index .article-meta {
     margin: 0;
   }
 
-  .intro-hero {
+  #post-index .article-entry {
+    margin-top: 0;
+  }
+
+  .bg_click {
+    background-color: lightgray;
+    border: none;
+    height: 3px;
     margin: 0;
-    text-align: center;
   }
 
-  .intro-name {
-    margin: 0;
-    font-size: 1.75rem;
-    line-height: 1.15;
-    color: #000;
+  .intro-bio + hr.bg_click {
+    margin-top: 0.6em;
   }
 
-  .intro-name-muted {
-    color: #808080;
-  }
-
-  .intro-role {
-    margin: 0.2em 0 0;
-    font-size: 1.12rem;
-    line-height: 1.25;
-    color: #808080;
-    font-weight: bold;
-  }
-
-  .intro-divider {
-    margin: 0.45em auto 0.5em;
+  .intro-inline-nav + hr.bg_click {
+    margin-bottom: 0.6em;
   }
 
   .intro-avatar {
-    margin: 0 0 0.6em;
+    margin: 0 0 0.75em;
     text-align: center;
   }
 
   .paper-list {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    margin: 0.65em 0 1em;
+    gap: 28px;
+    margin: 1.5em 0;
   }
 
   @media (min-width: 721px) {
@@ -64,7 +55,7 @@
     display: flex;
     align-items: flex-start;
     gap: 20px;
-    padding-bottom: 20px;
+    padding-bottom: 28px;
     border-bottom: 1px solid #eef1f8;
   }
 
@@ -111,16 +102,12 @@
   }
 
   .intro-bio p {
-    margin: 0 0 0.75em;
-    line-height: 1.5;
+    margin: 0 0 1.25em;
+    line-height: 1.55;
   }
 
   .intro-bio p:last-child {
     margin-bottom: 0;
-  }
-
-  #post-index .timeline-gallery {
-    margin: 12px 0 16px;
   }
 
   .intro-header-hidden {
@@ -192,11 +179,11 @@
 </div>
 <div class="article-entry" itemprop="articleBody">
 
-<div class="intro-hero">
-<p class="intro-name"><strong>Han</strong><span class="intro-name-muted"><strong>feng</strong></span> Zhai</p>
-<p class="intro-role">PhD Candidate @ Stanford University</p>
-</div>
-<hr class="intro-divider">
+<font size=5>
+<center><font color="black"><strong>Han</strong></font><font color="gray"><strong>feng</strong></font> Zhai</center></font>
+<font size=3.5>
+<center><font color="gray"><strong>PhD Candidate</strong> @ Stanford University</center></font>
+<hr>
 <div class="intro-avatar" align="center">
     <img src="/assets/img/avatar.png" alt="" height="175" width="175" style="border: 5px solid lightgray; border-radius: 7px;">
 </div>
@@ -211,6 +198,7 @@
 <p><font color="black">I enjoyed teaching applied mathematics and solid mechanics. I TA'd <a target="_blank" rel="noopener" href="https://explorecourses.stanford.edu/search?view=catalog&filter-coursestatus-Active=on&q=ME340">Mechanics -- Elasticity &amp; Inelasticity (ME340)</a>; see <a target="_blank" rel="noopener" href="/note">problem session notes and a final review</a>. I TA'd <a target="_blank" rel="noopener" href="https://explorecourses.stanford.edu/search?q=ME335A&view=catalog&filter-coursestatus-Active=on&academicYear=20242025">Finite Element Analysis</a>; here are some <a target="_blank" rel="noopener" href="/file/ProbSess_FEA.pdf">Problem Session notes</a> and a <a target="_blank" rel="noopener" href="/file/FEA_Teach/FEARev.pdf">short intro</a> that might help.</font></p>
 </div>
 
+<hr class="bg_click">
 <nav class="intro-inline-nav" aria-label="Site sections">
   <div class="intro-nav-bar">
     <a class="intro-nav-link intro-nav-link-active" href="/">Home</a>
@@ -221,6 +209,8 @@
     <a class="intro-nav-link" href="/code">Code</a>
   </div>
 </nav>
+<hr class="bg_click">
+<hr>
 <font size=3, color="black">
 <div class="paper-list">
   <article class="paper-item">
