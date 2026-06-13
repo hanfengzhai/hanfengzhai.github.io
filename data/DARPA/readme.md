@@ -1,1 +1,0 @@
-# DARPA FFT Challenge Data

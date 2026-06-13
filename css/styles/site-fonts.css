@@ -1,0 +1,185 @@
+/* Site-wide TeX Gyre Pagella typography. Load after bootstrap.css. */
+:root {
+  --page-bg: #f5f0e4;
+  --footer-red: #5c0c0c;
+  --footer-red-hover: #4a0808;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  background-color: var(--page-bg);
+}
+
+#container,
+#wrap,
+#content,
+#main,
+.section-content,
+.article-inner,
+.article,
+#articleInner,
+.article-entry {
+  background-color: var(--page-bg);
+}
+
+.navbar-default,
+.navbar-inner,
+#allheader {
+  background-color: rgba(245, 240, 228, 0.98);
+}
+
+body,
+font,
+.article-entry,
+.article-entry p,
+.article-entry li,
+.article-entry table,
+.article-entry td,
+.article-entry th,
+.article-entry strong,
+.article-entry em,
+.article-entry a,
+.article-entry blockquote,
+.article-entry h1,
+.article-entry h2,
+.article-entry h3,
+.article-title,
+.article-header,
+.navigater-list,
+.navigater-list > a,
+#header,
+#header a,
+#allheader,
+#footer,
+#footer p,
+.hnav,
+.hnav a,
+.navbar-nav,
+.navbar-nav > li > a,
+#beautifont {
+  font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+}
+
+code,
+pre,
+tt,
+.article-entry code {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.article-entry a {
+  color: #0645ad;
+  text-decoration: none;
+}
+
+.article-entry a:hover {
+  color: #003d82;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 767px) {
+  .paper-list,
+  .code-list {
+    margin-left: 0 !important;
+    margin-right: 0;
+  }
+
+  .paper-item,
+  .code-item {
+    align-items: stretch;
+    max-width: 100%;
+  }
+
+  .code-item-featured {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .paper-schematic-frame,
+  .code-schematic-frame {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  .paper-content,
+  .code-content {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+#content {
+  min-height: auto !important;
+}
+
+#content .article {
+  margin-bottom: 8px;
+}
+
+#footer {
+  background-color: var(--footer-red) !important;
+  color: rgba(255, 255, 255, 0.92);
+  padding: 14px 0 12px;
+}
+
+#footer #copyRightEn,
+#footer #copyRightEn a,
+#footer #copyRightEn a:link,
+#footer #copyRightEn a:visited {
+  font-size: 13px;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+#footer #copyRightEn a:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+#footer #copyRightEn {
+  margin: 0 0 8px;
+}
+
+#footer .wrapper hr {
+  display: none;
+}
+
+#footer .wrapper,
+#footer .copyright {
+  padding: 4px 8px 0;
+}
+
+#footer .social-icons .fa {
+  width: 48px;
+  height: 48px;
+  line-height: 48px;
+  font-size: 1.45em;
+  background-color: #fff;
+  color: var(--footer-red);
+}
+
+#footer .social-icons .fa:hover,
+#footer .social-icons .fa:active {
+  background-color: rgba(255, 255, 255, 0.88);
+  color: var(--footer-red-hover);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+#footer .list-inline li {
+  padding-left: 4px;
+  padding-right: 4px;
+  margin-bottom: 0;
+}
+
+#footer .wrapper > a img[alt="Flag Counter"] {
+  margin-top: 8px;
+  max-width: 240px;
+  height: auto;
+  display: inline-block;
+}

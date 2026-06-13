@@ -1,1 +1,0 @@
-multiscale computational mechanics

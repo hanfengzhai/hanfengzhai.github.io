@@ -1,0 +1,26 @@
+# =================== Thermo_style settings ===================
+
+thermo_style	custom step cpu cpuremain temp density lx ly lz etotal ke pe evdwl ecoul elong ebond eangle
+thermo			${thermo_step}
+thermo_modify	flush yes
+
+# =================== Equilibration run =======================
+
+minimize	1.0e-4 1.0e-6 5000 10000
+
+# write_data	equib.*.data	nocoeff
+# write_dump	all	custom	equib.*.lammpstrj id element x y z q modify element ${v_element} sort id
+
+reset_timestep 0
+
+fix			f_eq_r1	all npt temp 333.0 333.0 100.0 iso 0.0 0.0 1000.0
+
+timestep	1
+run			${equib_step}
+
+write_data	equib.*.data	nocoeff
+write_dump	all	custom	equib.*.lammpstrj id element x y z q modify element ${v_element} sort id
+
+unfix		f_eq_r1
+
+reset_timestep 0

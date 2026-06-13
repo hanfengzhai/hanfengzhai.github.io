@@ -1,0 +1,88 @@
+# =================== Variable_settings =======================
+
+variable	thermo_step	equal	1000
+variable	equib_step	equal	1000000
+variable	sp_run_step	equal	2000000
+variable	sp_num_dump	equal	2000
+
+variable	v_element	string	'Li F3 C3 O3 S3 N3 O2 H2'
+
+# =================== Model_settings ==========================
+
+units			real
+boundary		p p p
+atom_style		full
+
+read_data		equib.1000000.data # lmp-origin.data
+
+# replicate		5 5 5
+
+pair_style		lj/cut/coul/long 10.0 10.0
+bond_style		harmonic
+angle_style		harmonic
+kspace_style		pppm 1.0e-4 # accuracy for force
+
+# =================== Force_field_settings ====================
+
+# ======= Partial_Charge =======
+
+set	type	1	charge	1.00	# Li
+
+set	type	2	charge	-0.16	# F3
+set	type	3	charge	+0.35	# C3
+set	type	4	charge	-0.53	# O3
+set	type	5	charge	+1.02	# S3
+set	type	6	charge	-0.66	# N3
+
+set	type	7	charge	-0.82	# O2
+set	type	8	charge	0.41	# H2
+
+# ======= pair_coeff =======
+
+pair_coeff	1	1	0.1650  1.5050 # Li
+                
+pair_coeff	2	2	0.0530  2.9500 # F3
+pair_coeff	3	3	0.0660  3.5000 # C3
+pair_coeff	4	4	0.2100  2.9600 # O3
+pair_coeff	5	5	0.2500  3.5500 # S3
+pair_coeff	6	6	0.1700  3.2500 # N3
+                
+pair_coeff	7	7	0.1554  3.1656 # O2 
+pair_coeff	8	8	0.0000  0.0000 # H2 
+
+pair_modify	mix arithmetic # L-B mixture rule
+
+# ======= bond_coeff =======
+
+bond_coeff	1	441.92     1.3230 # F3-C3
+bond_coeff	2	233.03     1.8180 # C3-S3
+bond_coeff	3	637.07     1.4370 # O3-S3
+bond_coeff	4	374.88     1.5700 # S3-N3
+
+bond_coeff	5	554.135    1.0000 # O2-H2
+
+# ======= angle_coeff =======
+
+angle_coeff	1	 93.3317   107.100 # F3-C3-F3
+angle_coeff	2	 82.9350   111.700 # F3-C3-S3
+angle_coeff	3	103.9675   102.600 # C3-S3-O3
+angle_coeff	4	 91.3002   103.500 # C3-S3-N3
+angle_coeff	5	115.7983   118.500 # O3-S3-O3
+angle_coeff	6	 94.2878   113.600 # O3-S3-N3
+angle_coeff	7	 80.1864   125.600 # S3-N3-S3
+
+angle_coeff	8	 45.7696   109.470 # H2-O2-H2
+
+# =================== Group settings ==========================
+
+group		Li		type	1
+group		N		type	6
+group		O		type	7
+group		TFSI	type	2 3 4 5 6 
+group		H2O		type	7 8
+
+# ===================Mnimize & Run ===================
+
+# include ../lmp.2_minimize.in
+
+include ../lmp.3_run-LiTFSI-H2O.in
