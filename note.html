@@ -80,23 +80,36 @@
         margin-top: 0;
       }
 
-      .note-page .article-entry .notes-section-heading {
+      .note-page .article-entry h1.notes-section-heading {
         font-size: 1.75rem;
         font-weight: bold;
         line-height: 1.2;
         color: #000;
-        margin: 0 0 1.5em;
-        padding: 0;
+        margin: 0;
+        padding: 0 !important;
       }
 
-      .note-page .article-entry .notes-section-heading + .teaching-blocks,
-      .note-page .article-entry .notes-section-heading + .course-notes-list {
-        margin-top: 0;
+      .note-page .article-entry h1.notes-section-heading + .teaching-blocks {
+        margin-top: 1.5em;
       }
 
-      .note-page .article-entry .notes-section-heading:not(:first-child) {
+      .note-page .article-entry h1.notes-section-heading + .course-notes-list {
+        margin-top: 0 !important;
+        padding-top: 0;
+      }
+
+      .note-page .article-entry h1.notes-section-heading:not(:first-child) {
         margin-top: 1.1em;
-        margin-bottom: 0.35em;
+      }
+
+      .note-page .course-notes-list {
+        margin: 0 0 1em 1.5em;
+        padding: 0;
+        font-size: 1.07em;
+      }
+
+      .note-page h1.notes-section-heading + .course-notes-list > li:first-child {
+        line-height: 1.6;
       }
 
       .course-notes-list + .course-notes-list {
@@ -231,7 +244,7 @@
                                 </section>
                                 </div>
                                 <h1 class="notes-section-heading">Course &amp; learning notes</h1>
-                                <ul class="course-notes-list"><font size=3>
+                                <ul class="course-notes-list">
                                     <li>Foundations of Solid Mechanics. [<a target="_blank" rel="noopener" href="/file/MAE6110_SolidMechanics_BW.pdf">PDF</a>]</li>
                                     <li>Elasticity & Inelasticity. [<a target="_blank" rel="noopener" href="/file/elasticity_notes.pdf">PDF</a>]</li>
                                     <li>Finite Element Analysis. [<a target="_blank" rel="noopener" href="/file/FEA_notes.pdf">PDF</a>]</li>
@@ -249,14 +262,14 @@
                                     <li>Density Functional Theory. [<a target="_blank" rel="noopener" href="/file/HW1_MSE5720.html">Notebooks 1</a>; <a target="_blank" rel="noopener" href="/file/HW2_MSE5720.html">Notebooks 2</a>]</li>
                                     <li>Design Optimization. [<a target="_blank" rel="noopener" href="/file/MDO_notes.pdf">PDF</a>]</li>
                                     <li>Mathematical Modeling. [<a target="_blank" rel="noopener" href="/file/MathModeling.pdf">PDF</a>]</li>
-                                </font></ul>
-                                <ul class="course-notes-list"><font size=3>
+                                </ul>
+                                <ul class="course-notes-list">
                                     <li>Smoothed-Particles Hydrodynamics. [<a href="/file/note/SPH.pdf">PDF</a>]</li>
                                     <li>Finite Volume Method. [<a href="/file/note/FVM.pdf">PDF</a>]</li>
                                     <li>Neural Networks. [<a href="/file/note/NN.pdf">PDF</a>]</li>
                                     <li>Dynamics of Janus Particles. [<a target="_blank" rel="noopener" href="/file/JanusParticle_CAS.pdf">PDF</a>]</li>
                                     <li>Machine Learning for Multiscale Modeling. [<a target="_blank" rel="noopener" href="/file/review_WeinanE.pdf">PDF</a>]</li>
-                                </font></ul>
+                                </ul>
                             </div>
                     </article>
                 </section>
