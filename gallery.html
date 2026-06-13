@@ -40,6 +40,22 @@
     color: #333;
     padding: 12px 14px 16px;
   }
+
+  .gallery-page.article {
+    margin-top: 8px;
+  }
+
+  .gallery-page .article-entry > h1:first-of-type {
+    margin-top: 0;
+  }
+
+  .gallery-page .article-entry > h1 {
+    margin-bottom: 0.35em;
+  }
+
+  .gallery-page .scrolling-gallery {
+    margin: 0.75em 0 1.25em;
+  }
 </style>
 <link rel="stylesheet" href="/css/style.css">
 <script src="/js/jquery-3.1.1.min.js"></script>
@@ -50,6 +66,7 @@
 <link rel="stylesheet" href="/css/header-post.css" >
 <link rel="stylesheet" href="/css/archive.css" >
 <link rel="stylesheet" href="/css/site-fonts.css" >
+<link rel="stylesheet" href="/css/intro-nav.css" >
 </head>
 <body>
 
@@ -133,18 +150,18 @@
 </header>
 
 <div id="content" class="outer">
-        
-<section id="main" style="float:none;"><article id="page-"  class="article article-type-page" itemscope itemprop="blogPost" >
+<nav class="intro-inline-nav site-pill-nav" aria-label="Site sections">
+  <div class="intro-nav-bar">
+    <a class="intro-nav-link" href="/">Home</a>
+    <a class="intro-nav-link" href="/research">Research</a>
+    <a class="intro-nav-link" href="/talk">Talks</a>
+    <a class="intro-nav-link intro-nav-link-active" href="/gallery">Gallery</a>
+    <a class="intro-nav-link" href="/note">Note</a>
+    <a class="intro-nav-link" href="/code">Code</a>
+  </div>
+</nav>
+<section id="main" style="float:none;"><article id="page-gallery" class="article article-type-page gallery-page" itemscope itemprop="blogPost" >
 <div id="articleInner" class="article-inner">
-<header class="article-header">
-  
-    <h1 class="thumb article-title" itemprop="name">
-      Gallery
-    </h1>
-      </header>
-    
-    <div class="article-meta">
-    </div>
     <div class="article-entry" itemprop="articleBody">
     <div style="font-size: 1.1em; color: black;">
 

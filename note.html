@@ -23,12 +23,13 @@
     <link rel="stylesheet" href="/css/header-post.css">
     <link rel="stylesheet" href="/css/archive.css">
     <link rel="stylesheet" href="/css/site-fonts.css">
+    <link rel="stylesheet" href="/css/intro-nav.css">
     <style>
       .teaching-blocks {
         display: flex;
         flex-direction: column;
-        gap: 2em;
-        margin: 1.25em 0 2em;
+        gap: 1.25em;
+        margin: 0.35em 0 1.25em;
       }
 
       .teaching-block {
@@ -72,6 +73,35 @@
       .article-entry blockquote {
         font-size: 0.875em;
         line-height: 1.55;
+      }
+
+      .note-page.article {
+        margin-top: 8px;
+      }
+
+      .notes-section-heading {
+        font-size: 1.75rem;
+        font-weight: bold;
+        line-height: 1.2;
+        color: #000;
+        margin: 0 0 0.45em;
+      }
+
+      .notes-section-heading + .teaching-blocks,
+      .notes-section-heading + .course-notes-list {
+        margin-top: 0.35em;
+      }
+
+      .notes-section-heading:not(:first-child) {
+        margin-top: 1.1em;
+      }
+
+      .course-notes-list + .course-notes-list {
+        margin-top: 0.25em;
+      }
+
+      .note-page .article-entry > hr {
+        display: none;
       }
     </style>
     <script src="/js/jquery-3.1.1.min.js"></script>
@@ -146,16 +176,21 @@
                 </div>
             </header>
             <div id="content" class="outer">
+                <nav class="intro-inline-nav site-pill-nav" aria-label="Site sections">
+                    <div class="intro-nav-bar">
+                        <a class="intro-nav-link" href="/">Home</a>
+                        <a class="intro-nav-link" href="/research">Research</a>
+                        <a class="intro-nav-link" href="/talk">Talks</a>
+                        <a class="intro-nav-link" href="/gallery">Gallery</a>
+                        <a class="intro-nav-link intro-nav-link-active" href="/note">Note</a>
+                        <a class="intro-nav-link" href="/code">Code</a>
+                    </div>
+                </nav>
                 <section id="main" style="float:none;">
-                    <article id="page-" class="article article-type-page" itemscope itemprop="blogPost">
+                    <article id="page-note" class="article article-type-page note-page" itemscope itemprop="blogPost">
                         <div id="articleInner" class="article-inner">
-                            <header class="article-header">
-                                <h1 class="article-title" itemprop="name">Notes</h1>
-                            </header>
-                            <div class="article-meta"></div>
                             <div class="article-entry" itemprop="articleBody">
-                                <hr>
-                                <p><font size=3.6, color="black"><strong>Teaching notes:</strong></font></p>
+                                <h1 class="notes-section-heading">Teaching notes</h1>
                                 <div class="teaching-blocks">
                                 <section class="teaching-block">
                                 <blockquote><font size=2>
@@ -192,8 +227,7 @@
                                 </font></ul>
                                 </section>
                                 </div>
-                                <hr>
-                                <p><font size=3.6, color="black"><strong>Course and learning notes:</strong></font></p>
+                                <h1 class="notes-section-heading">Learning notes</h1>
                                 <ul class="course-notes-list"><font size=3>
                                     <li>Foundations of Solid Mechanics. [<a target="_blank" rel="noopener" href="/file/MAE6110_SolidMechanics_BW.pdf">PDF</a>]</li>
                                     <li>Elasticity & Inelasticity. [<a target="_blank" rel="noopener" href="/file/elasticity_notes.pdf">PDF</a>]</li>
@@ -213,7 +247,6 @@
                                     <li>Design Optimization. [<a target="_blank" rel="noopener" href="/file/MDO_notes.pdf">PDF</a>]</li>
                                     <li>Mathematical Modeling. [<a target="_blank" rel="noopener" href="/file/MathModeling.pdf">PDF</a>]</li>
                                 </font></ul>
-                                <hr>
                                 <ul class="course-notes-list"><font size=3>
                                     <li>Smoothed-Particles Hydrodynamics. [<a href="/file/note/SPH.pdf">PDF</a>]</li>
                                     <li>Finite Volume Method. [<a href="/file/note/FVM.pdf">PDF</a>]</li>
