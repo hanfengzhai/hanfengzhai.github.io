@@ -114,50 +114,34 @@ button::-moz-focus-inner {
   padding: 0;
 }
 @font-face {
-  font-family: 'Latin Modern Roman';
+  font-family: 'TeX Gyre Pagella';
   font-style: normal;
   font-weight: 400;
-  src: url('../assets/fonts/latin-modern-roman/lmroman10-regular.otf') format('opentype');
+  src: url('../assets/fonts/tex-gyre-pagella/texgyrepagella-regular.otf') format('opentype');
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Latin Modern Roman';
+  font-family: 'TeX Gyre Pagella';
   font-style: italic;
   font-weight: 400;
-  src: url('../assets/fonts/latin-modern-roman/lmroman10-italic.otf') format('opentype');
+  src: url('../assets/fonts/tex-gyre-pagella/texgyrepagella-italic.otf') format('opentype');
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Latin Modern Roman';
-  font-style: normal;
-  font-weight: 600;
-  src: url('../assets/fonts/latin-modern-roman/lmromandemi10-regular.otf') format('opentype');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Latin Modern Roman';
-  font-style: italic;
-  font-weight: 600;
-  src: url('../assets/fonts/latin-modern-roman/lmroman10-italic.otf') format('opentype');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Latin Modern Roman';
+  font-family: 'TeX Gyre Pagella';
   font-style: normal;
   font-weight: 700;
-  src: url('../assets/fonts/latin-modern-roman/lmroman10-bold.otf') format('opentype');
+  src: url('../assets/fonts/tex-gyre-pagella/texgyrepagella-bold.otf') format('opentype');
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Latin Modern Roman';
+  font-family: 'TeX Gyre Pagella';
   font-style: italic;
   font-weight: 700;
-  src: url('../assets/fonts/latin-modern-roman/lmroman10-bolditalic.otf') format('opentype');
+  src: url('../assets/fonts/tex-gyre-pagella/texgyrepagella-bolditalic.otf') format('opentype');
   font-display: swap;
 }
 
@@ -166,7 +150,8 @@ body,
 body {
   background: none;
   font-size: 15px;
-  font-family: 'Latin Modern Roman', 'Times New Roman', Times, serif;
+  line-height: 1.5;
+  font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
   -webkit-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
 }
@@ -184,7 +169,7 @@ body,
 .navigater-list > a,
 #header,
 #header a {
-  font-family: 'Latin Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
 }
 
 code,
@@ -673,7 +658,7 @@ tt {
   height: 88px;
   line-height: 86px;
   text-transform: capitalize;
-  font-family: 'Latin Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
   font-weight: bold;
   font-size: 27px;
   letter-spacing: 0.2px;
@@ -748,7 +733,7 @@ tt {
   outline: none !important;
   background: none !important;
   font-size: 14px;
-  font-family: 'Latin Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
   border: 0px;
 }
 .search-form-input:focus,
@@ -818,7 +803,7 @@ tt {
 .article-inner .h4,
 .article-inner .h5,
 .article-inner .h6 {
-  font-family: 'Latin Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
 }
 .article-meta {
   text-align: center;
@@ -947,7 +932,7 @@ tt {
 .article-header h1 {
   font-size: 25px;
   font-weight: bold;
-  font-family: 'Latin Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
 }
 @media screen and (max-width: 479px) {
   .article-header h1 {
@@ -1022,11 +1007,11 @@ a.article-title:hover {
   padding: 1em 0 0;
 }
 .article-entry a {
-  color: #0e83cd;
+  color: #b53603;
   text-decoration: none;
 }
 .article-entry a:hover {
-  color: #414141;
+  color: #8a2902;
   text-decoration: none;
 }
 .article-entry ul,
@@ -1061,7 +1046,7 @@ a.article-title:hover {
 }
 .article-entry blockquote {
   padding: 0.1px 20px;
-  font-family: 'Latin Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
   font-size: 1.1em;
   color: rgba(44,44,44,0.6);
   margin: 1.4em 0px;
@@ -1075,7 +1060,7 @@ a.article-title:hover {
 .article-entry blockquote footer {
   font-size: 14px;
   margin: 1.6em 0;
-  font-family: 'Latin Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
 }
 .article-entry blockquote footer cite:before {
   content: "—";
@@ -1097,7 +1082,7 @@ a.article-title:hover {
   }
 }
 .article-entry .pullquote p {
-  font-family: 'Latin Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
   font-size: 1.2em;
 }
 .article-entry .pullquote:before {
@@ -1323,7 +1308,7 @@ a.article-title:hover {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   font-size: 15px;
-  font-family: 'Latin Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
   padding: 0 15px;
   color: #444;
   outline: none;
@@ -1507,7 +1492,7 @@ a.article-title:hover {
   color: #414141;
 }
 .nav-link {
-  font-family: 'Latin Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
   color: #777;
   padding: 1px !important;
 }
@@ -1719,7 +1704,7 @@ a.article-title:hover {
   margin-right: 15px;
   display: block;
   font-size: 1.1em;
-  font-family: 'Latin Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
 }
 .archive-article-date:hover {
   color: #414141;
@@ -1956,7 +1941,7 @@ figure.highlight::-webkit-scrollbar-track {
   background: #f8f8f8;
   color: $highlight-comment;
   font-size: 0.85em;
-  font-family: 'Latin Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
   text-shadow: 0 0;
   padding: 0;
   margin-top: 1em;
@@ -2172,7 +2157,7 @@ pre .xml .cdata {
   box-sizing: border-box;
   padding: 12px 28px 12px 20px;
   border-bottom: 1px solid #e2e2e2;
-  font-family: 'Latin Modern Roman', 'Times New Roman', Times, serif;
+  font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
 }
 .ins-close {
   top: 50%;
