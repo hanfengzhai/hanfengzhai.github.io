@@ -182,7 +182,7 @@ def write_lammps_data(
         "",
     ]
 
-    for atom_id, (xyz, mol) in enumerate(zip(positions, grain_ids, strict=True), start=1):
+    for atom_id, (xyz, mol) in enumerate(zip(positions, grain_ids), start=1):
         lines.append(f"{atom_id} {mol} 1 {xyz[0]:.8f} {xyz[1]:.8f} {xyz[2]:.8f}")
 
     path.write_text("\n".join(lines) + "\n")
