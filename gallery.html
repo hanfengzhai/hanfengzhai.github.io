@@ -24,7 +24,22 @@
 <link rel="apple-touch-icon" href="/css/images/avatar.jpg">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
   <style type="text/css">
+  .viz-gallery .viz-card {
+    flex: 0 0 320px;
+  }
 
+  .viz-gallery .viz-card img {
+    height: 260px;
+    object-fit: contain;
+    background: #fff;
+  }
+
+  .viz-gallery .scrolling-caption {
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: #333;
+    padding: 12px 14px 16px;
+  }
 </style>
 <link rel="stylesheet" href="/css/style.css">
 <script src="/js/jquery-3.1.1.min.js"></script>
@@ -135,29 +150,64 @@
 
 <h1 id="Research-Projects"><a href="#Research-Projects" class="headerlink" title="Research Projects"></a>Cool Research</h1>
 
-<table border="1" width="100%">
-    <tr>
-        <td width="23%"><center><img src="/assets/img/ddd.gif" height="250" width="320" >Discrete dislocation dynamics simulation of single crystal copper.</center></td>
-        <td width="30%"><center><img src="/assets/img/biofilm.gif" height="350" width="390" >Discrete element simulation of bacteria cluster flow on adhesive substrate.</center></td>
-        <td width="30%"><center><img src="/assets/img/flowphysics.gif" height="350" width="390" >Computational fluid dynamics simulation of the velocity field over two square obstacles.</center></td>
-  </tr>
-</table>
-          
-<table border="1" width="100%">
-    <tr>
-        <td width="25%"><center><img src="/assets/img/graphenecrack.gif" height="350" width="390" >Molecular dynamics simulation of crack propagation of single-layer graphene.</center></td>
-        <td width="30%"><center><img src="/assets/img/dentein.gif" height="350" width="390" >Finite element simulation of fracture propagation on dentin microstructure.</center></td>
-        <td width="30%"><center><img src="/assets/img/PoissonProcess.gif" height="250" width="250" >Numerical simulation of the point Poisson process with bistep link growth.</center></td>
-  </tr>
-</table>
-		
-<table border="1" width="100%">
-    <tr>
-        <td width="27%"><center><img src="/assets/img/Temperature_animation_MathDT.gif" height="350" width="390" >Temperature distribution of a laser-scanned metal surface.</center></td>
-        <td width="35%"><center><img src="/assets/img/singlebubble.gif" height="350" width="390" >Level set algorithm simulation of a single bubble flow in a microchannel.</center></td>
-        <td width="35%"><center><img src="/assets/img/multibubble.gif" height="350" width="390" >Level set algorithm simulation of multiple bubbles flow in a microchannel.</center></td>
-  </tr>
-</table>	
+<div class="scrolling-gallery viz-gallery" role="region" aria-label="Research visualizations">
+  <div class="scrolling-track">
+    <article class="scrolling-card viz-card">
+      <figure>
+        <img src="/assets/img/ddd.gif" alt="Discrete dislocation dynamics simulation of single crystal copper" loading="lazy">
+        <figcaption class="scrolling-caption">Discrete dislocation dynamics simulation of single crystal copper.</figcaption>
+      </figure>
+    </article>
+    <article class="scrolling-card viz-card">
+      <figure>
+        <img src="/assets/img/biofilm.gif" alt="Discrete element simulation of bacteria cluster flow on adhesive substrate" loading="lazy">
+        <figcaption class="scrolling-caption">Discrete element simulation of bacteria cluster flow on adhesive substrate.</figcaption>
+      </figure>
+    </article>
+    <article class="scrolling-card viz-card">
+      <figure>
+        <img src="/assets/img/flowphysics.gif" alt="Computational fluid dynamics simulation of the velocity field over two square obstacles" loading="lazy">
+        <figcaption class="scrolling-caption">Computational fluid dynamics simulation of the velocity field over two square obstacles.</figcaption>
+      </figure>
+    </article>
+    <article class="scrolling-card viz-card">
+      <figure>
+        <img src="/assets/img/graphenecrack.gif" alt="Molecular dynamics simulation of crack propagation of single-layer graphene" loading="lazy">
+        <figcaption class="scrolling-caption">Molecular dynamics simulation of crack propagation of single-layer graphene.</figcaption>
+      </figure>
+    </article>
+    <article class="scrolling-card viz-card">
+      <figure>
+        <img src="/assets/img/dentein.gif" alt="Finite element simulation of fracture propagation on dentin microstructure" loading="lazy">
+        <figcaption class="scrolling-caption">Finite element simulation of fracture propagation on dentin microstructure.</figcaption>
+      </figure>
+    </article>
+    <article class="scrolling-card viz-card">
+      <figure>
+        <img src="/assets/img/PoissonProcess.gif" alt="Numerical simulation of the point Poisson process with bistep link growth" loading="lazy">
+        <figcaption class="scrolling-caption">Numerical simulation of the point Poisson process with bistep link growth.</figcaption>
+      </figure>
+    </article>
+    <article class="scrolling-card viz-card">
+      <figure>
+        <img src="/assets/img/Temperature_animation_MathDT.gif" alt="Temperature distribution of a laser-scanned metal surface" loading="lazy">
+        <figcaption class="scrolling-caption">Temperature distribution of a laser-scanned metal surface.</figcaption>
+      </figure>
+    </article>
+    <article class="scrolling-card viz-card">
+      <figure>
+        <img src="/assets/img/singlebubble.gif" alt="Level set algorithm simulation of a single bubble flow in a microchannel" loading="lazy">
+        <figcaption class="scrolling-caption">Level set algorithm simulation of a single bubble flow in a microchannel.</figcaption>
+      </figure>
+    </article>
+    <article class="scrolling-card viz-card">
+      <figure>
+        <img src="/assets/img/multibubble.gif" alt="Level set algorithm simulation of multiple bubbles flow in a microchannel" loading="lazy">
+        <figcaption class="scrolling-caption">Level set algorithm simulation of multiple bubbles flow in a microchannel.</figcaption>
+      </figure>
+    </article>
+  </div>
+</div>
 
 <h1 id="Professors-Scholars"><a href="#Professors-Scholars" class="headerlink" title="Professors &amp; Scholars"></a>Professors &amp; Scholars</h1>
 
@@ -364,7 +414,7 @@
 	      <li> <a href="https://scholar.google.com/citations?hl=en&user=S5jCDXcAAAAJ&view_op=list_works&sortby=pubdate"><i class="fa fa-google-plus"></i></a></li>  
 	      <li> <a href="https://www.youtube.com/channel/UCn7UKJez4SV9VkO8pNqI5Pw"><i class="fa fa-youtube-play"></i></a></li>
 	</ul>
-	      <a target="_blank" rel="noopener" href="https://info.flagcounter.com/x6ta"><img src="https://s05.flagcounter.com/count/x6ta/bg=FFFFFF/txt=000000/border=CCCCCC/columns=2/maxflags=10/viewers=0/labels=0/pageviews=0/flags=0/percent=0/" alt="Flag Counter" border="0"></a>
+	      <a target="_blank" rel="noopener" href="https://info.flagcounter.com/x6ta"><img src="https://s11.flagcounter.com/count2/x6ta/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
 </div>
 </div>
 </footer>
