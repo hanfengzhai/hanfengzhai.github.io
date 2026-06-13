@@ -27,7 +27,7 @@ html{
 .section-content {
 	padding-top: 20px;
 	padding-bottom: 60px;
-	background-color: #ffffff;
+	background-color: var(--page-bg, #faf6ec);
 }
 
 /*.intro-logo{
@@ -50,7 +50,7 @@ html{
 	padding-bottom: 10px;
 	text-align: center;
 	border-bottom: 1px solid #eef1f8;
-	background: rgba(255,255,255,.9);
+	background: rgba(250, 246, 236, 0.92);
 	backdrop-filter: saturate(180%) blur(20px);
 	-webkit-backdrop-filter: saturate(180%) blur(20px);
 	-moz-user-select: none;
@@ -85,7 +85,7 @@ html{
     top: 0;
     bottom: inherit;
     z-index: 99;
-    background: rgba(255,255,255,.95);
+    background: rgba(250, 246, 236, 0.96);
     transition: background 2s;
 }
 .navigater-list{
@@ -103,7 +103,7 @@ body, html {
     height: 100%;
     margin: 0;
     padding: 0;
-    background: none; /* Remove any background */
+    background-color: var(--page-bg, #faf6ec);
 }
 .home-bg{
 	width: 100%;
