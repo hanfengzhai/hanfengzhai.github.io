@@ -314,6 +314,7 @@ tt {
   max-width: 1040px;
   margin: 0 auto;
   padding: 0 20px;
+  box-sizing: border-box;
 }
 .outer:before,
 .outer:after {
@@ -985,6 +986,27 @@ a.article-title:hover {
 @media screen and (max-width: 479px) {
   .article-entry {
     margin: 0;
+  }
+}
+@media screen and (max-width: 767px) {
+  .article-entry {
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .outer {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .article-entry blockquote {
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 }
 .article-entry p,

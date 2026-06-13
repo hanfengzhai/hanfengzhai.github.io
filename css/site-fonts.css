@@ -4,7 +4,11 @@
 }
 
 html,
-body,
+body {
+  overflow-x: hidden;
+  background-color: var(--page-bg);
+}
+
 #container,
 #wrap,
 #content,
@@ -70,4 +74,40 @@ tt,
 .article-entry a:hover {
   color: #003d82;
   text-decoration: none;
+}
+
+@media screen and (max-width: 767px) {
+  .paper-list,
+  .code-list {
+    margin-left: 0 !important;
+    margin-right: 0;
+  }
+
+  .paper-item,
+  .code-item {
+    align-items: stretch;
+    max-width: 100%;
+  }
+
+  .code-item-featured {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .paper-schematic-frame,
+  .code-schematic-frame {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  .paper-content,
+  .code-content {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
 }

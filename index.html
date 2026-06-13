@@ -30,7 +30,13 @@
     display: flex;
     flex-direction: column;
     gap: 28px;
-    margin: 1.5em 0 1.5em -12px;
+    margin: 1.5em 0;
+  }
+
+  @media (min-width: 721px) {
+    .paper-list {
+      margin-left: -12px;
+    }
   }
 
   .paper-item {
@@ -95,12 +101,20 @@
   @media (max-width: 720px) {
     .paper-item {
       flex-direction: column;
+      align-items: stretch;
       gap: 16px;
     }
 
     .paper-schematic-frame {
+      flex: 0 0 auto;
       width: 100%;
-      max-width: 320px;
+      max-width: 100%;
+    }
+
+    .paper-content {
+      width: 100%;
+      max-width: 100%;
+      overflow-wrap: anywhere;
     }
   }
 </style>
@@ -153,8 +167,8 @@
 <font size=3.5>
 <center><font color="gray"><strong>PhD Candidate</strong> @ Stanford University</center></font>
 <hr>
-<div align="center">
-    <img src="/assets/img/avatar.png" height="175" width="175" style="border: 5px solid lightgray; border-radius: 7px;">
+<div class="intro-avatar" align="center">
+    <img src="/assets/img/avatar.png" alt="" height="175" width="175" style="border: 5px solid lightgray; border-radius: 7px;">
 </div>
 
 <font size=3.6, color="black">
@@ -164,7 +178,7 @@
 
 <p><font color="black">I am interested in solving problems in mechanics of materials from atomistic to continuum scales. My research interests are combining computational mechanics, materials theory, scientific machine learning, and inverse optimization for structural and materials modeling and design, with potential impact on energy, biotechnology, and advanced manufacturing.</font></p>
 
-<p><font color="black">I TA'd <a target="_blank" rel="noopener" href="https://explorecourses.stanford.edu/search?view=catalog&filter-coursestatus-Active=on&q=ME340">Mechanics -- Elasticity &amp; Inelasticity (ME340)</a>; see <a target="_blank" rel="noopener" href="/note">problem session notes and a final review</a>. Previously, I TA'd <a target="_blank" rel="noopener" href="https://explorecourses.stanford.edu/search?q=ME335A&view=catalog&filter-coursestatus-Active=on&academicYear=20242025">Finite Element Analysis</a>; here are some <a target="_blank" rel="noopener" href="/file/ProbSess_FEA.pdf">Problem Session notes</a> and a <a target="_blank" rel="noopener" href="/file/FEA_Teach/FEARev.pdf">short intro</a> that might help.</font></p>
+<p><font color="black">I enjoyed teaching applied mathematics and solid mechanics. I TA'd <a target="_blank" rel="noopener" href="https://explorecourses.stanford.edu/search?view=catalog&filter-coursestatus-Active=on&q=ME340">Mechanics -- Elasticity &amp; Inelasticity (ME340)</a>; see <a target="_blank" rel="noopener" href="/note">problem session notes and a final review</a>. I TA'd <a target="_blank" rel="noopener" href="https://explorecourses.stanford.edu/search?q=ME335A&view=catalog&filter-coursestatus-Active=on&academicYear=20242025">Finite Element Analysis</a>; here are some <a target="_blank" rel="noopener" href="/file/ProbSess_FEA.pdf">Problem Session notes</a> and a <a target="_blank" rel="noopener" href="/file/FEA_Teach/FEARev.pdf">short intro</a> that might help.</font></p>
 </div>
 
 <hr class="bg_click">

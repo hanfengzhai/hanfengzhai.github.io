@@ -99,7 +99,7 @@
   $('.article-entry').each(function(i){
     $(this).find('img').each(function(){
       if ($(this).parent().hasClass('fancybox')) return;
-      if ($(this).closest('.scrolling-gallery, .code-list, .paper-list, .code-schematic-frame, .paper-schematic-frame, .timeline-image').length) return;
+      if ($(this).closest('.scrolling-gallery, .code-list, .paper-list, .code-schematic-frame, .paper-schematic-frame, .timeline-image, .intro-avatar').length) return;
       if ($(this).closest('figure').children('figcaption').length) return;
 
       var alt = $.trim(this.alt);
