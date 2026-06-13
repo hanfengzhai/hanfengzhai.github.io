@@ -257,10 +257,10 @@ body, html {
 
 #footer {
 	width: 100%;
-	background: #ebe4d6;
+	background: #8C1515;
 	text-align: center;
-	color: #88888b;
-	padding: 6px 0 4px;
+	color: rgba(255, 255, 255, 0.92);
+	padding: 14px 0 12px;
 	line-height: 1.3;
 }
 .wrapper,.copyright {
@@ -363,10 +363,10 @@ canvas {
 }
 
 footer>.container>.row>p>a {
-	color: darkgray;
+	color: rgba(255, 255, 255, 0.92);
 }
 footer>.container>.row>p>a:hover  {
-	color: dimgray;
+	color: #fff;
 }
 
 @media (max-width: 680px) {

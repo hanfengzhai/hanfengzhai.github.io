@@ -120,22 +120,28 @@ tt,
   margin-bottom: 8px;
 }
 
+#footer {
+  background: #8C1515;
+  color: rgba(255, 255, 255, 0.92);
+  padding: 14px 0 12px;
+}
+
 #footer #copyRightEn,
 #footer #copyRightEn a,
 #footer #copyRightEn a:link,
 #footer #copyRightEn a:visited {
   font-size: 13px;
   line-height: 1.3;
-  color: darkgray;
+  color: rgba(255, 255, 255, 0.92);
 }
 
 #footer #copyRightEn a:hover {
-  color: dimgray;
+  color: #fff;
   text-decoration: none;
 }
 
 #footer #copyRightEn {
-  margin: 0 0 3px;
+  margin: 0 0 8px;
 }
 
 #footer .wrapper hr {
@@ -144,26 +150,34 @@ tt,
 
 #footer .wrapper,
 #footer .copyright {
-  padding: 2px 8px 0;
+  padding: 4px 8px 0;
 }
 
 #footer .social-icons .fa {
-  width: 28px;
-  height: 28px;
-  line-height: 28px;
-  font-size: 1em;
-  background-color: darkgray;
+  width: 48px;
+  height: 48px;
+  line-height: 48px;
+  font-size: 1.45em;
+  background-color: #fff;
+  color: #8C1515;
+}
+
+#footer .social-icons .fa:hover,
+#footer .social-icons .fa:active {
+  background-color: rgba(255, 255, 255, 0.88);
+  color: #6e1010;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
 }
 
 #footer .list-inline li {
-  padding-left: 1px;
-  padding-right: 1px;
+  padding-left: 4px;
+  padding-right: 4px;
   margin-bottom: 0;
 }
 
 #footer .wrapper > a img[alt="Flag Counter"] {
-  margin-top: 2px;
-  max-width: 220px;
+  margin-top: 8px;
+  max-width: 240px;
   height: auto;
   display: inline-block;
 }
