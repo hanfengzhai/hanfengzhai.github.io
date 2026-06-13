@@ -1,0 +1,49 @@
+/* Site-wide TeX Gyre Pagella typography. Load after bootstrap.css. */
+body,
+font,
+.article-entry,
+.article-entry p,
+.article-entry li,
+.article-entry table,
+.article-entry td,
+.article-entry th,
+.article-entry strong,
+.article-entry em,
+.article-entry a,
+.article-entry blockquote,
+.article-entry h1,
+.article-entry h2,
+.article-entry h3,
+.article-title,
+.article-header,
+.navigater-list,
+.navigater-list > a,
+#header,
+#header a,
+#allheader,
+#footer,
+#footer p,
+.hnav,
+.hnav a,
+.navbar-nav,
+.navbar-nav > li > a,
+#beautifont {
+  font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+}
+
+code,
+pre,
+tt,
+.article-entry code {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.article-entry a {
+  color: #0645ad;
+  text-decoration: none;
+}
+
+.article-entry a:hover {
+  color: #003d82;
+  text-decoration: none;
+}

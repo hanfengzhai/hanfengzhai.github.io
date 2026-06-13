@@ -356,10 +356,10 @@ canvas {
     height: 100%;
     pointer-events: none;
 }
-a {
-    color: #000;
+.navigater-list > a {
+    color: #444444;
     text-decoration: none;
-    transition: color,background-color .2s ease;
+    transition: color, background-color .2s ease;
 }
 
 footer>.container>.row>p>a {
