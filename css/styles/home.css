@@ -345,7 +345,7 @@ hr{
 	transform: scale(1.1) rotate(360deg);
 }
  
-#beautifont{
+.beautifont{
         font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
 }
 canvas {
