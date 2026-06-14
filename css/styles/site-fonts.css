@@ -30,7 +30,6 @@ body {
 }
 
 body,
-font,
 .article-entry,
 .article-entry p,
 .article-entry li,
@@ -182,4 +181,29 @@ tt,
   max-width: 240px;
   height: auto;
   display: inline-block;
+}
+
+/* Legacy <font> / <center> replacements (Chromium font-size mapping) */
+.legacy-size-2 { font-size: 13px; }
+.legacy-size-3 { font-size: 16px; }
+.legacy-size-5 { font-size: 24px; }
+.legacy-color-black { color: #000; }
+.legacy-color-gray { color: gray; }
+.legacy-color-dimgray { color: dimgray; }
+.legacy-text-center { text-align: center; }
+
+#main.main-full-width {
+  float: none;
+}
+
+.footer-rule-wrap {
+  margin-top: 8px;
+  background-color: #5c0c0c;
+  text-align: center;
+}
+
+.footer-rule-wrap .hr {
+  margin: 0;
+  height: 1px;
+  border: 0;
 }
