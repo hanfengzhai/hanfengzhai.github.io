@@ -57,7 +57,7 @@ font,
 .hnav a,
 .navbar-nav,
 .navbar-nav > li > a,
-#beautifont {
+.beautifont {
   font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
 }
 
