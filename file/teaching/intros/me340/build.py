@@ -533,7 +533,7 @@ SLIDES = [
 <div class="slide-content">
 <ul class="meta-text">
   <li>W. Cai, <em>ME 340 Elasticity and Inelasticity</em> (lecture notes);
-    <a href="{ME340_CAI_NOTES}">consolidated PDF</a>.</li>
+    <a href="{ME340_CAI_NOTES}">Course notes</a>.</li>
   <li>J. R. Barber, <em>Elasticity</em>, 3rd ed., Springer (2010).</li>
   <li>T. L. Anderson, <em>Fracture Mechanics</em>, 3rd ed., Taylor &amp; Francis (2005).</li>
   <li>Printable intro slides: <a href="{INTRO_PDF}">ME340_Intro.pdf</a>.</li>
