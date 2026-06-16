@@ -51,16 +51,29 @@ def assemble(body):
     )
 
 
-def slide(title, body, center=False, bg=None):
-    cls = ' class="center-slide"' if center else ""
+def slide(title, body, center=False, bg=None, banner_tall=False):
+    cls_parts = []
+    if center:
+        cls_parts.append("center-slide")
+    cls = f' class="{" ".join(cls_parts)}"' if cls_parts else ""
     bg_attr = f' data-background-color="{bg}"' if bg else ""
     if title:
-        title_html = f'<div class="slide-title">{title}</div>'
+        banner_cls = "slide-title banner-tall" if banner_tall else "slide-title"
+        title_html = f'<div class="{banner_cls}">{title}</div>'
         body_html = f'<div class="slide-body">{body}</div>'
     else:
         title_html = ""
         body_html = body
     return f'<section{cls}{bg_attr}>{title_html}{body_html}</section>'
+
+
+def title_slide(body):
+    return f"""<section class="title-slide-section center-slide">
+<div class="title-slide-banner"><h1 class="textsc">Mechanics: Elasticity and Inelasticity</h1></div>
+<div class="title-slide-body slide-content">
+{body}
+</div>
+</section>"""
 
 
 THREE_PART = r"""
@@ -75,13 +88,12 @@ THREE_PART = r"""
 
 
 SLIDES = [
-    slide("", assemble(r"""
-<h1>Mechanics: Elasticity and Inelasticity</h1>
+    title_slide(assemble(r"""
 <p class="title-slide-meta">A brief intro • <a href="{ME340_CATALOG}">ME 340</a> • <a href="{INTRO_PDF}">PDF</a></p>
 <p class="author"><strong>Hanfeng Zhai</strong></p>
 <p class="institute">Department of Mechanical Engineering, Stanford University</p>
 <p class="date">Winter 2026</p>
-"""), center=True, bg="#8C1515"),
+""")),
 
     slide("Course at a glance", assemble(r"""
 <div class="cols">
@@ -110,19 +122,19 @@ SLIDES = [
 """), center=True),
 
     slide("Outline", """
-<div class="closing-slide">
+<div class="slide-content">
 <div class="toc-list">
-  <div><h4>Foundations</h4></div>
-  <div><h4>One-dimensional and rod problems</h4></div>
-  <div><h4>Two-dimensional elasticity</h4></div>
-  <div><h4>Three-dimensional elasticity</h4></div>
-  <div><h4>Plasticity</h4></div>
-  <div><h4>Fracture mechanics</h4></div>
-  <div><h4>Problem-solving workflow</h4></div>
+  <div><h4 class="textsc">Foundations</h4></div>
+  <div><h4 class="textsc">One-dimensional and rod problems</h4></div>
+  <div><h4 class="textsc">Two-dimensional elasticity</h4></div>
+  <div><h4 class="textsc">Three-dimensional elasticity</h4></div>
+  <div><h4 class="textsc">Plasticity</h4></div>
+  <div><h4 class="textsc">Fracture mechanics</h4></div>
+  <div><h4 class="textsc">Problem-solving workflow</h4></div>
 </div>
 <p class="meta-text" style="margin-top:0.75em;">Use ← → keys, swipe, or scroll to navigate.</p>
 </div>
-"""),
+""", banner_tall=True),
 
     slide("Continuum body: reference and deformed configurations", assemble(r"""
 <div class="cols cols-text-wide">
@@ -330,9 +342,9 @@ SLIDES = [
 """)),
 
     slide("Lecture map", assemble(r"""
-<div class="cols-33 lecture-map">
+<div class="slide-content cols-33 lecture-map">
   <div>
-    <h4>Part I. Elasticity</h4>
+    <h4 class="textsc">Part I. Elasticity</h4>
     <ol>
       <li>Introduction</li><li>Tensors</li><li>Hooke's Law</li><li>Fundamental Equations</li>
       <li>2D Elasticity</li><li>Rectangular Beam</li><li>Fourier Series and Transform</li>
@@ -340,7 +352,7 @@ SLIDES = [
     </ol>
   </div>
   <div>
-    <h4>Part II. Plasticity</h4>
+    <h4 class="textsc">Part II. Plasticity</h4>
     <ul style="list-style:none;margin-left:0;">
       <li>13. Fundamental Equations of Plasticity</li>
       <li>14. Graphical Representations</li>
@@ -351,7 +363,7 @@ SLIDES = [
     </ul>
   </div>
   <div>
-    <h4>Part III. Fracture</h4>
+    <h4 class="textsc">Part III. Fracture</h4>
     <ul style="list-style:none;margin-left:0;">
       <li>22. Slit-like Crack</li>
       <li>23. Energy Release Rate</li>

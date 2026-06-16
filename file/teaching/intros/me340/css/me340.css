@@ -23,6 +23,73 @@
   line-height: 1.32;
 }
 
+.reveal .textsc {
+  font-variant: small-caps;
+  text-transform: none;
+  letter-spacing: 0.04em;
+}
+
+/* Title slide: 35% cardinal banner + sandstone body */
+.reveal .slides > section.title-slide-section {
+  display: flex !important;
+  flex-direction: column;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 0 !important;
+  background: var(--sandstone);
+  text-align: center;
+}
+
+.reveal .title-slide-banner {
+  flex: 0 0 35%;
+  min-height: 35%;
+  background: var(--cardinal);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.2em;
+}
+
+.reveal .title-slide-banner h1 {
+  color: #fff;
+  font-size: calc(1.6em * 1.5);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.15;
+}
+
+.reveal .title-slide-body {
+  flex: 1 1 65%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.85);
+  padding: 1em 1.2em;
+  background: var(--sandstone);
+}
+
+.reveal .title-slide-body .title-slide-meta {
+  margin: 0 0 0.5em;
+}
+
+.reveal .title-slide-body .author {
+  margin: 1.25em 0 0.35em;
+}
+
+.reveal .title-slide-body .institute,
+.reveal .title-slide-body .date {
+  margin: 0.25em 0;
+}
+
+.reveal .title-slide-body a {
+  color: var(--cardinal);
+  text-decoration: underline;
+}
+
 /* Title banner pinned; only slide body scrolls when content overflows */
 .reveal .slides > section:has(.slide-title) {
   display: flex !important;
@@ -32,6 +99,11 @@
   overflow: hidden;
   box-sizing: border-box;
   padding-top: 0 !important;
+  background: var(--sandstone);
+}
+
+.reveal .slides > section:has(.slide-title.banner-tall) {
+  padding: 0 !important;
 }
 
 .reveal .slide-title {
@@ -46,6 +118,26 @@
   flex: 0 0 auto;
   position: relative;
   z-index: 20;
+  font-variant: small-caps;
+  text-transform: none;
+  letter-spacing: 0.04em;
+}
+
+.reveal .slide-title.banner-tall {
+  flex: 0 0 35%;
+  min-height: 35%;
+  max-height: 35%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.reveal .slides > section:has(.slide-title.banner-tall) .slide-body {
+  flex: 1 1 65%;
+  min-height: 0;
+  color: rgba(0, 0, 0, 0.85);
+  padding: 0.55em calc(var(--r-block-padding, 0.6em) + 0.6em);
+  box-sizing: border-box;
 }
 
 .reveal .slide-body {
@@ -83,45 +175,9 @@
   font-size: calc(var(--slide-base) * var(--meta-scale));
 }
 
-/* Outline / three-part — 2× base size */
-.reveal .closing-slide {
-  font-size: calc(var(--slide-base) * 2);
-  line-height: 1.35;
-}
-
-.reveal .closing-slide .meta-text,
-.reveal .closing-slide .toc-list,
-.reveal .closing-slide li,
-.reveal .closing-slide p {
+.reveal .slide-content .toc-list,
+.reveal .slide-content .lecture-map {
   font-size: 1em;
-}
-
-.reveal .closing-slide .fbox,
-.reveal .closing-slide .gbox,
-.reveal .closing-slide .kbox {
-  font-size: 0.9em;
-}
-
-.reveal .closing-slide .katex {
-  font-size: 1em;
-}
-
-.reveal section[data-background-color="#8C1515"] h1,
-.reveal section[data-background-color="#8C1515"] h2,
-.reveal section[data-background-color="#8C1515"] h3 {
-  color: #fff;
-}
-
-.reveal section[data-background-color="#8C1515"] .title-slide-meta,
-.reveal section[data-background-color="#8C1515"] .author,
-.reveal section[data-background-color="#8C1515"] .institute,
-.reveal section[data-background-color="#8C1515"] .date {
-  color: rgba(255, 255, 255, 0.92);
-}
-
-.reveal section[data-background-color="#8C1515"] a {
-  color: #fff;
-  text-decoration: underline;
 }
 
 .reveal .slide-content .fbox,
@@ -297,6 +353,9 @@
   text-align: center;
   min-width: 6em;
   line-height: 1.2;
+  font-variant: small-caps;
+  text-transform: none;
+  letter-spacing: 0.03em;
 }
 
 .reveal .fbox {
@@ -326,8 +385,10 @@
 }
 
 .reveal .toc-list h4 {
-  color: var(--cardinal);
+  color: rgba(0, 0, 0, 0.85);
   margin-bottom: 0.3em;
+  font-weight: 700;
+  text-transform: none;
 }
 
 .reveal .lecture-map {
@@ -335,9 +396,11 @@
 }
 
 .reveal .lecture-map h4 {
-  color: var(--cardinal);
+  color: rgba(0, 0, 0, 0.85);
   font-size: 1.05em;
   margin-bottom: 0.35em;
+  font-weight: 700;
+  text-transform: none;
 }
 
 .reveal .lecture-map ol,
@@ -363,25 +426,6 @@
 .reveal .lecture-map .katex,
 .reveal .toc-list .katex {
   font-size: 1em;
-}
-
-.reveal section[data-background-color="#8C1515"] h1 {
-  font-size: calc(1.6em * 1.5);
-  margin-bottom: 0.6em;
-}
-
-.reveal section[data-background-color="#8C1515"] .title-slide-meta {
-  margin-bottom: 0;
-}
-
-.reveal section[data-background-color="#8C1515"] .author {
-  font-size: 1.05em;
-  margin-top: 1.75em;
-}
-
-.reveal section[data-background-color="#8C1515"] .institute,
-.reveal section[data-background-color="#8C1515"] .date {
-  font-size: 0.95em;
 }
 
 .reveal .progress span {
