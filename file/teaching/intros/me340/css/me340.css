@@ -43,8 +43,8 @@
 }
 
 .reveal .title-slide-banner {
-  flex: 0 0 25%;
-  min-height: 25%;
+  flex: 0 0 15%;
+  min-height: 15%;
   background: var(--cardinal);
   color: #fff;
   display: flex;
@@ -63,7 +63,7 @@
 }
 
 .reveal .title-slide-body {
-  flex: 1 1 75%;
+  flex: 1 1 85%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -312,6 +312,18 @@
 
 .reveal .example-block strong {
   color: var(--paloalto);
+}
+
+.reveal .sym-note {
+  margin-top: 0.45em;
+  padding-top: 0.4em;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  line-height: 1.38;
+  color: rgba(0, 0, 0, 0.68);
+}
+
+.reveal .slide-content .sym-note {
+  font-size: 0.72em;
 }
 
 .reveal .flow-row {

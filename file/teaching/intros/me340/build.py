@@ -7,6 +7,7 @@ ROOT = Path(__file__).resolve().parent
 OUT = ROOT / "index.html"
 
 ME340_CATALOG = "https://explorecourses.stanford.edu/search?view=catalog&filter-coursestatus-Active=on&q=ME340"
+ME340_CAI_NOTES = "https://micro.stanford.edu/~caiwei/me340/"
 ELASTICITY_NOTES = "/file/teaching/notes/elasticity_notes.pdf"
 INTRO_PDF = "/file/teaching/intros/ME340_Intro.pdf"
 
@@ -43,9 +44,14 @@ def gb(lec, topic):
     return f'<div class="lec-badge">Lec.&nbsp;{lec} [{topic}]</div>'
 
 
+def sym(*parts):
+    return '<p class="sym-note meta-text"><strong>Symbols:</strong> ' + "; ".join(parts) + ".</p>"
+
+
 def assemble(body):
     return (
         body.replace("{ME340_CATALOG}", ME340_CATALOG)
+        .replace("{ME340_CAI_NOTES}", ME340_CAI_NOTES)
         .replace("{ELASTICITY_NOTES}", ELASTICITY_NOTES)
         .replace("{INTRO_PDF}", INTRO_PDF)
     )
@@ -104,6 +110,12 @@ SLIDES = [
       <li>Barber (2010); Anderson (2005).</li>
       <li><a href="{ELASTICITY_NOTES}">consolidated study notes</a>.</li>
     </ul>
+    """ + sym(
+        r"\(\phi\): Airy stress function (2D)",
+        r"\(G\): Green's function (3D)",
+        r"LEFM: linear elastic fracture mechanics",
+        r"\(J\): path-independent contour integral",
+    ) + r"""
   </div>
   <div>""" + img("fig1.png", "Reference and deformed configurations") + r"""</div>
 </div>""")),
@@ -117,12 +129,21 @@ SLIDES = [
   <div><strong>III.</strong> crack-tip fields, energy release</div>
 </div>
 <p class="meta-text" style="margin-top:0.55em;"><em>Core idea:</em> well-posed BVP \(\rightarrow\) elastic solution \(\rightarrow\) plasticity if \(f > 0\) \(\rightarrow\) fracture if cracks grow.</p>
+""" + sym(
+        r"\(\boldsymbol{\sigma}\): Cauchy stress tensor",
+        r"\(\mathbf{u}\): displacement field",
+        r"\(\varepsilon^{p}\): plastic strain",
+        r"\(f\): yield function (\(f\le 0\) elastic)",
+        r"\(K_I\): mode-I stress intensity factor",
+        r"\(J\): \(J\)-integral (fracture)",
+    ) + r"""
 </div>
 """), center=True),
 
     slide("Outline", """
 <div class="slide-content">
 <div class="toc-list">
+  <div><h4 class="textsc">Tensors and Einstein notation</h4></div>
   <div><h4 class="textsc">Foundations</h4></div>
   <div><h4 class="textsc">One-dimensional and rod problems</h4></div>
   <div><h4 class="textsc">Two-dimensional elasticity</h4></div>
@@ -135,6 +156,24 @@ SLIDES = [
 </div>
 """),
 
+    slide("Tensors and Einstein notation", assemble(r"""
+<div class="slide-content">
+<ul>
+  <li><strong>Scalars</strong> (one number): \(E\), \(\nu\), \(\rho\). <strong>Vectors</strong> \(\mathbf{a}\): components \(a_i\). <strong>Tensors</strong> \(\mathbf{T}\): components \(T_{ij}\) (and higher order).</li>
+  <li><strong>Einstein summation:</strong> repeated indices are summed, e.g. \(a_i b_i = a_1 b_1 + a_2 b_2 + a_3 b_3\); \(\sigma_{ii}=\sigma_{xx}+\sigma_{yy}+\sigma_{zz}\).</li>
+  <li><strong>Comma notation:</strong> \(u_{i,j}=\partial u_i/\partial x_j\); \(\sigma_{ij,j}=\partial\sigma_{ij}/\partial x_j\) (sum on \(j\)).</li>
+  <li><strong>Kronecker delta</strong> \(\delta_{ij}=1\) if \(i=j\), else \(0\). <strong>Levi-Civita</strong> \(\varepsilon_{ijk}\) for cross products / determinants.</li>
+  <li>Bold symbols (\(\boldsymbol{\sigma}\), \(\mathbf{u}\)) denote tensors/vectors; indicial form (\(\sigma_{ij}\), \(u_i\)) is equivalent.</li>
+</ul>
+""" + sym(
+        r"\(i,j,k\in\{1,2,3\}\): Cartesian indices (\(x_1,x_2,x_3\))",
+        r"\(\delta_{ij}\): Kronecker delta",
+        r"\(T_{ij}\): second-order tensor components",
+        r"\(C_{ijkl}\): fourth-order stiffness components",
+    ) + gb("2", "Tensors") + r"""
+</div>
+""")),
+
     slide("Continuum body: reference and deformed configurations", assemble(r"""
 <div class="cols cols-text-wide">
   <div class="slide-content">
@@ -144,7 +183,14 @@ SLIDES = [
       <li>Small strain: \(\varepsilon_{ij} = \tfrac{1}{2}(u_{i,j} + u_{j,i})\).</li>
       <li>Body \(V\) with boundary \(\partial V=S_u\cup S_t\).</li>
     </ul>
-    """ + gb("1", "Introduction") + r"""
+    """ + sym(
+        r"\(\Omega_0,\Omega\): reference / deformed material domains",
+        r"\(\mathbf{X},\mathbf{x}\): material / spatial position vectors",
+        r"\(\mathbf{u}\): displacement (\(\mathbf{x}=\mathbf{X}+\mathbf{u}\))",
+        r"\(\varepsilon_{ij}\): infinitesimal strain tensor",
+        r"\(V,\partial V\): body and its boundary",
+        r"\(S_u,S_t\): displacement / traction boundary segments",
+    ) + gb("1", "Introduction") + r"""
   </div>
   <div>""" + img("fig1.png", "Reference and deformed configurations") + r"""</div>
 </div>""")),
@@ -157,7 +203,13 @@ SLIDES = [
       <li>Cauchy stress \(\boldsymbol{\sigma}\); traction \(\mathbf{t}=\boldsymbol{\sigma}\cdot\mathbf{n}\), \(t_i=\sigma_{ij}n_j\).</li>
       <li>Equilibrium (no body force): \(\partial\sigma_{ij}/\partial x_j = 0\).</li>
     </ul>
-    """ + gb("1–2", "Introduction, Tensors") + r"""
+    """ + sym(
+        r"\(\sigma_{ij}\): Cauchy stress (symmetric)",
+        r"\(\varepsilon_{ij}\): small-strain tensor",
+        r"\(u_i\): displacement components",
+        r"\(\mathbf{t},t_i\): traction vector / components",
+        r"\(n_j\): outward unit normal on a surface",
+    ) + gb("1–2", "Introduction, Tensors") + r"""
   </div>
   <div>""" + img("fig2.png", "Cauchy stress and traction") + r"""</div>
 </div>""")),
@@ -170,7 +222,14 @@ SLIDES = [
       <li>Isotropic: \(\varepsilon_{ij} = \tfrac{1+\nu}{E}\sigma_{ij} - \tfrac{\nu}{E}\sigma_{kk}\delta_{ij}\).</li>
       <li>Shaded area under \(\sigma\)–\(\varepsilon\) curve = strain-energy density \(u\) at \((\varepsilon^*,\sigma^*)\).</li>
     </ul>
-    """ + gb("3", "Hooke's Law") + r""", """ + gb("4", "Fundamental Equations") + r"""
+    """ + sym(
+        r"\(C_{ijkl}\): elasticity tensor (Hooke's law)",
+        r"\(E\): Young's modulus",
+        r"\(\nu\): Poisson's ratio",
+        r"\(u\): strain-energy density per unit volume",
+        r"\(\sigma_{kk}\): trace of stress (\(\sigma_{xx}+\sigma_{yy}+\sigma_{zz}\))",
+        r"\(\delta_{ij}\): Kronecker delta",
+    ) + gb("3", "Hooke's Law") + r""", """ + gb("4", "Fundamental Equations") + r"""
   </div>
   <div>""" + img("fig3.png", "Hooke's law graph") + r"""</div>
 </div>""")),
@@ -180,7 +239,14 @@ SLIDES = [
   <div class="slide-content">
     <p>\[ \boldsymbol{\varepsilon}=\tfrac{1}{2}(\nabla\mathbf{u}+\nabla\mathbf{u}^{\top}),\quad \boldsymbol{\sigma}=\mathbb{C}:\boldsymbol{\varepsilon},\quad \nabla\!\cdot\!\boldsymbol{\sigma}+\mathbf{f}=\mathbf{0}\ \text{in }V. \]</p>
     <p>\[ \mathbf{u}=\mathbf{u}_0\ \text{on }S_u,\qquad \boldsymbol{\sigma}\cdot\mathbf{n}=\mathbf{t}\ \text{on }S_t,\qquad \partial V=S_u\cup S_t. \]</p>
-    """ + gb("4", "Fundamental Equations") + r"""
+    """ + sym(
+        r"\(\mathbb{C}\): fourth-order elastic stiffness tensor",
+        r"\(\mathbf{f}\): body-force vector per unit volume",
+        r"\(\mathbf{u}_0\): prescribed displacement on \(S_u\)",
+        r"\(\mathbf{t}\): prescribed traction on \(S_t\)",
+        r"\(\mathbf{n}\): outward unit normal",
+        r"\(\nabla,\cdot\): gradient / divergence",
+    ) + gb("4", "Fundamental Equations") + r"""
   </div>
   <div>""" + img("fig4.png", "Boundary value problem") + r"""</div>
 </div>""")),
@@ -193,7 +259,14 @@ SLIDES = [
       <li>Reference length \(L_0\); deformed \(L=L_0+u(L_0)\); fixed at \(x=0\), load \(N\) at \(x=L_0\).</li>
       <li>Cross-section \(A\); rigidity \(EA\); same BVP pattern as 3D.</li>
     </ul>
-    """ + gb("4–5", "Fund. Eqs., 2D Elasticity") + r"""
+    """ + sym(
+        r"\(\varepsilon\): axial strain",
+        r"\(u(x)\): axial displacement",
+        r"\(N\): axial normal force",
+        r"\(EA\): axial rigidity (stiffness \(\times\) area)",
+        r"\(f\): distributed axial body force per unit length",
+        r"\(L_0,A\): reference length and cross-sectional area",
+    ) + gb("4–5", "Fund. Eqs., 2D Elasticity") + r"""
   </div>
   <div>""" + img("fig5.png", "Elastic rod") + r"""</div>
 </div>""")),
@@ -203,7 +276,14 @@ SLIDES = [
   <div class="slide-content">
     <p>Airy stress function \(\phi(x,y)\), \(\nabla^4\phi=0\):</p>
     <p>\[ \sigma_{xx}=\phi_{,yy},\quad \sigma_{yy}=\phi_{,xx},\quad \sigma_{xy}=-\phi_{,xy}. \]</p>
-    """ + gb("5", "2D Elasticity") + r"""
+    """ + sym(
+        r"\(\phi\): Airy stress function",
+        r"\(\nabla^4\): biharmonic operator (\(\partial^4/\partial x^4+\cdots\))",
+        r"\(\phi_{,ij}\): \(\partial^2\phi/\partial x_i\partial x_j\)",
+        r"\(\sigma_{xx},\sigma_{yy},\sigma_{xy}\): in-plane Cauchy stresses",
+        r"\(t,L\): plate thickness and in-plane length scale",
+        r"\(x_3\): out-of-plane coordinate",
+    ) + gb("5", "2D Elasticity") + r"""
   </div>
   <div>""" + fig_row(
         fig_cell("fig6a.png", "Thin plate",
@@ -226,6 +306,13 @@ SLIDES = [
                  r"<strong>Half space</strong> (Lec.&nbsp;9): line load \(P\), \(\sigma\sim 1/r\)"),
         fig_cell("fig7d.png", "Contact",
                  r"<strong>Contact</strong> (Lec.&nbsp;10): \(p(x)\) on \([-a,a]\)"),
+    ) + sym(
+        r"\(q(x)\): transverse distributed load on a beam",
+        r"\(L,2h\): beam span and total depth",
+        r"\(p(x)\): periodic surface pressure",
+        r"\(P\): concentrated line load",
+        r"\(r\): radial distance from a load",
+        r"\(a\): half-width of contact zone",
     ) + r"""""")),
 
     slide("Polar coordinates and wedge problems", assemble(r"""
@@ -236,7 +323,12 @@ SLIDES = [
       <li>Lec. 11–12: annulus / hole; Lec. 13: wedge angle \(2\alpha\), corner modes.</li>
       <li>Pick modes with symmetry and finite energy.</li>
     </ul>
-    """ + gb("11–12", "Polar Coordinates, Wedge and Notch") + r"""
+    """ + sym(
+        r"\(r,\theta\): polar coordinates",
+        r"\(\phi(r,\theta)\): Airy function in polar form",
+        r"\(2\alpha\): wedge opening angle",
+        r"\(\ln r,\ \theta\ln r\): typical singular / logarithmic modes",
+    ) + gb("11–12", "Polar Coordinates, Wedge and Notch") + r"""
   </div>
   <div>""" + img("fig8.png", "Polar annulus and wedge") + r"""</div>
 </div>""")),
@@ -249,7 +341,13 @@ SLIDES = [
       <li><strong>Kelvin</strong> (Lec.&nbsp;17): point force \(\mathbf{P}\) in infinite space.</li>
       <li><strong>Image</strong> (Lec.&nbsp;16): traction-free surface via mirror force.</li>
     </ul>
-    """ + gb("16–17", "Half Space, Kelvin Solution") + r"""
+    """ + sym(
+        r"\(G(\mathbf{x},\boldsymbol{\xi})\): Green's function (displacement kernel)",
+        r"\(\mathbf{x},\boldsymbol{\xi}\): field / source points",
+        r"\(\mathrm{d}V_\xi\): volume element at \(\boldsymbol{\xi}\)",
+        r"\(\mathbf{P}\): concentrated point force",
+        r"\(\mathbf{f}\): body-force density",
+    ) + gb("16–17", "Half Space, Kelvin Solution") + r"""
   </div>
   <div>""" + fig_row(
         fig_cell("fig9a.png", "Kelvin solution", r"Kelvin: \(\mathbf{P}\) at origin"),
@@ -265,7 +363,11 @@ SLIDES = [
       <li>Far field: remote \(\boldsymbol{\sigma}^{\infty}\); Peach–Köhler force on dislocation.</li>
       <li>Singular core + image / boundary correction; many dislocations \(\Rightarrow\) \(\varepsilon^{p}\).</li>
     </ul>
-    """ + gb("notes", "Dislocations (extended notes)") + r"""
+    """ + sym(
+        r"\(\mathbf{b}\): Burgers vector (slip discontinuity)",
+        r"\(\boldsymbol{\sigma}^{\infty}\): remote uniform stress state",
+        r"\(\varepsilon^{p}\): plastic strain from accumulated slip",
+    ) + gb("notes", "Dislocations (extended notes)") + r"""
   </div>
   <div>""" + img("fig10.png", "Dislocation schematic") + r"""</div>
 </div>""")),
@@ -280,7 +382,10 @@ SLIDES = [
       <li>Elastic part: \(\sigma_{ij} = C_{ijkl} \varepsilon^{e}_{kl}\).</li>
       <li>Plastic part: governed by a yield condition + flow rule.</li>
     </ul>
-    """ + gb("3", "Hooke's Law") + r""", """ + gb("13", "Fund. Eqs. of Plasticity") + r"""
+    """ + sym(
+        r"\(\varepsilon_{ij}^{e},\varepsilon_{ij}^{p}\): elastic / plastic strain parts",
+        r"\(C_{ijkl}\): elastic stiffness (Hooke's law on \(\varepsilon^{e}\))",
+    ) + gb("3", "Hooke's Law") + r""", """ + gb("13", "Fund. Eqs. of Plasticity") + r"""
   </div>
   <div>""" + img("fig_elas_plas.png", "Elastic-plastic loading") + r"""</div>
 </div>""")),
@@ -291,7 +396,14 @@ SLIDES = [
     <p>\(s_{ij}=\sigma_{ij}-\tfrac{1}{3}\sigma_{kk}\delta_{ij}\); \(J_2=\tfrac{1}{2}s_{ij}s_{ij}\), \(\sigma_{\mathrm{eq}}=\sqrt{3J_2}\).</p>
     <p><strong>von Mises:</strong> \(f=J_2-k^2\le 0\), \(k=\sigma_{Y}/\sqrt{3}\).</p>
     <p><strong>Tresca:</strong> \(\max_{i,j}|\sigma_i-\sigma_j| = 2k\).</p>
-    """ + gb("13–14", "Yield surface / graphical") + r"""
+    """ + sym(
+        r"\(s_{ij}\): deviatoric stress (\(\sigma_{ij}-\tfrac{1}{3}\sigma_{kk}\delta_{ij}\))",
+        r"\(J_2\): second invariant of deviator (\(\tfrac{1}{2}s_{ij}s_{ij}\))",
+        r"\(\sigma_{\mathrm{eq}}\): von Mises equivalent stress",
+        r"\(f\): yield function (\(f\le 0\) admissible)",
+        r"\(k,\sigma_Y\): yield strength in shear / tension",
+        r"\(\sigma_i\): principal stresses",
+    ) + gb("13–14", "Yield surface / graphical") + r"""
   </div>
   <div>""" + img("fig_yield_surf.png", "Yield surfaces") + r"""</div>
 </div>""")),
@@ -301,7 +413,12 @@ SLIDES = [
   <div class="slide-content">
     <p>\[ \dot{\varepsilon}_{ij}^{p}=\dot{\lambda}\,\frac{\partial f}{\partial\sigma_{ij}}=\dot{\lambda}\, s_{ij},\qquad \dot{\varepsilon}_{kk}^{p}=0. \]</p>
     <p>Elastic predictor \(\boldsymbol{\sigma}^{\mathrm{tr}}\); if \(f^{\mathrm{tr}} > 0\), <em>return</em> radially to \(f=0\).</p>
-    """ + gb("13–15", "Flow rule, tension &amp; shear") + r"""
+    """ + sym(
+        r"\(\dot{\varepsilon}_{ij}^{p}\): plastic strain rate",
+        r"\(\dot{\lambda}\): plastic multiplier (consistency parameter)",
+        r"\(\boldsymbol{\sigma}^{\mathrm{tr}},f^{\mathrm{tr}}\): elastic trial stress / yield function",
+        r"\(s_{ij}\): stress deviator (flow direction for \(J_2\) plasticity)",
+    ) + gb("13–15", "Flow rule, tension &amp; shear") + r"""
   </div>
   <div>""" + fig_row(
         fig_cell("fig11a.png", "Return mapping flowchart",
@@ -319,7 +436,16 @@ SLIDES = [
       <li>\(K_{I}=\sigma^{\infty}\sqrt{\pi a}\) (infinite plate); fracture when \(K_{I}=K_{Ic}\).</li>
       <li>\(\mathcal{G}=\partial U/\partial a\); \(J\)-integral; fatigue (Part III).</li>
     </ul>
-    """ + gb("22–26", "Slit crack, LEFM, fatigue") + r"""
+    """ + sym(
+        r"\(2a\): crack length",
+        r"\(\sigma^{\infty}\): remote applied normal stress",
+        r"\(r\): distance from crack tip",
+        r"\(K_I\): mode-I stress intensity factor",
+        r"\(K_{Ic}\): fracture toughness (critical \(K_I\))",
+        r"\(\mathcal{G}\): energy release rate",
+        r"\(J\): path-independent \(J\)-integral",
+        r"\(U\): total potential / strain energy",
+    ) + gb("22–26", "Slit crack, LEFM, fatigue") + r"""
   </div>
   <div>""" + img("fig12.png", "Center crack") + r"""</div>
 </div>""")),
@@ -337,6 +463,13 @@ SLIDES = [
   </div>
   <div>""" + img("fig_soln_proc.png", "Problem-solving workflow") + r"""</div>
 </div>
+""" + sym(
+        r"BCs: boundary conditions (\(S_u,S_t\))",
+        r"\(\phi\): Airy stress function (2D)",
+        r"\(G\): Green's function (3D)",
+        r"\(\sigma\): stress tensor",
+        r"\(U\): strain / potential energy",
+    ) + r"""
 <div class="example-block"><strong>Benchmark mindset:</strong> Keep an analytic case as a reference when switching to numerics.</div>
 """)),
 
@@ -382,6 +515,12 @@ SLIDES = [
   <li><strong>Fracture:</strong> \(K_{I}\), \(\mathcal{G}\), and \(J\) link elastic fields to crack growth and fatigue.</li>
   <li>Matlab and analytic benchmarks support each part.</li>
 </ol>
+""" + sym(
+    r"\(\phi\): Airy function",
+    r"\(\boldsymbol{\varepsilon}^{e,p}\): elastic / plastic strain",
+    r"\(J_2\): second deviatoric invariant",
+    r"\(K_I,\mathcal{G},J\): fracture parameters",
+) + r"""
 <div class="flow-row" style="margin-top:0.75em;">
   <div class="fbox">Elasticity<br>\(\sigma,\ \mathbf{u}\)</div><span class="arrow">→</span>
   <div class="gbox">Plasticity<br>\(\varepsilon^{p},\ f=0\)</div><span class="arrow">→</span>
@@ -394,7 +533,7 @@ SLIDES = [
 <div class="slide-content">
 <ul class="meta-text">
   <li>W. Cai, <em>ME 340 Elasticity and Inelasticity</em> (lecture notes);
-    <a href="{ELASTICITY_NOTES}">consolidated PDF</a>.</li>
+    <a href="{ME340_CAI_NOTES}">consolidated PDF</a>.</li>
   <li>J. R. Barber, <em>Elasticity</em>, 3rd ed., Springer (2010).</li>
   <li>T. L. Anderson, <em>Fracture Mechanics</em>, 3rd ed., Taylor &amp; Francis (2005).</li>
   <li>Printable intro slides: <a href="{INTRO_PDF}">ME340_Intro.pdf</a>.</li>
