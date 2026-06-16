@@ -97,7 +97,7 @@ SLIDES = [
 <p class="title-slide-meta">A brief intro • <a href="{ME340_CATALOG}">ME 340</a> • <a href="{INTRO_PDF}">PDF</a></p>
 <p class="author"><strong>Hanfeng Zhai</strong></p>
 <p class="institute">Department of Mechanical Engineering, Stanford University</p>
-<p class="date">Winter 2026</p>
+<p class="date">Winter 2025-26</p>
 """)),
 
     slide("Course at a glance", assemble(r"""
