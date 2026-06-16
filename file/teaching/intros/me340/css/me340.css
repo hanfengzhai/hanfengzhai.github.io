@@ -1,0 +1,233 @@
+:root {
+  --cardinal: #8C1515;
+  --coolgrey: #4D4F53;
+  --sandstone: #FAF6F0;
+  --paloalto: #175E54;
+}
+
+.reveal-viewport {
+  background: var(--sandstone);
+}
+
+.reveal {
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4 {
+  font-family: inherit;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.reveal h1 {
+  color: #fff;
+}
+
+.reveal .slides section {
+  text-align: left;
+}
+
+.reveal .slides section.center-slide {
+  text-align: center;
+}
+
+.reveal section[data-background-color="#8C1515"] h1,
+.reveal section[data-background-color="#8C1515"] h2,
+.reveal section[data-background-color="#8C1515"] h3 {
+  color: #fff;
+}
+
+.reveal section[data-background-color="#8C1515"] .title-slide-meta,
+.reveal section[data-background-color="#8C1515"] .author,
+.reveal section[data-background-color="#8C1515"] .institute,
+.reveal section[data-background-color="#8C1515"] .date {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.reveal section[data-background-color="#8C1515"] a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.reveal .slide-title {
+  background: var(--cardinal);
+  color: #fff;
+  padding: 0.35em 0.75em;
+  margin: -0.2em -0.2em 0.6em -0.2em;
+  font-size: 1.05em;
+  font-weight: 700;
+}
+
+.reveal .subtitle-link a {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.reveal ul,
+.reveal ol {
+  display: block;
+  margin-left: 1.2em;
+}
+
+.reveal li {
+  margin-bottom: 0.35em;
+}
+
+.reveal a {
+  color: var(--cardinal);
+}
+
+.reveal .cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.reveal .cols-33 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.reveal .cols-top {
+  align-items: start;
+}
+
+.reveal .figcap {
+  text-align: center;
+  font-size: 0.55em;
+  color: rgba(0, 0, 0, 0.7);
+  margin-top: 0.5em;
+}
+
+.reveal .lec-badge {
+  display: inline-block;
+  color: var(--cardinal);
+  font-size: 0.55em;
+  margin-top: 0.75em;
+}
+
+.reveal .example-block {
+  background: rgba(23, 94, 84, 0.07);
+  border-left: 4px solid var(--paloalto);
+  padding: 0.6em 0.9em;
+  margin-top: 0.75em;
+  font-size: 0.78em;
+}
+
+.reveal .example-block strong {
+  color: var(--paloalto);
+}
+
+.reveal .flow-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  margin: 0.5rem 0;
+}
+
+.reveal .fbox,
+.reveal .gbox,
+.reveal .kbox {
+  border-radius: 4px;
+  padding: 0.45em 0.55em;
+  font-size: 0.62em;
+  font-weight: 600;
+  text-align: center;
+  min-width: 6.5em;
+  line-height: 1.25;
+}
+
+.reveal .fbox {
+  border: 2px solid var(--cardinal);
+  background: rgba(140, 21, 21, 0.07);
+}
+
+.reveal .gbox {
+  border: 2px solid var(--paloalto);
+  background: rgba(23, 94, 84, 0.07);
+}
+
+.reveal .kbox {
+  border: 2px solid var(--coolgrey);
+  background: rgba(77, 79, 83, 0.08);
+}
+
+.reveal .arrow {
+  color: var(--coolgrey);
+  font-size: 1.1em;
+  font-weight: 700;
+}
+
+.reveal svg.diagram {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.reveal .title-slide-meta {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.reveal .title-slide-meta .author {
+  color: rgba(0, 0, 0, 0.75);
+  margin-top: 1rem;
+}
+
+.reveal .title-slide-meta .institute {
+  color: var(--cardinal);
+  font-size: 0.85em;
+}
+
+.reveal .title-slide-meta .date {
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 0.8em;
+}
+
+.reveal .toc-list {
+  columns: 2;
+  column-gap: 2rem;
+  font-size: 0.72em;
+}
+
+.reveal .toc-list h4 {
+  color: var(--cardinal);
+  margin-bottom: 0.35em;
+}
+
+.reveal .lecture-map {
+  font-size: 0.48em;
+  line-height: 1.15;
+}
+
+.reveal .lecture-map h4 {
+  color: var(--cardinal);
+  font-size: 1.05em;
+  margin-bottom: 0.35em;
+}
+
+.reveal .katex {
+  font-size: 1em;
+}
+
+.reveal .progress span {
+  background: var(--cardinal);
+}
+
+.reveal .controls button {
+  color: var(--cardinal);
+}
+
+@media (max-width: 900px) {
+  .reveal .cols,
+  .reveal .cols-33 {
+    grid-template-columns: 1fr;
+  }
+}
