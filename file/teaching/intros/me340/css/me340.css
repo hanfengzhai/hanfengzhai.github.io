@@ -4,7 +4,7 @@
   --sandstone: #FAF6F0;
   --paloalto: #175E54;
   --slide-base: 20px;
-  --content-scale: 0.58;
+  --content-scale: 1.45;
   --meta-scale: 1;
 }
 
@@ -23,11 +23,44 @@
   line-height: 1.32;
 }
 
+/* Title banner pinned; only slide body scrolls when content overflows */
+.reveal .slides > section:has(.slide-title) {
+  display: flex !important;
+  flex-direction: column;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding-top: 0 !important;
+}
+
+.reveal .slide-title {
+  background: var(--cardinal);
+  color: #fff;
+  padding: 0.28em 0.6em;
+  margin: 0 calc(-1 * var(--r-block-padding, 0.6em)) 0.35em;
+  padding-left: calc(var(--r-block-padding, 0.6em) + 0.6em);
+  padding-right: calc(var(--r-block-padding, 0.6em) + 0.6em);
+  font-size: 1.05em;
+  font-weight: 700;
+  flex: 0 0 auto;
+  position: relative;
+  z-index: 20;
+}
+
+.reveal .slide-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
 .reveal .slides section.center-slide {
   text-align: center;
 }
 
-/* Main bullet/equation columns — compact (~half of default reveal body) */
+/* Main bullet/equation columns — 2.5× prior compact scale */
 .reveal .slide-content {
   font-size: calc(var(--slide-base) * var(--content-scale));
 }
@@ -62,15 +95,6 @@
 .reveal section[data-background-color="#8C1515"] a {
   color: #fff;
   text-decoration: underline;
-}
-
-.reveal .slide-title {
-  background: var(--cardinal);
-  color: #fff;
-  padding: 0.28em 0.6em;
-  margin: -0.2em -0.2em 0.35em -0.2em;
-  font-size: 1.05em;
-  font-weight: 700;
 }
 
 .reveal ul,
@@ -146,6 +170,56 @@
   color: rgba(0, 0, 0, 0.7);
   margin-top: 0.3em;
   line-height: 1.25;
+}
+
+.reveal .fig-row {
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.reveal .fig-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem 0.65rem;
+}
+
+.reveal .fig-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.reveal .fig-cell .slide-fig {
+  max-height: 200px;
+}
+
+.reveal .fig-label {
+  font-size: calc(var(--slide-base) * var(--content-scale) * 0.88);
+  line-height: 1.28;
+  margin-top: 0.25em;
+  color: rgba(0, 0, 0, 0.82);
+}
+
+.reveal .fig-label strong {
+  color: var(--cardinal);
+}
+
+.reveal .fig-label .katex {
+  font-size: 1em;
+}
+
+.reveal .fbox .katex,
+.reveal .gbox .katex,
+.reveal .kbox .katex,
+.reveal .flow-row .katex {
+  font-size: 1em;
+}
+
+.reveal .katex-error {
+  color: var(--cardinal);
 }
 
 .reveal .lec-badge {
@@ -290,7 +364,11 @@
     min-height: 220px;
   }
 
-  .reveal .slide-fig {
-    max-height: 300px;
+  .reveal .fig-cell .slide-fig {
+    max-height: 160px;
+  }
+
+  .reveal .fig-row {
+    flex-direction: column;
   }
 }

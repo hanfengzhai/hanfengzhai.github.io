@@ -10,19 +10,7 @@ ME340_CATALOG = "https://explorecourses.stanford.edu/search?view=catalog&filter-
 ELASTICITY_NOTES = "/file/teaching/notes/elasticity_notes.pdf"
 INTRO_PDF = "/file/teaching/intros/ME340_Intro.pdf"
 
-# Figure captions (module-level to avoid backslashes inside f-string expressions)
-CAP_FIG1 = r"material point \(\mathbf{X}\) maps to \(\mathbf{x}=\mathbf{X}+\mathbf{u}(\mathbf{X})\)"
-CAP_FIG2 = r"traction \(\mathbf{t}=\boldsymbol{\sigma}\cdot\mathbf{n}\) on a cut plane"
-CAP_FIG3 = r"linear \(\sigma\)–\(\varepsilon\) law; shaded area = strain-energy density \(u\)"
-CAP_FIG4 = r"body \(V\); displacement BC on \(S_u\), traction BC on \(S_t\)"
-CAP_FIG5 = r"fixed end + axial load \(N\) \(\Rightarrow\) extension \(u(x)\)"
-CAP_FIG8 = r"polar annulus / hole and wedge notch with angle \(2\alpha\)"
-CAP_FIG9 = r"Kelvin point force \(P\) + image below traction-free surface"
-CAP_FIG10 = r"Volterra cut, Burgers vector \(\mathbf{b}\), far-field \(\boldsymbol{\sigma}^\infty\)"
-CAP_ELAS_PLAS = r"load past \(\sigma_Y\), unload elastically \(\rightarrow\) permanent \(\varepsilon^p\)"
-CAP_YIELD = r"von Mises circle vs. Tresca hexagon in \(\sigma_1\)–\(\sigma_2\) plane"
-CAP_FIG11 = r"elastic predictor \(\boldsymbol{\sigma}^{\mathrm{tr}}\); return to yield surface if \(f>0\)"
-CAP_FIG12 = r"center crack \(2a\) in remote tension \(\sigma^\infty\) (Mode I)"
+# Minimal alt-text only; labels live in slide LaTeX
 
 
 def img(name, alt="", caption=""):
@@ -32,6 +20,23 @@ def img(name, alt="", caption=""):
         f'<img class="slide-fig" src="figs/{name}" alt="{alt}" loading="lazy">'
         f'{cap}</div>'
     )
+
+
+def fig_cell(name, alt="", label=""):
+    label_html = f'<div class="fig-label">{label}</div>' if label else ""
+    return (
+        f'<div class="fig-cell">'
+        f'<img class="slide-fig" src="figs/{name}" alt="{alt}" loading="lazy">'
+        f'{label_html}</div>'
+    )
+
+
+def fig_row(*cells):
+    return f'<div class="fig-row">{"".join(cells)}</div>'
+
+
+def fig_grid(*cells):
+    return f'<div class="fig-grid">{"".join(cells)}</div>'
 
 
 def gb(lec, topic):
@@ -49,8 +54,13 @@ def assemble(body):
 def slide(title, body, center=False, bg=None):
     cls = ' class="center-slide"' if center else ""
     bg_attr = f' data-background-color="{bg}"' if bg else ""
-    title_html = f'<div class="slide-title">{title}</div>' if title else ""
-    return f'<section{cls}{bg_attr}>{title_html}{body}</section>'
+    if title:
+        title_html = f'<div class="slide-title">{title}</div>'
+        body_html = f'<div class="slide-body">{body}</div>'
+    else:
+        title_html = ""
+        body_html = body
+    return f'<section{cls}{bg_attr}>{title_html}{body_html}</section>'
 
 
 THREE_PART = r"""
@@ -94,7 +104,7 @@ SLIDES = [
   <div><strong>II.</strong> yield, flow, hardening</div>
   <div><strong>III.</strong> crack-tip fields, energy release</div>
 </div>
-<p class="meta-text" style="margin-top:0.55em;"><em>Core idea:</em> well-posed BVP \(\rightarrow\) elastic solution \(\rightarrow\) plasticity if \(f&gt;0\) \(\rightarrow\) fracture if cracks grow.</p>
+<p class="meta-text" style="margin-top:0.55em;"><em>Core idea:</em> well-posed BVP \(\rightarrow\) elastic solution \(\rightarrow\) plasticity if \(f > 0\) \(\rightarrow\) fracture if cracks grow.</p>
 """), center=True),
 
     slide("Outline", """
@@ -114,14 +124,14 @@ SLIDES = [
 <div class="cols cols-text-wide">
   <div class="slide-content">
     <ul>
-      <li>\(\Omega_0\): reference configuration; \(\Omega\): deformed configuration.</li>
-      <li>Material points \(\mathbf{X} \mapsto \mathbf{x} = \mathbf{X} + \mathbf{u}(\mathbf{X})\).</li>
+      <li>Reference \(\Omega_0\) \(\rightarrow\) deformed \(\Omega\) under load.</li>
+      <li>\(\mathbf{X}\mapsto\mathbf{x}=\mathbf{X}+\mathbf{u}(\mathbf{X})\); displacement \(\mathbf{u}(\mathbf{x})\).</li>
       <li>Small strain: \(\varepsilon_{ij} = \tfrac{1}{2}(u_{i,j} + u_{j,i})\).</li>
-      <li>The “potato” is any bounded body \(V\) — geometry is arbitrary.</li>
+      <li>Body \(V\) with boundary \(\partial V=S_u\cup S_t\).</li>
     </ul>
     """ + gb("1", "Introduction") + r"""
   </div>
-  <div>""" + img("fig1.png", "Reference and deformed configurations", CAP_FIG1) + r"""</div>
+  <div>""" + img("fig1.png", "Reference and deformed configurations") + r"""</div>
 </div>""")),
 
     slide("Stress and strain", assemble(r"""
@@ -129,40 +139,35 @@ SLIDES = [
   <div class="slide-content">
     <p>\[ \sigma_{ij}=\sigma_{ji},\qquad \varepsilon_{ij}=\tfrac{1}{2}\!\left(\frac{\partial u_i}{\partial x_j}+\frac{\partial u_j}{\partial x_i}\right). \]</p>
     <ul>
-      <li>\(\boldsymbol{\sigma}\): Cauchy stress; \(\boldsymbol{\varepsilon}\): small strain; \(\mathbf{u}\): displacement.</li>
-      <li>Traction on plane normal \(\mathbf{n}\): \(t_i = \sigma_{ij} n_j\).</li>
-      <li>Static equilibrium: \(\partial\sigma_{ij}/\partial x_j = 0\) (no body force).</li>
+      <li>Cauchy stress \(\boldsymbol{\sigma}\); traction \(\mathbf{t}=\boldsymbol{\sigma}\cdot\mathbf{n}\), \(t_i=\sigma_{ij}n_j\).</li>
+      <li>Equilibrium (no body force): \(\partial\sigma_{ij}/\partial x_j = 0\).</li>
     </ul>
     """ + gb("1–2", "Introduction, Tensors") + r"""
   </div>
-  <div>""" + img("fig2.png", "Cauchy stress and traction", CAP_FIG2) + r"""</div>
+  <div>""" + img("fig2.png", "Cauchy stress and traction") + r"""</div>
 </div>""")),
 
     slide("Hooke's law and elastic energy", assemble(r"""
 <div class="cols cols-text-wide">
   <div class="slide-content">
-    <p>\[ \sigma_{ij}=C_{ijkl}\,\varepsilon_{kl}, \qquad U=\tfrac{1}{2}\int_V \sigma_{ij}\,\varepsilon_{ij}\,\mathrm{d}V. \]</p>
+    <p>\[ \sigma_{ij}=C_{ijkl}\,\varepsilon_{kl}, \qquad \sigma = E\varepsilon\ \text{(1D)},\qquad u=\tfrac{1}{2}\sigma\varepsilon. \]</p>
     <ul>
       <li>Isotropic: \(\varepsilon_{ij} = \tfrac{1+\nu}{E}\sigma_{ij} - \tfrac{\nu}{E}\sigma_{kk}\delta_{ij}\).</li>
-      <li>\(E\), \(\nu\), Lamé \(\lambda\), \(\mu\); positive-definite \(\mathbb{C}\).</li>
-      <li>1D: shaded area = strain-energy density \(u = \tfrac{1}{2}\sigma\varepsilon\).</li>
+      <li>Shaded area under \(\sigma\)–\(\varepsilon\) curve = strain-energy density \(u\) at \((\varepsilon^*,\sigma^*)\).</li>
     </ul>
     """ + gb("3", "Hooke's Law") + r""", """ + gb("4", "Fundamental Equations") + r"""
   </div>
-  <div>""" + img("fig3.png", "Hooke's law graph", CAP_FIG3) + r"""</div>
+  <div>""" + img("fig3.png", "Hooke's law graph") + r"""</div>
 </div>""")),
 
     slide("Fundamental boundary-value problem", assemble(r"""
 <div class="cols cols-text-wide">
   <div class="slide-content">
-    <p>\[ \boldsymbol{\varepsilon}=\tfrac{1}{2}(\nabla\mathbf{u}+\nabla\mathbf{u}^{\top}),\ \boldsymbol{\sigma}=\mathbb{C}:\boldsymbol{\varepsilon},\ \nabla\!\cdot\!\boldsymbol{\sigma}+\mathbf{f}=\mathbf{0}\ \text{in }V. \]</p>
-    <ul>
-      <li>\(\mathbf{u} = \mathbf{u}_0\) on \(S_u\); \(\boldsymbol{\sigma}\cdot\mathbf{n} = \mathbf{t}\) on \(S_t\).</li>
-      <li>Compatibility if \(\boldsymbol{\varepsilon}\) is not from a single \(\mathbf{u}\).</li>
-    </ul>
+    <p>\[ \boldsymbol{\varepsilon}=\tfrac{1}{2}(\nabla\mathbf{u}+\nabla\mathbf{u}^{\top}),\quad \boldsymbol{\sigma}=\mathbb{C}:\boldsymbol{\varepsilon},\quad \nabla\!\cdot\!\boldsymbol{\sigma}+\mathbf{f}=\mathbf{0}\ \text{in }V. \]</p>
+    <p>\[ \mathbf{u}=\mathbf{u}_0\ \text{on }S_u,\qquad \boldsymbol{\sigma}\cdot\mathbf{n}=\mathbf{t}\ \text{on }S_t,\qquad \partial V=S_u\cup S_t. \]</p>
     """ + gb("4", "Fundamental Equations") + r"""
   </div>
-  <div>""" + img("fig4.png", "Boundary value problem", CAP_FIG4) + r"""</div>
+  <div>""" + img("fig4.png", "Boundary value problem") + r"""</div>
 </div>""")),
 
     slide("Elastic rod (1D building block)", assemble(r"""
@@ -170,52 +175,55 @@ SLIDES = [
   <div class="slide-content">
     <p>\[ \varepsilon=\frac{\mathrm{d} u}{\mathrm{d} x},\qquad N=EA\,\varepsilon,\qquad \frac{\mathrm{d} N}{\mathrm{d} x}+f=0. \]</p>
     <ul>
-      <li>Axial bar: \(u(x)\), stress \(\sigma = N/A\), rigidity \(EA\).</li>
-      <li>Same pattern as 3D theory, one displacement component.</li>
-      <li>Warm-up before 2D Airy and 3D Green's functions.</li>
+      <li>Reference length \(L_0\); deformed \(L=L_0+u(L_0)\); fixed at \(x=0\), load \(N\) at \(x=L_0\).</li>
+      <li>Cross-section \(A\); rigidity \(EA\); same BVP pattern as 3D.</li>
     </ul>
     """ + gb("4–5", "Fund. Eqs., 2D Elasticity") + r"""
   </div>
-  <div>""" + img("fig5.png", "Elastic rod", CAP_FIG5) + r"""</div>
+  <div>""" + img("fig5.png", "Elastic rod") + r"""</div>
 </div>""")),
 
     slide("2D formulations", assemble(r"""
 <div class="cols cols-text-wide">
   <div class="slide-content">
-    <ul>
-      <li><strong>Plane strain:</strong> \(\varepsilon_{33} = \varepsilon_{13} = \varepsilon_{23} = 0\) (thick body).</li>
-      <li><strong>Plane stress:</strong> \(\sigma_{33} = \sigma_{13} = \sigma_{23} = 0\) (thin plate).</li>
-      <li>Airy \(\phi(x,y)\) with \(\nabla^4\phi = 0\):<br/>
-        \[ \sigma_{xx}=\phi_{,yy},\ \sigma_{yy}=\phi_{,xx},\ \sigma_{xy}=-\phi_{,xy}. \]</li>
-    </ul>
+    <p>Airy stress function \(\phi(x,y)\), \(\nabla^4\phi=0\):</p>
+    <p>\[ \sigma_{xx}=\phi_{,yy},\quad \sigma_{yy}=\phi_{,xx},\quad \sigma_{xy}=-\phi_{,xy}. \]</p>
     """ + gb("5", "2D Elasticity") + r"""
   </div>
-  <div>""" + img("fig6.png", "Plane stress and plane strain") + r"""</div>
+  <div>""" + fig_row(
+        fig_cell("fig6a.png", "Thin plate",
+                 r"<strong>Plane stress</strong> — thin plate, \(t\ll L\)<br>\(\sigma_{33}=\sigma_{13}=\sigma_{23}=0\)"),
+        fig_cell("fig6b.png", "Long body",
+                 r"<strong>Plane strain</strong> — long in \(x_3\)<br>\(\varepsilon_{33}=\varepsilon_{13}=\varepsilon_{23}=0\)"),
+    ) + r"""</div>
 </div>""")),
 
     slide("Classic 2D solution routes", assemble(r"""
-<div class="slide-content">
-  <ul>
-    <li><strong>Rectangular beam</strong> (Lec. 7): polynomial Airy + BC matching.</li>
-    <li><strong>Fourier series</strong> (Lec. 8): periodic / strip loads.</li>
-    <li><strong>Half space</strong> (Lec. 9): Flamant line load; \(\sigma \sim 1/r\).</li>
-    <li><strong>Contact</strong> (Lec. 10): unknown contact patch and pressure.</li>
-  </ul>
+<div class="slide-content" style="margin-bottom:0.35em;">
+  <p>Four recurring routes for \(\nabla^4\phi=0\) with different geometry / BCs:</p>
 </div>
-<div class="fig-full">""" + img("fig7.png", "Classic 2D solution routes") + r"""</div>""")),
+""" + fig_grid(
+        fig_cell("fig7a.png", "Rectangular beam",
+                 r"<strong>Beam</strong> (Lec.&nbsp;7): \(q(x)\), \(L\), \(2h\)"),
+        fig_cell("fig7b.png", "Fourier strip",
+                 r"<strong>Fourier</strong> (Lec.&nbsp;8): \(p(x+L)=p(x)\)"),
+        fig_cell("fig7c.png", "Half space",
+                 r"<strong>Half space</strong> (Lec.&nbsp;9): line load \(P\), \(\sigma\sim 1/r\)"),
+        fig_cell("fig7d.png", "Contact",
+                 r"<strong>Contact</strong> (Lec.&nbsp;10): \(p(x)\) on \([-a,a]\)"),
+    ) + r"""""")),
 
     slide("Polar coordinates and wedge problems", assemble(r"""
 <div class="cols cols-text-wide">
   <div class="slide-content">
     <p>\[ \nabla^4\phi=0 \ \Rightarrow\ \phi(r,\theta)\ \text{with}\ r,\theta,\ln r,\ \theta\ln r\ \text{modes}. \]</p>
     <ul>
-      <li>Lec. 11–12: disks, rings, holes in \((r,\theta)\).</li>
-      <li>Lec. 13 wedge: corner singularities; eigenfunction exponents.</li>
+      <li>Lec. 11–12: annulus / hole; Lec. 13: wedge angle \(2\alpha\), corner modes.</li>
       <li>Pick modes with symmetry and finite energy.</li>
     </ul>
     """ + gb("11–12", "Polar Coordinates, Wedge and Notch") + r"""
   </div>
-  <div>""" + img("fig8.png", "Polar annulus and wedge", CAP_FIG8) + r"""</div>
+  <div>""" + img("fig8.png", "Polar annulus and wedge") + r"""</div>
 </div>""")),
 
     slide("Green's function approach (3D)", assemble(r"""
@@ -223,28 +231,28 @@ SLIDES = [
   <div class="slide-content">
     <p>\[ \nabla\!\cdot\!\boldsymbol{\sigma}+\mathbf{f}=\mathbf{0},\quad \mathbf{u}(\mathbf{x})=\int G(\mathbf{x},\boldsymbol{\xi})\,\mathbf{f}(\boldsymbol{\xi})\,\mathrm{d}V_\xi. \]</p>
     <ul>
-      <li>Kelvin solution (Lec. 17): point force in infinite space.</li>
-      <li>Half-space images (Lec. 16): traction-free surface.</li>
-      <li>Superpose for defects and boundaries.</li>
+      <li><strong>Kelvin</strong> (Lec.&nbsp;17): point force \(\mathbf{P}\) in infinite space.</li>
+      <li><strong>Image</strong> (Lec.&nbsp;16): traction-free surface via mirror force.</li>
     </ul>
     """ + gb("16–17", "Half Space, Kelvin Solution") + r"""
   </div>
-  <div>""" + img("fig9.png", "Kelvin solution and half-space image", CAP_FIG9) + r"""</div>
+  <div>""" + fig_row(
+        fig_cell("fig9a.png", "Kelvin solution", r"Kelvin: \(\mathbf{P}\) at origin"),
+        fig_cell("fig9b.png", "Half-space image", r"Image below traction-free surface"),
+    ) + r"""</div>
 </div>""")),
 
     slide("Dislocations and defect fields", assemble(r"""
 <div class="cols cols-text-wide">
   <div class="slide-content">
     <ul>
-      <li>Cut the lattice; insert Burgers vector \(\mathbf{b}\) across the slip plane.</li>
-      <li>Stress singular at the core; far field set by \(\mathbf{b}\) and geometry.</li>
-      <li>Peach–Köhler: defect force from external \(\boldsymbol{\sigma}^\infty\) on the dislocation.</li>
-      <li>Superpose: singular field + image / boundary correction.</li>
-      <li>Macroscopic plastic strain accumulates from many dislocation motions.</li>
+      <li>Volterra <em>cut</em>; Burgers vector \(\mathbf{b}\) across slip plane.</li>
+      <li>Far field: remote \(\boldsymbol{\sigma}^{\infty}\); Peach–Köhler force on dislocation.</li>
+      <li>Singular core + image / boundary correction; many dislocations \(\Rightarrow\) \(\varepsilon^{p}\).</li>
     </ul>
-    {gb("notes", "Dislocations (extended notes)")}
+    """ + gb("notes", "Dislocations (extended notes)") + r"""
   </div>
-  <div>""" + img("fig10.png", "Dislocation schematic", CAP_FIG10) + r"""</div>
+  <div>""" + img("fig10.png", "Dislocation schematic") + r"""</div>
 </div>""")),
 
     slide("From elasticity to plasticity", assemble(r"""
@@ -259,46 +267,46 @@ SLIDES = [
     </ul>
     """ + gb("3", "Hooke's Law") + r""", """ + gb("13", "Fund. Eqs. of Plasticity") + r"""
   </div>
-  <div>""" + img("fig_elas_plas.png", "Elastic-plastic loading", CAP_ELAS_PLAS) + r"""</div>
+  <div>""" + img("fig_elas_plas.png", "Elastic-plastic loading") + r"""</div>
 </div>""")),
 
     slide("Yield criteria: von Mises and Tresca", assemble(r"""
 <div class="cols cols-text-wide">
   <div class="slide-content">
-    <p>Deviatoric stress \(s_{ij} = \sigma_{ij} - \tfrac{1}{3}\sigma_{kk}\delta_{ij}\).</p>
-    <p>\[ J_2=\tfrac{1}{2}s_{ij}s_{ij},\qquad \sigma_{\mathrm{eq}=\sqrt{3J_2}. \]</p>
-    <p><strong>von Mises yield:</strong> \[ f=J_2-k^2\le 0,\qquad k=\frac{\sigma_Y}{\sqrt{3}. \]</p>
-    <p><strong>Tresca yield:</strong> \(\max|\sigma_i-\sigma_j| = 2k\) (alternative for metals).</p>
-    <p>Plastic flow is insensitive to hydrostatic stress; yielding depends on \(s_{ij}\).</p>
+    <p>\(s_{ij}=\sigma_{ij}-\tfrac{1}{3}\sigma_{kk}\delta_{ij}\); \(J_2=\tfrac{1}{2}s_{ij}s_{ij}\), \(\sigma_{\mathrm{eq}}=\sqrt{3J_2}\).</p>
+    <p><strong>von Mises:</strong> \(f=J_2-k^2\le 0\), \(k=\sigma_{Y}/\sqrt{3}\).</p>
+    <p><strong>Tresca:</strong> \(\max_{i,j}|\sigma_i-\sigma_j| = 2k\).</p>
     """ + gb("13–14", "Yield surface / graphical") + r"""
   </div>
-  <div>""" + img("fig_yield_surf.png", "Yield surfaces", CAP_YIELD) + r"""</div>
+  <div>""" + img("fig_yield_surf.png", "Yield surfaces") + r"""</div>
 </div>""")),
 
     slide("J₂ associated flow rule", assemble(r"""
 <div class="cols cols-text-wide">
   <div class="slide-content">
-    <p>Associated (normality) flow with \(f = J_2 - k^2\):</p>
-    <p>\[ \dot\varepsilon_{ij}^{p}=\dot\lambda\,\frac{\partial f}{\partial\sigma_{ij} =\dot\lambda\, s_{ij},\qquad \dot\varepsilon_{kk}^{p}=0. \]</p>
-    <p>Consistency during plastic loading (\(\dot f = 0\)): elastic predictor, plastic corrector if \(f &gt; 0\).</p>
-    <p>Dislocations are the microscopic carriers; \(J_2\) plasticity is the continuum limit.</p>
+    <p>\[ \dot{\varepsilon}_{ij}^{p}=\dot{\lambda}\,\frac{\partial f}{\partial\sigma_{ij}}=\dot{\lambda}\, s_{ij},\qquad \dot{\varepsilon}_{kk}^{p}=0. \]</p>
+    <p>Elastic predictor \(\boldsymbol{\sigma}^{\mathrm{tr}}\); if \(f^{\mathrm{tr}} > 0\), <em>return</em> radially to \(f=0\).</p>
     """ + gb("13–15", "Flow rule, tension &amp; shear") + r"""
   </div>
-  <div>""" + img("fig11.png", "Radial return mapping", CAP_FIG11) + r"""</div>
+  <div>""" + fig_row(
+        fig_cell("fig11a.png", "Return mapping flowchart",
+                 r"Trial \(f^{\mathrm{tr}}\): accept elastic or correct"),
+        fig_cell("fig11b.png", "Radial return",
+                 r"\(\boldsymbol{\sigma}^{\mathrm{tr}}\rightarrow\) yield surface \(f=0\)"),
+    ) + r"""</div>
 </div>""")),
 
     slide("Fracture: LEFM and energy release", assemble(r"""
 <div class="cols cols-text-wide">
   <div class="slide-content">
     <ul>
-      <li>Slit-like crack: elastic field with \(r^{-1/2}\) stress singularity at tip.</li>
-      <li>Stress intensity \(K_I\) characterizes tip loading; fracture when \(K_I = K_{Ic}\).</li>
-      <li>Energy release rate \(\mathcal{G} = \partial U/\partial a\); \(J\)-integral for nonlinear paths.</li>
-      <li>Elastic–plastic zone and Dugdale–Barenblatt model; fatigue crack growth (Part III).</li>
+      <li>Center crack \(2a\); remote \(\sigma^{\infty}\); tip field \(\sim r^{-1/2}\).</li>
+      <li>\(K_{I}=\sigma^{\infty}\sqrt{\pi a}\) (infinite plate); fracture when \(K_{I}=K_{Ic}\).</li>
+      <li>\(\mathcal{G}=\partial U/\partial a\); \(J\)-integral; fatigue (Part III).</li>
     </ul>
     """ + gb("22–26", "Slit crack, LEFM, fatigue") + r"""
   </div>
-  <div>""" + img("fig12.png", "Center crack", CAP_FIG12) + r"""</div>
+  <div>""" + img("fig12.png", "Center crack") + r"""</div>
 </div>""")),
 
     slide("Standard workflow", assemble(r"""
@@ -355,7 +363,7 @@ SLIDES = [
 <ol class="meta-text">
   <li><strong>Elasticity:</strong> kinematics + Hooke + equilibrium + BCs; 2D Airy \(\phi\), 3D Green's functions.</li>
   <li><strong>Plasticity:</strong> \(\boldsymbol{\varepsilon} = \boldsymbol{\varepsilon}^{e} + \boldsymbol{\varepsilon}^{p}\); von Mises yield + associated \(J_2\) flow.</li>
-  <li><strong>Fracture:</strong> \(K_I\), \(\mathcal{G}\), and \(J\) link elastic fields to crack growth and fatigue.</li>
+  <li><strong>Fracture:</strong> \(K_{I}\), \(\mathcal{G}\), and \(J\) link elastic fields to crack growth and fatigue.</li>
   <li>Matlab and analytic benchmarks support each part.</li>
 </ol>
 <div class="flow-row" style="margin-top:0.75em;">
@@ -402,6 +410,25 @@ HTML_TAIL = """
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
 <script>
+  const mathRenderOptions = {
+    delimiters: [
+      {left: '\\\\[', right: '\\\\]', display: true},
+      {left: '\\\\(', right: '\\\\)', display: false}
+    ],
+    throwOnError: false,
+    errorColor: '#8C1515',
+    strict: 'warn',
+    macros: {
+      'dd': '\\\\mathrm{d}'
+    }
+  };
+
+  function renderDeckMath() {
+    const root = document.querySelector('.reveal .slides');
+    if (!root) return;
+    renderMathInElement(root, mathRenderOptions);
+  }
+
   Reveal.initialize({
     hash: true,
     slideNumber: 'c/t',
@@ -411,15 +438,8 @@ HTML_TAIL = """
     height: 720,
     margin: 0.06,
     plugins: []
-  });
-  renderMathInElement(document.body, {
-    delimiters: [
-      {left: '\\\\[', right: '\\\\]', display: true},
-      {left: '\\\\(', right: '\\\\)', display: false},
-      {left: '$$', right: '$$', display: true},
-      {left: '$', right: '$', display: false}
-    ],
-    throwOnError: false
+  }).then(() => {
+    renderDeckMath();
   });
 </script>
 </body>
