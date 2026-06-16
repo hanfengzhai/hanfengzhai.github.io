@@ -1,0 +1,15 @@
+---
+description: Never add Cursor Agent as git commit co-author
+alwaysApply: true
+---
+
+# Git commits and pushes — no agent co-author
+
+When the user asks you to `git commit`, `git push`, or create a PR:
+
+- **Never** add `Co-authored-by:` trailers naming Cursor, Cursor Agent, `cursoragent`, or any AI/agent identity.
+- **Never** use `--author` (or similar flags) to attribute the commit to an agent.
+- Commit messages must contain **only** the user-facing summary (via HEREDOC); no co-author footers.
+- If a hook or prior step injects a co-author line, remove it before committing; do not push commits that credit the agent.
+
+The commit author must remain the user only.
