@@ -11,7 +11,7 @@ Organized site assets linked from HTML pages (papers, teaching, posters, etc.).
 | `teaching/fea/` | ME335A finite element analysis problem sessions |
 | `teaching/elasticity/` | ME340 elasticity & inelasticity problem sessions |
 | `teaching/notes/` | Course study notes and topic PDFs |
-| `teaching/intros/` | Short course intro slides (e.g. ME340) |
+| `teaching/intros/` | Short course intro slides (e.g. ME340 HTML + PDF) |
 | `posters/` | Talk and poster PDFs/PNGs |
 | `career/` | CV, thesis, research statement, awards |
 | `coursework/` | Homework sets grouped by course |
