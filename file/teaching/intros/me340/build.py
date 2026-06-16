@@ -51,15 +51,14 @@ def assemble(body):
     )
 
 
-def slide(title, body, center=False, bg=None, banner_tall=False):
+def slide(title, body, center=False, bg=None):
     cls_parts = []
     if center:
         cls_parts.append("center-slide")
     cls = f' class="{" ".join(cls_parts)}"' if cls_parts else ""
     bg_attr = f' data-background-color="{bg}"' if bg else ""
     if title:
-        banner_cls = "slide-title banner-tall" if banner_tall else "slide-title"
-        title_html = f'<div class="{banner_cls}">{title}</div>'
+        title_html = f'<div class="slide-title">{title}</div>'
         body_html = f'<div class="slide-body">{body}</div>'
     else:
         title_html = ""
@@ -100,7 +99,7 @@ SLIDES = [
   <div class="slide-content">
     <ul>
       <li><a href="{ME340_CATALOG}">ME 340</a> (Wei Cai): elasticity, plasticity, fracture.</li>
-      <li><strong>I</strong>—2D \(\phi\), 3D \(G\), contact; <strong>II</strong>—yield, flow, hardening; <strong>III</strong>—LEFM, \(J\), fatigue.</li>
+      <li><strong>I</strong>: 2D \(\phi\), 3D \(G\), contact; <strong>II</strong>: yield, flow, hardening; <strong>III</strong>: LEFM, \(J\), fatigue.</li>
       <li>Analytic + Matlab.</li>
       <li>Barber (2010); Anderson (2005).</li>
       <li><a href="{ELASTICITY_NOTES}">consolidated study notes</a>.</li>
@@ -134,7 +133,7 @@ SLIDES = [
 </div>
 <p class="meta-text" style="margin-top:0.75em;">Use ← → keys, swipe, or scroll to navigate.</p>
 </div>
-""", banner_tall=True),
+"""),
 
     slide("Continuum body: reference and deformed configurations", assemble(r"""
 <div class="cols cols-text-wide">
@@ -208,9 +207,9 @@ SLIDES = [
   </div>
   <div>""" + fig_row(
         fig_cell("fig6a.png", "Thin plate",
-                 r"<strong>Plane stress</strong> — thin plate, \(t\ll L\)<br>\(\sigma_{33}=\sigma_{13}=\sigma_{23}=0\)"),
+                 r"<strong>Plane stress</strong>: thin plate, \(t\ll L\)<br>\(\sigma_{33}=\sigma_{13}=\sigma_{23}=0\)"),
         fig_cell("fig6b.png", "Long body",
-                 r"<strong>Plane strain</strong> — long in \(x_3\)<br>\(\varepsilon_{33}=\varepsilon_{13}=\varepsilon_{23}=0\)"),
+                 r"<strong>Plane strain</strong>: long in \(x_3\)<br>\(\varepsilon_{33}=\varepsilon_{13}=\varepsilon_{23}=0\)"),
     ) + r"""</div>
 </div>""")),
 
@@ -411,7 +410,7 @@ HTML_HEAD = """<!DOCTYPE html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ME 340 — Mechanics: Elasticity and Inelasticity</title>
+  <title>ME 340: Mechanics: Elasticity and Inelasticity</title>
   <meta name="description" content="Course map for Stanford ME 340: elasticity, plasticity, and fracture mechanics.">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css" id="theme">

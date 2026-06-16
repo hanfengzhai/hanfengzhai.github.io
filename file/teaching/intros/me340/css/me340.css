@@ -29,7 +29,7 @@
   letter-spacing: 0.04em;
 }
 
-/* Title slide: 35% cardinal banner + sandstone body */
+/* Title slide: cardinal banner + sandstone body */
 .reveal .slides > section.title-slide-section {
   display: flex !important;
   flex-direction: column;
@@ -43,8 +43,8 @@
 }
 
 .reveal .title-slide-banner {
-  flex: 0 0 35%;
-  min-height: 35%;
+  flex: 0 0 30%;
+  min-height: 30%;
   background: var(--cardinal);
   color: #fff;
   display: flex;
@@ -55,6 +55,7 @@
 
 .reveal .title-slide-banner h1 {
   color: #fff;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
   font-size: calc(1.6em * 1.5);
   font-weight: 700;
   margin: 0;
@@ -62,7 +63,7 @@
 }
 
 .reveal .title-slide-body {
-  flex: 1 1 65%;
+  flex: 1 1 70%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -102,10 +103,6 @@
   background: var(--sandstone);
 }
 
-.reveal .slides > section:has(.slide-title.banner-tall) {
-  padding: 0 !important;
-}
-
 .reveal .slide-title {
   background: var(--cardinal);
   color: #fff;
@@ -121,23 +118,6 @@
   font-variant: small-caps;
   text-transform: none;
   letter-spacing: 0.04em;
-}
-
-.reveal .slide-title.banner-tall {
-  flex: 0 0 35%;
-  min-height: 35%;
-  max-height: 35%;
-  margin: 0;
-  display: flex;
-  align-items: center;
-}
-
-.reveal .slides > section:has(.slide-title.banner-tall) .slide-body {
-  flex: 1 1 65%;
-  min-height: 0;
-  color: rgba(0, 0, 0, 0.85);
-  padding: 0.55em calc(var(--r-block-padding, 0.6em) + 0.6em);
-  box-sizing: border-box;
 }
 
 .reveal .slide-body {
