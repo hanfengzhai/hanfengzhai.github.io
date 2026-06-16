@@ -41,7 +41,7 @@
   margin: 0 calc(-1 * var(--r-block-padding, 0.6em)) 0.35em;
   padding-left: calc(var(--r-block-padding, 0.6em) + 0.6em);
   padding-right: calc(var(--r-block-padding, 0.6em) + 0.6em);
-  font-size: 1.05em;
+  font-size: calc(1.05em * 1.5);
   font-weight: 700;
   flex: 0 0 auto;
   position: relative;
@@ -72,11 +72,34 @@
   font-size: 1em;
 }
 
-/* Lecture map, outline, takeaways, references — readable full size */
+/* Lecture map, outline — readable full size */
 .reveal .meta-text,
 .reveal .lecture-map,
 .reveal .toc-list {
   font-size: calc(var(--slide-base) * var(--meta-scale));
+}
+
+/* Takeaways and references — 2× base size */
+.reveal .closing-slide {
+  font-size: calc(var(--slide-base) * 2);
+  line-height: 1.35;
+}
+
+.reveal .closing-slide .meta-text,
+.reveal .closing-slide .toc-list,
+.reveal .closing-slide li,
+.reveal .closing-slide p {
+  font-size: 1em;
+}
+
+.reveal .closing-slide .fbox,
+.reveal .closing-slide .gbox,
+.reveal .closing-slide .kbox {
+  font-size: 0.9em;
+}
+
+.reveal .closing-slide .katex {
+  font-size: 1em;
 }
 
 .reveal section[data-background-color="#8C1515"] h1,
@@ -329,11 +352,17 @@
 }
 
 .reveal section[data-background-color="#8C1515"] h1 {
-  font-size: 1.6em;
+  font-size: calc(1.6em * 1.5);
+  margin-bottom: 0.6em;
+}
+
+.reveal section[data-background-color="#8C1515"] .title-slide-meta {
+  margin-bottom: 0;
 }
 
 .reveal section[data-background-color="#8C1515"] .author {
   font-size: 1.05em;
+  margin-top: 1.75em;
 }
 
 .reveal section[data-background-color="#8C1515"] .institute,
