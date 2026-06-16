@@ -80,7 +80,7 @@ SLIDES = [
 <p class="title-slide-meta">A brief intro • <a href="{ME340_CATALOG}">ME 340</a> • <a href="{INTRO_PDF}">PDF</a></p>
 <p class="author"><strong>Hanfeng Zhai</strong></p>
 <p class="institute">Department of Mechanical Engineering, Stanford University</p>
-<p class="date">Spring 2026</p>
+<p class="date">Winter 2026</p>
 """), center=True, bg="#8C1515"),
 
     slide("Course at a glance", assemble(r"""
@@ -98,7 +98,7 @@ SLIDES = [
 </div>""")),
 
     slide("Three-part course structure", assemble(r"""
-<div class="closing-slide">
+<div class="slide-content">
 """ + THREE_PART + r"""
 <div class="cols-33 meta-text" style="margin-top:0.55em;">
   <div><strong>I.</strong> stress, strain, equilibrium</div>
@@ -364,7 +364,7 @@ SLIDES = [
 </div>""")),
 
     slide("Takeaways", r"""
-<div class="closing-slide-sm">
+<div class="slide-content">
 <ol class="meta-text">
   <li><strong>Elasticity:</strong> kinematics + Hooke + equilibrium + BCs; 2D Airy \(\phi\), 3D Green's functions.</li>
   <li><strong>Plasticity:</strong> \(\boldsymbol{\varepsilon} = \boldsymbol{\varepsilon}^{e} + \boldsymbol{\varepsilon}^{p}\); von Mises yield + associated \(J_2\) flow.</li>
@@ -380,7 +380,7 @@ SLIDES = [
 """),
 
     slide("References", assemble(r"""
-<div class="closing-slide-sm">
+<div class="slide-content">
 <ul class="meta-text">
   <li>W. Cai, <em>ME 340 Elasticity and Inelasticity</em> (lecture notes);
     <a href="{ELASTICITY_NOTES}">consolidated PDF</a>.</li>

@@ -72,6 +72,10 @@
   font-size: 1em;
 }
 
+.reveal .slide-content .meta-text {
+  font-size: 1em;
+}
+
 /* Lecture map, outline — readable full size */
 .reveal .meta-text,
 .reveal .lecture-map,
@@ -85,34 +89,20 @@
   line-height: 1.35;
 }
 
-/* Takeaways / references — 0.75× base (normal meta size) */
-.reveal .closing-slide-sm {
-  font-size: calc(var(--slide-base) * 0.75);
-  line-height: 1.35;
-}
-
 .reveal .closing-slide .meta-text,
-.reveal .closing-slide-sm .meta-text,
 .reveal .closing-slide .toc-list,
-.reveal .closing-slide-sm .toc-list,
 .reveal .closing-slide li,
-.reveal .closing-slide-sm li,
-.reveal .closing-slide p,
-.reveal .closing-slide-sm p {
+.reveal .closing-slide p {
   font-size: 1em;
 }
 
 .reveal .closing-slide .fbox,
-.reveal .closing-slide-sm .fbox,
 .reveal .closing-slide .gbox,
-.reveal .closing-slide-sm .gbox,
-.reveal .closing-slide .kbox,
-.reveal .closing-slide-sm .kbox {
+.reveal .closing-slide .kbox {
   font-size: 0.9em;
 }
 
-.reveal .closing-slide .katex,
-.reveal .closing-slide-sm .katex {
+.reveal .closing-slide .katex {
   font-size: 1em;
 }
 
@@ -132,6 +122,16 @@
 .reveal section[data-background-color="#8C1515"] a {
   color: #fff;
   text-decoration: underline;
+}
+
+.reveal .slide-content .fbox,
+.reveal .slide-content .gbox,
+.reveal .slide-content .kbox {
+  font-size: 0.9em;
+}
+
+.reveal .slide-content .katex {
+  font-size: 1em;
 }
 
 .reveal ul,
