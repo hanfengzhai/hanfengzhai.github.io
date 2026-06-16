@@ -12,23 +12,13 @@
 .reveal {
   font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
   color: rgba(0, 0, 0, 0.85);
-}
-
-.reveal h1,
-.reveal h2,
-.reveal h3,
-.reveal h4 {
-  font-family: inherit;
-  text-transform: none;
-  letter-spacing: 0;
-}
-
-.reveal h1 {
-  color: #fff;
+  font-size: 28px;
 }
 
 .reveal .slides section {
   text-align: left;
+  font-size: 0.82em;
+  line-height: 1.35;
 }
 
 .reveal .slides section.center-slide {
@@ -56,24 +46,24 @@
 .reveal .slide-title {
   background: var(--cardinal);
   color: #fff;
-  padding: 0.35em 0.75em;
-  margin: -0.2em -0.2em 0.6em -0.2em;
-  font-size: 1.05em;
+  padding: 0.3em 0.65em;
+  margin: -0.2em -0.2em 0.45em -0.2em;
+  font-size: 0.95em;
   font-weight: 700;
-}
-
-.reveal .subtitle-link a {
-  color: rgba(255, 255, 255, 0.95);
 }
 
 .reveal ul,
 .reveal ol {
   display: block;
-  margin-left: 1.2em;
+  margin-left: 1.1em;
 }
 
 .reveal li {
-  margin-bottom: 0.35em;
+  margin-bottom: 0.25em;
+}
+
+.reveal p {
+  margin: 0.35em 0;
 }
 
 .reveal a {
@@ -82,41 +72,55 @@
 
 .reveal .cols {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
+  grid-template-columns: 0.92fr 1.08fr;
+  gap: 0.85rem;
   align-items: center;
+}
+
+.reveal .cols-text-wide {
+  grid-template-columns: 1.05fr 0.95fr;
 }
 
 .reveal .cols-33 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.75rem;
+  gap: 0.6rem;
 }
 
 .reveal .cols-top {
   align-items: start;
 }
 
+.reveal .diagram-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 240px;
+}
+
 .reveal .figcap {
   text-align: center;
-  font-size: 0.55em;
+  font-size: 0.52em;
   color: rgba(0, 0, 0, 0.7);
-  margin-top: 0.5em;
+  margin-top: 0.35em;
+  line-height: 1.25;
 }
 
 .reveal .lec-badge {
   display: inline-block;
   color: var(--cardinal);
-  font-size: 0.55em;
-  margin-top: 0.75em;
+  font-size: 0.5em;
+  margin-top: 0.5em;
 }
 
 .reveal .example-block {
   background: rgba(23, 94, 84, 0.07);
   border-left: 4px solid var(--paloalto);
-  padding: 0.6em 0.9em;
-  margin-top: 0.75em;
-  font-size: 0.78em;
+  padding: 0.5em 0.75em;
+  margin-top: 0.55em;
+  font-size: 0.68em;
 }
 
 .reveal .example-block strong {
@@ -127,21 +131,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.4rem;
   flex-wrap: wrap;
-  margin: 0.5rem 0;
+  margin: 0.4rem 0;
 }
 
 .reveal .fbox,
 .reveal .gbox,
 .reveal .kbox {
   border-radius: 4px;
-  padding: 0.45em 0.55em;
-  font-size: 0.62em;
+  padding: 0.4em 0.5em;
+  font-size: 0.58em;
   font-weight: 600;
   text-align: center;
-  min-width: 6.5em;
-  line-height: 1.25;
+  min-width: 6em;
+  line-height: 1.2;
 }
 
 .reveal .fbox {
@@ -161,14 +165,15 @@
 
 .reveal .arrow {
   color: var(--coolgrey);
-  font-size: 1.1em;
+  font-size: 1em;
   font-weight: 700;
 }
 
 .reveal svg.diagram {
   display: block;
   margin: 0 auto;
-  max-width: 100%;
+  width: 100%;
+  max-width: 440px;
   height: auto;
 }
 
@@ -176,45 +181,34 @@
   color: rgba(255, 255, 255, 0.95);
 }
 
-.reveal .title-slide-meta .author {
-  color: rgba(0, 0, 0, 0.75);
-  margin-top: 1rem;
-}
-
-.reveal .title-slide-meta .institute {
-  color: var(--cardinal);
-  font-size: 0.85em;
-}
-
-.reveal .title-slide-meta .date {
-  color: rgba(0, 0, 0, 0.65);
-  font-size: 0.8em;
-}
-
 .reveal .toc-list {
   columns: 2;
-  column-gap: 2rem;
-  font-size: 0.72em;
+  column-gap: 1.5rem;
+  font-size: 0.65em;
 }
 
 .reveal .toc-list h4 {
   color: var(--cardinal);
-  margin-bottom: 0.35em;
+  margin-bottom: 0.3em;
 }
 
 .reveal .lecture-map {
-  font-size: 0.48em;
-  line-height: 1.15;
+  font-size: 0.44em;
+  line-height: 1.12;
 }
 
 .reveal .lecture-map h4 {
   color: var(--cardinal);
   font-size: 1.05em;
-  margin-bottom: 0.35em;
+  margin-bottom: 0.3em;
 }
 
 .reveal .katex {
-  font-size: 1em;
+  font-size: 0.88em;
+}
+
+.reveal .katex-display {
+  margin: 0.35em 0;
 }
 
 .reveal .progress span {
@@ -226,8 +220,17 @@
 }
 
 @media (max-width: 900px) {
+  .reveal {
+    font-size: 24px;
+  }
+
   .reveal .cols,
-  .reveal .cols-33 {
+  .reveal .cols-33,
+  .reveal .cols-text-wide {
     grid-template-columns: 1fr;
+  }
+
+  .reveal .diagram-wrap {
+    min-height: 200px;
   }
 }
