@@ -10,292 +10,40 @@ ME340_CATALOG = "https://explorecourses.stanford.edu/search?view=catalog&filter-
 ELASTICITY_NOTES = "/file/teaching/notes/elasticity_notes.pdf"
 INTRO_PDF = "/file/teaching/intros/ME340_Intro.pdf"
 
-# Shared arrow marker (unique id per SVG to avoid DOM clashes)
-def _mk(suffix):
-    return f"""
-  <defs>
-    <marker id="arr-{suffix}" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L6,3 L0,6 Z" fill="#4D4F53"/>
-    </marker>
-    <marker id="arrR-{suffix}" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L6,3 L0,6 Z" fill="#8C1515"/>
-    </marker>
-    <marker id="arrG-{suffix}" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L6,3 L0,6 Z" fill="#175E54"/>
-    </marker>
-  </defs>"""
+# Figure captions (module-level to avoid backslashes inside f-string expressions)
+CAP_FIG1 = r"material point \(\mathbf{X}\) maps to \(\mathbf{x}=\mathbf{X}+\mathbf{u}(\mathbf{X})\)"
+CAP_FIG2 = r"traction \(\mathbf{t}=\boldsymbol{\sigma}\cdot\mathbf{n}\) on a cut plane"
+CAP_FIG3 = r"linear \(\sigma\)–\(\varepsilon\) law; shaded area = strain-energy density \(u\)"
+CAP_FIG4 = r"body \(V\); displacement BC on \(S_u\), traction BC on \(S_t\)"
+CAP_FIG5 = r"fixed end + axial load \(N\) \(\Rightarrow\) extension \(u(x)\)"
+CAP_FIG8 = r"polar annulus / hole and wedge notch with angle \(2\alpha\)"
+CAP_FIG9 = r"Kelvin point force \(P\) + image below traction-free surface"
+CAP_FIG10 = r"Volterra cut, Burgers vector \(\mathbf{b}\), far-field \(\boldsymbol{\sigma}^\infty\)"
+CAP_ELAS_PLAS = r"load past \(\sigma_Y\), unload elastically \(\rightarrow\) permanent \(\varepsilon^p\)"
+CAP_YIELD = r"von Mises circle vs. Tresca hexagon in \(\sigma_1\)–\(\sigma_2\) plane"
+CAP_FIG11 = r"elastic predictor \(\boldsymbol{\sigma}^{\mathrm{tr}}\); return to yield surface if \(f>0\)"
+CAP_FIG12 = r"center crack \(2a\) in remote tension \(\sigma^\infty\) (Mode I)"
 
 
-def fig(svg, caption=""):
+def img(name, alt="", caption=""):
     cap = f'<div class="figcap">{caption}</div>' if caption else ""
-    return f'<div class="diagram-wrap">{svg}{cap}</div>'
-
-
-CONTINUUM_POTATO = f"""
-<svg class="diagram" viewBox="0 0 420 200" aria-hidden="true">
-  <path d="M30,95 C45,55 90,40 135,58 C165,70 180,95 168,125 C145,155 95,162 55,138 C30,120 20,108 30,95 Z"
-        fill="rgba(140,21,21,0.10)" stroke="#8C1515" stroke-width="2.5"/>
-  <circle cx="95" cy="88" r="4" fill="#8C1515"/>
-  <text x="88" y="78" font-size="13" fill="#8C1515" font-weight="600">X</text>
-  <text x="70" y="28" font-size="13" fill="rgba(0,0,0,0.75)">reference Ω₀</text>
-  <line x1="195" y1="95" x2="225" y2="95" stroke="#4D4F53" stroke-width="2" marker-end="url(#arr-cont)"/>
-  <text x="200" y="88" font-size="12" fill="#4D4F53">deformation</text>
-  <path d="M245,88 C260,48 305,33 350,51 C380,63 395,88 383,118 C360,148 310,155 270,131 C245,113 235,101 245,88 Z"
-        fill="rgba(23,94,84,0.12)" stroke="#175E54" stroke-width="2.5"/>
-  <circle cx="310" cy="81" r="4" fill="#175E54"/>
-  <text x="318" y="76" font-size="13" fill="#175E54" font-weight="600">x</text>
-  <line x1="95" y1="88" x2="310" y2="81" stroke="#175E54" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrG-cont)"/>
-  <text x="188" y="72" font-size="13" fill="#175E54">u(X)</text>
-  <text x="285" y="28" font-size="13" fill="rgba(0,0,0,0.75)">deformed Ω</text>
-  {_mk("cont")}
-</svg>"""
-
-THREE_PART = """
-<div class="flow-row">
-  <div class="fbox">Part I<br>Elasticity<br>σ, u</div><span class="arrow">→</span>
-  <div class="gbox">Part II<br>Plasticity<br>εᵖ, f=0</div><span class="arrow">→</span>
-  <div class="kbox">Part III<br>Fracture<br>K<sub>I</sub>, J</div>
-</div>
-<div class="flow-row">
-  <div class="fbox" style="min-width:11em;">Applications: contact, vessels, fatigue</div>
-</div>"""
-
-STRESS_CUBE = f"""
-<svg class="diagram" viewBox="0 0 280 220" aria-hidden="true">
-  <rect x="55" y="55" width="100" height="100" fill="rgba(140,21,21,0.08)" stroke="#8C1515" stroke-width="2"/>
-  <line x1="55" y1="155" x2="30" y2="180" stroke="#4D4F53" stroke-width="1.5" marker-end="url(#arr-stress)"/>
-  <line x1="55" y1="55" x2="30" y2="30" stroke="#4D4F53" stroke-width="1.5" marker-end="url(#arr-stress)"/>
-  <text x="18" y="188" font-size="13">x₁</text>
-  <text x="18" y="28" font-size="13">x₂</text>
-  <line x1="155" y1="105" x2="195" y2="105" stroke="#175E54" stroke-width="2.5"/>
-  <text x="200" y="110" font-size="14" fill="#175E54" font-weight="600">n</text>
-  <line x1="155" y1="55" x2="155" y2="155" stroke="#4D4F53" stroke-width="1.5" stroke-dasharray="5 4"/>
-  <text x="128" y="48" font-size="11" fill="#4D4F53">cut plane</text>
-  <line x1="155" y1="105" x2="155" y2="55" stroke="#8C1515" stroke-width="3" marker-end="url(#arrR-stress)"/>
-  <text x="162" y="72" font-size="13" fill="#8C1515" font-weight="600">t</text>
-  <text x="95" y="215" font-size="12" fill="rgba(0,0,0,0.7)">tᵢ = σᵢⱼ nⱼ on surface S</text>
-  {_mk("stress")}
-</svg>"""
-
-HOOKE_GRAPH = f"""
-<svg class="diagram" viewBox="0 0 260 210" aria-hidden="true">
-  <line x1="35" y1="175" x2="235" y2="175" stroke="#4D4F53" stroke-width="1.5" marker-end="url(#arr-hooke)"/>
-  <line x1="35" y1="175" x2="35" y2="25" stroke="#4D4F53" stroke-width="1.5" marker-end="url(#arr-hooke)"/>
-  <text x="228" y="195" font-size="14">ε</text>
-  <text x="18" y="32" font-size="14">σ</text>
-  <line x1="35" y1="175" x2="205" y2="45" stroke="#8C1515" stroke-width="3"/>
-  <polygon points="35,175 120,95 120,175" fill="rgba(140,21,21,0.18)"/>
-  <line x1="120" y1="175" x2="120" y2="95" stroke="#4D4F53" stroke-dasharray="5 4"/>
-  <text x="62" y="155" font-size="14" fill="#8C1515">u</text>
-  <text x="130" y="58" font-size="13" fill="#4D4F53">slope E</text>
-  {_mk("hooke")}
-</svg>"""
-
-BVP_BODY = f"""
-<svg class="diagram" viewBox="0 0 280 220" aria-hidden="true">
-  <path d="M40,110 C55,55 120,40 185,70 C220,85 230,120 205,150 C165,185 95,180 55,145 C25,120 20,125 40,110 Z"
-        fill="rgba(140,21,21,0.10)" stroke="#8C1515" stroke-width="2.5"/>
-  <text x="115" y="108" font-size="16" fill="rgba(0,0,0,0.55)">V</text>
-  <line x1="40" y1="110" x2="40" y2="145" stroke="#4D4F53" stroke-width="4"/>
-  <line x1="32" y1="118" x2="48" y2="134" stroke="#4D4F53" stroke-width="2"/>
-  <line x1="48" y1="118" x2="32" y2="134" stroke="#4D4F53" stroke-width="2"/>
-  <text x="8" y="132" font-size="13" font-weight="600">S<tspan baseline-shift="sub" font-size="10">u</tspan></text>
-  <text x="52" y="162" font-size="11" fill="#4D4F53">u = u₀</text>
-  <path d="M120,55 C150,48 175,52 195,68" fill="none" stroke="#175E54" stroke-width="3"/>
-  <line x1="135" y1="50" x2="135" y2="22" stroke="#8C1515" stroke-width="2.5" marker-end="url(#arrR-bvp)"/>
-  <line x1="165" y1="54" x2="165" y2="26" stroke="#8C1515" stroke-width="2.5" marker-end="url(#arrR-bvp)"/>
-  <line x1="195" y1="62" x2="195" y2="34" stroke="#8C1515" stroke-width="2.5" marker-end="url(#arrR-bvp)"/>
-  <text x="148" y="18" font-size="13" fill="#8C1515" font-weight="600">t</text>
-  <text x="200" y="78" font-size="13" font-weight="600">S<tspan baseline-shift="sub" font-size="10">t</tspan></text>
-  <text x="70" y="205" font-size="12" fill="rgba(0,0,0,0.7)">∂V = S<tspan baseline-shift="sub" font-size="9">u</tspan> ∪ S<tspan baseline-shift="sub" font-size="9">t</tspan></text>
-  {_mk("bvp")}
-</svg>"""
-
-ROD = f"""
-<svg class="diagram" viewBox="0 0 320 140" aria-hidden="true">
-  <rect x="25" y="52" width="200" height="32" fill="rgba(140,21,21,0.10)" stroke="#4D4F53" stroke-width="2"/>
-  <rect x="25" y="52" width="12" height="32" fill="url(#hatch-rod)"/>
-  <line x1="225" y1="68" x2="275" y2="68" stroke="#8C1515" stroke-width="3" marker-end="url(#arrR-rod)"/>
-  <text x="280" y="73" font-size="14" fill="#8C1515" font-weight="600">N</text>
-  <line x1="25" y1="95" x2="225" y2="95" stroke="#4D4F53" stroke-width="1.5" marker-end="url(#arr-rod)"/>
-  <text x="118" y="112" font-size="14">x</text>
-  <path d="M225,52 L238,46 L238,90 L225,84 Z" fill="rgba(23,94,84,0.15)" stroke="#175E54" stroke-width="1.5" stroke-dasharray="4 3"/>
-  <line x1="238" y1="68" x2="258" y2="68" stroke="#175E54" stroke-width="2" marker-end="url(#arrG-rod)"/>
-  <text x="262" y="73" font-size="13" fill="#175E54">u(x)</text>
-  <defs>
-    <pattern id="hatch-rod" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="5" stroke="#4D4F53" stroke-width="2"/>
-    </pattern>
-    <marker id="arr-rod" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L6,3 L0,6 Z" fill="#4D4F53"/>
-    </marker>
-    <marker id="arrR-rod" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L6,3 L0,6 Z" fill="#8C1515"/>
-    </marker>
-    <marker id="arrG-rod" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L6,3 L0,6 Z" fill="#175E54"/>
-    </marker>
-  </defs>
-</svg>"""
-
-PLANE_2D = f"""
-<svg class="diagram" viewBox="0 0 300 200" aria-hidden="true">
-  <rect x="30" y="70" width="110" height="8" fill="rgba(140,21,21,0.15)" stroke="#8C1515" stroke-width="2"/>
-  <text x="52" y="58" font-size="13" font-weight="600">thin plate</text>
-  <text x="42" y="105" font-size="12" fill="#4D4F53">plane stress</text>
-  <text x="42" y="122" font-size="11" fill="#4D4F53">σ₃₃ = 0</text>
-  <rect x="170" y="45" width="28" height="110" fill="rgba(23,94,84,0.12)" stroke="#175E54" stroke-width="2"/>
-  <text x="155" y="38" font-size="13" font-weight="600">long prism</text>
-  <text x="205" y="105" font-size="12" fill="#4D4F53">plane strain</text>
-  <text x="205" y="122" font-size="11" fill="#4D4F53">ε₃₃ = 0</text>
-  <text x="95" y="175" font-size="12" fill="rgba(0,0,0,0.65)">2D reduction → Airy φ(x,y)</text>
-</svg>"""
-
-CLASSIC_2D = f"""
-<svg class="diagram" viewBox="0 0 300 200" aria-hidden="true">
-  <rect x="25" y="95" width="115" height="14" fill="rgba(140,21,21,0.12)" stroke="#4D4F53"/>
-  <rect x="25" y="95" width="10" height="14" fill="url(#hatch-c2d)"/>
-  <line x1="140" y1="88" x2="140" y2="55" stroke="#8C1515" stroke-width="2.5" marker-end="url(#arrR-c2d)"/>
-  <text x="145" y="62" font-size="12">P</text>
-  <text x="55" y="130" font-size="12">cantilever (Lec. 7)</text>
-  <line x1="175" y1="165" x2="275" y2="165" stroke="#4D4F53" stroke-width="2"/>
-  <line x1="225" y1="165" x2="225" y2="55" stroke="#8C1515" stroke-width="2.5" marker-end="url(#arrR-c2d)"/>
-  <text x="230" y="50" font-size="12">P</text>
-  <path d="M200,165 Q225,130 250,165" fill="none" stroke="#175E54" stroke-width="1.5" stroke-dasharray="4 3"/>
-  <text x="178" y="188" font-size="12">half space (Lec. 9)</text>
-  <defs>
-    <pattern id="hatch-c2d" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="4" stroke="#4D4F53" stroke-width="1.5"/>
-    </pattern>
-    <marker id="arrR-c2d" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L6,3 L0,6 Z" fill="#8C1515"/>
-    </marker>
-  </defs>
-</svg>"""
-
-POLAR_WEDGE = f"""
-<svg class="diagram" viewBox="0 0 300 200" aria-hidden="true">
-  <circle cx="85" cy="105" r="55" fill="none" stroke="#8C1515" stroke-width="2.5"/>
-  <circle cx="85" cy="105" r="28" fill="rgba(140,21,21,0.08)" stroke="#8C1515" stroke-width="2"/>
-  <line x1="85" y1="105" x2="140" y2="105" stroke="#4D4F53" stroke-width="1.5" marker-end="url(#arr-polar)"/>
-  <line x1="85" y1="105" x2="85" y2="50" stroke="#4D4F53" stroke-width="1.5" marker-end="url(#arr-polar)"/>
-  <text x="125" y="100" font-size="12">r</text>
-  <text x="88" y="58" font-size="12">θ</text>
-  <text x="48" y="188" font-size="12">annulus / hole</text>
-  <line x1="215" y1="155" x2="275" y2="95" stroke="#175E54" stroke-width="2.5"/>
-  <line x1="215" y1="155" x2="275" y2="155" stroke="#175E54" stroke-width="2.5"/>
-  <path d="M275,95 A65,65 0 0,1 275,155" fill="none" stroke="#8C1515" stroke-width="2"/>
-  <text x="248" y="88" font-size="12">2α</text>
-  <text x="195" y="188" font-size="12">wedge / notch (Lec. 13)</text>
-  <marker id="arr-polar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-    <path d="M0,0 L6,3 L0,6 Z" fill="#4D4F53"/>
-  </marker>
-</svg>"""
-
-KELVIN_3D = f"""
-<svg class="diagram" viewBox="0 0 300 220" aria-hidden="true">
-  <line x1="20" y1="45" x2="280" y2="45" stroke="#4D4F53" stroke-width="2.5"/>
-  <text x="8" y="40" font-size="12">free surface</text>
-  <line x1="150" y1="45" x2="150" y2="175" stroke="#8C1515" stroke-width="3" marker-end="url(#arrR-kelvin)"/>
-  <text x="158" y="115" font-size="14" fill="#8C1515" font-weight="600">F</text>
-  <ellipse cx="150" cy="115" rx="70" ry="45" fill="none" stroke="#175E54" stroke-width="1.5" stroke-dasharray="5 4"/>
-  <ellipse cx="150" cy="115" rx="40" ry="25" fill="none" stroke="#175E54" stroke-width="1.5" stroke-dasharray="5 4"/>
-  <line x1="150" y1="175" x2="150" y2="205" stroke="#175E54" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrG-kelvin)"/>
-  <text x="158" y="200" font-size="12" fill="#175E54">image F′</text>
-  <text x="55" y="115" font-size="12" fill="#4D4F53">Kelvin field</text>
-  <text x="42" y="210" font-size="11" fill="rgba(0,0,0,0.65)">half-space: superpose image below surface</text>
-  <marker id="arrR-kelvin" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-    <path d="M0,0 L6,3 L0,6 Z" fill="#8C1515"/>
-  </marker>
-  <marker id="arrG-kelvin" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-    <path d="M0,0 L6,3 L0,6 Z" fill="#175E54"/>
-  </marker>
-</svg>"""
-
-DISLOCATION = f"""
-<svg class="diagram" viewBox="0 0 300 220" aria-hidden="true">
-  <line x1="30" y1="55" x2="270" y2="55" stroke="#4D4F53" stroke-width="1.5"/>
-  <line x1="30" y1="85" x2="270" y2="85" stroke="#4D4F53" stroke-width="1.5"/>
-  <line x1="30" y1="115" x2="270" y2="115" stroke="#4D4F53" stroke-width="1.5"/>
-  <line x1="30" y1="145" x2="270" y2="145" stroke="#4D4F53" stroke-width="1.5"/>
-  <line x1="30" y1="175" x2="270" y2="175" stroke="#4D4F53" stroke-width="1.5"/>
-  <line x1="155" y1="55" x2="155" y2="175" stroke="#8C1515" stroke-width="2" stroke-dasharray="6 4"/>
-  <line x1="155" y1="85" x2="195" y2="85" stroke="#175E54" stroke-width="3" marker-end="url(#arrG-disl)"/>
-  <text x="200" y="90" font-size="14" fill="#175E54" font-weight="600">b</text>
-  <text x="158" y="48" font-size="11" fill="#8C1515">cut</text>
-  <path d="M155,55 L175,35 L175,175 L155,175 Z" fill="rgba(140,21,21,0.12)" stroke="#8C1515" stroke-width="1.5"/>
-  <text x="178" y="108" font-size="11" fill="#8C1515">extra half-plane</text>
-  <line x1="30" y1="200" x2="270" y2="200" stroke="#4D4F53" stroke-width="1" marker-end="url(#arr-disl)"/>
-  <text x="120" y="215" font-size="11" fill="#4D4F53">σ<tspan baseline-shift="super" font-size="9">∞</tspan> (Peach–Köhler)</text>
-  <marker id="arr-disl" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-    <path d="M0,0 L6,3 L0,6 Z" fill="#4D4F53"/>
-  </marker>
-  <marker id="arrG-disl" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-    <path d="M0,0 L6,3 L0,6 Z" fill="#175E54"/>
-  </marker>
-</svg>"""
-
-YIELD = f"""
-<svg class="diagram" viewBox="0 0 240 240" aria-hidden="true">
-  <line x1="120" y1="215" x2="120" y2="25" stroke="#4D4F53" stroke-width="1.5" marker-end="url(#arr-yield)"/>
-  <line x1="25" y1="120" x2="215" y2="120" stroke="#4D4F53" stroke-width="1.5" marker-end="url(#arr-yield)"/>
-  <text x="205" y="132" font-size="13">σ₁</text>
-  <text x="125" y="38" font-size="13">σ₂</text>
-  <circle cx="120" cy="120" r="75" fill="none" stroke="#8C1515" stroke-width="2.5"/>
-  <polygon points="120,45 178,75 178,165 120,195 62,165 62,75" fill="none" stroke="#175E54" stroke-width="2" stroke-dasharray="6 4"/>
-  <text x="155" y="62" font-size="13" fill="#8C1515" font-weight="600">Mises</text>
-  <text x="42" y="168" font-size="13" fill="#175E54" font-weight="600">Tresca</text>
-  <marker id="arr-yield" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-    <path d="M0,0 L6,3 L0,6 Z" fill="#4D4F53"/>
-  </marker>
-</svg>"""
-
-CRACK = f"""
-<svg class="diagram" viewBox="0 0 280 220" aria-hidden="true">
-  <rect x="25" y="55" width="230" height="110" fill="rgba(140,21,21,0.06)" stroke="rgba(140,21,21,0.3)" stroke-width="1.5"/>
-  <line x1="65" y1="110" x2="215" y2="110" stroke="#8C1515" stroke-width="3"/>
-  <circle cx="65" cy="110" r="4" fill="#8C1515"/>
-  <circle cx="215" cy="110" r="4" fill="#8C1515"/>
-  <line x1="65" y1="135" x2="215" y2="135" stroke="#4D4F53" stroke-width="1.5" marker-start="url(#arr-crack)" marker-end="url(#arr-crack)"/>
-  <text x="125" y="152" font-size="13">2a</text>
-  <line x1="140" y1="55" x2="140" y2="25" stroke="#8C1515" stroke-width="2.5" marker-end="url(#arrR-crack)"/>
-  <line x1="140" y1="165" x2="140" y2="195" stroke="#8C1515" stroke-width="2.5" marker-end="url(#arrR-crack)"/>
-  <text x="148" y="22" font-size="13" fill="#8C1515">σ∞</text>
-  <circle cx="65" cy="110" r="18" fill="none" stroke="#175E54" stroke-width="1.5" stroke-dasharray="4 3"/>
-  <text x="22" y="95" font-size="12" fill="#175E54">K<tspan baseline-shift="sub" font-size="10">I</tspan> tip</text>
-  <marker id="arr-crack" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-    <path d="M0,0 L6,3 L0,6 Z" fill="#4D4F53"/>
-  </marker>
-  <marker id="arrR-crack" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-    <path d="M0,0 L6,3 L0,6 Z" fill="#8C1515"/>
-  </marker>
-</svg>"""
-
-ELASTIC_PLASTIC = f"""
-<svg class="diagram" viewBox="0 0 280 220" aria-hidden="true">
-  <line x1="35" y1="185" x2="255" y2="185" stroke="#4D4F53" stroke-width="1.5" marker-end="url(#arr-ep)"/>
-  <line x1="35" y1="185" x2="35" y2="25" stroke="#4D4F53" stroke-width="1.5" marker-end="url(#arr-ep)"/>
-  <text x="245" y="205" font-size="14">ε</text>
-  <text x="18" y="32" font-size="14">σ</text>
-  <line x1="35" y1="185" x2="95" y2="55" stroke="#8C1515" stroke-width="2.5"/>
-  <line x1="95" y1="55" x2="210" y2="40" stroke="#8C1515" stroke-width="2.5"/>
-  <line x1="210" y1="40" x2="130" y2="185" stroke="#175E54" stroke-width="2.5" stroke-dasharray="7 5"/>
-  <polygon points="35,185 95,55 95,185" fill="rgba(140,21,21,0.14)"/>
-  <polygon points="95,185 210,185 210,40 95,55" fill="rgba(23,94,84,0.12)"/>
-  <line x1="95" y1="185" x2="95" y2="55" stroke="#4D4F53" stroke-dasharray="4 3"/>
-  <line x1="130" y1="185" x2="130" y2="198" stroke="#175E54" stroke-width="2"/>
-  <text x="108" y="205" font-size="12" fill="#175E54">εᵖ</text>
-  <text x="48" y="130" font-size="12">elastic</text>
-  <text x="155" y="130" font-size="12">plastic</text>
-  <text x="82" y="48" font-size="12">σ<tspan baseline-shift="sub" font-size="10">Y</tspan></text>
-  <marker id="arr-ep" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-    <path d="M0,0 L6,3 L0,6 Z" fill="#4D4F53"/>
-  </marker>
-</svg>"""
+    return (
+        f'<div class="diagram-wrap">'
+        f'<img class="slide-fig" src="figs/{name}" alt="{alt}" loading="lazy">'
+        f'{cap}</div>'
+    )
 
 
 def gb(lec, topic):
     return f'<div class="lec-badge">Lec.&nbsp;{lec} [{topic}]</div>'
+
+
+def assemble(body):
+    return (
+        body.replace("{ME340_CATALOG}", ME340_CATALOG)
+        .replace("{ELASTICITY_NOTES}", ELASTICITY_NOTES)
+        .replace("{INTRO_PDF}", INTRO_PDF)
+    )
 
 
 def slide(title, body, center=False, bg=None):
@@ -305,38 +53,49 @@ def slide(title, body, center=False, bg=None):
     return f'<section{cls}{bg_attr}>{title_html}{body}</section>'
 
 
+THREE_PART = r"""
+<div class="flow-row">
+  <div class="fbox">Part I<br>Elasticity<br>\(\sigma,\ \mathbf{u}\)</div><span class="arrow">→</span>
+  <div class="gbox">Part II<br>Plasticity<br>\(\varepsilon^{p},\ f=0\)</div><span class="arrow">→</span>
+  <div class="kbox">Part III<br>Fracture<br>\(K_{I},\ J\)</div>
+</div>
+<div class="flow-row">
+  <div class="fbox" style="min-width:11em;">Applications: contact, vessels, fatigue</div>
+</div>"""
+
+
 SLIDES = [
-    slide("", f"""
+    slide("", assemble(r"""
 <h1>Mechanics: Elasticity and Inelasticity</h1>
 <p class="title-slide-meta">A brief intro • <a href="{ME340_CATALOG}">ME 340</a> • <a href="{INTRO_PDF}">PDF</a></p>
 <p class="author"><strong>Hanfeng Zhai</strong></p>
 <p class="institute">Department of Mechanical Engineering, Stanford University</p>
 <p class="date">Spring 2026</p>
-""", center=True, bg="#8C1515"),
+"""), center=True, bg="#8C1515"),
 
-    slide("Course at a glance", f"""
+    slide("Course at a glance", assemble(r"""
 <div class="cols">
-  <div>
+  <div class="slide-content">
     <ul>
       <li><a href="{ME340_CATALOG}">ME 340</a> (Wei Cai): elasticity, plasticity, fracture.</li>
-      <li><strong>I</strong>—2D φ, 3D G, contact; <strong>II</strong>—yield, flow, hardening; <strong>III</strong>—LEFM, J, fatigue.</li>
+      <li><strong>I</strong>—2D \(\phi\), 3D \(G\), contact; <strong>II</strong>—yield, flow, hardening; <strong>III</strong>—LEFM, \(J\), fatigue.</li>
       <li>Analytic + Matlab.</li>
       <li>Barber (2010); Anderson (2005).</li>
       <li><a href="{ELASTICITY_NOTES}">consolidated study notes</a>.</li>
     </ul>
   </div>
-  <div>{fig(CONTINUUM_POTATO, "BVP → 2D φ / 3D G → stress, flow, fracture")}</div>
-</div>"""),
+  <div>""" + img("fig1.png", "Reference and deformed configurations") + r"""</div>
+</div>""")),
 
-    slide("Three-part course structure", f"""
-{THREE_PART}
-<div class="cols-33" style="margin-top:0.55em;font-size:0.65em;">
+    slide("Three-part course structure", assemble(r"""
+""" + THREE_PART + r"""
+<div class="cols-33 meta-text" style="margin-top:0.55em;">
   <div><strong>I.</strong> stress, strain, equilibrium</div>
   <div><strong>II.</strong> yield, flow, hardening</div>
   <div><strong>III.</strong> crack-tip fields, energy release</div>
 </div>
-<p style="margin-top:0.55em;font-size:0.65em;"><em>Core idea:</em> well-posed BVP → elastic solution → plasticity if f&gt;0 → fracture if cracks grow.</p>
-""", center=True),
+<p class="meta-text" style="margin-top:0.55em;"><em>Core idea:</em> well-posed BVP \(\rightarrow\) elastic solution \(\rightarrow\) plasticity if \(f&gt;0\) \(\rightarrow\) fracture if cracks grow.</p>
+"""), center=True),
 
     slide("Outline", """
 <div class="toc-list">
@@ -348,235 +107,217 @@ SLIDES = [
   <div><h4>Fracture mechanics</h4></div>
   <div><h4>Problem-solving workflow</h4></div>
 </div>
-<p style="font-size:0.65em;margin-top:1em;">Use ← → keys, swipe, or scroll to navigate.</p>
+<p class="meta-text" style="margin-top:0.75em;">Use ← → keys, swipe, or scroll to navigate.</p>
 """),
 
-    slide("Continuum body: reference and deformed configurations", f"""
+    slide("Continuum body: reference and deformed configurations", assemble(r"""
 <div class="cols cols-text-wide">
-  <div>
+  <div class="slide-content">
     <ul>
-      <li>Ω₀: reference configuration; Ω: deformed configuration.</li>
-      <li>Material points X ↦ x = X + u(X).</li>
-      <li>Small strain: ε<sub>ij</sub> = ½(u<sub>i,j</sub> + u<sub>j,i</sub>).</li>
-      <li>The “potato” is any bounded body V — geometry is arbitrary.</li>
+      <li>\(\Omega_0\): reference configuration; \(\Omega\): deformed configuration.</li>
+      <li>Material points \(\mathbf{X} \mapsto \mathbf{x} = \mathbf{X} + \mathbf{u}(\mathbf{X})\).</li>
+      <li>Small strain: \(\varepsilon_{ij} = \tfrac{1}{2}(u_{i,j} + u_{j,i})\).</li>
+      <li>The “potato” is any bounded body \(V\) — geometry is arbitrary.</li>
     </ul>
-    {gb("1", "Introduction")}
+    """ + gb("1", "Introduction") + r"""
   </div>
-  <div>{fig(CONTINUUM_POTATO, "material point X maps to x = X + u(X)")}</div>
-</div>"""),
+  <div>""" + img("fig1.png", "Reference and deformed configurations", CAP_FIG1) + r"""</div>
+</div>""")),
 
-    slide("Stress and strain", f"""
+    slide("Stress and strain", assemble(r"""
 <div class="cols cols-text-wide">
-  <div>
-    <p>\\[ \\sigma_{{ij}}=\\sigma_{{ji}},\\qquad \\varepsilon_{{ij}}=\\tfrac{{1}}{{2}}\\!\\left(\\frac{{\\partial u_i}}{{\\partial x_j}}+\\frac{{\\partial u_j}}{{\\partial x_i}}\\right). \\]</p>
+  <div class="slide-content">
+    <p>\[ \sigma_{ij}=\sigma_{ji},\qquad \varepsilon_{ij}=\tfrac{1}{2}\!\left(\frac{\partial u_i}{\partial x_j}+\frac{\partial u_j}{\partial x_i}\right). \]</p>
     <ul>
-      <li><strong>σ</strong>: Cauchy stress; <strong>ε</strong>: small strain; <strong>u</strong>: displacement.</li>
-      <li>Traction on plane normal <strong>n</strong>: t<sub>i</sub> = σ<sub>ij</sub>n<sub>j</sub>.</li>
-      <li>Static equilibrium: ∂σ<sub>ij</sub>/∂x<sub>j</sub> = 0 (no body force).</li>
+      <li>\(\boldsymbol{\sigma}\): Cauchy stress; \(\boldsymbol{\varepsilon}\): small strain; \(\mathbf{u}\): displacement.</li>
+      <li>Traction on plane normal \(\mathbf{n}\): \(t_i = \sigma_{ij} n_j\).</li>
+      <li>Static equilibrium: \(\partial\sigma_{ij}/\partial x_j = 0\) (no body force).</li>
     </ul>
-    {gb("1–2", "Introduction, Tensors")}
+    """ + gb("1–2", "Introduction, Tensors") + r"""
   </div>
-  <div>{fig(STRESS_CUBE, "Cauchy cube; traction <strong>t</strong> = σ·<strong>n</strong> on a cut plane")}</div>
-</div>"""),
+  <div>""" + img("fig2.png", "Cauchy stress and traction", CAP_FIG2) + r"""</div>
+</div>""")),
 
-    slide("Hooke's law and elastic energy", f"""
+    slide("Hooke's law and elastic energy", assemble(r"""
 <div class="cols cols-text-wide">
-  <div>
-    <p>\\[ \\sigma_{{ij}}=C_{{ijkl}}\\,\\varepsilon_{{kl}}, \\qquad U=\\tfrac{{1}}{{2}}\\int_V \\sigma_{{ij}}\\,\\varepsilon_{{ij}}\\,\\mathrm{{d}}V. \\]</p>
+  <div class="slide-content">
+    <p>\[ \sigma_{ij}=C_{ijkl}\,\varepsilon_{kl}, \qquad U=\tfrac{1}{2}\int_V \sigma_{ij}\,\varepsilon_{ij}\,\mathrm{d}V. \]</p>
     <ul>
-      <li>Isotropic: ε<sub>ij</sub> = (1+ν)/E σ<sub>ij</sub> − ν/E σ<sub>kk</sub> δ<sub>ij</sub>.</li>
-      <li>E, ν, Lamé λ, μ; positive-definite ℂ.</li>
-      <li>1D: shaded area = strain-energy density u = ½σε.</li>
+      <li>Isotropic: \(\varepsilon_{ij} = \tfrac{1+\nu}{E}\sigma_{ij} - \tfrac{\nu}{E}\sigma_{kk}\delta_{ij}\).</li>
+      <li>\(E\), \(\nu\), Lamé \(\lambda\), \(\mu\); positive-definite \(\mathbb{C}\).</li>
+      <li>1D: shaded area = strain-energy density \(u = \tfrac{1}{2}\sigma\varepsilon\).</li>
     </ul>
-    {gb("3", "Hooke's Law")}, {gb("4", "Fundamental Equations")}
+    """ + gb("3", "Hooke's Law") + r""", """ + gb("4", "Fundamental Equations") + r"""
   </div>
-  <div>{fig(HOOKE_GRAPH, "linear σ–ε law; shaded area = strain-energy density u")}</div>
-</div>"""),
+  <div>""" + img("fig3.png", "Hooke's law graph", CAP_FIG3) + r"""</div>
+</div>""")),
 
-    slide("Fundamental boundary-value problem", f"""
+    slide("Fundamental boundary-value problem", assemble(r"""
 <div class="cols cols-text-wide">
-  <div>
-    <p>\\[ \\boldsymbol{{\\varepsilon}}=\\tfrac{{1}}{{2}}(\\nabla\\mathbf{{u}}+\\nabla\\mathbf{{u}}^{{\\top}}),\\ \\boldsymbol{{\\sigma}}=\\mathbb{{C}}:\\boldsymbol{{\\varepsilon}},\\ \\nabla\\!\\cdot\\!\\boldsymbol{{\\sigma}}+\\mathbf{{f}}=\\mathbf{{0}}\\ \\text{{in }}V. \\]</p>
+  <div class="slide-content">
+    <p>\[ \boldsymbol{\varepsilon}=\tfrac{1}{2}(\nabla\mathbf{u}+\nabla\mathbf{u}^{\top}),\ \boldsymbol{\sigma}=\mathbb{C}:\boldsymbol{\varepsilon},\ \nabla\!\cdot\!\boldsymbol{\sigma}+\mathbf{f}=\mathbf{0}\ \text{in }V. \]</p>
     <ul>
-      <li><strong>u</strong> = <strong>u</strong>₀ on S<sub>u</sub>; σ·<strong>n</strong> = <strong>t</strong> on S<sub>t</sub>.</li>
-      <li>Compatibility if ε is not from a single <strong>u</strong>.</li>
+      <li>\(\mathbf{u} = \mathbf{u}_0\) on \(S_u\); \(\boldsymbol{\sigma}\cdot\mathbf{n} = \mathbf{t}\) on \(S_t\).</li>
+      <li>Compatibility if \(\boldsymbol{\varepsilon}\) is not from a single \(\mathbf{u}\).</li>
     </ul>
-    {gb("4", "Fundamental Equations")}
+    """ + gb("4", "Fundamental Equations") + r"""
   </div>
-  <div>{fig(BVP_BODY, "body V; displacement BC on S<sub>u</sub>, traction BC on S<sub>t</sub>")}</div>
-</div>"""),
+  <div>""" + img("fig4.png", "Boundary value problem", CAP_FIG4) + r"""</div>
+</div>""")),
 
-    slide("Elastic rod (1D building block)", f"""
+    slide("Elastic rod (1D building block)", assemble(r"""
 <div class="cols cols-text-wide">
-  <div>
-    <p>\\[ \\varepsilon=\\frac{{\\mathrm{{d}} u}}{{\\mathrm{{d}} x}},\\qquad N=EA\\,\\varepsilon,\\qquad \\frac{{\\mathrm{{d}} N}}{{\\mathrm{{d}} x}}+f=0. \\]</p>
+  <div class="slide-content">
+    <p>\[ \varepsilon=\frac{\mathrm{d} u}{\mathrm{d} x},\qquad N=EA\,\varepsilon,\qquad \frac{\mathrm{d} N}{\mathrm{d} x}+f=0. \]</p>
     <ul>
-      <li>Axial bar: u(x), stress σ = N/A, rigidity EA.</li>
+      <li>Axial bar: \(u(x)\), stress \(\sigma = N/A\), rigidity \(EA\).</li>
       <li>Same pattern as 3D theory, one displacement component.</li>
       <li>Warm-up before 2D Airy and 3D Green's functions.</li>
     </ul>
-    {gb("4–5", "Fund. Eqs., 2D Elasticity")}
+    """ + gb("4–5", "Fund. Eqs., 2D Elasticity") + r"""
   </div>
-  <div>{fig(ROD, "fixed end + axial load N ⇒ extension u(x)")}</div>
-</div>"""),
+  <div>""" + img("fig5.png", "Elastic rod", CAP_FIG5) + r"""</div>
+</div>""")),
 
-    slide("2D formulations", f"""
+    slide("2D formulations", assemble(r"""
 <div class="cols cols-text-wide">
-  <div>
+  <div class="slide-content">
     <ul>
-      <li><strong>Plane strain:</strong> ε₃₃ = ε₁₃ = ε₂₃ = 0 (thick body).</li>
-      <li><strong>Plane stress:</strong> σ₃₃ = σ₁₃ = σ₂₃ = 0 (thin plate).</li>
-      <li>Airy φ(x,y) with ∇⁴φ = 0:<br/>
-        \\[ \\sigma_{{xx}}=\\phi_{{,yy}},\\ \\sigma_{{yy}}=\\phi_{{,xx}},\\ \\sigma_{{xy}}=-\\phi_{{,xy}}. \\]</li>
+      <li><strong>Plane strain:</strong> \(\varepsilon_{33} = \varepsilon_{13} = \varepsilon_{23} = 0\) (thick body).</li>
+      <li><strong>Plane stress:</strong> \(\sigma_{33} = \sigma_{13} = \sigma_{23} = 0\) (thin plate).</li>
+      <li>Airy \(\phi(x,y)\) with \(\nabla^4\phi = 0\):<br/>
+        \[ \sigma_{xx}=\phi_{,yy},\ \sigma_{yy}=\phi_{,xx},\ \sigma_{xy}=-\phi_{,xy}. \]</li>
     </ul>
-    {gb("5", "2D Elasticity")}
+    """ + gb("5", "2D Elasticity") + r"""
   </div>
-  <div>{fig(PLANE_2D, "thin plate → plane stress; long prism → plane strain")}</div>
-</div>"""),
+  <div>""" + img("fig6.png", "Plane stress and plane strain") + r"""</div>
+</div>""")),
 
-    slide("Classic 2D solution routes", f"""
-<div class="cols cols-text-wide">
-  <div>
-    <ul>
-      <li><strong>Rectangular beam</strong> (Lec. 7): polynomial Airy + BC matching.</li>
-      <li><strong>Fourier series</strong> (Lec. 8): periodic / strip loads.</li>
-      <li><strong>Half space</strong> (Lec. 9): Flamant line load; σ ∼ 1/r.</li>
-      <li><strong>Contact</strong> (Lec. 10): unknown contact patch and pressure.</li>
-    </ul>
-  </div>
-  <div>{fig(CLASSIC_2D, "cantilever beam (Lec. 7) and Flamant half space (Lec. 9)")}</div>
-</div>"""),
+    slide("Classic 2D solution routes", assemble(r"""
+<div class="slide-content">
+  <ul>
+    <li><strong>Rectangular beam</strong> (Lec. 7): polynomial Airy + BC matching.</li>
+    <li><strong>Fourier series</strong> (Lec. 8): periodic / strip loads.</li>
+    <li><strong>Half space</strong> (Lec. 9): Flamant line load; \(\sigma \sim 1/r\).</li>
+    <li><strong>Contact</strong> (Lec. 10): unknown contact patch and pressure.</li>
+  </ul>
+</div>
+<div class="fig-full">""" + img("fig7.png", "Classic 2D solution routes") + r"""</div>""")),
 
-    slide("Polar coordinates and wedge problems", f"""
+    slide("Polar coordinates and wedge problems", assemble(r"""
 <div class="cols cols-text-wide">
-  <div>
-    <p>\\[ \\nabla^4\\phi=0 \\ \\Rightarrow\\ \\phi(r,\\theta)\\ \\text{{with}}\\ r,\\theta,\\ln r,\\ \\theta\\ln r\\ \\text{{modes}}. \\]</p>
+  <div class="slide-content">
+    <p>\[ \nabla^4\phi=0 \ \Rightarrow\ \phi(r,\theta)\ \text{with}\ r,\theta,\ln r,\ \theta\ln r\ \text{modes}. \]</p>
     <ul>
-      <li>Lec. 11–12: disks, rings, holes in (r,θ).</li>
+      <li>Lec. 11–12: disks, rings, holes in \((r,\theta)\).</li>
       <li>Lec. 13 wedge: corner singularities; eigenfunction exponents.</li>
       <li>Pick modes with symmetry and finite energy.</li>
     </ul>
-    {gb("11–12", "Polar Coordinates, Wedge and Notch")}
+    """ + gb("11–12", "Polar Coordinates, Wedge and Notch") + r"""
   </div>
-  <div>{fig(POLAR_WEDGE, "polar annulus / hole and wedge notch with angle 2α")}</div>
-</div>"""),
+  <div>""" + img("fig8.png", "Polar annulus and wedge", CAP_FIG8) + r"""</div>
+</div>""")),
 
-    slide("Green's function approach (3D)", f"""
+    slide("Green's function approach (3D)", assemble(r"""
 <div class="cols cols-text-wide">
-  <div>
-    <p>\\[ \\nabla\\!\\cdot\\!\\boldsymbol{{\\sigma}}+\\mathbf{{f}}=\\mathbf{{0}},\\quad \\mathbf{{u}}(\\mathbf{{x}})=\\int G(\\mathbf{{x}},\\boldsymbol{{\\xi}})\\,\\mathbf{{f}}(\\boldsymbol{{\\xi}})\\,\\mathrm{{d}}V_\\xi. \\]</p>
+  <div class="slide-content">
+    <p>\[ \nabla\!\cdot\!\boldsymbol{\sigma}+\mathbf{f}=\mathbf{0},\quad \mathbf{u}(\mathbf{x})=\int G(\mathbf{x},\boldsymbol{\xi})\,\mathbf{f}(\boldsymbol{\xi})\,\mathrm{d}V_\xi. \]</p>
     <ul>
       <li>Kelvin solution (Lec. 17): point force in infinite space.</li>
       <li>Half-space images (Lec. 16): traction-free surface.</li>
       <li>Superpose for defects and boundaries.</li>
     </ul>
-    {gb("16–17", "Half Space, Kelvin Solution")}
+    """ + gb("16–17", "Half Space, Kelvin Solution") + r"""
   </div>
-  <div>{fig(KELVIN_3D, "Kelvin point force F + image F′ below traction-free surface")}</div>
-</div>"""),
+  <div>""" + img("fig9.png", "Kelvin solution and half-space image", CAP_FIG9) + r"""</div>
+</div>""")),
 
-    slide("Dislocations and defect fields", f"""
+    slide("Dislocations and defect fields", assemble(r"""
 <div class="cols cols-text-wide">
-  <div>
+  <div class="slide-content">
     <ul>
-      <li>Cut the lattice; insert <strong>b</strong> (Burgers vector) across the slip plane.</li>
-      <li>Stress singular at the core; far field set by <strong>b</strong> and geometry.</li>
-      <li>Peach–Köhler: defect force from external σ on the dislocation.</li>
+      <li>Cut the lattice; insert Burgers vector \(\mathbf{b}\) across the slip plane.</li>
+      <li>Stress singular at the core; far field set by \(\mathbf{b}\) and geometry.</li>
+      <li>Peach–Köhler: defect force from external \(\boldsymbol{\sigma}^\infty\) on the dislocation.</li>
       <li>Superpose: singular field + image / boundary correction.</li>
       <li>Macroscopic plastic strain accumulates from many dislocation motions.</li>
     </ul>
     {gb("notes", "Dislocations (extended notes)")}
   </div>
-  <div>{fig(DISLOCATION, "Volterra cut, Burgers vector <strong>b</strong>, extra half-plane")}</div>
-</div>"""),
+  <div>""" + img("fig10.png", "Dislocation schematic", CAP_FIG10) + r"""</div>
+</div>""")),
 
-    slide("From elasticity to plasticity", f"""
+    slide("From elasticity to plasticity", assemble(r"""
 <div class="cols cols-text-wide">
-  <div>
+  <div class="slide-content">
     <ul>
-      <li><strong>Elastic:</strong> load removal ⇒ strain returns to zero.</li>
+      <li><strong>Elastic:</strong> load removal \(\Rightarrow\) strain returns to zero.</li>
       <li><strong>Plastic:</strong> permanent strain remains after unloading.</li>
-      <li>Additive split (small strain): \\[ \\varepsilon_{{ij}}=\\varepsilon_{{ij}}^{{e}}+\\varepsilon_{{ij}}^{{p}}. \\]</li>
-      <li>Elastic part: σ<sub>ij</sub> = C<sub>ijkl</sub> ε<sup>e</sup><sub>kl</sub>.</li>
+      <li>Additive split (small strain): \[ \varepsilon_{ij}=\varepsilon_{ij}^{e}+\varepsilon_{ij}^{p}. \]</li>
+      <li>Elastic part: \(\sigma_{ij} = C_{ijkl} \varepsilon^{e}_{kl}\).</li>
       <li>Plastic part: governed by a yield condition + flow rule.</li>
     </ul>
-    {gb("3", "Hooke's Law")}, {gb("13", "Fund. Eqs. of Plasticity")}
+    """ + gb("3", "Hooke's Law") + r""", """ + gb("13", "Fund. Eqs. of Plasticity") + r"""
   </div>
-  <div>{fig(ELASTIC_PLASTIC, "load past σ<sub>Y</sub>, unload elastically → permanent ε<sup>p</sup>")}</div>
-</div>"""),
+  <div>""" + img("fig_elas_plas.png", "Elastic-plastic loading", CAP_ELAS_PLAS) + r"""</div>
+</div>""")),
 
-    slide("Yield criteria: von Mises and Tresca", f"""
+    slide("Yield criteria: von Mises and Tresca", assemble(r"""
 <div class="cols cols-text-wide">
-  <div>
-    <p>Deviatoric stress s<sub>ij</sub> = σ<sub>ij</sub> − ⅓σ<sub>kk</sub>δ<sub>ij</sub>.</p>
-    <p>\\[ J_2=\\tfrac{{1}}{{2}}s_{{ij}}s_{{ij}},\\qquad \\sigma_{{\\mathrm{{eq}}}}=\\sqrt{{3J_2}}. \\]</p>
-    <p><strong>von Mises yield:</strong> \\[ f=J_2-k^2\\le 0,\\qquad k=\\frac{{\\sigma_Y}}{{\\sqrt{{3}}}}. \\]</p>
-    <p><strong>Tresca yield:</strong> max|σ<sub>i</sub>−σ<sub>j</sub>| = 2k (alternative for metals).</p>
-    <p style="font-size:0.9em;">Plastic flow is insensitive to hydrostatic stress; yielding depends on s<sub>ij</sub>.</p>
-    {gb("13–14", "Yield surface / graphical")}
+  <div class="slide-content">
+    <p>Deviatoric stress \(s_{ij} = \sigma_{ij} - \tfrac{1}{3}\sigma_{kk}\delta_{ij}\).</p>
+    <p>\[ J_2=\tfrac{1}{2}s_{ij}s_{ij},\qquad \sigma_{\mathrm{eq}=\sqrt{3J_2}. \]</p>
+    <p><strong>von Mises yield:</strong> \[ f=J_2-k^2\le 0,\qquad k=\frac{\sigma_Y}{\sqrt{3}. \]</p>
+    <p><strong>Tresca yield:</strong> \(\max|\sigma_i-\sigma_j| = 2k\) (alternative for metals).</p>
+    <p>Plastic flow is insensitive to hydrostatic stress; yielding depends on \(s_{ij}\).</p>
+    """ + gb("13–14", "Yield surface / graphical") + r"""
   </div>
-  <div>{fig(YIELD, "von Mises circle vs. Tresca hexagon in σ₁–σ₂ plane")}</div>
-</div>"""),
+  <div>""" + img("fig_yield_surf.png", "Yield surfaces", CAP_YIELD) + r"""</div>
+</div>""")),
 
-    slide("J₂ associated flow rule", f"""
-<div class="cols">
-  <div>
-    <p>Associated (normality) flow with f = J₂ − k²:</p>
-    <p>\\[ \\dot\\varepsilon_{{ij}}^{{p}}=\\dot\\lambda\\,\\frac{{\\partial f}}{{\\partial\\sigma_{{ij}}}} =\\dot\\lambda\\, s_{{ij}},\\qquad \\dot\\varepsilon_{{kk}}^{{p}}=0. \\]</p>
-    <p>Consistency during plastic loading (ḟ = 0): elastic predictor, plastic corrector if f &gt; 0.</p>
-    <p style="font-size:0.85em;">Dislocations are the microscopic carriers; J₂ plasticity is the continuum limit.</p>
-    {gb("13–15", "Flow rule, tension &amp; shear")}
-  </div>
-  <div style="font-size:0.68em;">
-    <div class="flow-row">
-      <div class="fbox">Elastic<br>predictor<br>σ<sup>tr</sup></div><span class="arrow">→</span>
-      <div class="kbox">f &gt; 0?</div>
-    </div>
-    <div class="flow-row">
-      <div class="gbox">Return to<br>yield surface</div>
-      <div class="fbox">Accept σ</div>
-    </div>
-  </div>
-</div>"""),
-
-    slide("Fracture: LEFM and energy release", f"""
+    slide("J₂ associated flow rule", assemble(r"""
 <div class="cols cols-text-wide">
-  <div>
+  <div class="slide-content">
+    <p>Associated (normality) flow with \(f = J_2 - k^2\):</p>
+    <p>\[ \dot\varepsilon_{ij}^{p}=\dot\lambda\,\frac{\partial f}{\partial\sigma_{ij} =\dot\lambda\, s_{ij},\qquad \dot\varepsilon_{kk}^{p}=0. \]</p>
+    <p>Consistency during plastic loading (\(\dot f = 0\)): elastic predictor, plastic corrector if \(f &gt; 0\).</p>
+    <p>Dislocations are the microscopic carriers; \(J_2\) plasticity is the continuum limit.</p>
+    """ + gb("13–15", "Flow rule, tension &amp; shear") + r"""
+  </div>
+  <div>""" + img("fig11.png", "Radial return mapping", CAP_FIG11) + r"""</div>
+</div>""")),
+
+    slide("Fracture: LEFM and energy release", assemble(r"""
+<div class="cols cols-text-wide">
+  <div class="slide-content">
     <ul>
-      <li>Slit-like crack: elastic field with r<sup>−1/2</sup> stress singularity at tip.</li>
-      <li>Stress intensity K<sub>I</sub> characterizes tip loading; fracture when K<sub>I</sub> = K<sub>Ic</sub>.</li>
-      <li>Energy release rate 𝒢 = ∂U/∂a; J-integral for nonlinear paths.</li>
+      <li>Slit-like crack: elastic field with \(r^{-1/2}\) stress singularity at tip.</li>
+      <li>Stress intensity \(K_I\) characterizes tip loading; fracture when \(K_I = K_{Ic}\).</li>
+      <li>Energy release rate \(\mathcal{G} = \partial U/\partial a\); \(J\)-integral for nonlinear paths.</li>
       <li>Elastic–plastic zone and Dugdale–Barenblatt model; fatigue crack growth (Part III).</li>
     </ul>
-    {gb("22–26", "Slit crack, LEFM, fatigue")}
+    """ + gb("22–26", "Slit crack, LEFM, fatigue") + r"""
   </div>
-  <div>{fig(CRACK, "center crack 2a in remote tension σ<sup>∞</sup> (Mode I)")}</div>
-</div>"""),
+  <div>""" + img("fig12.png", "Center crack", CAP_FIG12) + r"""</div>
+</div>""")),
 
-    slide("Standard workflow", """
+    slide("Standard workflow", assemble(r"""
 <div class="cols cols-top">
-  <div>
+  <div class="slide-content">
     <ol>
       <li><strong>Model:</strong> geometry, BCs, 2D vs. 3D.</li>
-      <li><strong>Method:</strong> Airy φ or Green / images.</li>
+      <li><strong>Method:</strong> Airy \(\phi\) or Green / images.</li>
       <li><strong>Solve:</strong> separated variables, Fourier, multipoles.</li>
       <li><strong>Check:</strong> equilibrium, BCs, finite energy.</li>
-      <li><strong>Extract:</strong> σ, contact pressure, U, forces.</li>
+      <li><strong>Extract:</strong> \(\sigma\), contact pressure, \(U\), forces.</li>
     </ol>
   </div>
-  <div>
-    <div class="flow-row" style="flex-direction:column;align-items:stretch;">
-      <div class="fbox">Model<br>BCs</div><span class="arrow">↓</span>
-      <div class="gbox">2D φ<br>or 3D G</div><span class="arrow">↓</span>
-      <div class="kbox">Analytic<br>solution</div><span class="arrow">↓</span>
-      <div class="fbox">Check<br>extract</div>
-    </div>
-  </div>
+  <div>""" + img("fig_soln_proc.png", "Problem-solving workflow") + r"""</div>
 </div>
 <div class="example-block"><strong>Benchmark mindset:</strong> Keep an analytic case as a reference when switching to numerics.</div>
-"""),
+""")),
 
-    slide("Lecture map", f"""
+    slide("Lecture map", assemble(r"""
 <div class="cols-33 lecture-map">
   <div>
     <h4>Part I. Elasticity</h4>
@@ -608,32 +349,32 @@ SLIDES = [
     </ul>
     <p style="margin-top:0.5em;"><a href="{ELASTICITY_NOTES}">consolidated study notes</a></p>
   </div>
-</div>"""),
+</div>""")),
 
-    slide("Takeaways", """
-<ol>
-  <li><strong>Elasticity:</strong> kinematics + Hooke + equilibrium + BCs; 2D Airy φ, 3D Green's functions.</li>
-  <li><strong>Plasticity:</strong> ε = ε<sup>e</sup> + ε<sup>p</sup>; von Mises yield + associated J₂ flow.</li>
-  <li><strong>Fracture:</strong> K<sub>I</sub>, 𝒢, and J link elastic fields to crack growth and fatigue.</li>
+    slide("Takeaways", r"""
+<ol class="meta-text">
+  <li><strong>Elasticity:</strong> kinematics + Hooke + equilibrium + BCs; 2D Airy \(\phi\), 3D Green's functions.</li>
+  <li><strong>Plasticity:</strong> \(\boldsymbol{\varepsilon} = \boldsymbol{\varepsilon}^{e} + \boldsymbol{\varepsilon}^{p}\); von Mises yield + associated \(J_2\) flow.</li>
+  <li><strong>Fracture:</strong> \(K_I\), \(\mathcal{G}\), and \(J\) link elastic fields to crack growth and fatigue.</li>
   <li>Matlab and analytic benchmarks support each part.</li>
 </ol>
 <div class="flow-row" style="margin-top:0.75em;">
-  <div class="fbox">Elasticity<br>σ, u</div><span class="arrow">→</span>
-  <div class="gbox">Plasticity<br>εᵖ, f=0</div><span class="arrow">→</span>
-  <div class="kbox">Fracture<br>K<sub>I</sub>, J</div>
+  <div class="fbox">Elasticity<br>\(\sigma,\ \mathbf{u}\)</div><span class="arrow">→</span>
+  <div class="gbox">Plasticity<br>\(\varepsilon^{p},\ f=0\)</div><span class="arrow">→</span>
+  <div class="kbox">Fracture<br>\(K_{I},\ J\)</div>
 </div>
 """),
 
-    slide("References", f"""
-<ul>
+    slide("References", assemble(r"""
+<ul class="meta-text">
   <li>W. Cai, <em>ME 340 Elasticity and Inelasticity</em> (lecture notes);
     <a href="{ELASTICITY_NOTES}">consolidated PDF</a>.</li>
   <li>J. R. Barber, <em>Elasticity</em>, 3rd ed., Springer (2010).</li>
   <li>T. L. Anderson, <em>Fracture Mechanics</em>, 3rd ed., Taylor &amp; Francis (2005).</li>
   <li>Printable intro slides: <a href="{INTRO_PDF}">ME340_Intro.pdf</a>.</li>
 </ul>
-<p style="text-align:center;margin-top:2em;font-size:1.2em;"><strong>Thank you.</strong></p>
-"""),
+<p class="meta-text" style="text-align:center;margin-top:1.5em;"><strong>Thank you.</strong></p>
+""")),
 ]
 
 
