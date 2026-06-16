@@ -28,47 +28,55 @@
       <li><strong>I</strong>—2D φ, 3D G, contact; <strong>II</strong>—yield, flow, hardening; <strong>III</strong>—LEFM, J, fatigue.</li>
       <li>Analytic + Matlab.</li>
       <li>Barber (2010); Anderson (2005).</li>
-      <li><a href="https://micro.stanford.edu/~caiwei/me340/">Notes</a> • <a href="/file/teaching/notes/elasticity_notes.pdf">consolidated PDF</a>.</li>
+      <li><a href="/file/teaching/notes/elasticity_notes.pdf">consolidated study notes</a>.</li>
     </ul>
   </div>
-  <div>
-<svg class="diagram" viewBox="0 0 340 130" width="340" height="130" aria-hidden="true">
-  <path d="M20,55 C35,25 75,15 115,35 C145,50 165,70 150,95 C130,115 85,120 45,95 C20,75 10,65 20,55 Z"
-        fill="rgba(140,21,21,0.10)" stroke="#8C1515" stroke-width="2"/>
-  <circle cx="55" cy="58" r="2.5" fill="#4D4F53"/>
-  <circle cx="85" cy="48" r="2.5" fill="#4D4F53"/>
-  <circle cx="115" cy="58" r="2.5" fill="#4D4F53"/>
-  <circle cx="95" cy="78" r="2.5" fill="#4D4F53"/>
-  <circle cx="65" cy="72" r="2.5" fill="#4D4F53"/>
-  <text x="70" y="18" font-size="11" fill="rgba(0,0,0,0.75)">reference Ω₀</text>
-  <path d="M205,50 C220,20 260,10 300,30 C330,45 350,65 335,90 C315,110 270,115 230,90 C205,70 195,60 205,50 Z"
-        fill="rgba(23,94,84,0.12)" stroke="#175E54" stroke-width="2" stroke-dasharray="5 3"/>
-  <line x1="255" y1="62" x2="275" y2="52" stroke="#175E54" stroke-width="2" marker-end="url(#arr)"/>
-  <line x1="285" y1="58" x2="305" y2="48" stroke="#175E54" stroke-width="2" marker-end="url(#arr)"/>
-  <text x="245" y="18" font-size="11" fill="rgba(0,0,0,0.75)">deformed Ω</text>
-  <text x="285" y="72" font-size="11" fill="#175E54">u(x)</text>
-  <line x1="165" y1="58" x2="185" y2="58" stroke="#4D4F53" stroke-width="2" marker-end="url(#arr)"/>
-  <text x="160" y="50" font-size="10" fill="rgba(0,0,0,0.75)">load</text>
-  <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-    <path d="M0,0 L6,3 L0,6 Z" fill="#4D4F53"/></marker></defs>
-</svg><div class="figcap">BVP → 2D φ / 3D G → stress, flow, fracture</div></div>
+  <div><div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 420 200" aria-hidden="true">
+  <path d="M30,95 C45,55 90,40 135,58 C165,70 180,95 168,125 C145,155 95,162 55,138 C30,120 20,108 30,95 Z"
+        fill="rgba(140,21,21,0.10)" stroke="#8C1515" stroke-width="2.5"/>
+  <circle cx="95" cy="88" r="4" fill="#8C1515"/>
+  <text x="88" y="78" font-size="13" fill="#8C1515" font-weight="600">X</text>
+  <text x="70" y="28" font-size="13" fill="rgba(0,0,0,0.75)">reference Ω₀</text>
+  <line x1="195" y1="95" x2="225" y2="95" stroke="#4D4F53" stroke-width="2" marker-end="url(#arr-cont)"/>
+  <text x="200" y="88" font-size="12" fill="#4D4F53">deformation</text>
+  <path d="M245,88 C260,48 305,33 350,51 C380,63 395,88 383,118 C360,148 310,155 270,131 C245,113 235,101 245,88 Z"
+        fill="rgba(23,94,84,0.12)" stroke="#175E54" stroke-width="2.5"/>
+  <circle cx="310" cy="81" r="4" fill="#175E54"/>
+  <text x="318" y="76" font-size="13" fill="#175E54" font-weight="600">x</text>
+  <line x1="95" y1="88" x2="310" y2="81" stroke="#175E54" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrG-cont)"/>
+  <text x="188" y="72" font-size="13" fill="#175E54">u(X)</text>
+  <text x="285" y="28" font-size="13" fill="rgba(0,0,0,0.75)">deformed Ω</text>
+  
+  <defs>
+    <marker id="arr-cont" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#4D4F53"/>
+    </marker>
+    <marker id="arrR-cont" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#8C1515"/>
+    </marker>
+    <marker id="arrG-cont" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#175E54"/>
+    </marker>
+  </defs>
+</svg><div class="figcap">BVP → 2D φ / 3D G → stress, flow, fracture</div></div></div>
 </div></section>
 <section class="center-slide"><div class="slide-title">Three-part course structure</div>
 
 <div class="flow-row">
   <div class="fbox">Part I<br>Elasticity<br>σ, u</div><span class="arrow">→</span>
   <div class="gbox">Part II<br>Plasticity<br>εᵖ, f=0</div><span class="arrow">→</span>
-  <div class="kbox">Part III<br>Fracture<br>K_I, J</div>
+  <div class="kbox">Part III<br>Fracture<br>K<sub>I</sub>, J</div>
 </div>
 <div class="flow-row">
   <div class="fbox" style="min-width:11em;">Applications: contact, vessels, fatigue</div>
 </div>
-<div class="cols-33" style="margin-top:0.75em;font-size:0.72em;">
+<div class="cols-33" style="margin-top:0.55em;font-size:0.65em;">
   <div><strong>I.</strong> stress, strain, equilibrium</div>
   <div><strong>II.</strong> yield, flow, hardening</div>
   <div><strong>III.</strong> crack-tip fields, energy release</div>
 </div>
-<p style="margin-top:0.75em;font-size:0.72em;"><em>Core idea:</em> well-posed BVP → elastic solution → plasticity if f&gt;0 → fracture if cracks grow.</p>
+<p style="margin-top:0.55em;font-size:0.65em;"><em>Core idea:</em> well-posed BVP → elastic solution → plasticity if f&gt;0 → fracture if cracks grow.</p>
 </section>
 <section><div class="slide-title">Outline</div>
 <div class="toc-list">
@@ -83,28 +91,7 @@
 <p style="font-size:0.65em;margin-top:1em;">Use ← → keys, swipe, or scroll to navigate.</p>
 </section>
 <section><div class="slide-title">Continuum body: reference and deformed configurations</div>
-<div class="cols">
-  <div>
-<svg class="diagram" viewBox="0 0 340 130" width="300" height="130" aria-hidden="true">
-  <path d="M20,55 C35,25 75,15 115,35 C145,50 165,70 150,95 C130,115 85,120 45,95 C20,75 10,65 20,55 Z"
-        fill="rgba(140,21,21,0.10)" stroke="#8C1515" stroke-width="2"/>
-  <circle cx="55" cy="58" r="2.5" fill="#4D4F53"/>
-  <circle cx="85" cy="48" r="2.5" fill="#4D4F53"/>
-  <circle cx="115" cy="58" r="2.5" fill="#4D4F53"/>
-  <circle cx="95" cy="78" r="2.5" fill="#4D4F53"/>
-  <circle cx="65" cy="72" r="2.5" fill="#4D4F53"/>
-  <text x="70" y="18" font-size="11" fill="rgba(0,0,0,0.75)">reference Ω₀</text>
-  <path d="M205,50 C220,20 260,10 300,30 C330,45 350,65 335,90 C315,110 270,115 230,90 C205,70 195,60 205,50 Z"
-        fill="rgba(23,94,84,0.12)" stroke="#175E54" stroke-width="2" stroke-dasharray="5 3"/>
-  <line x1="255" y1="62" x2="275" y2="52" stroke="#175E54" stroke-width="2" marker-end="url(#arr)"/>
-  <line x1="285" y1="58" x2="305" y2="48" stroke="#175E54" stroke-width="2" marker-end="url(#arr)"/>
-  <text x="245" y="18" font-size="11" fill="rgba(0,0,0,0.75)">deformed Ω</text>
-  <text x="285" y="72" font-size="11" fill="#175E54">u(x)</text>
-  <line x1="165" y1="58" x2="185" y2="58" stroke="#4D4F53" stroke-width="2" marker-end="url(#arr)"/>
-  <text x="160" y="50" font-size="10" fill="rgba(0,0,0,0.75)">load</text>
-  <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-    <path d="M0,0 L6,3 L0,6 Z" fill="#4D4F53"/></marker></defs>
-</svg></div>
+<div class="cols cols-text-wide">
   <div>
     <ul>
       <li>Ω₀: reference configuration; Ω: deformed configuration.</li>
@@ -114,9 +101,38 @@
     </ul>
     <div class="lec-badge">Lec.&nbsp;1 [Introduction]</div>
   </div>
+  <div><div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 420 200" aria-hidden="true">
+  <path d="M30,95 C45,55 90,40 135,58 C165,70 180,95 168,125 C145,155 95,162 55,138 C30,120 20,108 30,95 Z"
+        fill="rgba(140,21,21,0.10)" stroke="#8C1515" stroke-width="2.5"/>
+  <circle cx="95" cy="88" r="4" fill="#8C1515"/>
+  <text x="88" y="78" font-size="13" fill="#8C1515" font-weight="600">X</text>
+  <text x="70" y="28" font-size="13" fill="rgba(0,0,0,0.75)">reference Ω₀</text>
+  <line x1="195" y1="95" x2="225" y2="95" stroke="#4D4F53" stroke-width="2" marker-end="url(#arr-cont)"/>
+  <text x="200" y="88" font-size="12" fill="#4D4F53">deformation</text>
+  <path d="M245,88 C260,48 305,33 350,51 C380,63 395,88 383,118 C360,148 310,155 270,131 C245,113 235,101 245,88 Z"
+        fill="rgba(23,94,84,0.12)" stroke="#175E54" stroke-width="2.5"/>
+  <circle cx="310" cy="81" r="4" fill="#175E54"/>
+  <text x="318" y="76" font-size="13" fill="#175E54" font-weight="600">x</text>
+  <line x1="95" y1="88" x2="310" y2="81" stroke="#175E54" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrG-cont)"/>
+  <text x="188" y="72" font-size="13" fill="#175E54">u(X)</text>
+  <text x="285" y="28" font-size="13" fill="rgba(0,0,0,0.75)">deformed Ω</text>
+  
+  <defs>
+    <marker id="arr-cont" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#4D4F53"/>
+    </marker>
+    <marker id="arrR-cont" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#8C1515"/>
+    </marker>
+    <marker id="arrG-cont" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#175E54"/>
+    </marker>
+  </defs>
+</svg><div class="figcap">material point X maps to x = X + u(X)</div></div></div>
 </div></section>
 <section><div class="slide-title">Stress and strain</div>
-<div class="cols">
+<div class="cols cols-text-wide">
   <div>
     <p>\[ \sigma_{ij}=\sigma_{ji},\qquad \varepsilon_{ij}=\tfrac{1}{2}\!\left(\frac{\partial u_i}{\partial x_j}+\frac{\partial u_j}{\partial x_i}\right). \]</p>
     <ul>
@@ -126,45 +142,72 @@
     </ul>
     <div class="lec-badge">Lec.&nbsp;1–2 [Introduction, Tensors]</div>
   </div>
-  <div>
-<svg class="diagram" viewBox="0 0 180 150" width="180" height="150" aria-hidden="true">
-  <rect x="30" y="35" width="70" height="70" fill="rgba(140,21,21,0.08)" stroke="#8C1515" stroke-width="2"/>
-  <line x1="30" y1="105" x2="55" y2="130" stroke="#4D4F53" marker-end="url(#arr)"/>
-  <line x1="30" y1="35" x2="55" y2="10" stroke="#4D4F53" marker-end="url(#arr)"/>
-  <text x="58" y="128" font-size="11">x₁</text><text x="58" y="14" font-size="11">x₂</text>
-  <line x1="100" y1="70" x2="130" y2="70" stroke="#175E54" stroke-width="2"/>
-  <text x="134" y="74" font-size="11" fill="#175E54">n</text>
-  <line x1="130" y1="70" x2="130" y2="35" stroke="#8C1515" stroke-width="2.5" marker-end="url(#arrR)"/>
-  <text x="136" y="38" font-size="10">t = σ·n</text>
-  <defs><marker id="arrR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-    <path d="M0,0 L6,3 L0,6 Z" fill="#8C1515"/></marker></defs>
-</svg><div class="figcap">Cauchy cube; traction t = σ·n on a cut plane</div></div>
+  <div><div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 280 220" aria-hidden="true">
+  <rect x="55" y="55" width="100" height="100" fill="rgba(140,21,21,0.08)" stroke="#8C1515" stroke-width="2"/>
+  <line x1="55" y1="155" x2="30" y2="180" stroke="#4D4F53" stroke-width="1.5" marker-end="url(#arr-stress)"/>
+  <line x1="55" y1="55" x2="30" y2="30" stroke="#4D4F53" stroke-width="1.5" marker-end="url(#arr-stress)"/>
+  <text x="18" y="188" font-size="13">x₁</text>
+  <text x="18" y="28" font-size="13">x₂</text>
+  <line x1="155" y1="105" x2="195" y2="105" stroke="#175E54" stroke-width="2.5"/>
+  <text x="200" y="110" font-size="14" fill="#175E54" font-weight="600">n</text>
+  <line x1="155" y1="55" x2="155" y2="155" stroke="#4D4F53" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="128" y="48" font-size="11" fill="#4D4F53">cut plane</text>
+  <line x1="155" y1="105" x2="155" y2="55" stroke="#8C1515" stroke-width="3" marker-end="url(#arrR-stress)"/>
+  <text x="162" y="72" font-size="13" fill="#8C1515" font-weight="600">t</text>
+  <text x="95" y="215" font-size="12" fill="rgba(0,0,0,0.7)">tᵢ = σᵢⱼ nⱼ on surface S</text>
+  
+  <defs>
+    <marker id="arr-stress" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#4D4F53"/>
+    </marker>
+    <marker id="arrR-stress" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#8C1515"/>
+    </marker>
+    <marker id="arrG-stress" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#175E54"/>
+    </marker>
+  </defs>
+</svg><div class="figcap">Cauchy cube; traction <strong>t</strong> = σ·<strong>n</strong> on a cut plane</div></div></div>
 </div></section>
 <section><div class="slide-title">Hooke's law and elastic energy</div>
-<div class="cols">
+<div class="cols cols-text-wide">
   <div>
     <p>\[ \sigma_{ij}=C_{ijkl}\,\varepsilon_{kl}, \qquad U=\tfrac{1}{2}\int_V \sigma_{ij}\,\varepsilon_{ij}\,\mathrm{d}V. \]</p>
     <ul>
       <li>Isotropic: ε<sub>ij</sub> = (1+ν)/E σ<sub>ij</sub> − ν/E σ<sub>kk</sub> δ<sub>ij</sub>.</li>
       <li>E, ν, Lamé λ, μ; positive-definite ℂ.</li>
-      <li>Stored energy = area under linear σ–ε law.</li>
+      <li>1D: shaded area = strain-energy density u = ½σε.</li>
     </ul>
     <div class="lec-badge">Lec.&nbsp;3 [Hooke's Law]</div>, <div class="lec-badge">Lec.&nbsp;4 [Fundamental Equations]</div>
   </div>
-  <div>
-<svg class="diagram" viewBox="0 0 170 140" width="170" height="140" aria-hidden="true">
-  <line x1="20" y1="120" x2="150" y2="120" stroke="#4D4F53" marker-end="url(#arr)"/>
-  <line x1="20" y1="120" x2="20" y2="20" stroke="#4D4F53" marker-end="url(#arr)"/>
-  <text x="145" y="135" font-size="11">ε</text><text x="8" y="24" font-size="11">σ</text>
-  <line x1="20" y1="120" x2="130" y2="35" stroke="#8C1515" stroke-width="3"/>
-  <polygon points="20,120 95,58 95,120" fill="rgba(140,21,21,0.15)"/>
-  <line x1="95" y1="120" x2="95" y2="58" stroke="#4D4F53" stroke-dasharray="4 3"/>
-  <text x="52" y="105" font-size="11">U</text>
-  <text x="72" y="48" font-size="11">ℂ</text>
-</svg><div class="figcap">shaded area = strain-energy density</div></div>
+  <div><div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 260 210" aria-hidden="true">
+  <line x1="35" y1="175" x2="235" y2="175" stroke="#4D4F53" stroke-width="1.5" marker-end="url(#arr-hooke)"/>
+  <line x1="35" y1="175" x2="35" y2="25" stroke="#4D4F53" stroke-width="1.5" marker-end="url(#arr-hooke)"/>
+  <text x="228" y="195" font-size="14">ε</text>
+  <text x="18" y="32" font-size="14">σ</text>
+  <line x1="35" y1="175" x2="205" y2="45" stroke="#8C1515" stroke-width="3"/>
+  <polygon points="35,175 120,95 120,175" fill="rgba(140,21,21,0.18)"/>
+  <line x1="120" y1="175" x2="120" y2="95" stroke="#4D4F53" stroke-dasharray="5 4"/>
+  <text x="62" y="155" font-size="14" fill="#8C1515">u</text>
+  <text x="130" y="58" font-size="13" fill="#4D4F53">slope E</text>
+  
+  <defs>
+    <marker id="arr-hooke" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#4D4F53"/>
+    </marker>
+    <marker id="arrR-hooke" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#8C1515"/>
+    </marker>
+    <marker id="arrG-hooke" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#175E54"/>
+    </marker>
+  </defs>
+</svg><div class="figcap">linear σ–ε law; shaded area = strain-energy density u</div></div></div>
 </div></section>
 <section><div class="slide-title">Fundamental boundary-value problem</div>
-<div class="cols">
+<div class="cols cols-text-wide">
   <div>
     <p>\[ \boldsymbol{\varepsilon}=\tfrac{1}{2}(\nabla\mathbf{u}+\nabla\mathbf{u}^{\top}),\ \boldsymbol{\sigma}=\mathbb{C}:\boldsymbol{\varepsilon},\ \nabla\!\cdot\!\boldsymbol{\sigma}+\mathbf{f}=\mathbf{0}\ \text{in }V. \]</p>
     <ul>
@@ -173,19 +216,39 @@
     </ul>
     <div class="lec-badge">Lec.&nbsp;4 [Fundamental Equations]</div>
   </div>
-  <div>
-<svg class="diagram" viewBox="0 0 190 150" width="190" height="150" aria-hidden="true">
-  <path d="M25,75 C45,35 95,25 135,55 C160,70 165,95 140,115 C100,135 55,125 30,95 C15,80 15,85 25,75 Z"
-        fill="rgba(140,21,21,0.10)" stroke="#8C1515" stroke-width="2"/>
-  <line x1="25" y1="75" x2="25" y2="95" stroke="#4D4F53" stroke-width="3"/>
-  <text x="5" y="88" font-size="10">S_u</text>
-  <line x1="95" y1="35" x2="95" y2="10" stroke="#8C1515" stroke-width="2.5" marker-end="url(#arrR)"/>
-  <line x1="125" y1="45" x2="155" y2="45" stroke="#8C1515" stroke-width="2.5" marker-end="url(#arrR)"/>
-  <text x="88" y="8" font-size="10">t</text><text x="158" y="48" font-size="10">S_t</text>
-</svg><div class="figcap">body V, boundary ∂V = S<sub>u</sub> ∪ S<sub>t</sub></div></div>
+  <div><div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 280 220" aria-hidden="true">
+  <path d="M40,110 C55,55 120,40 185,70 C220,85 230,120 205,150 C165,185 95,180 55,145 C25,120 20,125 40,110 Z"
+        fill="rgba(140,21,21,0.10)" stroke="#8C1515" stroke-width="2.5"/>
+  <text x="115" y="108" font-size="16" fill="rgba(0,0,0,0.55)">V</text>
+  <line x1="40" y1="110" x2="40" y2="145" stroke="#4D4F53" stroke-width="4"/>
+  <line x1="32" y1="118" x2="48" y2="134" stroke="#4D4F53" stroke-width="2"/>
+  <line x1="48" y1="118" x2="32" y2="134" stroke="#4D4F53" stroke-width="2"/>
+  <text x="8" y="132" font-size="13" font-weight="600">S<tspan baseline-shift="sub" font-size="10">u</tspan></text>
+  <text x="52" y="162" font-size="11" fill="#4D4F53">u = u₀</text>
+  <path d="M120,55 C150,48 175,52 195,68" fill="none" stroke="#175E54" stroke-width="3"/>
+  <line x1="135" y1="50" x2="135" y2="22" stroke="#8C1515" stroke-width="2.5" marker-end="url(#arrR-bvp)"/>
+  <line x1="165" y1="54" x2="165" y2="26" stroke="#8C1515" stroke-width="2.5" marker-end="url(#arrR-bvp)"/>
+  <line x1="195" y1="62" x2="195" y2="34" stroke="#8C1515" stroke-width="2.5" marker-end="url(#arrR-bvp)"/>
+  <text x="148" y="18" font-size="13" fill="#8C1515" font-weight="600">t</text>
+  <text x="200" y="78" font-size="13" font-weight="600">S<tspan baseline-shift="sub" font-size="10">t</tspan></text>
+  <text x="70" y="205" font-size="12" fill="rgba(0,0,0,0.7)">∂V = S<tspan baseline-shift="sub" font-size="9">u</tspan> ∪ S<tspan baseline-shift="sub" font-size="9">t</tspan></text>
+  
+  <defs>
+    <marker id="arr-bvp" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#4D4F53"/>
+    </marker>
+    <marker id="arrR-bvp" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#8C1515"/>
+    </marker>
+    <marker id="arrG-bvp" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#175E54"/>
+    </marker>
+  </defs>
+</svg><div class="figcap">body V; displacement BC on S<sub>u</sub>, traction BC on S<sub>t</sub></div></div></div>
 </div></section>
 <section><div class="slide-title">Elastic rod (1D building block)</div>
-<div class="cols">
+<div class="cols cols-text-wide">
   <div>
     <p>\[ \varepsilon=\frac{\mathrm{d} u}{\mathrm{d} x},\qquad N=EA\,\varepsilon,\qquad \frac{\mathrm{d} N}{\mathrm{d} x}+f=0. \]</p>
     <ul>
@@ -195,19 +258,35 @@
     </ul>
     <div class="lec-badge">Lec.&nbsp;4–5 [Fund. Eqs., 2D Elasticity]</div>
   </div>
-  <div>
-<svg class="diagram" viewBox="0 0 210 90" width="210" height="90" aria-hidden="true">
-  <rect x="10" y="25" width="160" height="28" fill="rgba(140,21,21,0.10)" stroke="#4D4F53"/>
-  <rect x="10" y="25" width="8" height="28" fill="url(#hatch)"/>
-  <line x1="170" y1="39" x2="200" y2="39" stroke="#8C1515" stroke-width="2.5" marker-end="url(#arrR)"/>
-  <text x="203" y="43" font-size="10">N</text>
-  <text x="90" y="70" font-size="10">x</text>
-  <defs><pattern id="hatch" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)">
-    <line x1="0" y1="0" x2="0" y2="4" stroke="#4D4F53" stroke-width="1.5"/></pattern></defs>
-</svg><div class="figcap">fixed end + axial load ⇒ extension u(x)</div></div>
+  <div><div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 320 140" aria-hidden="true">
+  <rect x="25" y="52" width="200" height="32" fill="rgba(140,21,21,0.10)" stroke="#4D4F53" stroke-width="2"/>
+  <rect x="25" y="52" width="12" height="32" fill="url(#hatch-rod)"/>
+  <line x1="225" y1="68" x2="275" y2="68" stroke="#8C1515" stroke-width="3" marker-end="url(#arrR-rod)"/>
+  <text x="280" y="73" font-size="14" fill="#8C1515" font-weight="600">N</text>
+  <line x1="25" y1="95" x2="225" y2="95" stroke="#4D4F53" stroke-width="1.5" marker-end="url(#arr-rod)"/>
+  <text x="118" y="112" font-size="14">x</text>
+  <path d="M225,52 L238,46 L238,90 L225,84 Z" fill="rgba(23,94,84,0.15)" stroke="#175E54" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <line x1="238" y1="68" x2="258" y2="68" stroke="#175E54" stroke-width="2" marker-end="url(#arrG-rod)"/>
+  <text x="262" y="73" font-size="13" fill="#175E54">u(x)</text>
+  <defs>
+    <pattern id="hatch-rod" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="5" stroke="#4D4F53" stroke-width="2"/>
+    </pattern>
+    <marker id="arr-rod" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#4D4F53"/>
+    </marker>
+    <marker id="arrR-rod" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#8C1515"/>
+    </marker>
+    <marker id="arrG-rod" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#175E54"/>
+    </marker>
+  </defs>
+</svg><div class="figcap">fixed end + axial load N ⇒ extension u(x)</div></div></div>
 </div></section>
 <section><div class="slide-title">2D formulations</div>
-<div class="cols">
+<div class="cols cols-text-wide">
   <div>
     <ul>
       <li><strong>Plane strain:</strong> ε₃₃ = ε₁₃ = ε₂₃ = 0 (thick body).</li>
@@ -217,13 +296,21 @@
     </ul>
     <div class="lec-badge">Lec.&nbsp;5 [2D Elasticity]</div>
   </div>
-  <div style="font-size:0.72em;">
-    <p><strong>thin plate</strong> → plane stress</p>
-    <p><strong>long prism</strong> → plane strain</p>
-  </div>
+  <div><div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 300 200" aria-hidden="true">
+  <rect x="30" y="70" width="110" height="8" fill="rgba(140,21,21,0.15)" stroke="#8C1515" stroke-width="2"/>
+  <text x="52" y="58" font-size="13" font-weight="600">thin plate</text>
+  <text x="42" y="105" font-size="12" fill="#4D4F53">plane stress</text>
+  <text x="42" y="122" font-size="11" fill="#4D4F53">σ₃₃ = 0</text>
+  <rect x="170" y="45" width="28" height="110" fill="rgba(23,94,84,0.12)" stroke="#175E54" stroke-width="2"/>
+  <text x="155" y="38" font-size="13" font-weight="600">long prism</text>
+  <text x="205" y="105" font-size="12" fill="#4D4F53">plane strain</text>
+  <text x="205" y="122" font-size="11" fill="#4D4F53">ε₃₃ = 0</text>
+  <text x="95" y="175" font-size="12" fill="rgba(0,0,0,0.65)">2D reduction → Airy φ(x,y)</text>
+</svg><div class="figcap">thin plate → plane stress; long prism → plane strain</div></div></div>
 </div></section>
 <section><div class="slide-title">Classic 2D solution routes</div>
-<div class="cols">
+<div class="cols cols-text-wide">
   <div>
     <ul>
       <li><strong>Rectangular beam</strong> (Lec. 7): polynomial Airy + BC matching.</li>
@@ -232,12 +319,30 @@
       <li><strong>Contact</strong> (Lec. 10): unknown contact patch and pressure.</li>
     </ul>
   </div>
-  <div style="font-size:0.72em;">
-    <p>half space (Lec. 9) • cantilever beam (Lec. 7)</p>
-  </div>
+  <div><div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 300 200" aria-hidden="true">
+  <rect x="25" y="95" width="115" height="14" fill="rgba(140,21,21,0.12)" stroke="#4D4F53"/>
+  <rect x="25" y="95" width="10" height="14" fill="url(#hatch-c2d)"/>
+  <line x1="140" y1="88" x2="140" y2="55" stroke="#8C1515" stroke-width="2.5" marker-end="url(#arrR-c2d)"/>
+  <text x="145" y="62" font-size="12">P</text>
+  <text x="55" y="130" font-size="12">cantilever (Lec. 7)</text>
+  <line x1="175" y1="165" x2="275" y2="165" stroke="#4D4F53" stroke-width="2"/>
+  <line x1="225" y1="165" x2="225" y2="55" stroke="#8C1515" stroke-width="2.5" marker-end="url(#arrR-c2d)"/>
+  <text x="230" y="50" font-size="12">P</text>
+  <path d="M200,165 Q225,130 250,165" fill="none" stroke="#175E54" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="178" y="188" font-size="12">half space (Lec. 9)</text>
+  <defs>
+    <pattern id="hatch-c2d" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="4" stroke="#4D4F53" stroke-width="1.5"/>
+    </pattern>
+    <marker id="arrR-c2d" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#8C1515"/>
+    </marker>
+  </defs>
+</svg><div class="figcap">cantilever beam (Lec. 7) and Flamant half space (Lec. 9)</div></div></div>
 </div></section>
 <section><div class="slide-title">Polar coordinates and wedge problems</div>
-<div class="cols">
+<div class="cols cols-text-wide">
   <div>
     <p>\[ \nabla^4\phi=0 \ \Rightarrow\ \phi(r,\theta)\ \text{with}\ r,\theta,\ln r,\ \theta\ln r\ \text{modes}. \]</p>
     <ul>
@@ -247,10 +352,27 @@
     </ul>
     <div class="lec-badge">Lec.&nbsp;11–12 [Polar Coordinates, Wedge and Notch]</div>
   </div>
-  <div style="font-size:0.72em;">polar / annulus • wedge 2α</div>
+  <div><div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 300 200" aria-hidden="true">
+  <circle cx="85" cy="105" r="55" fill="none" stroke="#8C1515" stroke-width="2.5"/>
+  <circle cx="85" cy="105" r="28" fill="rgba(140,21,21,0.08)" stroke="#8C1515" stroke-width="2"/>
+  <line x1="85" y1="105" x2="140" y2="105" stroke="#4D4F53" stroke-width="1.5" marker-end="url(#arr-polar)"/>
+  <line x1="85" y1="105" x2="85" y2="50" stroke="#4D4F53" stroke-width="1.5" marker-end="url(#arr-polar)"/>
+  <text x="125" y="100" font-size="12">r</text>
+  <text x="88" y="58" font-size="12">θ</text>
+  <text x="48" y="188" font-size="12">annulus / hole</text>
+  <line x1="215" y1="155" x2="275" y2="95" stroke="#175E54" stroke-width="2.5"/>
+  <line x1="215" y1="155" x2="275" y2="155" stroke="#175E54" stroke-width="2.5"/>
+  <path d="M275,95 A65,65 0 0,1 275,155" fill="none" stroke="#8C1515" stroke-width="2"/>
+  <text x="248" y="88" font-size="12">2α</text>
+  <text x="195" y="188" font-size="12">wedge / notch (Lec. 13)</text>
+  <marker id="arr-polar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#4D4F53"/>
+  </marker>
+</svg><div class="figcap">polar annulus / hole and wedge notch with angle 2α</div></div></div>
 </div></section>
 <section><div class="slide-title">Green's function approach (3D)</div>
-<div class="cols">
+<div class="cols cols-text-wide">
   <div>
     <p>\[ \nabla\!\cdot\!\boldsymbol{\sigma}+\mathbf{f}=\mathbf{0},\quad \mathbf{u}(\mathbf{x})=\int G(\mathbf{x},\boldsymbol{\xi})\,\mathbf{f}(\boldsymbol{\xi})\,\mathrm{d}V_\xi. \]</p>
     <ul>
@@ -258,12 +380,30 @@
       <li>Half-space images (Lec. 16): traction-free surface.</li>
       <li>Superpose for defects and boundaries.</li>
     </ul>
-    <div class="lec-badge">Lec.&nbsp;9–10 [Half Space, Contact]</div>
+    <div class="lec-badge">Lec.&nbsp;16–17 [Half Space, Kelvin Solution]</div>
   </div>
-  <div style="font-size:0.72em;">Kelvin field + surface image</div>
+  <div><div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 300 220" aria-hidden="true">
+  <line x1="20" y1="45" x2="280" y2="45" stroke="#4D4F53" stroke-width="2.5"/>
+  <text x="8" y="40" font-size="12">free surface</text>
+  <line x1="150" y1="45" x2="150" y2="175" stroke="#8C1515" stroke-width="3" marker-end="url(#arrR-kelvin)"/>
+  <text x="158" y="115" font-size="14" fill="#8C1515" font-weight="600">F</text>
+  <ellipse cx="150" cy="115" rx="70" ry="45" fill="none" stroke="#175E54" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <ellipse cx="150" cy="115" rx="40" ry="25" fill="none" stroke="#175E54" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <line x1="150" y1="175" x2="150" y2="205" stroke="#175E54" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrG-kelvin)"/>
+  <text x="158" y="200" font-size="12" fill="#175E54">image F′</text>
+  <text x="55" y="115" font-size="12" fill="#4D4F53">Kelvin field</text>
+  <text x="42" y="210" font-size="11" fill="rgba(0,0,0,0.65)">half-space: superpose image below surface</text>
+  <marker id="arrR-kelvin" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#8C1515"/>
+  </marker>
+  <marker id="arrG-kelvin" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#175E54"/>
+  </marker>
+</svg><div class="figcap">Kelvin point force F + image F′ below traction-free surface</div></div></div>
 </div></section>
 <section><div class="slide-title">Dislocations and defect fields</div>
-<div class="cols">
+<div class="cols cols-text-wide">
   <div>
     <ul>
       <li>Cut the lattice; insert <strong>b</strong> (Burgers vector) across the slip plane.</li>
@@ -274,10 +414,31 @@
     </ul>
     <div class="lec-badge">Lec.&nbsp;notes [Dislocations (extended notes)]</div>
   </div>
-  <div style="font-size:0.72em;">Volterra cut + Burgers <strong>b</strong> + far-field σ<sup>∞</sup></div>
+  <div><div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 300 220" aria-hidden="true">
+  <line x1="30" y1="55" x2="270" y2="55" stroke="#4D4F53" stroke-width="1.5"/>
+  <line x1="30" y1="85" x2="270" y2="85" stroke="#4D4F53" stroke-width="1.5"/>
+  <line x1="30" y1="115" x2="270" y2="115" stroke="#4D4F53" stroke-width="1.5"/>
+  <line x1="30" y1="145" x2="270" y2="145" stroke="#4D4F53" stroke-width="1.5"/>
+  <line x1="30" y1="175" x2="270" y2="175" stroke="#4D4F53" stroke-width="1.5"/>
+  <line x1="155" y1="55" x2="155" y2="175" stroke="#8C1515" stroke-width="2" stroke-dasharray="6 4"/>
+  <line x1="155" y1="85" x2="195" y2="85" stroke="#175E54" stroke-width="3" marker-end="url(#arrG-disl)"/>
+  <text x="200" y="90" font-size="14" fill="#175E54" font-weight="600">b</text>
+  <text x="158" y="48" font-size="11" fill="#8C1515">cut</text>
+  <path d="M155,55 L175,35 L175,175 L155,175 Z" fill="rgba(140,21,21,0.12)" stroke="#8C1515" stroke-width="1.5"/>
+  <text x="178" y="108" font-size="11" fill="#8C1515">extra half-plane</text>
+  <line x1="30" y1="200" x2="270" y2="200" stroke="#4D4F53" stroke-width="1" marker-end="url(#arr-disl)"/>
+  <text x="120" y="215" font-size="11" fill="#4D4F53">σ<tspan baseline-shift="super" font-size="9">∞</tspan> (Peach–Köhler)</text>
+  <marker id="arr-disl" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#4D4F53"/>
+  </marker>
+  <marker id="arrG-disl" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#175E54"/>
+  </marker>
+</svg><div class="figcap">Volterra cut, Burgers vector <strong>b</strong>, extra half-plane</div></div></div>
 </div></section>
 <section><div class="slide-title">From elasticity to plasticity</div>
-<div class="cols">
+<div class="cols cols-text-wide">
   <div>
     <ul>
       <li><strong>Elastic:</strong> load removal ⇒ strain returns to zero.</li>
@@ -288,41 +449,52 @@
     </ul>
     <div class="lec-badge">Lec.&nbsp;3 [Hooke's Law]</div>, <div class="lec-badge">Lec.&nbsp;13 [Fund. Eqs. of Plasticity]</div>
   </div>
-  <div>
-<svg class="diagram" viewBox="0 0 190 150" width="190" height="150" aria-hidden="true">
-  <line x1="20" y1="130" x2="170" y2="130" stroke="#4D4F53" marker-end="url(#arr)"/>
-  <line x1="20" y1="130" x2="20" y2="20" stroke="#4D4F53" marker-end="url(#arr)"/>
-  <text x="160" y="145" font-size="10">ε</text><text x="8" y="24" font-size="10">σ</text>
-  <polyline points="20,130 70,35 160,25" fill="none" stroke="#8C1515" stroke-width="2.5"/>
-  <line x1="70" y1="35" x2="95" y2="95" stroke="#175E54" stroke-width="2" stroke-dasharray="5 3"/>
-  <polygon points="20,130 70,35 70,130" fill="rgba(140,21,21,0.12)"/>
-  <polygon points="70,130 160,130 160,25 70,35" fill="rgba(23,94,84,0.12)"/>
-  <line x1="70" y1="130" x2="70" y2="35" stroke="#4D4F53" stroke-dasharray="4 3"/>
-  <text x="38" y="95" font-size="10">elastic</text>
-  <text x="112" y="95" font-size="10">plastic</text>
-  <text x="62" y="28" font-size="10">σ_Y</text>
-</svg><div class="figcap">loading past σ<sub>Y</sub> leaves permanent ε<sup>p</sup> on unload</div></div>
+  <div><div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 280 220" aria-hidden="true">
+  <line x1="35" y1="185" x2="255" y2="185" stroke="#4D4F53" stroke-width="1.5" marker-end="url(#arr-ep)"/>
+  <line x1="35" y1="185" x2="35" y2="25" stroke="#4D4F53" stroke-width="1.5" marker-end="url(#arr-ep)"/>
+  <text x="245" y="205" font-size="14">ε</text>
+  <text x="18" y="32" font-size="14">σ</text>
+  <line x1="35" y1="185" x2="95" y2="55" stroke="#8C1515" stroke-width="2.5"/>
+  <line x1="95" y1="55" x2="210" y2="40" stroke="#8C1515" stroke-width="2.5"/>
+  <line x1="210" y1="40" x2="130" y2="185" stroke="#175E54" stroke-width="2.5" stroke-dasharray="7 5"/>
+  <polygon points="35,185 95,55 95,185" fill="rgba(140,21,21,0.14)"/>
+  <polygon points="95,185 210,185 210,40 95,55" fill="rgba(23,94,84,0.12)"/>
+  <line x1="95" y1="185" x2="95" y2="55" stroke="#4D4F53" stroke-dasharray="4 3"/>
+  <line x1="130" y1="185" x2="130" y2="198" stroke="#175E54" stroke-width="2"/>
+  <text x="108" y="205" font-size="12" fill="#175E54">εᵖ</text>
+  <text x="48" y="130" font-size="12">elastic</text>
+  <text x="155" y="130" font-size="12">plastic</text>
+  <text x="82" y="48" font-size="12">σ<tspan baseline-shift="sub" font-size="10">Y</tspan></text>
+  <marker id="arr-ep" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#4D4F53"/>
+  </marker>
+</svg><div class="figcap">load past σ<sub>Y</sub>, unload elastically → permanent ε<sup>p</sup></div></div></div>
 </div></section>
 <section><div class="slide-title">Yield criteria: von Mises and Tresca</div>
-<div class="cols">
+<div class="cols cols-text-wide">
   <div>
     <p>Deviatoric stress s<sub>ij</sub> = σ<sub>ij</sub> − ⅓σ<sub>kk</sub>δ<sub>ij</sub>.</p>
     <p>\[ J_2=\tfrac{1}{2}s_{ij}s_{ij},\qquad \sigma_{\mathrm{eq}}=\sqrt{3J_2}. \]</p>
     <p><strong>von Mises yield:</strong> \[ f=J_2-k^2\le 0,\qquad k=\frac{\sigma_Y}{\sqrt{3}}. \]</p>
     <p><strong>Tresca yield:</strong> max|σ<sub>i</sub>−σ<sub>j</sub>| = 2k (alternative for metals).</p>
-    <p style="font-size:0.85em;">Plastic flow is insensitive to hydrostatic stress; yielding depends on s<sub>ij</sub>.</p>
+    <p style="font-size:0.9em;">Plastic flow is insensitive to hydrostatic stress; yielding depends on s<sub>ij</sub>.</p>
     <div class="lec-badge">Lec.&nbsp;13–14 [Yield surface / graphical]</div>
   </div>
-  <div>
-<svg class="diagram" viewBox="0 0 170 170" width="170" height="170" aria-hidden="true">
-  <line x1="85" y1="155" x2="85" y2="15" stroke="#4D4F53" marker-end="url(#arr)"/>
-  <line x1="15" y1="85" x2="155" y2="85" stroke="#4D4F53" marker-end="url(#arr)"/>
-  <text x="148" y="98" font-size="10">σ₁</text><text x="88" y="22" font-size="10">σ₂</text>
-  <circle cx="85" cy="85" r="55" fill="none" stroke="#8C1515" stroke-width="2.5"/>
-  <polygon points="85,30 133,55 133,115 85,140 37,115 37,55" fill="none" stroke="#175E54" stroke-width="2" stroke-dasharray="5 3"/>
-  <text x="118" y="48" font-size="10" fill="#8C1515">Mises</text>
-  <text x="28" y="118" font-size="10" fill="#175E54">Tresca</text>
-</svg><div class="figcap">von Mises fits polycrystals (Taylor–Quinney)</div></div>
+  <div><div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 240 240" aria-hidden="true">
+  <line x1="120" y1="215" x2="120" y2="25" stroke="#4D4F53" stroke-width="1.5" marker-end="url(#arr-yield)"/>
+  <line x1="25" y1="120" x2="215" y2="120" stroke="#4D4F53" stroke-width="1.5" marker-end="url(#arr-yield)"/>
+  <text x="205" y="132" font-size="13">σ₁</text>
+  <text x="125" y="38" font-size="13">σ₂</text>
+  <circle cx="120" cy="120" r="75" fill="none" stroke="#8C1515" stroke-width="2.5"/>
+  <polygon points="120,45 178,75 178,165 120,195 62,165 62,75" fill="none" stroke="#175E54" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="155" y="62" font-size="13" fill="#8C1515" font-weight="600">Mises</text>
+  <text x="42" y="168" font-size="13" fill="#175E54" font-weight="600">Tresca</text>
+  <marker id="arr-yield" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#4D4F53"/>
+  </marker>
+</svg><div class="figcap">von Mises circle vs. Tresca hexagon in σ₁–σ₂ plane</div></div></div>
 </div></section>
 <section><div class="slide-title">J₂ associated flow rule</div>
 <div class="cols">
@@ -345,7 +517,7 @@
   </div>
 </div></section>
 <section><div class="slide-title">Fracture: LEFM and energy release</div>
-<div class="cols">
+<div class="cols cols-text-wide">
   <div>
     <ul>
       <li>Slit-like crack: elastic field with r<sup>−1/2</sup> stress singularity at tip.</li>
@@ -355,18 +527,26 @@
     </ul>
     <div class="lec-badge">Lec.&nbsp;22–26 [Slit crack, LEFM, fatigue]</div>
   </div>
-  <div>
-<svg class="diagram" viewBox="0 0 180 170" width="180" height="170" aria-hidden="true">
-  <rect x="20" y="45" width="140" height="80" fill="rgba(140,21,21,0.08)" stroke="rgba(140,21,21,0.35)"/>
-  <ellipse cx="90" cy="85" rx="42" ry="8" fill="none" stroke="#8C1515" stroke-width="2.5"/>
-  <circle cx="48" cy="85" r="3" fill="#8C1515"/><circle cx="132" cy="85" r="3" fill="#8C1515"/>
-  <line x1="48" y1="105" x2="132" y2="105" stroke="#4D4F53" marker-end="url(#arr)" marker-start="url(#arr)"/>
-  <text x="82" y="118" font-size="10">2a</text>
-  <line x1="90" y1="45" x2="90" y2="20" stroke="#8C1515" stroke-width="2" marker-end="url(#arrR)"/>
-  <line x1="90" y1="125" x2="90" y2="150" stroke="#8C1515" stroke-width="2" marker-end="url(#arrR)"/>
-  <text x="96" y="18" font-size="10">σ∞</text>
-  <text x="138" y="72" font-size="10">K_I</text>
-</svg><div class="figcap">center crack 2a, remote tension σ<sup>∞</sup> (Mode I)</div></div>
+  <div><div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 280 220" aria-hidden="true">
+  <rect x="25" y="55" width="230" height="110" fill="rgba(140,21,21,0.06)" stroke="rgba(140,21,21,0.3)" stroke-width="1.5"/>
+  <line x1="65" y1="110" x2="215" y2="110" stroke="#8C1515" stroke-width="3"/>
+  <circle cx="65" cy="110" r="4" fill="#8C1515"/>
+  <circle cx="215" cy="110" r="4" fill="#8C1515"/>
+  <line x1="65" y1="135" x2="215" y2="135" stroke="#4D4F53" stroke-width="1.5" marker-start="url(#arr-crack)" marker-end="url(#arr-crack)"/>
+  <text x="125" y="152" font-size="13">2a</text>
+  <line x1="140" y1="55" x2="140" y2="25" stroke="#8C1515" stroke-width="2.5" marker-end="url(#arrR-crack)"/>
+  <line x1="140" y1="165" x2="140" y2="195" stroke="#8C1515" stroke-width="2.5" marker-end="url(#arrR-crack)"/>
+  <text x="148" y="22" font-size="13" fill="#8C1515">σ∞</text>
+  <circle cx="65" cy="110" r="18" fill="none" stroke="#175E54" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="22" y="95" font-size="12" fill="#175E54">K<tspan baseline-shift="sub" font-size="10">I</tspan> tip</text>
+  <marker id="arr-crack" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#4D4F53"/>
+  </marker>
+  <marker id="arrR-crack" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#8C1515"/>
+  </marker>
+</svg><div class="figcap">center crack 2a in remote tension σ<sup>∞</sup> (Mode I)</div></div></div>
 </div></section>
 <section><div class="slide-title">Standard workflow</div>
 <div class="cols cols-top">
@@ -390,7 +570,7 @@
 </div>
 <div class="example-block"><strong>Benchmark mindset:</strong> Keep an analytic case as a reference when switching to numerics.</div>
 </section>
-<section><div class="slide-title">Lecture map (handouts)</div>
+<section><div class="slide-title">Lecture map</div>
 <div class="cols-33 lecture-map">
   <div>
     <h4>Part I. Elasticity</h4>
@@ -420,7 +600,7 @@
       <li>25. Elastic Plastic Fracture Mechanics</li>
       <li>26. Fatigue</li>
     </ul>
-    <p style="margin-top:0.5em;"><a href="{CAI_ME340}">Cai ME 340 notes</a>; <a href="{ELASTICITY_NOTES}">consolidated PDF</a></p>
+    <p style="margin-top:0.5em;"><a href="/file/teaching/notes/elasticity_notes.pdf">consolidated study notes</a></p>
   </div>
 </div></section>
 <section><div class="slide-title">Takeaways</div>
@@ -428,18 +608,17 @@
   <li><strong>Elasticity:</strong> kinematics + Hooke + equilibrium + BCs; 2D Airy φ, 3D Green's functions.</li>
   <li><strong>Plasticity:</strong> ε = ε<sup>e</sup> + ε<sup>p</sup>; von Mises yield + associated J₂ flow.</li>
   <li><strong>Fracture:</strong> K<sub>I</sub>, 𝒢, and J link elastic fields to crack growth and fatigue.</li>
-  <li>Matlab and analytic benchmarks support each part; see <a href="{CAI_ME340}">ME 340 handouts</a>.</li>
+  <li>Matlab and analytic benchmarks support each part.</li>
 </ol>
 <div class="flow-row" style="margin-top:0.75em;">
   <div class="fbox">Elasticity<br>σ, u</div><span class="arrow">→</span>
   <div class="gbox">Plasticity<br>εᵖ, f=0</div><span class="arrow">→</span>
-  <div class="kbox">Fracture<br>K_I, J</div>
+  <div class="kbox">Fracture<br>K<sub>I</sub>, J</div>
 </div>
 </section>
 <section><div class="slide-title">References</div>
 <ul>
-  <li>W. Cai, <em>ME 340 Elasticity and Inelasticity</em>:
-    <a href="https://micro.stanford.edu/~caiwei/me340/">course page</a>;
+  <li>W. Cai, <em>ME 340 Elasticity and Inelasticity</em> (lecture notes);
     <a href="/file/teaching/notes/elasticity_notes.pdf">consolidated PDF</a>.</li>
   <li>J. R. Barber, <em>Elasticity</em>, 3rd ed., Springer (2010).</li>
   <li>T. L. Anderson, <em>Fracture Mechanics</em>, 3rd ed., Taylor &amp; Francis (2005).</li>

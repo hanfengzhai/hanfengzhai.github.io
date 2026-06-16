@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>Hanfeng Zhai</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <style>
   #post-index.article {
     margin: 0 0 8px;
@@ -108,6 +108,10 @@
   }
 
   @media (max-width: 720px) {
+    #post-index .article-entry {
+      padding-top: calc(14px + env(safe-area-inset-top, 0px));
+    }
+
     .paper-item {
       flex-direction: column;
       align-items: stretch;
