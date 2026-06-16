@@ -364,7 +364,7 @@ SLIDES = [
 </div>""")),
 
     slide("Takeaways", r"""
-<div class="closing-slide">
+<div class="closing-slide-sm">
 <ol class="meta-text">
   <li><strong>Elasticity:</strong> kinematics + Hooke + equilibrium + BCs; 2D Airy \(\phi\), 3D Green's functions.</li>
   <li><strong>Plasticity:</strong> \(\boldsymbol{\varepsilon} = \boldsymbol{\varepsilon}^{e} + \boldsymbol{\varepsilon}^{p}\); von Mises yield + associated \(J_2\) flow.</li>
@@ -380,7 +380,7 @@ SLIDES = [
 """),
 
     slide("References", assemble(r"""
-<div class="closing-slide">
+<div class="closing-slide-sm">
 <ul class="meta-text">
   <li>W. Cai, <em>ME 340 Elasticity and Inelasticity</em> (lecture notes);
     <a href="{ELASTICITY_NOTES}">consolidated PDF</a>.</li>
