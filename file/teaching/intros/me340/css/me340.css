@@ -69,12 +69,12 @@
   align-items: center;
   justify-content: flex-start;
   color: rgba(0, 0, 0, 0.85);
-  padding: 0.55em 1.2em 1em;
+  padding: 1.5em 1.2em 1em;
   background: var(--sandstone);
 }
 
 .reveal .title-slide-body .title-slide-meta {
-  margin: 0 0 0.5em;
+  margin: 0.25em 0 0.5em;
 }
 
 .reveal .title-slide-body .author {
