@@ -78,16 +78,16 @@
 }
 
 .reveal .title-slide-logo {
-  margin: 0.5em 0 0.45em;
+  margin: 0.55em 0 0.5em;
   line-height: 0;
 }
 
 .reveal .title-slide-logo img {
   display: block;
-  height: 36px;
-  max-height: 36px;
+  height: 72px;
+  max-height: 72px;
   width: auto;
-  max-width: 120px;
+  max-width: 200px;
   margin: 0 auto;
   object-fit: contain;
 }
