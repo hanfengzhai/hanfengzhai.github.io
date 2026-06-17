@@ -276,13 +276,17 @@ SLIDES = [
   <div class="slide-content">
     <p>Airy stress function \(\phi(x,y)\), \(\nabla^4\phi=0\):</p>
     <p>\[ \sigma_{xx}=\phi_{,yy},\quad \sigma_{yy}=\phi_{,xx},\quad \sigma_{xy}=-\phi_{,xy}. \]</p>
+    <p><strong>Plane stress</strong> (\(t\ll L\), \(\sigma_{33}=\sigma_{13}=\sigma_{23}=0\)):</p>
+    <p>\[ \varepsilon_{xx}=\tfrac{1}{E}(\sigma_{xx}-\nu\sigma_{yy}),\quad \varepsilon_{yy}=\tfrac{1}{E}(\sigma_{yy}-\nu\sigma_{xx}),\quad \varepsilon_{xy}=\tfrac{1+\nu}{E}\sigma_{xy}. \]</p>
+    <p><strong>Plane strain</strong> (long in \(x_3\), \(\varepsilon_{33}=\varepsilon_{13}=\varepsilon_{23}=0\)):</p>
+    <p>\[ \sigma_{xx}=\tfrac{E}{(1+\nu)(1-2\nu)}\bigl[(1-\nu)\varepsilon_{xx}+\nu\varepsilon_{yy}\bigr],\quad \sigma_{yy}=\tfrac{E}{(1+\nu)(1-2\nu)}\bigl[(1-\nu)\varepsilon_{yy}+\nu\varepsilon_{xx}\bigr],\quad \sigma_{xy}=\tfrac{E}{1+\nu}\varepsilon_{xy}. \]</p>
     """ + sym(
         r"\(\phi\): Airy stress function",
-        r"\(\nabla^4\): biharmonic operator (\(\partial^4/\partial x^4+\cdots\))",
-        r"\(\phi_{,ij}\): \(\partial^2\phi/\partial x_i\partial x_j\)",
+        r"\(\nabla^4\): biharmonic operator",
         r"\(\sigma_{xx},\sigma_{yy},\sigma_{xy}\): in-plane Cauchy stresses",
+        r"\(\varepsilon_{xx},\varepsilon_{yy},\varepsilon_{xy}\): in-plane strains",
+        r"\(E,\nu\): Young's modulus and Poisson's ratio",
         r"\(t,L\): plate thickness and in-plane length scale",
-        r"\(x_3\): out-of-plane coordinate",
     ) + gb("5", "2D Elasticity") + r"""
   </div>
   <div>""" + fig_row(
@@ -393,16 +397,18 @@ SLIDES = [
     slide("Yield criteria: von Mises and Tresca", assemble(r"""
 <div class="cols cols-text-wide">
   <div class="slide-content">
-    <p>\(s_{ij}=\sigma_{ij}-\tfrac{1}{3}\sigma_{kk}\delta_{ij}\); \(J_2=\tfrac{1}{2}s_{ij}s_{ij}\), \(\sigma_{\mathrm{eq}}=\sqrt{3J_2}\).</p>
+    <p><strong>Principal stresses</strong> \(\sigma_1,\sigma_2,\sigma_3\): normal stresses on planes with no shear (\(\tau=0\)); eigenvalues of \(\sigma_{ij}\). Ordering: \(\sigma_1\ge\sigma_2\ge\sigma_3\).</p>
+    <p>Deviatoric stress \(s_{ij}=\sigma_{ij}-\tfrac{1}{3}\sigma_{kk}\delta_{ij}\); \(J_2=\tfrac{1}{2}s_{ij}s_{ij}\), \(\sigma_{\mathrm{eq}}=\sqrt{3J_2}\).</p>
     <p><strong>von Mises:</strong> \(f=J_2-k^2\le 0\), \(k=\sigma_{Y}/\sqrt{3}\).</p>
     <p><strong>Tresca:</strong> \(\max_{i,j}|\sigma_i-\sigma_j| = 2k\).</p>
     """ + sym(
-        r"\(s_{ij}\): deviatoric stress (\(\sigma_{ij}-\tfrac{1}{3}\sigma_{kk}\delta_{ij}\))",
-        r"\(J_2\): second invariant of deviator (\(\tfrac{1}{2}s_{ij}s_{ij}\))",
+        r"\(\sigma_1,\sigma_2,\sigma_3\): principal stresses (eigenvalues of \(\sigma_{ij}\))",
+        r"\(\sigma_{kk}\): mean / hydrostatic stress (\(\sigma_1+\sigma_2+\sigma_3\))",
+        r"\(s_{ij}\): deviatoric stress",
+        r"\(J_2\): second invariant of deviator",
         r"\(\sigma_{\mathrm{eq}}\): von Mises equivalent stress",
         r"\(f\): yield function (\(f\le 0\) admissible)",
         r"\(k,\sigma_Y\): yield strength in shear / tension",
-        r"\(\sigma_i\): principal stresses",
     ) + gb("13–14", "Yield surface / graphical") + r"""
   </div>
   <div>""" + img("fig_yield_surf.png", "Yield surfaces") + r"""</div>
