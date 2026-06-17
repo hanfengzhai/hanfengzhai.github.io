@@ -10,6 +10,7 @@ ME340_CATALOG = "https://explorecourses.stanford.edu/search?view=catalog&filter-
 ME340_CAI_NOTES = "https://micro.stanford.edu/~caiwei/me340/"
 ELASTICITY_NOTES = "/file/teaching/notes/elasticity_notes.pdf"
 INTRO_PDF = "/file/teaching/intros/ME340_Intro.pdf"
+STANFORD_LOGO = "/css/images/site/stanford_logo.png"
 
 # Minimal alt-text only; labels live in slide LaTeX
 
@@ -54,6 +55,7 @@ def assemble(body):
         .replace("{ME340_CAI_NOTES}", ME340_CAI_NOTES)
         .replace("{ELASTICITY_NOTES}", ELASTICITY_NOTES)
         .replace("{INTRO_PDF}", INTRO_PDF)
+        .replace("{STANFORD_LOGO}", STANFORD_LOGO)
     )
 
 
@@ -95,6 +97,7 @@ THREE_PART = r"""
 SLIDES = [
     title_slide(assemble(r"""
 <p class="title-slide-meta">A brief intro • <a href="{ME340_CATALOG}">ME 340</a> • <a href="{INTRO_PDF}">PDF</a></p>
+<div class="title-slide-logo"><img src="{STANFORD_LOGO}" alt="Stanford University" loading="lazy"></div>
 <p class="author"><strong>Hanfeng Zhai</strong></p>
 <p class="institute">Department of Mechanical Engineering, Stanford University</p>
 <p class="date">Winter 2025-26</p>
@@ -272,30 +275,36 @@ SLIDES = [
 </div>""")),
 
     slide("2D formulations", assemble(r"""
-<div class="cols cols-text-wide">
-  <div class="slide-content">
-    <p>Airy stress function \(\phi(x,y)\), \(\nabla^4\phi=0\):</p>
-    <p>\[ \sigma_{xx}=\phi_{,yy},\quad \sigma_{yy}=\phi_{,xx},\quad \sigma_{xy}=-\phi_{,xy}. \]</p>
-    <p><strong>Plane stress</strong> (\(t\ll L\), \(\sigma_{33}=\sigma_{13}=\sigma_{23}=0\)):</p>
-    <p>\[ \varepsilon_{xx}=\tfrac{1}{E}(\sigma_{xx}-\nu\sigma_{yy}),\quad \varepsilon_{yy}=\tfrac{1}{E}(\sigma_{yy}-\nu\sigma_{xx}),\quad \varepsilon_{xy}=\tfrac{1+\nu}{E}\sigma_{xy}. \]</p>
-    <p><strong>Plane strain</strong> (long in \(x_3\), \(\varepsilon_{33}=\varepsilon_{13}=\varepsilon_{23}=0\)):</p>
-    <p>\[ \sigma_{xx}=\tfrac{E}{(1+\nu)(1-2\nu)}\bigl[(1-\nu)\varepsilon_{xx}+\nu\varepsilon_{yy}\bigr],\quad \sigma_{yy}=\tfrac{E}{(1+\nu)(1-2\nu)}\bigl[(1-\nu)\varepsilon_{yy}+\nu\varepsilon_{xx}\bigr],\quad \sigma_{xy}=\tfrac{E}{1+\nu}\varepsilon_{xy}. \]</p>
+<div class="slide-content form-2d-slide">
+  """ + fig_row(
+        fig_cell("fig6a.png", "Thin plate", r"<strong>Plane stress</strong>"),
+        fig_cell("fig6b.png", "Long body", r"<strong>Plane strain</strong>"),
+    ) + r"""
+  <p class="form-2d-lead">Airy stress function \(\phi(x,y)\), \(\nabla^4\phi=0\):</p>
+  <p class="form-2d-eq">\[ \sigma_{xx}=\phi_{,yy},\qquad \sigma_{yy}=\phi_{,xx},\qquad \sigma_{xy}=-\phi_{,xy}. \]</p>
+  <div class="constitutive-cols">
+    <div class="constitutive-block">
+      <p class="constitutive-head"><strong>Plane stress</strong> (\(t\ll L\)): \(\sigma_{33}=\sigma_{13}=\sigma_{23}=0\)</p>
+      <p>\[ \varepsilon_{xx}=\tfrac{1}{E}(\sigma_{xx}-\nu\sigma_{yy}) \]</p>
+      <p>\[ \varepsilon_{yy}=\tfrac{1}{E}(\sigma_{yy}-\nu\sigma_{xx}) \]</p>
+      <p>\[ \varepsilon_{xy}=\tfrac{1+\nu}{E}\sigma_{xy} \]</p>
+    </div>
+    <div class="constitutive-block">
+      <p class="constitutive-head"><strong>Plane strain</strong> (long in \(x_3\)): \(\varepsilon_{33}=\varepsilon_{13}=\varepsilon_{23}=0\)</p>
+      <p>\[ \sigma_{xx}=\lambda(\varepsilon_{xx}+\varepsilon_{yy})+2\mu\varepsilon_{xx} \]</p>
+      <p>\[ \sigma_{yy}=\lambda(\varepsilon_{xx}+\varepsilon_{yy})+2\mu\varepsilon_{yy} \]</p>
+      <p>\[ \sigma_{xy}=2\mu\varepsilon_{xy} \]</p>
+      <p class="meta-text" style="margin-top:0.2em;">\(\lambda=\tfrac{E\nu}{(1+\nu)(1-2\nu)}\), \(\mu=\tfrac{E}{2(1+\nu)}\)</p>
+    </div>
+  </div>
     """ + sym(
         r"\(\phi\): Airy stress function",
-        r"\(\nabla^4\): biharmonic operator",
-        r"\(\sigma_{xx},\sigma_{yy},\sigma_{xy}\): in-plane Cauchy stresses",
-        r"\(\varepsilon_{xx},\varepsilon_{yy},\varepsilon_{xy}\): in-plane strains",
+        r"\(\lambda,\mu\): Lamé constants",
         r"\(E,\nu\): Young's modulus and Poisson's ratio",
         r"\(t,L\): plate thickness and in-plane length scale",
     ) + gb("5", "2D Elasticity") + r"""
-  </div>
-  <div>""" + fig_row(
-        fig_cell("fig6a.png", "Thin plate",
-                 r"<strong>Plane stress</strong>: thin plate, \(t\ll L\)<br>\(\sigma_{33}=\sigma_{13}=\sigma_{23}=0\)"),
-        fig_cell("fig6b.png", "Long body",
-                 r"<strong>Plane strain</strong>: long in \(x_3\)<br>\(\varepsilon_{33}=\varepsilon_{13}=\varepsilon_{23}=0\)"),
-    ) + r"""</div>
-</div>""")),
+</div>
+""")),
 
     slide("Classic 2D solution routes", assemble(r"""
 <div class="slide-content" style="margin-bottom:0.35em;">

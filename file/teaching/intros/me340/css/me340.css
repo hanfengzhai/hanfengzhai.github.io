@@ -77,8 +77,20 @@
   margin: 0.25em 0 0.5em;
 }
 
+.reveal .title-slide-logo {
+  margin: 0.65em 0 0.55em;
+  line-height: 0;
+}
+
+.reveal .title-slide-logo img {
+  display: block;
+  height: 52px;
+  width: auto;
+  margin: 0 auto;
+}
+
 .reveal .title-slide-body .author {
-  margin: 0.9em 0 0.35em;
+  margin: 0.5em 0 0.35em;
 }
 
 .reveal .title-slide-body .institute,
@@ -207,6 +219,54 @@
 
 .reveal .cols-top {
   align-items: start;
+}
+
+.reveal .form-2d-slide .fig-row {
+  margin: 0 0 0.45rem;
+  gap: 2rem;
+}
+
+.reveal .form-2d-slide .fig-cell .slide-fig {
+  max-height: 110px;
+}
+
+.reveal .form-2d-slide .fig-label {
+  font-size: 0.82em;
+  margin-top: 0.2em;
+}
+
+.reveal .form-2d-lead {
+  margin: 0.15em 0 0.1em;
+}
+
+.reveal .form-2d-eq {
+  margin: 0 0 0.35em;
+}
+
+.reveal .form-2d-eq .katex-display {
+  margin: 0.1em 0;
+}
+
+.reveal .constitutive-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem;
+  align-items: start;
+  margin-top: 0.25em;
+}
+
+.reveal .constitutive-block {
+  min-width: 0;
+}
+
+.reveal .constitutive-head {
+  margin: 0 0 0.15em;
+  line-height: 1.28;
+}
+
+.reveal .constitutive-block .katex-display {
+  margin: 0.08em 0;
+  font-size: 0.94em;
 }
 
 .reveal .diagram-wrap {
@@ -449,5 +509,9 @@
 
   .reveal .fig-row {
     flex-direction: column;
+  }
+
+  .reveal .constitutive-cols {
+    grid-template-columns: 1fr;
   }
 }
