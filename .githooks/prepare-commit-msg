@@ -1,0 +1,8 @@
+#!/bin/sh
+# Remove Cursor IDE-injected co-author trailers before the commit is finalized.
+MSG_FILE=$1
+[ -f "$MSG_FILE" ] || exit 0
+sed -i '/^Co-authored-by:.*[Cc]ursor/d' "$MSG_FILE"
+sed -i '/^Co-authored-by:.*cursoragent/d' "$MSG_FILE"
+sed -i '/^Co-authored-by:.*Cursor Agent/d' "$MSG_FILE"
+exit 0

@@ -10,6 +10,7 @@ When the user asks you to `git commit`, `git push`, or create a PR:
 - **Never** add `Co-authored-by:` trailers naming Cursor, Cursor Agent, `cursoragent`, or any AI/agent identity.
 - **Never** use `--author` (or similar flags) to attribute the commit to an agent.
 - Commit messages must contain **only** the user-facing summary (via HEREDOC); no co-author footers.
-- If a hook or prior step injects a co-author line, remove it before committing; do not push commits that credit the agent.
+- **Before committing**, run `bash scripts/install-git-hooks.sh` if `.git/hooks/commit-msg` is missing (Cursor injects co-author lines automatically).
+- **After committing**, verify: `git log -1 --format=%B` must not contain `Co-authored-by` or `cursoragent`. If it does, `git commit --amend -m "$(cat <<'EOF' ... EOF')"` with the same message only (no co-author), then push.
 
 The commit author must remain the user only.
