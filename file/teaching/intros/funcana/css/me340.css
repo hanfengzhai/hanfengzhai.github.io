@@ -1,0 +1,355 @@
+:root {
+  --cardinal: #8C1515;
+  --coolgrey: #4D4F53;
+  --sandstone: #FAF6F0;
+  --paloalto: #175E54;
+  --slide-base: 20px;
+  --content-scale: 1.45;
+  --meta-scale: 1;
+}
+
+.reveal-viewport {
+  background: var(--sandstone);
+}
+
+.reveal {
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  color: rgba(0, 0, 0, 0.85);
+  font-size: var(--slide-base);
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4 {
+  font-family: inherit;
+  font-size: inherit;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 700;
+}
+
+.reveal .slides section {
+  text-align: left;
+  line-height: 1.32;
+}
+
+.reveal .textsc {
+  font-variant: small-caps;
+  text-transform: none;
+  letter-spacing: 0.04em;
+}
+
+.reveal .slides > section.title-slide-section {
+  display: flex !important;
+  flex-direction: column;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 0 !important;
+  background: var(--sandstone);
+  text-align: center;
+}
+
+.reveal .title-slide-banner {
+  flex: 0 0 15%;
+  min-height: 15%;
+  background: var(--cardinal);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.2em;
+}
+
+.reveal .title-slide-banner h1 {
+  color: #fff;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-size: calc(1.05em * 1.35);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.18;
+  max-width: 98%;
+}
+
+.reveal .title-slide-body {
+  flex: 1 1 85%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  color: rgba(0, 0, 0, 0.85);
+  padding: 1.5em 1.2em 1em;
+  background: var(--sandstone);
+}
+
+.reveal .title-slide-body .title-slide-meta {
+  margin: 0.25em 0 0.5em;
+}
+
+.reveal .title-slide-logo {
+  margin: 0.55em 0 0.5em;
+  line-height: 0;
+}
+
+.reveal .title-slide-logo img {
+  display: block;
+  height: 72px;
+  max-height: 72px;
+  width: auto;
+  max-width: 200px;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+.reveal .title-slide-body .author {
+  margin: 0.5em 0 0.35em;
+}
+
+.reveal .title-slide-body .institute,
+.reveal .title-slide-body .date {
+  margin: 0.25em 0;
+}
+
+.reveal .title-slide-body a {
+  color: var(--cardinal);
+  text-decoration: underline;
+}
+
+.reveal .slides > section:has(.slide-title) {
+  display: flex !important;
+  flex-direction: column;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding-top: 0 !important;
+  background: var(--sandstone);
+}
+
+.reveal .slide-title {
+  background: var(--cardinal);
+  color: #fff;
+  padding: 0.28em 0.6em;
+  margin: 0 calc(-1 * var(--r-block-padding, 0.6em)) 0.35em;
+  padding-left: calc(var(--r-block-padding, 0.6em) + 0.6em);
+  padding-right: calc(var(--r-block-padding, 0.6em) + 0.6em);
+  font-size: calc(1.05em * 1.5);
+  font-weight: 700;
+  flex: 0 0 auto;
+  position: relative;
+  z-index: 20;
+  font-variant: small-caps;
+  text-transform: none;
+  letter-spacing: 0.04em;
+}
+
+.reveal .slide-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.reveal .slides section.center-slide {
+  text-align: center;
+}
+
+.reveal .slide-content {
+  font-size: calc(var(--slide-base) * var(--content-scale));
+}
+
+.reveal .slide-content p,
+.reveal .slide-content li,
+.reveal .slide-content ol,
+.reveal .slide-content ul {
+  font-size: 1em;
+}
+
+.reveal .meta-text,
+.reveal .lecture-map,
+.reveal .toc-list {
+  font-size: calc(var(--slide-base) * var(--meta-scale));
+}
+
+.reveal .slide-content .toc-list {
+  font-size: 1em;
+}
+
+.reveal ul,
+.reveal ol {
+  display: block;
+  margin-left: 1.1em;
+}
+
+.reveal li {
+  margin-bottom: 0.22em;
+}
+
+.reveal p {
+  margin: 0.3em 0;
+}
+
+.reveal a {
+  color: var(--cardinal);
+}
+
+.reveal .cols {
+  display: grid;
+  grid-template-columns: 0.84fr 1.16fr;
+  gap: 0.7rem;
+  align-items: center;
+}
+
+.reveal .cols-wide-right {
+  grid-template-columns: 0.62fr 1.38fr;
+}
+
+.reveal .cols-top {
+  align-items: start;
+}
+
+.reveal .diagram-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.reveal .slide-fig {
+  display: block;
+  max-width: 100%;
+  max-height: 400px;
+  width: auto;
+  height: auto;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+.reveal .gb-badge {
+  color: var(--cardinal);
+  font-size: 0.92em;
+}
+
+.reveal .gb-footer {
+  margin-top: 0.45em;
+  padding-top: 0.35em;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: calc(var(--slide-base) * var(--meta-scale) * 0.72);
+  color: var(--cardinal);
+  line-height: 1.38;
+}
+
+.reveal .flow-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin: 0.4rem 0;
+}
+
+.reveal .flow-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.reveal .flow-stack .arrow {
+  transform: rotate(90deg);
+}
+
+.reveal .fbox,
+.reveal .gbox,
+.reveal .kbox {
+  border-radius: 4px;
+  padding: 0.35em 0.45em;
+  font-size: calc(var(--slide-base) * 0.9);
+  font-weight: 600;
+  text-align: center;
+  min-width: 6em;
+  line-height: 1.2;
+  font-variant: small-caps;
+  text-transform: none;
+  letter-spacing: 0.03em;
+}
+
+.reveal .fbox {
+  border: 2px solid var(--cardinal);
+  background: rgba(140, 21, 21, 0.07);
+}
+
+.reveal .gbox {
+  border: 2px solid var(--paloalto);
+  background: rgba(23, 94, 84, 0.07);
+}
+
+.reveal .kbox {
+  border: 2px solid var(--coolgrey);
+  background: rgba(77, 79, 83, 0.08);
+}
+
+.reveal .arrow {
+  color: var(--coolgrey);
+  font-size: 1em;
+  font-weight: 700;
+}
+
+.reveal .fbox .katex,
+.reveal .gbox .katex,
+.reveal .kbox .katex,
+.reveal .flow-row .katex {
+  font-size: 1em;
+}
+
+.reveal .toc-list {
+  columns: 2;
+  column-gap: 1.25rem;
+}
+
+.reveal .toc-list h4 {
+  color: rgba(0, 0, 0, 0.85);
+  margin-bottom: 0.3em;
+  font-weight: 700;
+  text-transform: none;
+}
+
+.reveal .katex {
+  font-size: 1em;
+}
+
+.reveal .slide-content .katex-display {
+  font-size: 1em;
+  margin: 0.2em 0 0.3em;
+}
+
+.reveal .katex-error {
+  color: var(--cardinal);
+}
+
+.reveal .progress span {
+  background: var(--cardinal);
+}
+
+.reveal .controls button {
+  color: var(--cardinal);
+}
+
+@media (max-width: 900px) {
+  :root {
+    --slide-base: 18px;
+  }
+
+  .reveal .cols,
+  .reveal .cols-wide-right {
+    grid-template-columns: 1fr;
+  }
+
+  .reveal .title-slide-banner h1 {
+    font-size: calc(1.05em * 1.15);
+  }
+}

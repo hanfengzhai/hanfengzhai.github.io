@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Goal-Oriented PROM — Functional Analysis</title>
+  <meta name="description" content="Goal-oriented projection-based model order reduction (Zahm et al. 2017) via 2D steady heat.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css" id="theme">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="css/me340.css">
+</head>
+<body>
+<div class="reveal">
+  <div class="slides">
+
+<section class="title-slide-section center-slide">
+  <div class="title-slide-banner"><h1 class="textsc">Goal-Oriented Projection-Based Model Order Reduction</h1></div>
+  <div class="title-slide-body slide-content">
+    <p class="title-slide-meta">Zahm–Billaud-Friess–Nouy (2017) • 2D heat example</p>
+    <div class="title-slide-logo"><img src="/css/images/site/stanford_logo.png" alt="Stanford University" loading="lazy"></div>
+    <p class="author"><strong>Hanfeng Zhai</strong></p>
+    <p class="institute">Department of Mechanical Engineering, Stanford University</p>
+    <p class="date">June 2026</p>
+  </div>
+</section>
+<section><div class="slide-title">Motivation</div><div class="slide-body"><div class="slide-content">
+<div class="cols cols-top">
+  <div>
+    <ul>
+      <li>Physics: a heat source moves across the part; material or load varies with \(\xi\).</li>
+      <li>What we want: one number \(s(\xi)\) at the probe — not the full temperature field.</li>
+      <li>Challenge: each new \(\xi\) means a new expensive simulation \(\Rightarrow\) build a fast surrogate for \(s(\xi)\).</li>
+    </ul>
+  </div>
+  <div><div class="diagram-wrap"><img class="slide-fig" src="figures/AI_metal3D.png" alt="Metal AM application" loading="lazy"></div></div>
+</div></div></div></section>
+<section><div class="slide-title">Outline</div><div class="slide-body"><div class="slide-content">
+<div class="toc-list">
+  <div><h4>Problem Formulation</h4></div>
+  <div><h4>Variational Derivation</h4></div>
+  <div><h4>Goal-Oriented Projection-Based Model Order Reduction</h4></div>
+  <div><h4>Functional Analysis and inf–sup Stability</h4></div>
+  <div><h4>Petrov–Galerkin Projection</h4></div>
+  <div><h4>Primal–Dual Estimators</h4></div>
+  <div><h4>Certified Error Bounds and Greedy Enrichment</h4></div>
+  <div><h4>Numerical Demonstration</h4></div>
+  <div><h4>Summary and Takeaways</h4></div>
+</div>
+<p style="font-size:0.75em;margin-top:1em;">Use ← → keys, swipe, or scroll to navigate.</p>
+</div></div></section>
+<section><div class="slide-title">2D steady heat on \(\Omega=(0,1)^2\)</div><div class="slide-body"><div class="slide-content">
+<div class="cols cols-top">
+  <div>
+    \[ -\nabla\!\cdot\!\big(\kappa\,\nabla u\big)=f,\quad
+       u=0\ \text{on }\Gamma_D,\quad
+       \kappa\,\partial_n u=g\ \text{on }\Gamma_N . \]
+    \[ s=\frac{1}{|\omega|}\int_\omega u=Lu . \]
+    <ul>
+      <li>\(u\): temperature; \(\kappa\): conductivity; \(f\): source; \(g\): boundary flux.</li>
+      <li>\(\xi\): parameter in \(\kappa(x,\xi)\) (not a spatial coordinate).</li>
+      <li>\(s\): disk average at probe \(\omega\) (bounded on \(H^1\); point value is not).</li>
+    </ul>
+    <div class="gb-footer"><span class="gb-badge"><span class="textsc">GB&nbsp;Part~7, §5.1</span> [continuous elliptic]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~4, Def.~1.68</span> [bounded L]</span></div>
+  </div>
+  <div><div class="diagram-wrap"><img class="slide-fig" src="demo/Output/heat2d_schematic.png" alt="Heat 2D schematic" loading="lazy"></div></div>
+</div></div></div></section>
+<section><div class="slide-title">Weak form</div><div class="slide-body"><div class="slide-content">
+\[ \int_\Omega \kappa\,\nabla u\!\cdot\!\nabla v\,\dd x
+    = \int_\Omega f\,v\,\dd x + \int_{\Gamma_N} g\,v\,\dd s
+    \qquad \forall v\in \mathcal{S} . \]
+\[ a(u,v)=\ell(v). \]
+<ul>
+  <li>\(v\): test function; integration by parts moves derivatives onto \(v\).</li>
+  <li>\(\mathcal{S}=\mathcal{V}=H^1_{0,\Gamma_D}\): \(v=0\) on \(\Gamma_D\); Neumann data \(g\) enters \(\ell(v)\).</li>
+</ul>
+<div class="gb-footer"><span class="gb-badge"><span class="textsc">GB&nbsp;Part~7, §5.1</span> [IBP → bilinear form]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, (3.1)</span> [variational (3.1)]</span></div></div></div></section>
+<section><div class="slide-title">Well-posedness</div><div class="slide-body"><div class="slide-content">
+\[ \left\Vert u \right\Vert_{L^2}\le C_P\,\left\Vert \nabla u \right\Vert_{L^2},\qquad
+    a(u,u)\ge \alpha\,\left\Vert u \right\Vert_{H^1}^2,\qquad
+    \exists\,\,u\in \mathcal{S}:\ a(u,v)=\ell(v)\ \forall v\in \mathcal{V} . \]
+<ul>
+  <li>Continuity of \(a\) and \(\ell\); Poincaré \(\Rightarrow\) coercivity; Lax–Milgram \(\Rightarrow\) unique stable \(u\).</li>
+</ul>
+<div class="gb-footer"><span class="gb-badge"><span class="textsc">GB&nbsp;Part~7, Lem.~5.4</span> [Poincaré]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~7, §5.4</span> [strong coercivity]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, Cor.~3.10</span> [Lax–Milgram]</span></div></div></div></section>
+<section><div class="slide-title">Operator form</div><div class="slide-body"><div class="slide-content">
+\[ \langle Au,v \rangle=a(u,v),\quad \langle b,v \rangle=\ell(v),\qquad Au=b . \]
+<ul>
+  <li>\(\langle \cdot,\cdot \rangle\): duality pairing; \(A:\mathcal{S}\to \mathcal{V}'\), \(b\in \mathcal{V}'\).</li>
+  <li>\(u\in\mathcal{S}\) trial; \(v\in\mathcal{V}\) test; later \(\mathcal{S}_h\subset\mathcal{S}\), \(\mathcal{V}_h\subset\mathcal{V}\) with \(u_h\in\mathcal{S}_h\), \(v_h\in\mathcal{V}_h\).</li>
+  <li>Output \(s=Lu\) (demo scalar; Zahm et al. vector \(Z=\mathbb{R}^l\) in supplementary slides).</li>
+</ul>
+<div class="gb-footer"><span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, (3.1)</span> [Au=b]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~4, Def.~1.68</span> [bounded A]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~4, Def.~1.73</span> [dual calV']</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~3, Def.~1.48</span> [Hilbert]</span></div></div></div></section>
+<section><div class="slide-title">Parameter \(\xi\)</div><div class="slide-body"><div class="slide-content">
+\[ A(\xi)\,u(\xi)=b(\xi),\qquad s(\xi)=L(\xi)\,u(\xi),\qquad \xi\in\Xi . \]
+<ul>
+  <li>\(\xi\): scenario knob (conductivity in demo; BC/load in general) — not a spatial coordinate.</li>
+  <li>Many queries: design / UQ need thousands of \(\xi\); full FEM each time is too slow.</li>
+  <li>ROM: <strong>offline</strong> snapshots at \(\xi_i\); <strong>online</strong> cheap \(s(\xi)\) per query.</li>
+</ul>
+<div class="gb-footer"><span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, (3.1)</span> [variational form]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~4, Def.~1.68</span> [bounded parametric maps]</span></div></div></div></section>
+<section><div class="slide-title">Parametric output problem</div><div class="slide-body"><div class="slide-content">
+\[ A(\xi)\,u(\xi)=b(\xi),\qquad s(\xi)=L(\xi)\,u(\xi),\qquad \xi\in\Xi . \]
+<ul>
+  <li>\(s(\xi)\): output of interest (sensor), not the full field \(u\).</li>
+  <li><strong>Offline:</strong> build \(\mathcal{S}_h,\mathcal{V}_h,W_k^{Q}\); <strong>online:</strong> \(s(\xi)\) per query.</li>
+</ul>
+
+<div class="flow-row" style="margin-top:0.5em;">
+  <div class="flow-stack">
+    <div class="fbox">\(-\nabla\!\cdot\!(\kappa\nabla u)=f\)</div>
+    <span class="arrow">→</span>
+    <div class="fbox">\(a(u,v)=\ell(v)\)</div>
+    <span class="arrow">→</span>
+    <div class="fbox">\(Au=b\)</div>
+    <span class="arrow">→</span>
+    <div class="gbox">\(s=Lu\)</div>
+  </div>
+  <div class="kbox" style="align-self:center;margin-left:0.75em;">ROM</div>
+</div><div class="gb-footer"><span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, (3.1)</span> [variational form]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~4, Def.~1.68</span> [bounded L]</span></div></div></div></section>
+<section><div class="slide-title">Adjoints \(A^*\), \(L^*\) and dual operator \(Q\)</div><div class="slide-body"><div class="slide-content">
+\[ \langle Au,v \rangle=\langle u,A^{*}v \rangle\ \forall u\in \mathcal{S},\ v\in \mathcal{V} . \]
+\[ A^{*}Q=L^{*},\qquad Q\in\mathcal{L}(Z',\mathcal{V}),\qquad s=Lu=Q^{*}b . \]
+<ul>
+  <li>\(A^{*}\): test loads → trial space; \(L^{*}\): output component / sensor weight in \(Z'\).</li>
+  <li>\(Q\): influence function in \(\mathcal{V}\) — response to unit output loading (probe ⇒ heat on \(\omega\)).</li>
+  <li>Exact \(u\) or exact \(Q\) recovers \(s\); ROM approximates both.</li>
+</ul>
+<div class="gb-footer"><span class="gb-badge"><span class="textsc">GB&nbsp;Part~4, Thm.~1.82</span> [Riesz]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~7, Def.~5.7</span> [adjoint A*]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, Thm.~3.9</span> [well-posed dual]</span></div></div></div></section>
+<section><div class="slide-title">What Zahm et al. add</div><div class="slide-body"><div class="slide-content">
+<ul>
+  <li><strong>Goal-oriented:</strong> reduced spaces target \(s=Lu\), not only the field \(u\).</li>
+  <li><strong>Petrov–Galerkin:</strong> \(\mathcal{S}_h\neq\mathcal{V}_h\) plus dual space \(W_k^{Q}\) (three reduced spaces).</li>
+  <li><strong>Vector output:</strong> \(s\in Z\) with operator dual \(Q\in\mathcal{L}(Z',\mathcal{V})\) (not only scalar QoI).</li>
+  <li><strong>Certified bounds:</strong> computable \(\Delta(\xi)\) from primal and dual residuals.</li>
+  <li><strong>Greedy enrichment:</strong> sample at \(\arg\max_\xi\Delta(\xi)\).</li>
+  <li>Three estimators (pg → pd → sp): definitions and ladder in supplementary slides.</li>
+</ul>
+<div class="gb-footer"><span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, §3.3</span> [Ritz–Galerkin]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, §3.4</span> [discrete PG]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, Thm.~3.9</span> [BNB]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~3, Exo.~1.42</span> [Cauchy–Schwarz]</span></div></div></div></section>
+<section><div class="slide-title">inf–sup stability</div><div class="slide-body"><div class="slide-content">
+\[ \alpha\left\Vert u \right\Vert_{\mathcal{S}}\le \left\Vert Au \right\Vert_{\mathcal{V}'}\le \beta\left\Vert u \right\Vert_{\mathcal{S}}, \]
+\[ \alpha=\inf_{u\neq 0}\sup_{v\neq 0}\frac{\langle Au,v \rangle}{\left\Vert u \right\Vert_{\mathcal{S}}\left\Vert v \right\Vert_{\mathcal{V}}},\quad
+    \beta=\sup_{u}\sup_{v}\frac{\langle Au,v \rangle}{\left\Vert u \right\Vert_{\mathcal{S}}\left\Vert v \right\Vert_{\mathcal{V}}}. \]
+<ul>
+  <li>\(\alpha&gt;0\): stability (BNB / inf–sup); small residual \(\Rightarrow\) small error.</li>
+  <li>Allows \(\mathcal{S}\neq\mathcal{V}\) (Petrov–Galerkin); heat with \(\mathcal{S}=\mathcal{V}\) is the Lax–Milgram case.</li>
+</ul>
+<div class="gb-footer"><span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, Thm.~3.9</span> [BNB]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, Cor.~3.10</span> [Lax–Milgram]</span></div></div></div></section>
+<section><div class="slide-title">Petrov–Galerkin projection</div><div class="slide-body"><div class="slide-content">
+\[ \langle Au_h-b,\,v_h \rangle=0\qquad \forall v_h\in\mathcal{V}_h,\qquad u_h\in\mathcal{S}_h\subset \mathcal{S} . \]
+\[ \left\Vert u-u_h \right\Vert_{\mathcal{S}} \le \frac{1}{\sqrt{1-\delta_{\mathcal{S}_h,\mathcal{V}_h}^2}}\;\min_{u_h\in\mathcal{S}_h}\left\Vert u-u_h \right\Vert_{\mathcal{S}} . \]
+<ul>
+  <li>Residual \(Au_h-b\) orthogonal to \(\mathcal{V}_h\); \(u_h\in\mathcal{S}_h\), \(v_h\in\mathcal{V}_h\) (\(\mathcal{S}_h\neq\mathcal{V}_h\) in general).</li>
+  <li>\(\delta_{\mathcal{S}_h,\mathcal{V}_h}&lt;1\) measures test-space quality (Prop.~2.1).</li>
+</ul>
+<div class="gb-footer"><span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, §3.4</span> [discrete PG, eq.~(3.9)]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, (3.10)</span> [discrete inf–sup m_h]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, Lem.~3.11</span> [Céa]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, §3.3</span> [Ritz–Galerkin]</span></div></div></div></section>
+<section><div class="slide-title">Output error bound (Prop.~2.1, Eq.~9)</div><div class="slide-body"><div class="slide-content">
+\[ \left\Vert s-Lu_h \right\Vert_Z\le
+    \delta^L_{\mathcal{V}_h}\cdot
+    \frac{1}{\sqrt{1-\delta_{\mathcal{S}_h,\mathcal{V}_h}^2}}\cdot
+    \min_{u_h\in\mathcal{S}_h}\left\Vert u-u_h \right\Vert_{\mathcal{S}} . \]
+<ul>
+  <li>Compliant case (\(\mathcal{S}=\mathcal{V}\), \(\mathcal{V}_h=\mathcal{S}_h\), \(Lu=\langle b,u \rangle\)): \(|s-Lu_h|\le\left\Vert u-u_h \right\Vert_{\mathcal{S}}^2\).</li>
+</ul>
+<div class="gb-footer"><span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, Lem.~3.11</span> [Céa quasi-opt.]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~3, Exo.~1.42</span> [Cauchy–Schwarz]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~7, §5.2</span> [Ritz–Galerkin]</span></div></div></div></section>
+<section><div class="slide-title">Two jobs of \(\mathcal{V}_h\)</div><div class="slide-body"><div class="slide-content">
+\[ \left\Vert s-Lu_h \right\Vert_Z\le
+    \underbrace{\delta^L_{\mathcal{V}_h}}_{\text{(c) dual range}}
+    \underbrace{\tfrac{1}{\sqrt{1-\delta_{\mathcal{S}_h,\mathcal{V}_h}^2}}}_{\text{(b) PG quality}}
+    \underbrace{\min_{u_h\in\mathcal{S}_h}\left\Vert u-u_h \right\Vert_{\mathcal{S}}}_{\text{(a) trial}} . \]
+<ul>
+  <li>\(\mathcal{V}_h\) tests the projection <strong>and</strong> approximates \(\mathrm{range}(A^{*}L^*)\).</li>
+  <li>Demo uses shared snapshot space; Zahm et al. allow \(\mathcal{V}_h\neq\mathcal{S}_h\).</li>
+</ul>
+<div class="gb-footer"><span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, §3.4</span> [discrete test spaces]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, Thm.~3.9</span> [inf-sup stability]</span></div></div></div></section>
+<section><div class="slide-title">Dual problem</div><div class="slide-body"><div class="slide-content">
+\[ A^{*}Q=L^{*},\qquad s=Lu=Q^{*}Au=Q^{*}b . \]
+<ul>
+  <li>\(Q\): dual / influence function — which test directions matter for \(s\)?</li>
+  <li>For probe average: \(Q\) is the response to a unit load on \(\omega\).</li>
+  <li>Either exact \(u\) or exact \(Q\) recovers \(s\); ROM approximates both.</li>
+</ul>
+<div class="gb-footer"><span class="gb-badge"><span class="textsc">GB&nbsp;Part~4, Thm.~1.82</span> [Riesz]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~7, Def.~5.7</span> [adjoint A*]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, Thm.~3.9</span> [well-posedness]</span></div></div></div></section>
+<section><div class="slide-title">Primal–dual estimate</div><div class="slide-body"><div class="slide-content">
+\[ \tilde s = Lu_h + Q_h^{*}\,(b-Au_h), \]
+\[ \left\Vert s-\tilde s \right\Vert_Z\le \left\Vert u-u_h \right\Vert_{\mathcal{S}}\;\left\Vert L^{* \right\Vert-A^{*}Q_h}_{Z'\to \mathcal{S}'} . \]
+<ul>
+  <li>\(\tilde s\): field estimate + correction from primal residual \(b-Au_h\).</li>
+  <li>Three reduced spaces: trial \(\mathcal{S}_h\), test \(\mathcal{V}_h\), dual \(W_k^{Q}\).</li>
+  <li>Zahm et al. also give a saddle-point estimator (Prop.~2.10) — supplementary slides.</li>
+</ul>
+<div class="gb-footer"><span class="gb-badge"><span class="textsc">GB&nbsp;Part~3, Exo.~1.42</span> [C–S on pairing]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~4, Thm.~1.82</span> [Riesz]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~7, Def.~5.7</span> [adjoint]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~3, Def.~1.51</span> [orthogonal projection]</span></div></div></div></section>
+<section><div class="slide-title">Certified bound</div><div class="slide-body"><div class="slide-content">
+\[ \left\Vert s(\xi)-\tilde s(\xi) \right\Vert_Z\le
+    \frac{\left\Vert A(\xi)u_h-b(\xi) \right\Vert_{\mathcal{S}_0'}\;\left\Vert L^{* \right\Vert(\xi)-A^{*}(\xi)Q_h(\xi)}_{Z'\to \mathcal{S}_0'}}{\alpha(\xi)}
+    =:\Delta(\xi). \]
+<ul>
+  <li>\(\Delta(\xi)\): computable upper bound (primal residual × dual residual / \(\alpha\)).</li>
+  <li>Certified: true error \(\le\Delta\); effectivity \(\Delta/\left\Vert s-\tilde s \right\Vert\ge 1\).</li>
+</ul>
+<div class="gb-footer"><span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, (3.5)</span> [inf-sup const. m]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, Thm.~3.9</span> [BNB stability]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~3, Exo.~1.42</span> [residual product]</span></div></div></div></section>
+<section><div class="slide-title">Greedy enrichment</div><div class="slide-body"><div class="slide-content">
+\[ \xi^\star\in\arg\max_{\xi\in\Xi}\Delta(\xi),\qquad
+    \mathcal{S}_h\leftarrow \mathcal{S}_h+\mathrm{span}\,u(\xi^\star),\quad
+    W_k^{Q}\leftarrow W_k^{Q}+\mathrm{range}\,Q(\xi^\star) . \]
+<ul>
+  <li>Sample where the bound is largest; solve full \(u,Q\) at \(\xi^\star\); enrich bases.</li>
+  <li>Repeat until \(\max_\xi\Delta(\xi)\) is below tolerance.</li>
+</ul>
+<p style="font-size:0.78em;margin-top:0.5em;">Alternate / simultaneous enrichment (Alg.~1–2);
+\(\mathcal{V}_h\) from preconditioner \(P_m(\xi)\approx A(\xi)^{-1}\) (Eq.~44).</p>
+<div class="gb-footer"><span class="gb-badge"><span class="textsc">GB&nbsp;Part~4, Thm.~1.83</span> [weak compactness]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, Thm.~3.9</span> [certified alpha]</span></div></div></div></section>
+<section><div class="slide-title">FEM field at \(\xi=1\)</div><div class="slide-body"><div class="slide-content">
+<div class="cols cols-top">
+  <div>
+    <ul>
+      <li>Full FEM; QoI \(s=\bar u_\omega\) read from the field.</li>
+      <li>PROM predicts \(s(\xi)\) for many \(\xi\) at reduced cost.</li>
+    </ul>
+  </div>
+  <div><div class="diagram-wrap"><img class="slide-fig" src="demo/Output/fenics_field.png" alt="FEM temperature field" loading="lazy"></div></div>
+</div></div></div></section>
+<section><div class="slide-title">PROM vs FEM: online speedup</div><div class="slide-body"><div class="slide-content">
+<div class="cols cols-wide-right cols-top">
+  <div>
+    <ul>
+      <li>80 parametric queries, \(\xi\in[0.5,2]\).</li>
+      <li>PROM: primal–dual, \(R=10\) snapshots.</li>
+      <li>\(\sim\)250–370× faster per online query; QoI error \(\sim10^{-13}\).</li>
+    </ul>
+  </div>
+  <div><div class="diagram-wrap"><img class="slide-fig" src="demo/Output/compare_results.png" alt="PROM vs FEM comparison" loading="lazy"></div></div>
+</div></div></div></section>
+<section><div class="slide-title">Demo scope</div><div class="slide-body"><div class="slide-content">
+<div class="cols cols-top">
+  <div><div class="diagram-wrap"><img class="slide-fig" src="demo/Output/fenics_convergence.png" alt="FEM mesh convergence" loading="lazy"></div></div>
+  <div>
+    <ul>
+      <li><strong>Implemented:</strong> parametric \(A(\xi)\) (affine in demo), primal–dual online \(s_{\mathrm{pd}}\).</li>
+      <li><strong>Zahm et al. add:</strong> separate \(\mathcal{V}_h\), saddle point, greedy \(\Delta(\xi)\) — not in demo.</li>
+      <li>Left: FEM mesh convergence (\(h^2\) QoI rate).</li>
+    </ul>
+  </div>
+</div></div></div></section>
+<section><div class="slide-title">Takeaways</div><div class="slide-body"><div class="slide-content">
+<ol>
+  <li>Field \(u\) is a means; vector output \(s=Lu\) + certified \(\Delta(\xi)\) is the goal.</li>
+  <li>Weak form → \(Au=b\); inf–sup gives stability and certified bounds.</li>
+  <li>Primal–dual estimate + certified \(\Delta(\xi)\); demo uses pd only (saddle point: supplementary).</li>
+  <li>Demo: primal–dual step only; full FEM vs PROM — large online speedup.</li>
+</ol>
+<div class="gb-footer"><span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, §3.3</span> [Galerkin]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, §3.4</span> [PG]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~6, Thm.~3.9</span> [BNB]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~3, Exo.~1.42</span> [C–S]</span>;&nbsp;<span class="gb-badge"><span class="textsc">GB&nbsp;Part~4, Thm.~1.82</span> [Riesz]</span></div></div></div></section>
+<section class="center-slide"><div class="slide-title">Reference</div><div class="slide-body"><div class="slide-content">
+<p>O.&nbsp;Zahm, M.&nbsp;Billaud-Friess, A.&nbsp;Nouy,
+<em>SIAM J. Sci. Comput.</em> <strong>39</strong>(4), A1647–A1674 (2017).</p>
+<p style="text-align:center;margin-top:2em;font-size:1.15em;"><strong>Thank you.</strong></p>
+<p style="text-align:center;font-size:0.9em;">Special thanks to José Hasbani &amp; Obed Camacho for discussions.</p>
+</div></div></section>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script>
+  const mathRenderOptions = {
+    delimiters: [
+      {left: '\\[', right: '\\]', display: true},
+      {left: '\\(', right: '\\)', display: false}
+    ],
+    throwOnError: false,
+    errorColor: '#8C1515',
+    strict: 'ignore',
+    macros: {
+      'dd': '\\mathrm{d}'
+    }
+  };
+
+  function renderDeckMath() {
+    const root = document.querySelector('.reveal .slides');
+    if (!root || typeof renderMathInElement !== 'function') return;
+    renderMathInElement(root, mathRenderOptions);
+  }
+
+  Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    transition: 'fade',
+    backgroundTransition: 'fade',
+    width: 1280,
+    height: 720,
+    margin: 0.06,
+    plugins: []
+  }).then(() => {
+    renderDeckMath();
+    Reveal.on('slidechanged', renderDeckMath);
+  });
+</script>
+</body>
+</html>
