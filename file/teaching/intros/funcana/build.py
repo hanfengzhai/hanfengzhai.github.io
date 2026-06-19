@@ -25,6 +25,33 @@ ROM_FLOW = """
 </div>"""
 
 
+def expand_norm(s):
+    """Expand \\norm{...} with balanced-brace matching (handles \\adj{...} inside)."""
+    needle = r"\norm{"
+    n = len(needle)
+    out = []
+    i = 0
+    while i < len(s):
+        if s.startswith(needle, i):
+            j = i + n
+            depth = 1
+            start = j
+            while j < len(s) and depth:
+                if s[j] == "{":
+                    depth += 1
+                elif s[j] == "}":
+                    depth -= 1
+                if depth:
+                    j += 1
+            inner = s[start:j]
+            out.append(r"\left\Vert " + inner + r" \right\Vert")
+            i = j + 1
+        else:
+            out.append(s[i])
+            i += 1
+    return "".join(out)
+
+
 def tex(s):
     """Expand Beamer-style macros to KaTeX-safe LaTeX."""
     out = s
@@ -39,9 +66,10 @@ def tex(s):
         ("\\R^", "\\mathbb{R}^"),
     ):
         out = out.replace(old, new)
+    out = expand_norm(out)
     out = re.sub(r"\\adj\{([^}]+)\}", r"\1^{*}", out)
-    out = re.sub(r"\\norm\{([^}]+)\}", r"\\left\\Vert \1 \\right\\Vert", out)
     out = re.sub(r"\\inner\{([^}]+)\}", r"\\langle \1 \\rangle", out)
+    out = re.sub(r"\\dd\s+([a-zA-Z])", r"\\mathrm{d}\1", out)
     return out
 
 
@@ -81,7 +109,7 @@ def title_slide():
 <section class="title-slide-section center-slide">
   <div class="title-slide-banner"><h1 class="textsc">Goal-Oriented Projection-Based Model Order Reduction</h1></div>
   <div class="title-slide-body slide-content">
-    <p class="title-slide-meta">Zahm–Billaud-Friess–Nouy (2017) • 2D heat example</p>
+    <p class="title-slide-meta">Zahm et al. (2017) • 2D heat example</p>
     <div class="title-slide-logo"><img src="{STANFORD_LOGO}" alt="Stanford University" loading="lazy"></div>
     <p class="author"><strong>Hanfeng Zhai</strong></p>
     <p class="institute">Department of Mechanical Engineering, Stanford University</p>
