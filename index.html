@@ -22,72 +22,81 @@
   }
 
   .intro-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 2rem;
-    margin: 0 0 1.5em;
-    padding: 1.25rem 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "name photo"
+      "details photo";
+    align-items: start;
+    column-gap: 0.85rem;
+    row-gap: 0;
+    margin: 0 0 1em;
+    padding: 0.55rem 0.75rem;
     background: #fff;
     border: 1px solid #e8e8e8;
-    border-radius: 8px;
+    border-radius: 4px;
   }
 
-  .intro-header-info {
-    flex: 1;
+  .intro-header-nameblock {
+    grid-area: name;
     min-width: 0;
+  }
+
+  .intro-header-details {
+    grid-area: details;
+    min-width: 0;
+  }
+
+  .intro-header-photo {
+    grid-area: photo;
+    align-self: center;
   }
 
   .intro-header-name {
     font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
-    font-size: 1.75rem;
+    font-size: 1.45rem;
     font-weight: bold;
     margin: 0;
+    line-height: 1.15;
     color: #000;
   }
 
   .intro-header-rule {
-    margin: 0.45em 0 0.85em;
+    margin: 0.18em 0 0.28em;
     border: 0;
     border-top: 1px solid #ccc;
   }
 
   .intro-header-contact {
-    font-size: 16px;
-    line-height: 1.5;
+    font-size: 15px;
+    line-height: 1.22;
     color: #000;
-  }
-
-  .intro-header-contact p {
-    margin: 0 0 0.12em;
   }
 
   .intro-header-contact code {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 0.95em;
-  }
-
-  .intro-header-photo {
-    flex: 0 0 auto;
+    font-size: 0.92em;
   }
 
   .intro-header-photo img {
-    width: 200px;
+    width: 148px;
     max-width: 100%;
     height: auto;
-    border: 8px solid #d3d3d3;
-    border-radius: 16px;
+    border: 7px solid #d3d3d3;
+    border-radius: 12px;
     display: block;
   }
 
   .intro-header-social {
-    margin: 1em 0 0;
+    margin: 0.28em 0 0;
     padding: 0;
     list-style: none;
   }
 
   .intro-header-social li {
     display: inline-block;
-    margin: 0 0.35em 0 0;
+    margin: 0 0.28em 0 0;
     padding: 0;
   }
 
@@ -95,8 +104,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
+    width: 22px;
+    height: 22px;
     color: #333;
     opacity: 0.82;
     text-decoration: none;
@@ -108,12 +117,12 @@
   }
 
   .intro-header-social .fa {
-    font-size: 1.35em;
+    font-size: 1.05em;
   }
 
   .icon-scholar {
-    width: 22px;
-    height: 22px;
+    width: 17px;
+    height: 17px;
     display: block;
   }
 
@@ -199,18 +208,26 @@
 
   @media (max-width: 720px) {
     .intro-header {
-      flex-direction: column-reverse;
-      align-items: center;
-      gap: 1.25rem;
-      padding: 1rem;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto;
+      grid-template-areas:
+        "name"
+        "photo"
+        "details";
+      row-gap: 0.65rem;
+      padding: 0.55rem 0.65rem;
     }
 
-    .intro-header-info {
-      width: 100%;
+    .intro-header-photo {
+      justify-self: center;
+    }
+
+    .intro-header-rule {
+      margin-bottom: 0;
     }
 
     .intro-header-photo img {
-      width: min(200px, 72vw);
+      width: min(148px, 58vw);
     }
   }
 
@@ -280,25 +297,26 @@
 <div class="article-entry" itemprop="articleBody">
 
 <div class="intro-header">
-  <div class="intro-header-info">
-    <h1 class="intro-header-name">Hanfeng Zhai</h1>
+  <div class="intro-header-nameblock">
+    <h1 class="intro-header-name"><span class="legacy-color-black">Han</span><span class="legacy-color-gray">feng</span> Zhai</h1>
     <hr class="intro-header-rule">
+  </div>
+  <div class="intro-header-photo">
+    <img src="/assets/img/site/pfp.jpg" alt="Hanfeng Zhai" width="148" height="148" loading="eager">
+  </div>
+  <div class="intro-header-details">
     <div class="intro-header-contact">
-      <p>PhD Candidate,</p>
-      <p>Dept. Mechanical Engineering,</p>
-      <p>Stanford University</p>
-      <p>452 Escondido Mall, Stanford, CA 94305</p>
-      <p>Email: <code>hzhai</code> AT stanford DOT edu</p>
+      PhD Candidate,<br>
+      Dept. Mechanical Engineering,<br>
+      Stanford University<br>
+      452 Escondido Mall, Stanford, CA 94305<br>
+      Email: <code>hzhai</code> AT stanford DOT edu
     </div>
     <ul class="intro-header-social" aria-label="Contact links">
       <li><a href="https://scholar.google.com/citations?hl=en&amp;user=S5jCDXcAAAAJ&amp;view_op=list_works&amp;sortby=pubdate" target="_blank" rel="noopener" aria-label="Google Scholar"><img class="icon-scholar" src="/assets/img/site/google-scholar.svg" alt=""></a></li>
       <li><a href="https://github.com/hanfengzhai" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa fa-github"></i></a></li>
-      <li><a href="/file/career/Resume_HZ.pdf" target="_blank" rel="noopener" aria-label="CV"><i class="fa fa-file-text-o"></i></a></li>
       <li><a href="mailto:hzhai@stanford.edu" aria-label="Email"><i class="fa fa-envelope"></i></a></li>
     </ul>
-  </div>
-  <div class="intro-header-photo">
-    <img src="/assets/img/site/pfp.jpg" alt="Hanfeng Zhai" width="200" height="200" loading="eager">
   </div>
 </div>
 
