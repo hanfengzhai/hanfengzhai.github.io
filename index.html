@@ -21,18 +21,104 @@
     margin-top: 12px;
   }
 
+  .intro-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    margin: 0 0 1.5em;
+    padding: 1.25rem 1.5rem;
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+  }
+
+  .intro-header-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .intro-header-name {
+    font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin: 0;
+    color: #000;
+  }
+
+  .intro-header-rule {
+    margin: 0.45em 0 0.85em;
+    border: 0;
+    border-top: 1px solid #ccc;
+  }
+
+  .intro-header-contact {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #000;
+  }
+
+  .intro-header-contact p {
+    margin: 0 0 0.12em;
+  }
+
+  .intro-header-contact code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.95em;
+  }
+
+  .intro-header-photo {
+    flex: 0 0 auto;
+  }
+
+  .intro-header-photo img {
+    width: 200px;
+    max-width: 100%;
+    height: auto;
+    border: 8px solid #d3d3d3;
+    border-radius: 16px;
+    display: block;
+  }
+
+  .intro-header-social {
+    margin: 1em 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .intro-header-social li {
+    display: inline-block;
+    margin: 0 0.35em 0 0;
+    padding: 0;
+  }
+
+  .intro-header-social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    color: #333;
+    opacity: 0.82;
+    text-decoration: none;
+    transition: opacity 0.15s ease;
+  }
+
+  .intro-header-social a:hover {
+    opacity: 1;
+  }
+
+  .intro-header-social .fa {
+    font-size: 1.35em;
+  }
+
+  .icon-scholar {
+    width: 22px;
+    height: 22px;
+    display: block;
+  }
+
   #post-index .intro-inline-nav {
     margin: 1.35em auto 1.55em;
-  }
-
-  .intro-avatar {
-    margin: 0 0 0.75em;
-    text-align: center;
-  }
-
-  .intro-avatar img {
-    border: 5px solid lightgray;
-    border-radius: 7px;
   }
 
   .paper-list {
@@ -112,6 +198,23 @@
   }
 
   @media (max-width: 720px) {
+    .intro-header {
+      flex-direction: column-reverse;
+      align-items: center;
+      gap: 1.25rem;
+      padding: 1rem;
+    }
+
+    .intro-header-info {
+      width: 100%;
+    }
+
+    .intro-header-photo img {
+      width: min(200px, 72vw);
+    }
+  }
+
+  @media (max-width: 720px) {
     #post-index .article-entry {
       padding-top: calc(14px + env(safe-area-inset-top, 0px));
     }
@@ -176,13 +279,27 @@
 </div>
 <div class="article-entry" itemprop="articleBody">
 
-<div class="intro-name-block">
-<div class="legacy-size-5 legacy-text-center"><span class="legacy-color-black"><strong>Han</strong></span><span class="legacy-color-gray"><strong>feng</strong></span> Zhai</div>
-<div class="legacy-size-3 legacy-text-center"><span class="legacy-color-gray"><strong>PhD Candidate</strong> @ Stanford University</span></div>
-</div>
-<hr>
-<div class="intro-avatar">
-    <img src="/assets/img/site/avatar.png" alt="" height="175" width="175">
+<div class="intro-header">
+  <div class="intro-header-info">
+    <h1 class="intro-header-name">Hanfeng Zhai</h1>
+    <hr class="intro-header-rule">
+    <div class="intro-header-contact">
+      <p>PhD Candidate,</p>
+      <p>Dept. Mechanical Engineering,</p>
+      <p>Stanford University</p>
+      <p>452 Escondido Mall, Stanford, CA 94305</p>
+      <p>Email: <code>hzhai</code> AT stanford DOT edu</p>
+    </div>
+    <ul class="intro-header-social" aria-label="Contact links">
+      <li><a href="https://scholar.google.com/citations?hl=en&amp;user=S5jCDXcAAAAJ&amp;view_op=list_works&amp;sortby=pubdate" target="_blank" rel="noopener" aria-label="Google Scholar"><img class="icon-scholar" src="/assets/img/site/google-scholar.svg" alt=""></a></li>
+      <li><a href="https://github.com/hanfengzhai" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa fa-github"></i></a></li>
+      <li><a href="/file/career/Resume_HZ.pdf" target="_blank" rel="noopener" aria-label="CV"><i class="fa fa-file-text-o"></i></a></li>
+      <li><a href="mailto:hzhai@stanford.edu" aria-label="Email"><i class="fa fa-envelope"></i></a></li>
+    </ul>
+  </div>
+  <div class="intro-header-photo">
+    <img src="/assets/img/site/pfp.jpg" alt="Hanfeng Zhai" width="200" height="200" loading="eager">
+  </div>
 </div>
 
 <div class="legacy-size-3 legacy-color-black">
@@ -363,7 +480,7 @@
 	<li> <a href="https://www.linkedin.com/in/hanfengzhai/"><i class="fa fa-linkedin"></i></a></li> 
 	<li> <a href="https://twitter.com/HanfengZhai"><i class="fa fa-twitter"></i></a></li>
 	<li> <a href="https://github.com/hanfengzhai"><i class="fa fa-github"></i></a></li> 
-	<li> <a href="https://scholar.google.com/citations?hl=en&user=S5jCDXcAAAAJ&view_op=list_works&sortby=pubdate"><i class="fa fa-google-plus"></i></a></li>
+	<li> <a href="https://scholar.google.com/citations?hl=en&user=S5jCDXcAAAAJ&view_op=list_works&sortby=pubdate" aria-label="Google Scholar"><img class="icon-scholar" src="/assets/img/site/google-scholar.svg" alt=""></a></li>
 	<li> <a href="https://www.youtube.com/channel/UCn7UKJez4SV9VkO8pNqI5Pw"><i class="fa fa-youtube-play"></i></a></li>
 	</ul>
 	<a target="_blank" rel="noopener" href="https://info.flagcounter.com/x6ta"><img src="https://s11.flagcounter.com/count2/x6ta/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>	  	

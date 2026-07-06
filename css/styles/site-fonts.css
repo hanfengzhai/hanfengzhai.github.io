@@ -154,6 +154,25 @@ tt,
   padding: 4px 8px 0;
 }
 
+#footer .social-icons .icon-scholar {
+  width: 26px;
+  height: 26px;
+  display: inline-block;
+  vertical-align: middle;
+  color: var(--footer-red);
+}
+
+#footer .social-icons a:has(.icon-scholar) {
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  line-height: 48px;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
 #footer .social-icons .fa {
   width: 48px;
   height: 48px;
@@ -161,6 +180,12 @@ tt,
   font-size: 1.45em;
   background-color: #fff;
   color: var(--footer-red);
+}
+
+#footer .social-icons a:has(.icon-scholar):hover,
+#footer .social-icons a:has(.icon-scholar):active {
+  background-color: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
 }
 
 #footer .social-icons .fa:hover,
