@@ -48,6 +48,93 @@
   .gallery-page .scrolling-gallery {
     margin: 0.75em 0 1.25em;
   }
+
+  .outreach-feature {
+    margin: 0.75em 0 1.25em;
+    border: 1px solid #dcdcdc;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+
+  .gallery-page .outreach-feature-copy {
+    padding: 8px 14px 8px 18px;
+    margin: 10px 20px 0;
+    border-left: 4px solid #8C1515;
+    background: linear-gradient(90deg, rgba(140, 21, 21, 0.06) 0%, rgba(140, 21, 21, 0) 100%);
+  }
+
+  .gallery-page .outreach-feature-copy p {
+    margin: 0;
+    font-size: 1.55rem;
+    line-height: 1.18;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .gallery-page .outreach-feature-copy .outreach-lead,
+  .gallery-page .outreach-feature-copy .outreach-thanks {
+    display: block;
+    line-height: 1.18;
+  }
+
+  .gallery-page .outreach-feature-copy .outreach-thanks {
+    font-size: 1.42rem;
+    color: #555;
+    margin-top: 0.12em;
+  }
+
+  .gallery-page .outreach-feature-copy a {
+    color: #1a4d8f;
+  }
+
+  .gallery-page .outreach-feature-copy a:hover,
+  .gallery-page .outreach-feature-copy a:focus {
+    text-decoration: underline;
+  }
+
+  .outreach-feature-photos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    padding: 16px 20px 20px;
+  }
+
+  .outreach-photo {
+    display: block;
+    border-radius: 8px;
+    overflow: hidden;
+    line-height: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .outreach-photo:hover,
+  .outreach-photo:focus {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+  }
+
+  .outreach-photo img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    .outreach-feature-photos {
+      grid-template-columns: 1fr;
+    }
+
+    .outreach-photo img {
+      aspect-ratio: 16 / 10;
+    }
+  }
 </style>
 <link rel="stylesheet" href="/css/styles/style.css">
 <script src="/js/jquery-3.1.1.min.js"></script>
@@ -59,6 +146,12 @@
 <link rel="stylesheet" href="/css/styles/archive.css" >
 <link rel="stylesheet" href="/css/styles/site-fonts.css" >
 <link rel="stylesheet" href="/css/styles/intro-nav.css" >
+<style type="text/css">
+  .gallery-page .article-entry .outreach-feature-copy p {
+    margin: 0;
+    line-height: 1.18;
+  }
+</style>
 </head>
 <body>
 
@@ -296,6 +389,25 @@
   </div>
 </div>
 
+<h1 id="Outreach"><a href="#Outreach" class="headerlink" title="Outreach"></a>Outreach</h1>
+
+<div class="outreach-feature" role="region" aria-label="Science outreach">
+  <div class="outreach-feature-copy">
+    <p><span class="outreach-lead">Hands-on outreach to teach kids about physics and mechanics through demos and activities.</span><span class="outreach-thanks">Many thanks to <a target="_blank" rel="noopener" href="https://profiles.stanford.edu/salvador-gomez-de-la-cruz">Salvador Gomez</a> for the invitation.</span></p>
+  </div>
+  <div class="outreach-feature-photos">
+    <a class="fancybox outreach-photo" href="/assets/img/gallery/outreach/outreach-1.JPG" rel="outreach-gallery" title="Outreach: teaching kids about physics and mechanics">
+      <img src="/assets/img/gallery/outreach/outreach-1.JPG" alt="" loading="lazy">
+    </a>
+    <a class="fancybox outreach-photo" href="/assets/img/gallery/outreach/outreach-2.JPG" rel="outreach-gallery" title="Outreach: teaching kids about physics and mechanics">
+      <img src="/assets/img/gallery/outreach/outreach-2.JPG" alt="" loading="lazy">
+    </a>
+    <a class="fancybox outreach-photo" href="/assets/img/gallery/outreach/outreach-3.JPG" rel="outreach-gallery" title="Outreach: teaching kids about physics and mechanics">
+      <img src="/assets/img/gallery/outreach/outreach-3.JPG" alt="" loading="lazy">
+    </a>
+  </div>
+</div>
+
 <h1 id="Fun-Stuff"><a href="#Fun-Stuff" class="headerlink" title="Fun Stuff"></a>Fun Stuff</h1>
 
 <div class="scrolling-gallery" role="region" aria-label="Fun hobbies and activities">
@@ -414,12 +526,12 @@
 	      <p id="copyRightEn">Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> · &copy; Hanfeng Zhai, All Rights Reserved.</p>
         <div class="wrapper">
 	<ul class="social-icons icon-circle list-unstyled list-inline"> 
-          <li> <a href="mailto:hz253@cornell.edu"><i class="fa fa-envelope"></i></a></li>
-	      <li> <a href="tel:6073191318"><i class="fa fa-phone"></i></a></li> 
+          <li> <a href="https://www.researchgate.net/profile/Hanfeng-Zhai" target="_blank" rel="noopener" aria-label="ResearchGate"><i class="icon-researchgate" aria-hidden="true"></i></a></li>
+	      <li> <a href="https://orcid.org/0000-0003-1511-7597" target="_blank" rel="noopener" aria-label="ORCID"><i class="icon-orcid" aria-hidden="true"></i></a></li>
 	      <li> <a href="https://www.linkedin.com/in/hanfengzhai/"><i class="fa fa-linkedin"></i></a></li> 
 	      <li> <a href="https://twitter.com/HanfengZhai"><i class="fa fa-twitter"></i></a></li>
           <li> <a href="https://github.com/hanfengzhai"><i class="fa fa-github"></i></a></li> 
-	      <li> <a href="https://scholar.google.com/citations?hl=en&user=S5jCDXcAAAAJ&view_op=list_works&sortby=pubdate" aria-label="Google Scholar"><img class="icon-scholar" src="/assets/img/site/google-scholar.svg" alt=""></a></li>  
+	      <li> <a href="https://scholar.google.com/citations?hl=en&user=S5jCDXcAAAAJ&view_op=list_works&sortby=pubdate" aria-label="Google Scholar"><i class="icon-scholar" aria-hidden="true"></i></a></li>  
 	      <li> <a href="https://www.youtube.com/channel/UCn7UKJez4SV9VkO8pNqI5Pw"><i class="fa fa-youtube-play"></i></a></li>
 	</ul>
 	      <a target="_blank" rel="noopener" href="https://info.flagcounter.com/x6ta"><img src="https://s11.flagcounter.com/count2/x6ta/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>

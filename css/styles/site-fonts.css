@@ -152,47 +152,126 @@ tt,
 #footer .wrapper,
 #footer .copyright {
   padding: 4px 8px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-#footer .social-icons .icon-scholar {
-  width: 26px;
-  height: 26px;
-  display: inline-block;
+#footer .social-icons {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding-left: 0;
+  margin: 0;
+}
+
+#footer .social-icons li {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  margin: 0;
   vertical-align: middle;
-  color: var(--footer-red);
 }
 
-#footer .social-icons a:has(.icon-scholar) {
-  display: inline-block;
+#footer .social-icons a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  vertical-align: middle;
+}
+
+.icon-scholar,
+.icon-orcid,
+.icon-researchgate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-style: normal;
+  line-height: 0;
+  vertical-align: middle;
+}
+
+.icon-scholar::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: currentColor;
+  mask: url(/assets/img/site/google-scholar.svg) center / contain no-repeat;
+  -webkit-mask: url(/assets/img/site/google-scholar.svg) center / contain no-repeat;
+}
+
+.icon-orcid::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: currentColor;
+  mask: url(/assets/img/site/orcid.svg) center / contain no-repeat;
+  -webkit-mask: url(/assets/img/site/orcid.svg) center / contain no-repeat;
+}
+
+.icon-researchgate::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: currentColor;
+  mask: url(/assets/img/site/researchgate.svg) center / contain no-repeat;
+  -webkit-mask: url(/assets/img/site/researchgate.svg) center / contain no-repeat;
+}
+
+#footer .social-icons .fa,
+#footer .social-icons .icon-scholar,
+#footer .social-icons .icon-orcid,
+#footer .social-icons .icon-researchgate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 48px;
   height: 48px;
-  line-height: 48px;
-  text-align: center;
-  background-color: #fff;
-  border-radius: 50%;
-  vertical-align: middle;
-}
-
-#footer .social-icons .fa {
-  width: 48px;
-  height: 48px;
-  line-height: 48px;
+  line-height: 1;
   font-size: 1.45em;
   background-color: #fff;
   color: var(--footer-red);
+  border-radius: 50%;
+  margin: 0;
+  vertical-align: middle;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
-#footer .social-icons a:has(.icon-scholar):hover,
-#footer .social-icons a:has(.icon-scholar):active {
-  background-color: rgba(255, 255, 255, 0.88);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+#footer .social-icons .icon-scholar::before,
+#footer .social-icons .icon-orcid::before,
+#footer .social-icons .icon-researchgate::before {
+  width: 24px;
+  height: 24px;
+  margin: 0;
 }
 
 #footer .social-icons .fa:hover,
-#footer .social-icons .fa:active {
+#footer .social-icons .fa:active,
+#footer .social-icons .icon-scholar:hover,
+#footer .social-icons .icon-scholar:active,
+#footer .social-icons .icon-orcid:hover,
+#footer .social-icons .icon-orcid:active,
+#footer .social-icons .icon-researchgate:hover,
+#footer .social-icons .icon-researchgate:active {
   background-color: rgba(255, 255, 255, 0.88);
   color: var(--footer-red-hover);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+#footer .social-icons .fa-envelope,
+#footer .social-icons .fa-phone,
+#footer .social-icons .fa-linkedin,
+#footer .social-icons .fa-twitter,
+#footer .social-icons .fa-github,
+#footer .social-icons .fa-youtube-play {
+  background-color: #fff;
 }
 
 #footer .list-inline li {
@@ -201,11 +280,16 @@ tt,
   margin-bottom: 0;
 }
 
+#footer .wrapper > a[href*="flagcounter"] {
+  display: block;
+  line-height: 0;
+}
+
 #footer .wrapper > a img[alt="Flag Counter"] {
-  margin-top: 8px;
+  display: block;
+  margin-top: 10px;
   max-width: 240px;
   height: auto;
-  display: inline-block;
 }
 
 /* Legacy <font> / <center> replacements (Chromium font-size mapping) */
