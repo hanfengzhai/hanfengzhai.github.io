@@ -245,10 +245,15 @@ tt,
 }
 
 #footer .social-icons .icon-scholar::before,
-#footer .social-icons .icon-orcid::before,
-#footer .social-icons .icon-researchgate::before {
+#footer .social-icons .icon-orcid::before {
   width: 24px;
   height: 24px;
+  margin: 0;
+}
+
+#footer .social-icons .icon-researchgate::before {
+  width: 28px;
+  height: 18px;
   margin: 0;
 }
 
@@ -315,4 +320,101 @@ tt,
   margin: 0;
   height: 1px;
   border: 0;
+}
+
+@media (max-width: 720px) {
+  #footer .container,
+  #footer .row,
+  #footer .wrapper {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    overflow-x: hidden;
+  }
+
+  #footer #copyRightEn {
+    padding: 0 10px;
+    font-size: 12px;
+  }
+
+  #footer .social-icons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    gap: 8px 6px;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+
+  #footer .social-icons.list-inline > li {
+    display: flex;
+    float: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  #footer .social-icons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  #footer .social-icons .fa,
+  #footer .social-icons .icon-scholar,
+  #footer .social-icons .icon-orcid,
+  #footer .social-icons .icon-researchgate {
+    width: 42px;
+    height: 42px;
+    font-size: 1.22em;
+    line-height: 42px;
+    flex-shrink: 0;
+  }
+
+  #footer .social-icons .icon-scholar::before,
+  #footer .social-icons .icon-orcid::before {
+    width: 21px;
+    height: 21px;
+  }
+
+  #footer .social-icons .icon-researchgate::before {
+    width: 26px;
+    height: 17px;
+  }
+
+  #footer .wrapper > a img[alt="Flag Counter"] {
+    max-width: min(240px, 100%);
+  }
+}
+
+@media (max-width: 360px) {
+  #footer .social-icons {
+    gap: 6px 4px;
+    padding: 0 6px;
+  }
+
+  #footer .social-icons .fa,
+  #footer .social-icons .icon-scholar,
+  #footer .social-icons .icon-orcid,
+  #footer .social-icons .icon-researchgate {
+    width: 38px;
+    height: 38px;
+    font-size: 1.12em;
+    line-height: 38px;
+  }
+
+  #footer .social-icons .icon-scholar::before,
+  #footer .social-icons .icon-orcid::before {
+    width: 19px;
+    height: 19px;
+  }
+
+  #footer .social-icons .icon-researchgate::before {
+    width: 24px;
+    height: 16px;
+  }
 }
