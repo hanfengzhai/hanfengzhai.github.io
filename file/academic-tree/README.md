@@ -1,6 +1,6 @@
 # Academic Tree
 
-Interactive doctoral lineage page for Hanfeng Zhai, extending back to **Carl Friedrich Gauss**.
+Interactive doctoral lineage page for Hanfeng Zhai, extending back through **Carl Friedrich Gauss** to **Georgios Gemistos Plethon**.
 
 ## View
 
@@ -19,3 +19,9 @@ Then: Runge → Born → Oppenheimer → Foldy → Osborn → Yip → Cai → Zh
 ## Note
 
 Built from public MGP / institutional records. Extra branches from `hz_academic_tree.pdf` can be added when available.
+
+The displayed tree starts at Plethon, then Gauss. Complete MGP path to Gauss:
+
+**Plethon** → Bessarion → Argyropoulos → Reuchlin → Melanchthon → Caselius → Calixt → Quenstedt → Walther → Pasch → Planer → **Hausen** → **Kästner** → **Pfaff** → **Gauss**
+
+Then: Gauss → (Gudermann → Weierstraß | Bessel → Scherk → Kummer) → Runge → Born → Oppenheimer → Foldy → Osborn → Yip → Cai → Zhai.
