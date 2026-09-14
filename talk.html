@@ -56,6 +56,36 @@
   .talk-block li:last-child {
     margin-bottom: 0;
   }
+
+  .talk-highlights {
+    width: 100%;
+    border: 0;
+    border-collapse: separate;
+    border-spacing: 1.25em 0;
+    table-layout: fixed;
+  }
+
+  .talk-highlights td {
+    width: 50%;
+    vertical-align: middle;
+    text-align: center;
+    padding: 0;
+  }
+
+  .article-entry .talk-highlights img {
+    height: 280px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 720px) {
+    .article-entry .talk-highlights img {
+      height: 180px;
+    }
+  }
   </style>
   
 <link rel="stylesheet" href="/css/styles/style.css">
@@ -174,11 +204,10 @@
 
 <h1 id="Highlights"><a href="#Highlights" class="headerlink" title="Highlights"></a>Highlights</h1>
 <blockquote>
-<table border="1" width="100%">
+<table class="talk-highlights" width="100%">
     <tr>
-        <td class="legacy-text-center" width="50%"><img src="/file/posters/AESCAPE2026_Poster.png" height="300" width="450" ></td>
-        <td class="legacy-text-center" width="5%"></td>
-        <td class="legacy-text-center" width="45%"><img src="/file/posters/dislocation2025.png" height="300" width="400" ></td>
+        <td><img src="/file/posters/AESCAPE2026_Poster.png" alt="AESCAPE 2026 poster"></td>
+        <td><img src="/file/posters/dislocation2025.png" alt="Dislocations 2025 poster"></td>
     </tr>
 </table>
 </blockquote>	
