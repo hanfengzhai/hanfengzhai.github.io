@@ -205,6 +205,10 @@ body, html {
         display: block;
 }
 
+.timeline-image img.timeline-image-from-top {
+        object-position: top center;
+}
+
 .timeline-content {
         padding: 10px;
         font-size: 1.5rem;
