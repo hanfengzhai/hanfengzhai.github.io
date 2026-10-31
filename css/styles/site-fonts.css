@@ -7,7 +7,8 @@
 
 html,
 body {
-  overflow-x: hidden;
+  /* clip avoids creating a secondary scrollport (hidden can break sticky/fixed nav) */
+  overflow-x: clip;
   background-color: var(--page-bg);
 }
 

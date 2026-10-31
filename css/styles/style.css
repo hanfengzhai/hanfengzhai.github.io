@@ -789,12 +789,23 @@ tt {
   }
 }
 .article-inner {
-  overflow: hidden;
+  /* visible so the site pill nav can position:sticky to the viewport */
+  overflow: visible;
   border: 0px solid #eef1f8;
 }
+.article-inner::after {
+  content: "";
+  display: table;
+  clear: both;
+}
 .article-inner-night {
-  overflow: hidden;
+  overflow: visible;
   border: 0px solid #eef1f8;
+}
+.article-inner-night::after {
+  content: "";
+  display: table;
+  clear: both;
 }
 .article-inner h1,
 .article-inner h2,
