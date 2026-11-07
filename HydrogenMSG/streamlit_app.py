@@ -1,6 +1,19 @@
-"""Interactive examples for size-dependent hydrogen trapping in MSG plasticity."""
+"""Interactive examples for size-dependent hydrogen trapping in MSG plasticity.
+
+Run from the repository root:
+
+    python3 -m streamlit run notebooks/streamlit_app.py
+
+Browser deploy (stlite on GitHub Pages):
+
+    https://hanfengzhai.github.io/HydrogenMSG.html
+"""
 
 from __future__ import annotations
+
+import importlib
+import sys
+from pathlib import Path
 
 import matplotlib
 
@@ -9,7 +22,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import streamlit as st
 
-from msg_hydrogen import (
+ROOT = Path(__file__).resolve().parents[1]
+for p in (ROOT / "scripts", ROOT / "scripts" / "figures"):
+    if str(p) not in sys.path:
+        sys.path.insert(0, str(p))
+
+from msg_hydrogen import (  # noqa: E402
     Params,
     bending_average_uptake,
     bending_fields,
@@ -18,14 +36,16 @@ from msg_hydrogen import (
     torsion_cT_profile,
     void_fields,
 )
-from _style import (
+from _style import (  # noqa: E402
     COLORS,
     COLORS_THREE,
     LINESTYLES_THREE,
     LINE_LW,
     apply_style,
 )
-import _app_schematics as _schematics
+import _app_schematics as _schematics  # noqa: E402
+
+_schematics = importlib.reload(_schematics)
 schematic_gif_bytes = _schematics.schematic_gif_bytes
 
 PAGES = [
@@ -571,7 +591,7 @@ _EXPLORER = {
             "teaser": "Taylor density → trap sites",
             "equation": r"$N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b$",
             "body": (
-                "Key constitutive closure of the paper: dislocation line length also sets the "
+                "Key constitutive closure: dislocation line length also sets the "
                 "hydrogen trap-site inventory. Size-dependent plasticity therefore sets local "
                 "storage capacity as well as strength."
             ),
@@ -676,7 +696,7 @@ _EXPLORER = {
         {
             "id": "eq-scale",
             "chip": "Scaling",
-            "title": "Unified $1/L$ scaling",
+            "title": "Unified 1/L scaling",
             "teaser": "GND trap sites ~ 1/L",
             "equation": (
                 r"N_{\mathrm{T}}^{\mathrm{GND}}\sim 1/a\ (\mathrm{torsion}),\ "
@@ -708,7 +728,7 @@ _EXPLORER = {
             "teaser": "One Taylor density, two roles",
             "equation": r"$N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b$ beside $\sigma_{\mathrm{e}}(\rho_{\mathrm{T}})$",
             "body": (
-                "The paper's central move is to let the MSG Taylor density control both hardening "
+                "The central move is to let the MSG Taylor density control both hardening "
                 "and trap-site capacity, then feed that capacity into Oriani trapping."
             ),
         },
@@ -726,7 +746,7 @@ _EXPLORER = {
         {
             "id": "inn-torsion",
             "chip": "Example I",
-            "title": "Torsion isolates $N_{\mathrm{T}}$",
+            "title": "Torsion isolates N_T",
             "teaser": "Vanishing mean-stress drift",
             "equation": r"$\sigma_{\mathrm{m}}\approx 0 \Rightarrow$ structure of $c_{\mathrm{T}}$ from $N_{\mathrm{T}}$ alone",
             "body": (
@@ -812,7 +832,7 @@ def _explorer_grid(items, state_key: str, columns: int = 4):
 
 
 def page_workflow():
-    st.header("Explore the paper logic")
+    st.header("Explore the constitutive chain")
     st.markdown(
         "Click any card to open its governing relation and role in the MSG–hydrogen story. "
         "Start with **Workflow**, then **Equations**, then **Innovations**."
@@ -821,7 +841,7 @@ def page_workflow():
         '<div class="msg-chip-row">'
         '<span class="msg-chip">MSG plasticity</span>'
         '<span class="msg-chip">Oriani trapping</span>'
-        '<span class="msg-chip">$1/L$ trap-site scaling</span>'
+        '<span class="msg-chip">1/L trap-site scaling</span>'
         '<span class="msg-chip">One-way coupling</span>'
         "</div>",
         unsafe_allow_html=True,
@@ -847,7 +867,7 @@ def page_workflow():
 
     with tab_inn:
         st.markdown(
-            "What the paper adds: the trap-density closure, the two hydrogen channels, "
+            "What this framework adds: the trap-density closure, the two hydrogen channels, "
             "and the size-dependent storage picture across torsion, bending, and voids."
         )
         _explorer_grid(_EXPLORER["innovations"], "explore_innovations", columns=3)
@@ -1026,7 +1046,10 @@ def page_fem_void():
     if not ensure_scipy():
         return
     import importlib
-    from _fem_plots import draw_meridian_contour
+    import _fem
+
+    importlib.reload(_fem)
+    draw_meridian_contour = _fem.draw_meridian_contour
 
     st.header("Non-hydrostatic void")
     st.markdown(
@@ -1090,7 +1113,10 @@ def page_fem_slit():
     if not ensure_scipy():
         return
     import importlib
-    from _fem_plots import draw_slit_contour
+    import _fem
+
+    importlib.reload(_fem)
+    draw_slit_contour = _fem.draw_slit_contour
 
     st.header("Mode-I slit")
     st.markdown(
