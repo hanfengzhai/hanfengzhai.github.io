@@ -513,6 +513,72 @@ def draw_slit(ax, t=1.0):
     _title(ax, t)
 
 
+def draw_msg_workflow(ax):
+    """Compact MSG → Oriani → trapped-H workflow for the app overview."""
+    from matplotlib.patches import FancyBboxPatch
+
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 6.2)
+    ax.set_aspect("equal")
+    ax.axis("off")
+
+    def box(x, y, w, h, title, eq, *, fc="white"):
+        ax.add_patch(
+            FancyBboxPatch(
+                (x, y), w, h,
+                boxstyle="round,pad=0.02,rounding_size=0.08",
+                facecolor=fc, edgecolor=EDGE, lw=0.9, zorder=2,
+            )
+        )
+        ax.text(x + 0.5 * w, y + 0.62 * h, title, ha="center", va="center",
+                fontsize=FS - 1, color="0.2", zorder=3)
+        ax.text(x + 0.5 * w, y + 0.28 * h, eq, ha="center", va="center",
+                fontsize=FS, color=MECH, zorder=3)
+
+    def link(x0, y0, x1, y1):
+        _arrow(ax, (x0, y0), (x1, y1), color=EDGE, lw=0.9, scale=7)
+
+    # Row 1: kinematics → invariants → Taylor
+    box(0.25, 4.55, 2.6, 1.15, "Kinematics", r"$u_i,\ \varepsilon_{ij},\ \eta_{ijk}$")
+    box(3.55, 4.55, 2.6, 1.15, "Effective measures", r"$\varepsilon_{\mathrm{e}},\ \eta$")
+    box(6.85, 4.55, 2.9, 1.15, "MSG / Taylor density",
+        r"$\rho_{\mathrm{T}}=\rho_{\mathrm{S}}+\rho_{\mathrm{G}}$", fc="0.94")
+    link(2.85, 5.12, 3.55, 5.12)
+    link(6.15, 5.12, 6.85, 5.12)
+
+    # Split from Taylor
+    ax.plot([8.3, 8.3], [4.55, 3.95], color=EDGE, lw=0.9, zorder=1)
+    ax.plot([2.0, 8.3], [3.95, 3.95], color=EDGE, lw=0.9, zorder=1)
+    link(2.0, 3.95, 2.0, 3.55)
+    link(8.3, 3.95, 8.3, 3.55)
+
+    # Row 2: flow / mean stress | trap sites
+    box(0.35, 2.35, 3.3, 1.2, "Flow stress",
+        r"$\sigma_{\mathrm{e}}=\sigma_{\mathrm{Y}}\sqrt{f^{2}+l\eta}$")
+    box(6.55, 2.35, 3.2, 1.2, "Trap-site density",
+        r"$N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b$", fc="0.94")
+
+    # Left column continues: mean stress → lattice → Oriani
+    link(2.0, 2.35, 2.0, 1.95)
+    box(0.35, 0.75, 3.3, 1.2, "Mean stress $\Rightarrow$ lattice H",
+        r"$\theta_{\mathrm{L}}(\sigma_{\mathrm{m}})$")
+    link(3.65, 1.35, 4.15, 1.35)
+    box(4.15, 0.75, 2.55, 1.2, "Oriani equilibrium",
+        r"$\theta_{\mathrm{T}}(\theta_{\mathrm{L}},K_{\mathrm{T}})$")
+    link(6.70, 1.35, 7.15, 1.35)
+    box(7.15, 0.75, 2.6, 1.2, "Trapped hydrogen",
+        r"$c_{\mathrm{T}}=N_{\mathrm{T}}\,\theta_{\mathrm{T}}$", fc="0.94")
+
+    # N_T feeds c_T from above
+    link(8.15, 2.35, 8.15, 1.95)
+
+    ax.text(
+        5.0, 5.95,
+        "MSG plasticity and hydrogen trapping",
+        ha="center", va="center", fontsize=FS, color=CARDINAL, fontweight="bold",
+    )
+
+
 def _drawer(kind: str):
     drawers = {
         "torsion": draw_torsion,

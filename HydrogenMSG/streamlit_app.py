@@ -29,6 +29,7 @@ import _app_schematics as _schematics
 schematic_gif_bytes = _schematics.schematic_gif_bytes
 
 PAGES = [
+    "Workflow",
     "Wire torsion",
     "Beam bending",
     "Spherical void",
@@ -455,6 +456,37 @@ def _solve_slit(l_over_a, remote_s, xi, progress=None):
     return sol
 
 
+def page_workflow():
+    st.header("Logical workflow")
+    st.markdown(
+        r"The examples below share one constitutive chain. "
+        r"Mechanism-based strain gradient (MSG) plasticity sets the dislocation density "
+        r"from the effective strain and strain gradient. "
+        r"That density hardens the solid and supplies the trap-site density "
+        r"$N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b$. "
+        r"Mean stress sets the lattice occupancy $\theta_{\mathrm{L}}$. "
+        r"Oriani equilibrium then fixes the trap occupancy $\theta_{\mathrm{T}}$, "
+        r"and the trapped concentration is $c_{\mathrm{T}}=N_{\mathrm{T}}\,\theta_{\mathrm{T}}$."
+    )
+    st.markdown(
+        r"Wire torsion isolates trap-density storage at vanishing mean stress. "
+        r"Beam bending mixes mean-stress occupancy with a uniform strain gradient. "
+        r"Spherical void growth concentrates geometrically necessary dislocations "
+        r"in a near-wall trapping shell. "
+        r"Cavitation and the mode-I slit add phenomenological HELP softening "
+        r"as an amplitude correction on the flow stress."
+    )
+    fig, ax = plt.subplots(figsize=(11.0, 6.6))
+    fig.patch.set_facecolor("#ffffff")
+    _schematics.draw_msg_workflow(ax)
+    fig.tight_layout(pad=0.2)
+    show(fig)
+    st.caption(
+        r"Solid arrows are the one-way MSG$\rightarrow$Oriani path used in most examples. "
+        r"HELP softening appears only in the cavitation and slit pages."
+    )
+
+
 def page_torsion(p: Params):
     st.header("Wire torsion")
     st.markdown(
@@ -765,8 +797,10 @@ def main():
         rf"$\varsigma={p.varsigma:.3f}$, "
         rf"$K_T={kt_mant:.2f}\times 10^{{{kt_exp}}}$"
     )
-    page = st.sidebar.radio("Example", PAGES)
-    if page == "Wire torsion":
+    page = st.sidebar.radio("Section", PAGES, index=0)
+    if page == "Workflow":
+        page_workflow()
+    elif page == "Wire torsion":
         page_torsion(p)
     elif page == "Beam bending":
         page_bending(p)
