@@ -517,7 +517,7 @@ _EXPLORER = {
             "id": "kin",
             "chip": "1 · Mechanics",
             "title": "Kinematics",
-            "teaser": r"$u_i \rightarrow \varepsilon_{ij},\ \eta_{ijk}$",
+            "teaser": "displacement → strain & gradient",
             "equation": r"$\varepsilon_{ij}=\tfrac{1}{2}(u_{i,j}+u_{j,i}),\quad \eta_{ijk}=u_{k,ij}$",
             "body": (
                 "A displacement field supplies the strain and strain gradient. "
@@ -528,7 +528,7 @@ _EXPLORER = {
             "id": "inv",
             "chip": "2 · Mechanics",
             "title": "Effective measures",
-            "teaser": r"$\varepsilon_{\mathrm{e}},\ \eta$",
+            "teaser": "effective strain & gradient",
             "equation": (
                 r"$\varepsilon_{\mathrm{e}}=\sqrt{\tfrac{2}{3}\varepsilon_{ij}\varepsilon_{ij}},\quad "
                 r"\eta=\tfrac{1}{2}\sqrt{\eta_{ijk}\eta_{ijk}}$"
@@ -543,7 +543,7 @@ _EXPLORER = {
             "id": "taylor",
             "chip": "3 · MSG core",
             "title": "Taylor density",
-            "teaser": r"$\rho_{\mathrm{T}}=\rho_{\mathrm{S}}+\rho_{\mathrm{G}}$",
+            "teaser": "SSD + GND density",
             "equation": r"$\rho_{\mathrm{T}}=\rho_{\mathrm{S}}+\rho_{\mathrm{G}},\quad \rho_{\mathrm{G}}=\eta/b$",
             "body": (
                 "MSG identifies the total dislocation line length per unit volume with the sum of "
@@ -554,7 +554,7 @@ _EXPLORER = {
             "id": "flow",
             "chip": "4 · Hardening",
             "title": "Flow stress",
-            "teaser": r"$\sigma_{\mathrm{e}}=\sigma_{\mathrm{Y}}\sqrt{f^{2}+l\eta}$",
+            "teaser": "MSG hardening law",
             "equation": (
                 r"$\sigma_{\mathrm{e}}=\sigma_{\mathrm{Y}}\sqrt{f^{2}(\varepsilon_{\mathrm{e}})+l\,\eta},"
                 r"\quad l=3\alpha^{2}(\mu/\sigma_{\mathrm{Y}})^{2}b$"
@@ -568,7 +568,7 @@ _EXPLORER = {
             "id": "nt",
             "chip": "5 · Innovation",
             "title": "Trap-site density",
-            "teaser": r"$N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b$",
+            "teaser": "Taylor density → trap sites",
             "equation": r"$N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b$",
             "body": (
                 "Key constitutive closure of the paper: dislocation line length also sets the "
@@ -580,7 +580,7 @@ _EXPLORER = {
             "id": "mean",
             "chip": "6 · Occupancy",
             "title": "Mean stress → lattice H",
-            "teaser": r"$\theta_{\mathrm{L}}(\sigma_{\mathrm{m}})$",
+            "teaser": "mean stress sets occupancy",
             "equation": (
                 r"$\theta_{\mathrm{L}}\propto "
                 r"\exp\!\big(\sigma_{\mathrm{m}}\bar{V}_{\mathrm{H}}/(RT)\big)$"
@@ -594,7 +594,7 @@ _EXPLORER = {
             "id": "oriani",
             "chip": "7 · Equilibrium",
             "title": "Oriani trapping",
-            "teaser": r"$\theta_{\mathrm{T}}(\theta_{\mathrm{L}},K_T)$",
+            "teaser": "lattice ↔ trap equilibrium",
             "equation": (
                 r"$\dfrac{\theta_{\mathrm{T}}}{1-\theta_{\mathrm{T}}}"
                 r"=K_T\dfrac{\theta_{\mathrm{L}}}{1-\theta_{\mathrm{L}}}$"
@@ -608,7 +608,7 @@ _EXPLORER = {
             "id": "ct",
             "chip": "8 · Output",
             "title": "Trapped hydrogen",
-            "teaser": r"$c_{\mathrm{T}}=N_{\mathrm{T}}\,\theta_{\mathrm{T}}$",
+            "teaser": "sites × occupancy",
             "equation": r"$c_{\mathrm{T}}=N_{\mathrm{T}}\,\theta_{\mathrm{T}}$",
             "body": (
                 "Trapped concentration is the product of trap-site density and trap occupancy. "
@@ -621,7 +621,7 @@ _EXPLORER = {
             "id": "eq-flow",
             "chip": "MSG",
             "title": "MSG flow stress",
-            "teaser": r"$\sigma_{\mathrm{e}}(\varepsilon_{\mathrm{e}},\eta)$",
+            "teaser": "flow stress from MSG",
             "equation": (
                 r"$\sigma_{\mathrm{e}}=\sigma_{\mathrm{Y}}\sqrt{f^{2}(\varepsilon_{\mathrm{e}})+l\eta},"
                 r"\quad f(\varepsilon_{\mathrm{e}})=(E\varepsilon_{\mathrm{e}}/\sigma_{\mathrm{Y}})^{N}$"
@@ -635,7 +635,7 @@ _EXPLORER = {
             "id": "eq-nt",
             "chip": "Closure",
             "title": "Trap-density identity",
-            "teaser": r"$N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b$",
+            "teaser": "trap-density identity",
             "equation": (
                 r"$N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b,"
                 r"\quad \rho_{\mathrm{T}}=\rho_{\mathrm{S}}+\eta/b$"
@@ -649,7 +649,7 @@ _EXPLORER = {
             "id": "eq-thL",
             "chip": "Transport",
             "title": "Lattice occupancy",
-            "teaser": r"$\theta_{\mathrm{L}}(\sigma_{\mathrm{m}})$",
+            "teaser": "mean stress sets occupancy",
             "equation": (
                 r"\theta_{\mathrm{L}}"
                 r"\propto \exp\!\big(\sigma_{\mathrm{m}}\bar{V}_{\mathrm{H}}/(RT)\big)"
@@ -663,7 +663,7 @@ _EXPLORER = {
             "id": "eq-oriani",
             "chip": "Oriani",
             "title": "Oriani map",
-            "teaser": r"$\theta_{\mathrm{T}}\leftrightarrow\theta_{\mathrm{L}}$",
+            "teaser": "Oriani local map",
             "equation": (
                 r"$\dfrac{\theta_{\mathrm{T}}}{1-\theta_{\mathrm{T}}}"
                 r"=K_T\dfrac{\theta_{\mathrm{L}}}{1-\theta_{\mathrm{L}}}$"
@@ -677,7 +677,7 @@ _EXPLORER = {
             "id": "eq-scale",
             "chip": "Scaling",
             "title": "Unified $1/L$ scaling",
-            "teaser": r"$N_{\mathrm{T}}^{\mathrm{GND}}\propto 1/L$",
+            "teaser": "GND trap sites ~ 1/L",
             "equation": (
                 r"N_{\mathrm{T}}^{\mathrm{GND}}\sim 1/a\ (\mathrm{torsion}),\ "
                 r"1/h\ (\mathrm{bending}),\ 1/R_0\ (\mathrm{void\ wall})"
@@ -691,7 +691,7 @@ _EXPLORER = {
             "id": "eq-help",
             "chip": "HELP",
             "title": "HELP amplitude law",
-            "teaser": r"$(1-\xi\theta_{\mathrm{T}})\,\sigma_{\mathrm{e}}$",
+            "teaser": "occupancy softens flow stress",
             "equation": r"\sigma_{\mathrm{e}}^{\mathrm{HELP}}=(1-\xi\,\theta_{\mathrm{T}})\,\sigma_{\mathrm{e}}",
             "body": (
                 "Formulation C keeps the hydrogen-free Taylor density and multiplies the flow stress "
@@ -716,7 +716,7 @@ _EXPLORER = {
             "id": "inn-channels",
             "chip": "Channels",
             "title": "Two hydrogen channels",
-            "teaser": r"$\sigma_{\mathrm{m}}$ vs $\rho_{\mathrm{T}}$",
+            "teaser": "occupancy vs trap-site channels",
             "equation": r"$c_{\mathrm{T}}=N_{\mathrm{T}}(\rho_{\mathrm{T}})\,\theta_{\mathrm{T}}(\sigma_{\mathrm{m}})$",
             "body": (
                 "Mean stress controls occupancy; dislocation density controls trap-site number. "
@@ -738,7 +738,7 @@ _EXPLORER = {
             "id": "inn-bend",
             "chip": "Example II",
             "title": "Bending mixes both channels",
-            "teaser": "Antisymmetric $\\sigma_m$, even GND sites",
+            "teaser": "antisymmetric mean stress, even GND sites",
             "equation": r"Occupancy odd in $x_2$; GND trap sites even in $x_2$",
             "body": (
                 "Bending raises occupancy on the tensile side while the uniform strain gradient "
