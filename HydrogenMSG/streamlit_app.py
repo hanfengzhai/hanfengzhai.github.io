@@ -538,7 +538,10 @@ _EXPLORER = {
             "chip": "1 · Mechanics",
             "title": "Kinematics",
             "teaser": "displacement → strain & gradient",
-            "equation": r"$\varepsilon_{ij}=\tfrac{1}{2}(u_{i,j}+u_{j,i}),\quad \eta_{ijk}=u_{k,ij}$",
+            "equation": (
+                r"\varepsilon_{ij}=\tfrac{1}{2}(u_{i,j}+u_{j,i}),"
+                r"\quad \eta_{ijk}=u_{k,ij}"
+            ),
             "body": (
                 "A displacement field supplies the strain and strain gradient. "
                 "Every later example starts from this kinematic layer for its own geometry."
@@ -550,8 +553,8 @@ _EXPLORER = {
             "title": "Effective measures",
             "teaser": "effective strain & gradient",
             "equation": (
-                r"$\varepsilon_{\mathrm{e}}=\sqrt{\tfrac{2}{3}\varepsilon_{ij}\varepsilon_{ij}},\quad "
-                r"\eta=\tfrac{1}{2}\sqrt{\eta_{ijk}\eta_{ijk}}$"
+                r"\varepsilon_{\mathrm{e}}=\sqrt{\tfrac{2}{3}\varepsilon_{ij}\varepsilon_{ij}},"
+                r"\quad \eta=\tfrac{1}{2}\sqrt{\eta_{ijk}\eta_{ijk}}"
             ),
             "body": (
                 "Scalar invariants collapse the tensors into an effective strain that drives "
@@ -564,7 +567,10 @@ _EXPLORER = {
             "chip": "3 · MSG core",
             "title": "Taylor density",
             "teaser": "SSD + GND density",
-            "equation": r"$\rho_{\mathrm{T}}=\rho_{\mathrm{S}}+\rho_{\mathrm{G}},\quad \rho_{\mathrm{G}}=\eta/b$",
+            "equation": (
+                r"\rho_{\mathrm{T}}=\rho_{\mathrm{S}}+\rho_{\mathrm{G}},"
+                r"\quad \rho_{\mathrm{G}}=\eta/b"
+            ),
             "body": (
                 "MSG identifies the total dislocation line length per unit volume with the sum of "
                 "SSD and GND densities. The GND term is fixed by lattice curvature through $\\eta$."
@@ -576,8 +582,8 @@ _EXPLORER = {
             "title": "Flow stress",
             "teaser": "MSG hardening law",
             "equation": (
-                r"$\sigma_{\mathrm{e}}=\sigma_{\mathrm{Y}}\sqrt{f^{2}(\varepsilon_{\mathrm{e}})+l\,\eta},"
-                r"\quad l=3\alpha^{2}(\mu/\sigma_{\mathrm{Y}})^{2}b$"
+                r"\sigma_{\mathrm{e}}=\sigma_{\mathrm{Y}}\sqrt{f^{2}(\varepsilon_{\mathrm{e}})+l\,\eta},"
+                r"\quad l=3\alpha^{2}(\mu/\sigma_{\mathrm{Y}})^{2}b"
             ),
             "body": (
                 "The same Taylor density hardens the solid. The intrinsic length $l$ is the scale "
@@ -589,7 +595,7 @@ _EXPLORER = {
             "chip": "5 · Innovation",
             "title": "Trap-site density",
             "teaser": "Taylor density → trap sites",
-            "equation": r"$N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b$",
+            "equation": r"N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b",
             "body": (
                 "Key constitutive closure: dislocation line length also sets the "
                 "hydrogen trap-site inventory. Size-dependent plasticity therefore sets local "
@@ -602,8 +608,8 @@ _EXPLORER = {
             "title": "Mean stress → lattice H",
             "teaser": "mean stress sets occupancy",
             "equation": (
-                r"$\theta_{\mathrm{L}}\propto "
-                r"\exp\!\big(\sigma_{\mathrm{m}}\bar{V}_{\mathrm{H}}/(RT)\big)$"
+                r"\theta_{\mathrm{L}}\propto "
+                r"\exp\!\big(\sigma_{\mathrm{m}}\bar{V}_{\mathrm{H}}/(RT)\big)"
             ),
             "body": (
                 "Equilibrium lattice transport ties lattice occupancy to mean stress. "
@@ -616,8 +622,8 @@ _EXPLORER = {
             "title": "Oriani trapping",
             "teaser": "lattice ↔ trap equilibrium",
             "equation": (
-                r"$\dfrac{\theta_{\mathrm{T}}}{1-\theta_{\mathrm{T}}}"
-                r"=K_T\dfrac{\theta_{\mathrm{L}}}{1-\theta_{\mathrm{L}}}$"
+                r"\dfrac{\theta_{\mathrm{T}}}{1-\theta_{\mathrm{T}}}"
+                r"=K_T\dfrac{\theta_{\mathrm{L}}}{1-\theta_{\mathrm{L}}}"
             ),
             "body": (
                 "Oriani local equilibrium maps lattice occupancy into trap occupancy at each material "
@@ -629,7 +635,7 @@ _EXPLORER = {
             "chip": "8 · Output",
             "title": "Trapped hydrogen",
             "teaser": "sites × occupancy",
-            "equation": r"$c_{\mathrm{T}}=N_{\mathrm{T}}\,\theta_{\mathrm{T}}$",
+            "equation": r"c_{\mathrm{T}}=N_{\mathrm{T}}\,\theta_{\mathrm{T}}",
             "body": (
                 "Trapped concentration is the product of trap-site density and trap occupancy. "
                 "Spatial structure can come from $N_{\mathrm{T}}$, from $\\theta_{\mathrm{T}}$, or from both."
@@ -643,8 +649,8 @@ _EXPLORER = {
             "title": "MSG flow stress",
             "teaser": "flow stress from MSG",
             "equation": (
-                r"$\sigma_{\mathrm{e}}=\sigma_{\mathrm{Y}}\sqrt{f^{2}(\varepsilon_{\mathrm{e}})+l\eta},"
-                r"\quad f(\varepsilon_{\mathrm{e}})=(E\varepsilon_{\mathrm{e}}/\sigma_{\mathrm{Y}})^{N}$"
+                r"\sigma_{\mathrm{e}}=\sigma_{\mathrm{Y}}\sqrt{f^{2}(\varepsilon_{\mathrm{e}})+l\eta},"
+                r"\quad f(\varepsilon_{\mathrm{e}})=(E\varepsilon_{\mathrm{e}}/\sigma_{\mathrm{Y}})^{N}"
             ),
             "body": (
                 "Deformation-theory MSG under proportional loading. "
@@ -657,8 +663,8 @@ _EXPLORER = {
             "title": "Trap-density identity",
             "teaser": "trap-density identity",
             "equation": (
-                r"$N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b,"
-                r"\quad \rho_{\mathrm{T}}=\rho_{\mathrm{S}}+\eta/b$"
+                r"N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b,"
+                r"\quad \rho_{\mathrm{T}}=\rho_{\mathrm{S}}+\eta/b"
             ),
             "body": (
                 "This identity is the bridge from MSG plasticity to hydrogen storage. "
@@ -685,8 +691,8 @@ _EXPLORER = {
             "title": "Oriani map",
             "teaser": "Oriani local map",
             "equation": (
-                r"$\dfrac{\theta_{\mathrm{T}}}{1-\theta_{\mathrm{T}}}"
-                r"=K_T\dfrac{\theta_{\mathrm{L}}}{1-\theta_{\mathrm{L}}}$"
+                r"\dfrac{\theta_{\mathrm{T}}}{1-\theta_{\mathrm{T}}}"
+                r"=K_T\dfrac{\theta_{\mathrm{L}}}{1-\theta_{\mathrm{L}}}"
             ),
             "body": (
                 "Local chemical equilibrium between lattice and trap sites. "
@@ -699,8 +705,8 @@ _EXPLORER = {
             "title": "Unified 1/L scaling",
             "teaser": "GND trap sites ~ 1/L",
             "equation": (
-                r"N_{\mathrm{T}}^{\mathrm{GND}}\sim 1/a\ (\mathrm{torsion}),\ "
-                r"1/h\ (\mathrm{bending}),\ 1/R_0\ (\mathrm{void\ wall})"
+                r"N_{\mathrm{T}}^{\mathrm{GND}}\sim 1/a\ \text{(torsion)},\ "
+                r"1/h\ \text{(bending)},\ 1/R_0\ \text{(void wall)}"
             ),
             "body": (
                 "At fixed characteristic strain, the GND contribution to trap-site density "
@@ -726,7 +732,10 @@ _EXPLORER = {
             "chip": "Idea",
             "title": "MSG density → trap inventory",
             "teaser": "One Taylor density, two roles",
-            "equation": r"$N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b$ beside $\sigma_{\mathrm{e}}(\rho_{\mathrm{T}})$",
+            "equation": (
+                r"N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b,"
+                r"\quad \sigma_{\mathrm{e}}=\sigma_{\mathrm{e}}(\rho_{\mathrm{T}})"
+            ),
             "body": (
                 "The central move is to let the MSG Taylor density control both hardening "
                 "and trap-site capacity, then feed that capacity into Oriani trapping."
@@ -737,7 +746,10 @@ _EXPLORER = {
             "chip": "Channels",
             "title": "Two hydrogen channels",
             "teaser": "occupancy vs trap-site channels",
-            "equation": r"$c_{\mathrm{T}}=N_{\mathrm{T}}(\rho_{\mathrm{T}})\,\theta_{\mathrm{T}}(\sigma_{\mathrm{m}})$",
+            "equation": (
+                r"c_{\mathrm{T}}"
+                r"=N_{\mathrm{T}}(\rho_{\mathrm{T}})\,\theta_{\mathrm{T}}(\sigma_{\mathrm{m}})"
+            ),
             "body": (
                 "Mean stress controls occupancy; dislocation density controls trap-site number. "
                 "The canonical examples are chosen to separate and then recombine those channels."
@@ -748,7 +760,11 @@ _EXPLORER = {
             "chip": "Example I",
             "title": "Torsion isolates N_T",
             "teaser": "Vanishing mean-stress drift",
-            "equation": r"$\sigma_{\mathrm{m}}\approx 0 \Rightarrow$ structure of $c_{\mathrm{T}}$ from $N_{\mathrm{T}}$ alone",
+            "equation": (
+                r"\sigma_{\mathrm{m}}\approx 0"
+                r"\ \Rightarrow\ "
+                r"c_{\mathrm{T}}\propto N_{\mathrm{T}}"
+            ),
             "body": (
                 "Wire torsion removes mean-stress bias, so every spatial feature of trapped hydrogen "
                 "comes from trap-site density. At fixed surface strain the GND floor grows as $1/a$."
@@ -759,7 +775,10 @@ _EXPLORER = {
             "chip": "Example II",
             "title": "Bending mixes both channels",
             "teaser": "antisymmetric mean stress, even GND sites",
-            "equation": r"Occupancy odd in $x_2$; GND trap sites even in $x_2$",
+            "equation": (
+                r"\theta_{\mathrm{T}}(-x_2)=-\theta_{\mathrm{T}}(x_2),"
+                r"\quad N_{\mathrm{T}}^{\mathrm{GND}}(-x_2)=N_{\mathrm{T}}^{\mathrm{GND}}(x_2)"
+            ),
             "body": (
                 "Bending raises occupancy on the tensile side while the uniform strain gradient "
                 "adds trap sites on both halves. The mechanisms reinforce on the extrados and "
@@ -771,7 +790,10 @@ _EXPLORER = {
             "chip": "Example III",
             "title": "Void wall GND shell",
             "teaser": "Localized near-surface trapping",
-            "equation": r"N_{\mathrm{T}}^{\mathrm{GND}}\sim 1/R_0\ \mathrm{at\ fixed\ expansion}",
+            "equation": (
+                r"N_{\mathrm{T}}^{\mathrm{GND}}\sim 1/R_0"
+                r"\quad\text{at fixed expansion}"
+            ),
             "body": (
                 "Spherical void growth confines the GND contribution to a near-wall layer. "
                 "At fixed expansion ratio the local wall GND trap-site density scales as $1/R_0$."
@@ -782,7 +804,11 @@ _EXPLORER = {
             "chip": "Result",
             "title": "Size sets storage capacity",
             "teaser": "Plasticity length → hydrogen inventory",
-            "equation": r"Smaller $L$ $\Rightarrow$ larger GND trap-site density at fixed strain",
+            "equation": (
+                r"L\downarrow\ \Rightarrow\ "
+                r"N_{\mathrm{T}}^{\mathrm{GND}}\uparrow"
+                r"\quad\text{at fixed strain}"
+            ),
             "body": (
                 "Size-dependent plasticity sets local hydrogen storage capacity at small scales. "
                 "Desorption on twisted wires and through-thickness assays on bent foils are natural tests."
@@ -802,9 +828,8 @@ def _explorer_detail(item: dict):
 """,
         unsafe_allow_html=True,
     )
-    eq = item["equation"].strip()
-    if eq.startswith("$") and eq.endswith("$"):
-        eq = eq[1:-1]
+    # st.latex wants a single math expression with no $ delimiters.
+    eq = item["equation"].replace("$", "").strip()
     st.latex(eq)
     st.markdown(item["body"])
 
