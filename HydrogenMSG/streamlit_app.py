@@ -1,4 +1,4 @@
-"""Browser Streamlit view of the MSG-hydrogen examples (stlite / GitHub Pages)."""
+"""Interactive examples for size-dependent hydrogen trapping in MSG plasticity."""
 
 from __future__ import annotations
 
@@ -671,7 +671,7 @@ def page_fem_slit():
 
 def main():
     st.set_page_config(
-        page_title="MSG hydrogen examples",
+        page_title="Size-dependent hydrogen trapping in MSG plasticity",
         layout="wide",
         initial_sidebar_state="expanded",
     )
@@ -679,7 +679,11 @@ def main():
     p = Params()
     kt_exp = int(np.floor(np.log10(p.KT)))
     kt_mant = p.KT / 10**kt_exp
-    st.sidebar.markdown("**MSG–hydrogen**")
+    st.sidebar.markdown("**Size-dependent hydrogen trapping**")
+    st.sidebar.caption(
+        "Mechanism-based strain gradient plasticity · "
+        "analytical and interactive examples"
+    )
     st.sidebar.caption(
         rf"$l={p.l * 1e6:.1f}\,\mu\mathrm{{m}}$, "
         rf"$l_\varepsilon={p.l_eps * 1e6:.3f}\,\mu\mathrm{{m}}$, "

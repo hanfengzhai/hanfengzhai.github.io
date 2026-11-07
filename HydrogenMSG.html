@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <title>MSG plasticity and hydrogen trapping | Hanfeng Zhai</title>
-  <meta name="description" content="Interactive MSG plasticity and hydrogen trapping examples (Streamlit via stlite)." />
+  <title>Size-dependent hydrogen trapping in MSG plasticity | Hanfeng Zhai</title>
+  <meta name="description" content="Interactive examples of size-dependent hydrogen trapping in mechanism-based strain gradient plasticity (Streamlit via stlite)." />
   <link rel="icon" href="/css/images/site/favicon.jpg" />
   <link
     rel="stylesheet"
@@ -116,8 +116,8 @@
 </head>
 <body>
   <div id="boot" aria-live="polite">
-    <p class="kicker">MSG hydrogen</p>
-    <h1>Loading interactive examples</h1>
+    <p class="kicker">Size-dependent hydrogen trapping</p>
+    <h1>Loading MSG plasticity examples</h1>
     <p class="detail" id="boot-detail">Preparing the browser Python runtime…</p>
     <div class="bar-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="boot-bar-wrap">
       <div class="bar" id="boot-bar"></div>
@@ -164,7 +164,7 @@
       // textContent works even while the boot overlay covers the app.
       const text = (root.textContent || "").replace(/\s+/g, " ");
       return (
-        text.includes("MSG plasticity and hydrogen trapping") ||
+        text.includes("Size-dependent hydrogen trapping") ||
         text.includes("Wire torsion") ||
         text.includes("Surface strain")
       );
@@ -221,7 +221,7 @@
           requirements: ["numpy", "matplotlib", "pillow"],
           entrypoint: "streamlit_app.py",
           files: {
-            "streamlit_app.py": { url: "./HydrogenMSG/streamlit_app.py?v=23" },
+            "streamlit_app.py": { url: "./HydrogenMSG/streamlit_app.py?v=24" },
             "msg_hydrogen.py": { url: "./HydrogenMSG/msg_hydrogen.py" },
             "fem_msg.py": { url: "./HydrogenMSG/fem_msg.py?v=23" },
             "fem_slit.py": { url: "./HydrogenMSG/fem_slit.py?v=23" },
