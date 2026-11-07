@@ -136,8 +136,17 @@ _UI_CSS = """
     background-color: var(--msg-accent-bright) !important;
     border-color: var(--msg-accent) !important;
   }
+  [data-testid="stProgress"] {
+    margin: 0.35rem 0 0.15rem 0 !important;
+  }
+  [data-testid="stProgress"] > div > div,
+  [data-testid="stProgress"] > div > div > div,
   [data-testid="stProgress"] > div > div > div > div {
     background-color: var(--msg-accent) !important;
+  }
+  /* Keep the track visible on the cold-gray page. */
+  [data-testid="stProgress"] > div {
+    background-color: #d7dee6 !important;
   }
   [data-testid="stMetric"] {
     background: var(--msg-panel);
@@ -307,25 +316,68 @@ def _cavitation_curve(xi, theta_l0, l_over):
     return [float(cavitation_stress(lr, pc, r0_grid=grid, n=400, n_iter=25)) for lr in l_over]
 
 
+def _yield_to_browser():
+    """Let stlite / the browser paint progress updates during a blocking solve."""
+    try:
+        from pyodide.ffi import run_sync
+        import asyncio
+
+        run_sync(asyncio.sleep(0))
+        return
+    except Exception:
+        pass
+    try:
+        import time
+
+        time.sleep(0)
+    except Exception:
+        pass
+
+
 def _progress_ui(label="Solving"):
-    """Streamlit progress bar + status line; returns ``(callback, clear)``."""
-    bar = st.progress(0, text=label)
-    note = st.empty()
+    """Visible progress panel; returns ``(callback, finish)``.
+
+    The bar is left on screen at 100% when finished so a fast or stlite
+    solve still shows that work happened (mid-loop paints are unreliable
+    under blocking Pyodide compute).
+    """
+    box = st.container()
+    with box:
+        title = st.empty()
+        title.markdown(f"**{label}**")
+        try:
+            bar = st.progress(0, text="Starting…")
+        except TypeError:
+            bar = st.progress(0)
+        note = st.empty()
+        note.caption("Starting…")
+
+    state = {"n": 0}
 
     def _cb(frac, message=""):
         frac = float(np.clip(frac, 0.0, 1.0))
+        msg = message or label
         try:
-            bar.progress(frac, text=message or label)
+            bar.progress(frac, text=msg)
         except TypeError:
             bar.progress(frac)
-        if message:
-            note.caption(message)
+        note.caption(msg)
+        state["n"] += 1
+        # Yield often enough for the browser to redraw under stlite.
+        if state["n"] == 1 or state["n"] % 2 == 0 or frac >= 1.0:
+            _yield_to_browser()
 
-    def _clear():
-        bar.empty()
-        note.empty()
+    def _finish(message="Done"):
+        try:
+            bar.progress(1.0, text=message)
+        except TypeError:
+            bar.progress(1.0)
+        title.markdown(f"**{message}**")
+        note.caption(message)
+        _yield_to_browser()
 
-    return _cb, _clear
+    _cb(0.02, "Starting…")
+    return _cb, _finish
 
 
 def _solve_void(l_over_r0, s_z, s_r, progress=None):
@@ -585,11 +637,13 @@ def page_fem_void():
             show(_placeholder_fig("Trapped H after solve"))
         return
 
-    cb, clear_bar = _progress_ui("Solving the non-hydrostatic void…")
+    cb, finish_bar = _progress_ui("Solving the non-hydrostatic void")
     try:
         sol = _solve_void(*key, progress=cb)
-    finally:
-        clear_bar()
+        finish_bar(f"Converged in {sol['iters']} iterations")
+    except Exception:
+        finish_bar("Solve failed")
+        raise
     m1, m2 = st.columns(2)
     m1.metric("Iterations", f"{sol['iters']}")
     m2.metric(r"Expansion $\delta$", f"{sol['delta']:.3f}")
@@ -646,11 +700,13 @@ def page_fem_slit():
             show(_placeholder_fig("Trapped H after solve"))
         return
 
-    cb, clear_bar = _progress_ui("Solving the mode-I slit…")
+    cb, finish_bar = _progress_ui("Solving the mode-I slit")
     try:
         sol = _solve_slit(*key, progress=cb)
-    finally:
-        clear_bar()
+        finish_bar(f"Converged in {sol['iters']} iterations")
+    except Exception:
+        finish_bar("Solve failed")
+        raise
     m1, m2 = st.columns(2)
     m1.metric("COD / a", f"{sol['cod']:.3e}")
     m2.metric("Minimum softening", f"{float(sol['soft'].min()):.3f}")

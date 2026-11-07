@@ -390,6 +390,8 @@ def solve(l_over_a=5.0, S=1.0, p=None, a=None,
     n_ramp = 4
     resid = np.inf
     it_total = 0
+    if progress is not None:
+        progress(0.05, "Mesh ready — starting load ramp")
     for step in range(1, n_ramp + 1):
         load_fac = step / n_ramp
         fstep = load_fac * fext

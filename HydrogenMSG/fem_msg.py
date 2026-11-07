@@ -346,6 +346,9 @@ def solve(l_over_R0=1.0, load=Load(2.2, 1.6), p=None, R0=None,
         return dict(eps=eps, dev=dev, tr=tr, eps_e=eps_e, eta=eta,
                     sig_e=sig_e, mu=mu_s, soft=soft)
 
+    if progress is not None:
+        progress(0.05, "Mesh ready — starting secant iterations")
+
     resid = np.inf
     for it in range(itmax):
         D = np.zeros((kin.ne, kin.ng, 4, 4))
