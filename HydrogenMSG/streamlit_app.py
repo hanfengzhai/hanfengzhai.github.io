@@ -837,12 +837,6 @@ def page_workflow():
             "Each box is a constitutive step used by the interactive examples."
         )
         _explorer_grid(_EXPLORER["workflow"], "explore_workflow", columns=4)
-        with st.expander("Show the compact flowchart", expanded=False):
-            fig, ax = plt.subplots(figsize=(11.0, 6.6))
-            fig.patch.set_facecolor("#ffffff")
-            _schematics.draw_msg_workflow(ax)
-            fig.tight_layout(pad=0.2)
-            show(fig)
 
     with tab_eq:
         st.markdown(
