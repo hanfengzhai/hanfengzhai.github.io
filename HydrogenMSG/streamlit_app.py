@@ -253,7 +253,7 @@ def _new_panel(schematic=False):
 
 
 @st.cache_data(show_spinner=False)
-def _schematic_gif(kind: str, version: int = 6) -> bytes:
+def _schematic_gif(kind: str, version: int = 7) -> bytes:
     # ``version`` busts stale GIF caches when schematics change.
     return schematic_gif_bytes(kind, figsize=(PANEL, PANEL))
 
@@ -261,7 +261,7 @@ def _schematic_gif(kind: str, version: int = 6) -> bytes:
 def show_schematic(kind: str):
     """Looping Before ↔ After schematic (animated GIF)."""
     try:
-        gif = _schematic_gif(kind, version=6)
+        gif = _schematic_gif(kind, version=7)
         try:
             st.image(gif, use_container_width=True)
         except TypeError:

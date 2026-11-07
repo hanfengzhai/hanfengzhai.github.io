@@ -87,6 +87,25 @@ def _radius_mark(ax, cx, cy, R, label=r"$R_0$", *, color=MECH, zorder=5):
     )
 
 
+def _radial_arrows(ax, cx, cy, Rout, *, length=0.14, step_deg=45.0,
+                   offset=1.02, color=MECH, lw=0.8, scale=5.0, zorder=5):
+    """Outward-normal arrows all the way around a circle (no gaps)."""
+    for deg in np.arange(0.0, 360.0, step_deg):
+        th = np.deg2rad(deg)
+        n_r, n_z = np.cos(th), np.sin(th)
+        x0 = cx + offset * Rout * n_r
+        y0 = cy + offset * Rout * n_z
+        _arrow(
+            ax,
+            (x0, y0),
+            (x0 + length * Rout * n_r, y0 + length * Rout * n_z),
+            color=color,
+            lw=lw,
+            scale=scale,
+            zorder=zorder,
+        )
+
+
 def _finish(ax):
     ax.set_aspect("equal", adjustable="box")
     ax.axis("off")
@@ -271,22 +290,11 @@ def draw_void(ax, *, help_note=False, t=1.0):
 
     if t > 0.15:
         alpha_arr = min(1.0, 1.4 * (t - 0.15))
-        for ang in (22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5):
-            if 240 <= ang <= 300:
-                continue
-            th = np.deg2rad(ang)
-            _arrow(
-                ax,
-                (cx + 1.02 * Rout * np.cos(th), cy + 1.02 * Rout * np.sin(th)),
-                (cx + 1.16 * Rout * np.cos(th), cy + 1.16 * Rout * np.sin(th)),
-                color=MECH,
-                lw=0.8,
-                scale=5,
-            )
+        _radial_arrows(ax, cx, cy, Rout, length=0.14, step_deg=45.0)
         if not help_note:
             ax.text(
                 cx,
-                cy - 1.38 * Rout,
+                cy - 1.48 * Rout,
                 r"$\sigma^{\infty}$",
                 ha="center",
                 va="top",
@@ -298,7 +306,7 @@ def draw_void(ax, *, help_note=False, t=1.0):
     if help_note and t > 0.35:
         ax.text(
             cx,
-            cy - 1.42 * Rout,
+            cy - 1.48 * Rout,
             r"HELP: $(1-\xi\,\theta_{\mathrm{T}})$",
             ha="center",
             va="top",
@@ -306,9 +314,9 @@ def draw_void(ax, *, help_note=False, t=1.0):
             color=HYDR,
             alpha=min(1.0, 2.0 * (t - 0.35)),
         )
-        half = 1.75
+        half = 1.82
     else:
-        half = 1.70
+        half = 1.78
     ax.set_xlim(cx - half, cx + half)
     ax.set_ylim(cy - half, cy + half)
     _finish(ax)
@@ -383,43 +391,31 @@ def draw_fem_void(ax, t=1.0):
     ax.text(cx + 1.22 * Rout, cy - 0.06, r"$\rho$", fontsize=FS - 1, ha="left", va="top", color="0.4")
 
     if t > 0.12:
-        # Split the remote load the way the BC is read:
-        #   σ_rr^∞ — equal radial tension, normal to the outer perimeter
-        #            all around (same drawing language as hydrostatic σ^∞);
-        #   σ_zz^∞ — stronger axial tension, drawn only at the poles.
-        # Magnitudes match the SI demo (S_z=3.6, S_r=2.2).
+        # σ_rr^∞: equal outward normals all around the outer circle.
+        # σ_zz^∞: longer outward normals on the polar arcs (still on the
+        # perimeter; S_z > S_r as in the SI demo).
         S_r, S_z = 2.2, 3.6
-        len_r = 0.11 * Rout * (S_r / S_r)          # perimeter-normal
-        len_z = 0.11 * Rout * (S_z / S_r)          # longer polar arrows
-        # σ_rr^∞: outward normals around the circle (skip bottom label gap).
-        for deg in np.arange(-150.0, 151.0, 30.0):
-            ang = np.deg2rad(deg)
-            n_r, n_z = np.cos(ang), np.sin(ang)
+        _radial_arrows(
+            ax, cx, cy, Rout, length=0.11, step_deg=30.0, lw=0.75, scale=4.2,
+        )
+        # Extra polar belt for σ_zz^∞ (angles from +ρ axis).
+        len_z = 0.11 * (S_z / S_r)
+        for deg in (-100.0, -80.0, -60.0, 60.0, 80.0, 100.0):
+            th = np.deg2rad(deg)
+            n_r, n_z = np.cos(th), np.sin(th)
             x0 = cx + 1.02 * Rout * n_r
             y0 = cy + 1.02 * Rout * n_z
             _arrow(
                 ax,
                 (x0, y0),
-                (x0 + len_r * n_r, y0 + len_r * n_z),
+                (x0 + len_z * Rout * n_r, y0 + len_z * Rout * n_z),
                 color=MECH,
-                lw=0.75,
-                scale=4.2,
+                lw=1.0,
+                scale=5.2,
             )
-        # σ_zz^∞: extra axial arrows at the poles (on top of the radial set).
-        for s in (1.0, -1.0):
-            for xoff in (-0.22, 0.0, 0.22):
-                y0 = cy + s * 1.02 * Rout
-                _arrow(
-                    ax,
-                    (cx + xoff, y0),
-                    (cx + xoff, y0 + s * len_z),
-                    color=MECH,
-                    lw=1.0,
-                    scale=5.2,
-                )
         ax.text(
             cx + 0.48 * Rout,
-            cy + 1.42 * Rout,
+            cy + 1.48 * Rout,
             r"$\sigma_{zz}^{\infty}$",
             ha="left",
             va="bottom",
@@ -427,7 +423,7 @@ def draw_fem_void(ax, t=1.0):
             color=MECH,
         )
         ax.text(
-            cx + 1.30 * Rout,
+            cx + 1.32 * Rout,
             cy + 0.05 * Rout,
             r"$\sigma_{rr}^{\infty}$",
             ha="left",
@@ -437,7 +433,7 @@ def draw_fem_void(ax, t=1.0):
         )
         ax.text(
             cx,
-            cy - 1.48 * Rout,
+            cy - 1.52 * Rout,
             r"$\sigma_{zz}^{\infty}>\sigma_{rr}^{\infty}$",
             ha="center",
             va="top",
@@ -445,7 +441,7 @@ def draw_fem_void(ax, t=1.0):
             color="0.35",
         )
 
-    half = 1.78
+    half = 1.85
     ax.set_xlim(cx - half, cx + half)
     ax.set_ylim(cy - half, cy + half)
     _finish(ax)
