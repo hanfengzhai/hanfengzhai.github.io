@@ -29,7 +29,7 @@ import _app_schematics as _schematics
 schematic_gif_bytes = _schematics.schematic_gif_bytes
 
 PAGES = [
-    "Workflow",
+    "Explore",
     "Wire torsion",
     "Beam bending",
     "Spherical void",
@@ -138,26 +138,80 @@ _UI_CSS = """
     padding-top: 0.1rem !important;
     padding-bottom: 0.15rem !important;
   }
-  .stButton > button {
+  /* Solve / primary actions: Cardinal fill, white label. */
+  .stButton > button[kind="primary"],
+  .stButton > button[data-testid="baseButton-primary"] {
     background-color: var(--msg-accent) !important;
     color: #ffffff !important;
     border: 1px solid var(--msg-accent-dark) !important;
-    border-radius: 4px !important;
+    border-radius: 6px !important;
   }
-  .stButton > button p,
-  .stButton > button span,
-  .stButton > button div {
+  .stButton > button[kind="primary"] *,
+  .stButton > button[data-testid="baseButton-primary"] * {
     color: #ffffff !important;
   }
-  .stButton > button:hover {
+  .stButton > button[kind="primary"]:hover,
+  .stButton > button[data-testid="baseButton-primary"]:hover {
     background-color: var(--msg-accent-bright) !important;
-    border-color: var(--msg-accent) !important;
-    color: #ffffff !important;
   }
-  .stButton > button:hover p,
-  .stButton > button:hover span,
-  .stButton > button:hover div {
-    color: #ffffff !important;
+  /* Explorer cards: light surface, ink text, lift on hover. */
+  .stButton > button[kind="secondary"],
+  .stButton > button[data-testid="baseButton-secondary"] {
+    background: #ffffff !important;
+    color: var(--msg-ink) !important;
+    border: 1px solid var(--msg-line) !important;
+    border-radius: 10px !important;
+    min-height: 4.8rem !important;
+    box-shadow: 0 1px 2px rgba(30, 41, 59, 0.06);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+  }
+  .stButton > button[kind="secondary"] *,
+  .stButton > button[data-testid="baseButton-secondary"] * {
+    color: var(--msg-ink) !important;
+  }
+  .stButton > button[kind="secondary"]:hover,
+  .stButton > button[data-testid="baseButton-secondary"]:hover {
+    border-color: var(--msg-accent) !important;
+    box-shadow: 0 6px 18px rgba(140, 21, 21, 0.12);
+    transform: translateY(-1px);
+  }
+  .msg-detail {
+    background: #ffffff;
+    border: 1px solid var(--msg-line);
+    border-left: 4px solid var(--msg-accent);
+    border-radius: 10px;
+    padding: 0.9rem 1.1rem 0.75rem 1.1rem;
+    margin: 0.35rem 0 0.75rem 0;
+    box-shadow: 0 8px 24px rgba(30, 41, 59, 0.06);
+  }
+  .msg-detail h3 {
+    margin: 0 0 0.35rem 0 !important;
+    color: var(--msg-accent) !important;
+    font-size: 1.05rem !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+  }
+  .msg-kicker {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--msg-muted);
+    margin: 0 0 0.2rem 0;
+  }
+  .msg-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 0.35rem 0 0.6rem 0;
+  }
+  .msg-chip {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    background: #edf1f5;
+    color: var(--msg-ink);
+    font-size: 0.78rem;
+    border: 1px solid var(--msg-line);
   }
   /* Thin track; only the filled segment is Cardinal. */
   [data-testid="stProgress"] {
@@ -456,35 +510,353 @@ def _solve_slit(l_over_a, remote_s, xi, progress=None):
     return sol
 
 
+# Interactive explorer content for the Workflow landing page.
+_EXPLORER = {
+    "workflow": [
+        {
+            "id": "kin",
+            "chip": "1 · Mechanics",
+            "title": "Kinematics",
+            "teaser": r"$u_i \rightarrow \varepsilon_{ij},\ \eta_{ijk}$",
+            "equation": r"$\varepsilon_{ij}=\tfrac{1}{2}(u_{i,j}+u_{j,i}),\quad \eta_{ijk}=u_{k,ij}$",
+            "body": (
+                "A displacement field supplies the strain and strain gradient. "
+                "Every later example starts from this kinematic layer for its own geometry."
+            ),
+        },
+        {
+            "id": "inv",
+            "chip": "2 · Mechanics",
+            "title": "Effective measures",
+            "teaser": r"$\varepsilon_{\mathrm{e}},\ \eta$",
+            "equation": (
+                r"$\varepsilon_{\mathrm{e}}=\sqrt{\tfrac{2}{3}\varepsilon_{ij}\varepsilon_{ij}},\quad "
+                r"\eta=\tfrac{1}{2}\sqrt{\eta_{ijk}\eta_{ijk}}$"
+            ),
+            "body": (
+                "Scalar invariants collapse the tensors into an effective strain that drives "
+                "statistically stored dislocations (SSDs) and an effective strain gradient that "
+                "drives geometrically necessary dislocations (GNDs)."
+            ),
+        },
+        {
+            "id": "taylor",
+            "chip": "3 · MSG core",
+            "title": "Taylor density",
+            "teaser": r"$\rho_{\mathrm{T}}=\rho_{\mathrm{S}}+\rho_{\mathrm{G}}$",
+            "equation": r"$\rho_{\mathrm{T}}=\rho_{\mathrm{S}}+\rho_{\mathrm{G}},\quad \rho_{\mathrm{G}}=\eta/b$",
+            "body": (
+                "MSG identifies the total dislocation line length per unit volume with the sum of "
+                "SSD and GND densities. The GND term is fixed by lattice curvature through $\\eta$."
+            ),
+        },
+        {
+            "id": "flow",
+            "chip": "4 · Hardening",
+            "title": "Flow stress",
+            "teaser": r"$\sigma_{\mathrm{e}}=\sigma_{\mathrm{Y}}\sqrt{f^{2}+l\eta}$",
+            "equation": (
+                r"$\sigma_{\mathrm{e}}=\sigma_{\mathrm{Y}}\sqrt{f^{2}(\varepsilon_{\mathrm{e}})+l\,\eta},"
+                r"\quad l=3\alpha^{2}(\mu/\sigma_{\mathrm{Y}})^{2}b$"
+            ),
+            "body": (
+                "The same Taylor density hardens the solid. The intrinsic length $l$ is the scale "
+                "at which the GND contribution becomes comparable to SSD hardening."
+            ),
+        },
+        {
+            "id": "nt",
+            "chip": "5 · Innovation",
+            "title": "Trap-site density",
+            "teaser": r"$N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b$",
+            "equation": r"$N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b$",
+            "body": (
+                "Key constitutive closure of the paper: dislocation line length also sets the "
+                "hydrogen trap-site inventory. Size-dependent plasticity therefore sets local "
+                "storage capacity as well as strength."
+            ),
+        },
+        {
+            "id": "mean",
+            "chip": "6 · Occupancy",
+            "title": "Mean stress → lattice H",
+            "teaser": r"$\theta_{\mathrm{L}}(\sigma_{\mathrm{m}})$",
+            "equation": (
+                r"$\theta_{\mathrm{L}}\propto "
+                r"\exp\!\big(\sigma_{\mathrm{m}}\bar{V}_{\mathrm{H}}/(RT)\big)$"
+            ),
+            "body": (
+                "Equilibrium lattice transport ties lattice occupancy to mean stress. "
+                "Torsion suppresses this channel; bending and voids activate it strongly."
+            ),
+        },
+        {
+            "id": "oriani",
+            "chip": "7 · Equilibrium",
+            "title": "Oriani trapping",
+            "teaser": r"$\theta_{\mathrm{T}}(\theta_{\mathrm{L}},K_T)$",
+            "equation": (
+                r"$\dfrac{\theta_{\mathrm{T}}}{1-\theta_{\mathrm{T}}}"
+                r"=K_T\dfrac{\theta_{\mathrm{L}}}{1-\theta_{\mathrm{L}}}$"
+            ),
+            "body": (
+                "Oriani local equilibrium maps lattice occupancy into trap occupancy at each material "
+                "point. No separate transient diffusion solve is required under this closure."
+            ),
+        },
+        {
+            "id": "ct",
+            "chip": "8 · Output",
+            "title": "Trapped hydrogen",
+            "teaser": r"$c_{\mathrm{T}}=N_{\mathrm{T}}\,\theta_{\mathrm{T}}$",
+            "equation": r"$c_{\mathrm{T}}=N_{\mathrm{T}}\,\theta_{\mathrm{T}}$",
+            "body": (
+                "Trapped concentration is the product of trap-site density and trap occupancy. "
+                "Spatial structure can come from $N_{\mathrm{T}}$, from $\\theta_{\mathrm{T}}$, or from both."
+            ),
+        },
+    ],
+    "equations": [
+        {
+            "id": "eq-flow",
+            "chip": "MSG",
+            "title": "MSG flow stress",
+            "teaser": r"$\sigma_{\mathrm{e}}(\varepsilon_{\mathrm{e}},\eta)$",
+            "equation": (
+                r"$\sigma_{\mathrm{e}}=\sigma_{\mathrm{Y}}\sqrt{f^{2}(\varepsilon_{\mathrm{e}})+l\eta},"
+                r"\quad f(\varepsilon_{\mathrm{e}})=(E\varepsilon_{\mathrm{e}}/\sigma_{\mathrm{Y}})^{N}$"
+            ),
+            "body": (
+                "Deformation-theory MSG under proportional loading. "
+                "SSDs enter through $f(\\varepsilon_{\\mathrm{e}})$; GNDs enter through $l\\eta$."
+            ),
+        },
+        {
+            "id": "eq-nt",
+            "chip": "Closure",
+            "title": "Trap-density identity",
+            "teaser": r"$N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b$",
+            "equation": (
+                r"$N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b,"
+                r"\quad \rho_{\mathrm{T}}=\rho_{\mathrm{S}}+\eta/b$"
+            ),
+            "body": (
+                "This identity is the bridge from MSG plasticity to hydrogen storage. "
+                "At fixed characteristic strain the GND piece of $N_{\mathrm{T}}$ scales as $1/L$."
+            ),
+        },
+        {
+            "id": "eq-thL",
+            "chip": "Transport",
+            "title": "Lattice occupancy",
+            "teaser": r"$\theta_{\mathrm{L}}(\sigma_{\mathrm{m}})$",
+            "equation": (
+                r"\theta_{\mathrm{L}}"
+                r"\propto \exp\!\big(\sigma_{\mathrm{m}}\bar{V}_{\mathrm{H}}/(RT)\big)"
+            ),
+            "body": (
+                "Tensile mean stress raises lattice occupancy. "
+                "This is the occupancy channel, complementary to the trap-site channel."
+            ),
+        },
+        {
+            "id": "eq-oriani",
+            "chip": "Oriani",
+            "title": "Oriani map",
+            "teaser": r"$\theta_{\mathrm{T}}\leftrightarrow\theta_{\mathrm{L}}$",
+            "equation": (
+                r"$\dfrac{\theta_{\mathrm{T}}}{1-\theta_{\mathrm{T}}}"
+                r"=K_T\dfrac{\theta_{\mathrm{L}}}{1-\theta_{\mathrm{L}}}$"
+            ),
+            "body": (
+                "Local chemical equilibrium between lattice and trap sites. "
+                "Together with $N_{\\mathrm{T}}$ it closes the trapped field."
+            ),
+        },
+        {
+            "id": "eq-scale",
+            "chip": "Scaling",
+            "title": "Unified $1/L$ scaling",
+            "teaser": r"$N_{\mathrm{T}}^{\mathrm{GND}}\propto 1/L$",
+            "equation": (
+                r"N_{\mathrm{T}}^{\mathrm{GND}}\sim 1/a\ (\mathrm{torsion}),\ "
+                r"1/h\ (\mathrm{bending}),\ 1/R_0\ (\mathrm{void\ wall})"
+            ),
+            "body": (
+                "At fixed characteristic strain, the GND contribution to trap-site density "
+                "inherits the inverse geometric length of the strain gradient."
+            ),
+        },
+        {
+            "id": "eq-help",
+            "chip": "HELP",
+            "title": "HELP amplitude law",
+            "teaser": r"$(1-\xi\theta_{\mathrm{T}})\,\sigma_{\mathrm{e}}$",
+            "equation": r"\sigma_{\mathrm{e}}^{\mathrm{HELP}}=(1-\xi\,\theta_{\mathrm{T}})\,\sigma_{\mathrm{e}}",
+            "body": (
+                "Formulation C keeps the hydrogen-free Taylor density and multiplies the flow stress "
+                "by an occupancy-dependent amplitude. "
+                "Used only in cavitation and the mode-I slit."
+            ),
+        },
+    ],
+    "innovations": [
+        {
+            "id": "inn-bridge",
+            "chip": "Idea",
+            "title": "MSG density → trap inventory",
+            "teaser": "One Taylor density, two roles",
+            "equation": r"$N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b$ beside $\sigma_{\mathrm{e}}(\rho_{\mathrm{T}})$",
+            "body": (
+                "The paper's central move is to let the MSG Taylor density control both hardening "
+                "and trap-site capacity, then feed that capacity into Oriani trapping."
+            ),
+        },
+        {
+            "id": "inn-channels",
+            "chip": "Channels",
+            "title": "Two hydrogen channels",
+            "teaser": r"$\sigma_{\mathrm{m}}$ vs $\rho_{\mathrm{T}}$",
+            "equation": r"$c_{\mathrm{T}}=N_{\mathrm{T}}(\rho_{\mathrm{T}})\,\theta_{\mathrm{T}}(\sigma_{\mathrm{m}})$",
+            "body": (
+                "Mean stress controls occupancy; dislocation density controls trap-site number. "
+                "The canonical examples are chosen to separate and then recombine those channels."
+            ),
+        },
+        {
+            "id": "inn-torsion",
+            "chip": "Example I",
+            "title": "Torsion isolates $N_{\mathrm{T}}$",
+            "teaser": "Vanishing mean-stress drift",
+            "equation": r"$\sigma_{\mathrm{m}}\approx 0 \Rightarrow$ structure of $c_{\mathrm{T}}$ from $N_{\mathrm{T}}$ alone",
+            "body": (
+                "Wire torsion removes mean-stress bias, so every spatial feature of trapped hydrogen "
+                "comes from trap-site density. At fixed surface strain the GND floor grows as $1/a$."
+            ),
+        },
+        {
+            "id": "inn-bend",
+            "chip": "Example II",
+            "title": "Bending mixes both channels",
+            "teaser": "Antisymmetric $\\sigma_m$, even GND sites",
+            "equation": r"Occupancy odd in $x_2$; GND trap sites even in $x_2$",
+            "body": (
+                "Bending raises occupancy on the tensile side while the uniform strain gradient "
+                "adds trap sites on both halves. The mechanisms reinforce on the extrados and "
+                "compete on the intrados."
+            ),
+        },
+        {
+            "id": "inn-void",
+            "chip": "Example III",
+            "title": "Void wall GND shell",
+            "teaser": "Localized near-surface trapping",
+            "equation": r"N_{\mathrm{T}}^{\mathrm{GND}}\sim 1/R_0\ \mathrm{at\ fixed\ expansion}",
+            "body": (
+                "Spherical void growth confines the GND contribution to a near-wall layer. "
+                "At fixed expansion ratio the local wall GND trap-site density scales as $1/R_0$."
+            ),
+        },
+        {
+            "id": "inn-scale",
+            "chip": "Result",
+            "title": "Size sets storage capacity",
+            "teaser": "Plasticity length → hydrogen inventory",
+            "equation": r"Smaller $L$ $\Rightarrow$ larger GND trap-site density at fixed strain",
+            "body": (
+                "Size-dependent plasticity sets local hydrogen storage capacity at small scales. "
+                "Desorption on twisted wires and through-thickness assays on bent foils are natural tests."
+            ),
+        },
+    ],
+}
+
+
+def _explorer_detail(item: dict):
+    st.markdown(
+        f"""
+<div class="msg-detail">
+  <p class="msg-kicker">{item['chip']}</p>
+  <h3>{item['title']}</h3>
+</div>
+""",
+        unsafe_allow_html=True,
+    )
+    eq = item["equation"].strip()
+    if eq.startswith("$") and eq.endswith("$"):
+        eq = eq[1:-1]
+    st.latex(eq)
+    st.markdown(item["body"])
+
+
+def _explorer_grid(items, state_key: str, columns: int = 4):
+    if state_key not in st.session_state:
+        st.session_state[state_key] = items[0]["id"]
+    for start in range(0, len(items), columns):
+        chunk = items[start : start + columns]
+        cols = st.columns(len(chunk), gap="small")
+        for col, item in zip(cols, chunk):
+            selected = st.session_state[state_key] == item["id"]
+            label = f"{'●  ' if selected else ''}{item['title']}\n{item['teaser']}"
+            with col:
+                if st.button(
+                    label,
+                    key=f"{state_key}_{item['id']}",
+                    use_container_width=True,
+                    type="primary" if selected else "secondary",
+                ):
+                    st.session_state[state_key] = item["id"]
+                    st.rerun()
+    chosen = next(it for it in items if it["id"] == st.session_state[state_key])
+    _explorer_detail(chosen)
+
+
 def page_workflow():
-    st.header("Logical workflow")
+    st.header("Explore the paper logic")
     st.markdown(
-        r"The examples below share one constitutive chain. "
-        r"Mechanism-based strain gradient (MSG) plasticity sets the dislocation density "
-        r"from the effective strain and strain gradient. "
-        r"That density hardens the solid and supplies the trap-site density "
-        r"$N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b$. "
-        r"Mean stress sets the lattice occupancy $\theta_{\mathrm{L}}$. "
-        r"Oriani equilibrium then fixes the trap occupancy $\theta_{\mathrm{T}}$, "
-        r"and the trapped concentration is $c_{\mathrm{T}}=N_{\mathrm{T}}\,\theta_{\mathrm{T}}$."
+        "Click any card to open its governing relation and role in the MSG–hydrogen story. "
+        "Start with **Workflow**, then **Equations**, then **Innovations**."
     )
     st.markdown(
-        r"Wire torsion isolates trap-density storage at vanishing mean stress. "
-        r"Beam bending mixes mean-stress occupancy with a uniform strain gradient. "
-        r"Spherical void growth concentrates geometrically necessary dislocations "
-        r"in a near-wall trapping shell. "
-        r"Cavitation and the mode-I slit add phenomenological HELP softening "
-        r"as an amplitude correction on the flow stress."
+        '<div class="msg-chip-row">'
+        '<span class="msg-chip">MSG plasticity</span>'
+        '<span class="msg-chip">Oriani trapping</span>'
+        '<span class="msg-chip">$1/L$ trap-site scaling</span>'
+        '<span class="msg-chip">One-way coupling</span>'
+        "</div>",
+        unsafe_allow_html=True,
     )
-    fig, ax = plt.subplots(figsize=(11.0, 6.6))
-    fig.patch.set_facecolor("#ffffff")
-    _schematics.draw_msg_workflow(ax)
-    fig.tight_layout(pad=0.2)
-    show(fig)
-    st.caption(
-        r"Solid arrows are the one-way MSG$\rightarrow$Oriani path used in most examples. "
-        r"HELP softening appears only in the cavitation and slit pages."
+
+    tab_flow, tab_eq, tab_inn = st.tabs(
+        ["Logical workflow", "Governing equations", "Key innovations"]
     )
+
+    with tab_flow:
+        st.markdown(
+            "Follow the one-way chain from kinematics to trapped hydrogen. "
+            "Each box is a constitutive step used by the interactive examples."
+        )
+        _explorer_grid(_EXPLORER["workflow"], "explore_workflow", columns=4)
+        with st.expander("Show the compact flowchart", expanded=False):
+            fig, ax = plt.subplots(figsize=(11.0, 6.6))
+            fig.patch.set_facecolor("#ffffff")
+            _schematics.draw_msg_workflow(ax)
+            fig.tight_layout(pad=0.2)
+            show(fig)
+
+    with tab_eq:
+        st.markdown(
+            "Core formulas that close the mechanical and hydrogen problems. "
+            "Click a card for the equation and a short reading guide."
+        )
+        _explorer_grid(_EXPLORER["equations"], "explore_equations", columns=3)
+
+    with tab_inn:
+        st.markdown(
+            "What the paper adds: the trap-density closure, the two hydrogen channels, "
+            "and the size-dependent storage picture across torsion, bending, and voids."
+        )
+        _explorer_grid(_EXPLORER["innovations"], "explore_innovations", columns=3)
 
 
 def page_torsion(p: Params):
@@ -798,7 +1170,7 @@ def main():
         rf"$K_T={kt_mant:.2f}\times 10^{{{kt_exp}}}$"
     )
     page = st.sidebar.radio("Section", PAGES, index=0)
-    if page == "Workflow":
+    if page == "Explore":
         page_workflow()
     elif page == "Wire torsion":
         page_torsion(p)

@@ -165,6 +165,7 @@
       const text = (root.textContent || "").replace(/\s+/g, " ");
       return (
         text.includes("Size-dependent hydrogen trapping") ||
+        text.includes("Explore the paper logic") ||
         text.includes("Logical workflow") ||
         text.includes("Wire torsion") ||
         text.includes("Surface strain")
@@ -222,7 +223,7 @@
           requirements: ["numpy", "matplotlib", "pillow"],
           entrypoint: "streamlit_app.py",
           files: {
-            "streamlit_app.py": { url: "./HydrogenMSG/streamlit_app.py?v=29" },
+            "streamlit_app.py": { url: "./HydrogenMSG/streamlit_app.py?v=30" },
             "msg_hydrogen.py": { url: "./HydrogenMSG/msg_hydrogen.py" },
             "fem_msg.py": { url: "./HydrogenMSG/fem_msg.py?v=26" },
             "fem_slit.py": { url: "./HydrogenMSG/fem_slit.py?v=26" },
