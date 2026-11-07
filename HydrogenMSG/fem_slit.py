@@ -335,11 +335,14 @@ def solve(l_over_a=5.0, S=1.0, p=None, a=None,
           nx_c=14, nx_l=18, ny=20, W_over_a=12.0, H_over_a=12.0,
           ratio=1.10, tip_box=1.0, nx_box=None, ny_box=None,
           nu=0.4999, tol=1e-7, itmax=400, relax=0.4,
-          verbose=False):
+          verbose=False, progress=None):
     """Secant-iteration CMSG plane-strain slit solution with HELP softening.
 
     ``l_over_a = 0`` recovers classical J2 deformation theory. Returns a dict
     of Gauss-point fields plus mesh / kinematics / nodal displacement.
+
+    ``progress``, if given, is called as ``progress(frac, message)`` with
+    ``frac`` in ``[0, 1]`` after each secant iteration.
     """
     p = p or Params(xi=0.3)
     a = a or (p.l / l_over_a if l_over_a > 0 else 1e-5)
@@ -410,8 +413,19 @@ def solve(l_over_a=5.0, S=1.0, p=None, a=None,
             if verbose and it_total % 40 == 0:
                 print(f"  step {step}/{n_ramp} it {it_total:3d}  "
                       f"|du|/|u| = {resid:.2e}")
+            if progress is not None:
+                per_step = max(itmax // n_ramp, 1)
+                frac = ((step - 1) + (it + 1) / per_step) / n_ramp
+                progress(
+                    min(0.99, frac),
+                    f"Load step {step}/{n_ramp}, iteration {it_total}  "
+                    f"|Δu|/|u| = {resid:.2e}",
+                )
             if resid < tol and it > 2:
                 break
+
+    if progress is not None:
+        progress(1.0, f"Converged in {it_total} iterations")
 
     st = state(u)
     sig = 2.0 * st["mu"][:, :, None] * st["dev"] + K * st["tr"][:, :, None] * _M

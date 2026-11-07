@@ -298,11 +298,15 @@ def _outer_traction(mesh, load, sigY):
 
 def solve(l_over_R0=1.0, load=Load(2.2, 1.6), p=None, R0=None,
           n_rho=40, n_th=16, Rout_over_R0=25.0, nu=0.4999,
-          tol=1e-7, itmax=300, relax=0.5, verbose=False):
+          tol=1e-7, itmax=300, relax=0.5, verbose=False,
+          progress=None):
     """Secant-iteration solution of the CMSG void problem.
 
     `l_over_R0 = 0` recovers classical J2 deformation theory.
     Returns a dict of Gauss-point fields plus the mesh/kinematics.
+
+    ``progress``, if given, is called as ``progress(frac, message)`` with
+    ``frac`` in ``[0, 1]`` after each secant iteration.
     """
     p = p or Params()
     R0 = R0 or (p.l / l_over_R0 if l_over_R0 > 0 else 1e-5)
@@ -361,8 +365,16 @@ def solve(l_over_R0=1.0, load=Load(2.2, 1.6), p=None, R0=None,
         mu = (1.0 - relax) * mu + relax * st["mu"]
         if verbose and it % 20 == 0:
             print(f"  it {it:3d}  |du|/|u| = {resid:.2e}")
+        if progress is not None:
+            progress(
+                min(0.99, (it + 1) / itmax),
+                f"Secant iteration {it + 1}/{itmax}  |Δu|/|u| = {resid:.2e}",
+            )
         if resid < tol and it > 2:
             break
+
+    if progress is not None:
+        progress(1.0, f"Converged in {it + 1} iterations")
 
     st = state(u)
     sig = 2.0 * st["mu"][:, :, None] * st["dev"] + K * st["tr"][:, :, None] * _M

@@ -136,6 +136,9 @@ _UI_CSS = """
     background-color: var(--msg-accent-bright) !important;
     border-color: var(--msg-accent) !important;
   }
+  [data-testid="stProgress"] > div > div > div > div {
+    background-color: var(--msg-accent) !important;
+  }
   [data-testid="stMetric"] {
     background: var(--msg-panel);
     border: 1px solid var(--msg-line);
@@ -304,9 +307,36 @@ def _cavitation_curve(xi, theta_l0, l_over):
     return [float(cavitation_stress(lr, pc, r0_grid=grid, n=400, n_iter=25)) for lr in l_over]
 
 
-@st.cache_resource(show_spinner=False)
-def _solve_void(l_over_r0, s_z, s_r):
+def _progress_ui(label="Solving"):
+    """Streamlit progress bar + status line; returns ``(callback, clear)``."""
+    bar = st.progress(0, text=label)
+    note = st.empty()
+
+    def _cb(frac, message=""):
+        frac = float(np.clip(frac, 0.0, 1.0))
+        try:
+            bar.progress(frac, text=message or label)
+        except TypeError:
+            bar.progress(frac)
+        if message:
+            note.caption(message)
+
+    def _clear():
+        bar.empty()
+        note.empty()
+
+    return _cb, _clear
+
+
+def _solve_void(l_over_r0, s_z, s_r, progress=None):
     from fem_msg import Load, hydrogen_fields, solve as solve_void
+
+    cache = st.session_state.setdefault("_void_sol_cache", {})
+    key = (float(l_over_r0), float(s_z), float(s_r))
+    if key in cache:
+        if progress is not None:
+            progress(1.0, "Cached solution")
+        return cache[key]
 
     sol = solve_void(
         l_over_R0=l_over_r0,
@@ -315,16 +345,24 @@ def _solve_void(l_over_r0, s_z, s_r):
         n_th=10,
         Rout_over_R0=20.0,
         verbose=False,
+        progress=progress,
     )
     sol.update(hydrogen_fields(sol))
+    cache[key] = sol
     return sol
 
 
-@st.cache_resource(show_spinner=False)
-def _solve_slit(l_over_a, remote_s, xi):
+def _solve_slit(l_over_a, remote_s, xi, progress=None):
     from fem_slit import solve as solve_slit
 
-    return solve_slit(
+    cache = st.session_state.setdefault("_slit_sol_cache", {})
+    key = (float(l_over_a), float(remote_s), float(xi))
+    if key in cache:
+        if progress is not None:
+            progress(1.0, "Cached solution")
+        return cache[key]
+
+    sol = solve_slit(
         l_over_a=l_over_a,
         S=remote_s,
         p=Params(xi=xi),
@@ -341,7 +379,10 @@ def _solve_slit(l_over_a, remote_s, xi):
         relax=0.35,
         tol=1e-5,
         verbose=False,
+        progress=progress,
     )
+    cache[key] = sol
+    return sol
 
 
 def page_torsion(p: Params):
@@ -544,8 +585,11 @@ def page_fem_void():
             show(_placeholder_fig("Trapped H after solve"))
         return
 
-    with st.spinner("Solving the non-hydrostatic void"):
-        sol = _solve_void(*key)
+    cb, clear_bar = _progress_ui("Solving the non-hydrostatic void…")
+    try:
+        sol = _solve_void(*key, progress=cb)
+    finally:
+        clear_bar()
     m1, m2 = st.columns(2)
     m1.metric("Iterations", f"{sol['iters']}")
     m2.metric(r"Expansion $\delta$", f"{sol['delta']:.3f}")
@@ -602,8 +646,11 @@ def page_fem_slit():
             show(_placeholder_fig("Trapped H after solve"))
         return
 
-    with st.spinner("Solving the mode-I slit"):
-        sol = _solve_slit(*key)
+    cb, clear_bar = _progress_ui("Solving the mode-I slit…")
+    try:
+        sol = _solve_slit(*key, progress=cb)
+    finally:
+        clear_bar()
     m1, m2 = st.columns(2)
     m1.metric("COD / a", f"{sol['cod']:.3e}")
     m2.metric("Minimum softening", f"{float(sol['soft'].min()):.3f}")
