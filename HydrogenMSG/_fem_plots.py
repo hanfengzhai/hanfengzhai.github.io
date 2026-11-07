@@ -33,16 +33,23 @@ def meridian(sol, key, zoom=ZOOM):
     return s * np.sin(th_full), s * np.cos(th_full), F_full
 
 
-def _add_colorbar(fig, ax, cf, cticks, clabels, label=None):
-    pos = ax.get_position()
-    cax = fig.add_axes([pos.x1 + 0.012, pos.y0 + 0.045, 0.012, pos.height - 0.09])
-    cb = fig.colorbar(cf, cax=cax)
+def _add_colorbar(fig, ax, cf, cticks, clabels, label=None, *, mode="axes"):
+    if mode == "axes":
+        cb = fig.colorbar(cf, ax=ax, fraction=0.045, pad=0.08, aspect=16)
+        tick_fs = max(8, FONT_SIZE - 4)
+        label_fs = max(8, FONT_SIZE - 3)
+    else:
+        pos = ax.get_position()
+        cax = fig.add_axes([pos.x1 + 0.012, pos.y0 + 0.045, 0.012, pos.height - 0.09])
+        cb = fig.colorbar(cf, cax=cax)
+        tick_fs = FONT_SIZE
+        label_fs = FONT_SIZE
     cb.set_ticks(cticks)
     cb.set_ticklabels(clabels)
     cb.outline.set_linewidth(0.6)
-    cb.ax.tick_params(width=0.6, labelsize=FONT_SIZE)
+    cb.ax.tick_params(width=0.6, labelsize=tick_fs)
     if label is not None:
-        cb.set_label(label, fontsize=FONT_SIZE)
+        cb.set_label(label, fontsize=label_fs)
     return cb
 
 
@@ -60,6 +67,7 @@ def draw_meridian_contour(
     cbar=True,
     show_title=False,
     cbar_label=None,
+    cbar_mode="axes",
 ):
     del tag, label, show_title
     r, z, F = meridian(sol, key)
@@ -87,7 +95,7 @@ def draw_meridian_contour(
     ax.set_xticks([-3, 0, 3])
     ax.set_yticks([-3, 0, 3])
     if cbar:
-        _add_colorbar(fig, ax, cf, cticks, clabels, label=cbar_label)
+        _add_colorbar(fig, ax, cf, cticks, clabels, label=cbar_label, mode=cbar_mode)
     return cf
 
 
@@ -149,7 +157,7 @@ def _slit_axes_frame(ax, zoom=SLIT_ZOOM):
     ax.plot([0.0], [0.0], "o", color="0.15", ms=3.5, zorder=6)
 
 
-def draw_slit_contour(ax, fig, sol, key, cmap, *, label=None, nlev=12, cbar=True, zoom=SLIT_ZOOM, pct=(5.0, 95.0)):
+def draw_slit_contour(ax, fig, sol, key, cmap, *, label=None, nlev=12, cbar=True, zoom=SLIT_ZOOM, pct=(5.0, 95.0), cbar_mode="axes"):
     Xi, Yi, Fi, xi, yi = _slit_structured_field(sol, key, zoom=zoom, clip_pct=pct)
     vals = np.asarray(Fi[~np.ma.getmaskarray(Fi)]).ravel()
     lo, hi = np.percentile(vals, (2.0, 98.0))
@@ -176,5 +184,5 @@ def draw_slit_contour(ax, fig, sol, key, cmap, *, label=None, nlev=12, cbar=True
     if cbar and fig is not None:
         cticks = [lo, 0.5 * (lo + hi), hi]
         clabels = [f"{t:.3g}" for t in cticks]
-        _add_colorbar(fig, ax, cf, cticks, clabels, label=label)
+        _add_colorbar(fig, ax, cf, cticks, clabels, label=label, mode=cbar_mode)
     return cf
