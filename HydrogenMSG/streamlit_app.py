@@ -136,17 +136,23 @@ _UI_CSS = """
     background-color: var(--msg-accent-bright) !important;
     border-color: var(--msg-accent) !important;
   }
+  /* Thin track; only the filled segment is Cardinal. */
   [data-testid="stProgress"] {
-    margin: 0.35rem 0 0.15rem 0 !important;
+    margin: 0.25rem 0 0.5rem 0 !important;
   }
-  [data-testid="stProgress"] > div > div,
-  [data-testid="stProgress"] > div > div > div,
-  [data-testid="stProgress"] > div > div > div > div {
-    background-color: var(--msg-accent) !important;
-  }
-  /* Keep the track visible on the cold-gray page. */
   [data-testid="stProgress"] > div {
     background-color: #d7dee6 !important;
+    height: 0.45rem !important;
+    border-radius: 999px !important;
+  }
+  [data-testid="stProgress"] > div > div {
+    background-color: var(--msg-accent) !important;
+    border-radius: 999px !important;
+  }
+  /* Hide Streamlit's in-bar label (we use a caption under the bar). */
+  [data-testid="stProgress"] p,
+  [data-testid="stProgress"] span {
+    display: none !important;
   }
   [data-testid="stMetric"] {
     background: var(--msg-panel);
@@ -335,48 +341,38 @@ def _yield_to_browser():
 
 
 def _progress_ui(label="Solving"):
-    """Visible progress panel; returns ``(callback, finish)``.
-
-    The bar is left on screen at 100% when finished so a fast or stlite
-    solve still shows that work happened (mid-loop paints are unreliable
-    under blocking Pyodide compute).
-    """
+    """Compact progress: one caption + thin bar. Returns ``(callback, finish)``."""
     box = st.container()
     with box:
-        title = st.empty()
-        title.markdown(f"**{label}**")
+        note = st.empty()
+        note.caption(label)
         try:
-            bar = st.progress(0, text="Starting…")
+            bar = st.progress(0, text=" ")
         except TypeError:
             bar = st.progress(0)
-        note = st.empty()
-        note.caption("Starting…")
 
     state = {"n": 0}
 
-    def _cb(frac, message=""):
+    def _set_bar(frac):
         frac = float(np.clip(frac, 0.0, 1.0))
-        msg = message or label
         try:
-            bar.progress(frac, text=msg)
+            bar.progress(frac, text=" ")
         except TypeError:
             bar.progress(frac)
-        note.caption(msg)
+
+    def _cb(frac, message=""):
+        _set_bar(frac)
+        note.caption(message or label)
         state["n"] += 1
-        # Yield often enough for the browser to redraw under stlite.
         if state["n"] == 1 or state["n"] % 2 == 0 or frac >= 1.0:
             _yield_to_browser()
 
     def _finish(message="Done"):
-        try:
-            bar.progress(1.0, text=message)
-        except TypeError:
-            bar.progress(1.0)
-        title.markdown(f"**{message}**")
+        _set_bar(1.0)
         note.caption(message)
         _yield_to_browser()
 
-    _cb(0.02, "Starting…")
+    _cb(0.02, f"{label}…")
     return _cb, _finish
 
 
