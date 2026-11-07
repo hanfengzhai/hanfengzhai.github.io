@@ -69,6 +69,24 @@ def _dim(ax, p0, p1, color=EDGE, lw=0.7):
     )
 
 
+def _radius_mark(ax, cx, cy, R, label=r"$R_0$", *, color=MECH, zorder=5):
+    """Radius dimension lying on the circle: centre → rim along +x."""
+    ax.plot([cx, cx + R], [cy, cy], color=EDGE, lw=0.7, solid_capstyle="butt", zorder=zorder)
+    ax.plot(cx, cy, "o", color=EDGE, ms=2.2, zorder=zorder + 1)
+    tick = 0.045 * max(R, 0.2)
+    ax.plot([cx + R, cx + R], [cy - tick, cy + tick], color=EDGE, lw=0.7, zorder=zorder)
+    ax.text(
+        cx + 0.55 * R,
+        cy - 0.16 * max(R, 0.25),
+        label,
+        fontsize=FS,
+        ha="center",
+        va="top",
+        color=color,
+        zorder=zorder,
+    )
+
+
 def _finish(ax):
     ax.set_aspect("equal", adjustable="box")
     ax.axis("off")
@@ -139,8 +157,8 @@ def draw_torsion(ax, t=1.0):
         _arc_arrow(ax, (cx, y_bot - 0.04 * r), 0.82 * a, 1.05 * ry, 20, 160)
         ax.text(cx + 1.25 * a, y_top + 0.18 * r, r"$T$", color=MECH, fontsize=FS, ha="left", va="center")
         ax.text(cx + 1.25 * a, y_bot - 0.18 * r, r"$-T$", color=MECH, fontsize=FS, ha="left", va="center")
-    _dim(ax, (cx, y_bot - 0.02), (cx + a, y_bot - 0.02))
-    ax.text(cx + 0.5 * a, y_bot - 0.48 * r, r"$a$", fontsize=FS, ha="center", va="top", color=MECH)
+    # Wire radius on the bottom end-cap equator (centre → rim).
+    _radius_mark(ax, cx, y_bot, a, label=r"$a$")
     ax.set_xlim(-1.55, 1.85)
     ax.set_ylim(-1.75, 1.65)
     _finish(ax)
@@ -236,7 +254,8 @@ def draw_void(ax, *, help_note=False, t=1.0):
         )
     ax.add_patch(Circle((cx, cy), R0, facecolor="white", edgecolor=EDGE, lw=1.0))
 
-    ax.text(cx, cy + 0.22 * R0, "Free", ha="center", va="center", fontsize=FS - 1, color="0.45")
+    # Keep "Free" above the true radius mark through the centre.
+    ax.text(cx, cy + 0.38 * R0, "Free", ha="center", va="center", fontsize=FS - 1, color="0.45")
     if t > 0.25:
         ax.text(
             cx,
@@ -248,11 +267,7 @@ def draw_void(ax, *, help_note=False, t=1.0):
             color="0.3",
             alpha=min(1.0, 1.5 * (t - 0.25)),
         )
-    y_dim = cy - 0.48 * R0
-    ax.plot([cx, cx + R0], [y_dim, y_dim], color=EDGE, lw=0.7)
-    ax.plot([cx, cx], [y_dim - 0.04 * R0, y_dim + 0.04 * R0], color=EDGE, lw=0.7)
-    ax.plot([cx + R0, cx + R0], [y_dim - 0.04 * R0, y_dim + 0.04 * R0], color=EDGE, lw=0.7)
-    ax.text(cx + 0.5 * R0, y_dim - 0.22 * R0, r"$R_0$", fontsize=FS, ha="center", va="top", color=MECH)
+    _radius_mark(ax, cx, cy, R0)
 
     if t > 0.15:
         alpha_arr = min(1.0, 1.4 * (t - 0.15))
@@ -345,7 +360,7 @@ def draw_fem_void(ax, t=1.0):
         )
     )
 
-    ax.text(cx, cy + 0.18 * a_z, "Free", ha="center", va="center", fontsize=FS - 1, color="0.45", zorder=4)
+    ax.text(cx, cy + 0.38 * a_z, "Free", ha="center", va="center", fontsize=FS - 1, color="0.45", zorder=4)
     if t > 0.25:
         ax.text(
             cx + 0.55 * (a_r + gnd),
@@ -359,12 +374,8 @@ def draw_fem_void(ax, t=1.0):
             zorder=4,
         )
 
-    # R0 on the undeformed equator (reference radius).
-    y_dim = cy - 0.12
-    ax.plot([cx, cx + R0], [y_dim, y_dim], color=EDGE, lw=0.7, zorder=4)
-    ax.plot([cx, cx], [y_dim - 0.03, y_dim + 0.03], color=EDGE, lw=0.7, zorder=4)
-    ax.plot([cx + R0, cx + R0], [y_dim - 0.03, y_dim + 0.03], color=EDGE, lw=0.7, zorder=4)
-    ax.text(cx + 0.5 * R0, y_dim - 0.10, r"$R_0$", fontsize=FS, ha="center", va="top", color=MECH, zorder=4)
+    # Radius on the void equator (exact centre → current rim).
+    _radius_mark(ax, cx, cy, a_r, zorder=5)
 
     # Axis of revolution (axisymmetric FEM).
     ax.plot([cx, cx], [cy - 1.22 * Rout, cy + 1.22 * Rout], ls=(0, (2.5, 2.0)), color="0.55", lw=0.7, zorder=0)
