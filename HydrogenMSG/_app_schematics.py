@@ -212,8 +212,8 @@ def draw_bending(ax, t=1.0):
     _title(ax, t)
 
 
-def draw_void(ax, *, hydrostatic=True, help_note=False, t=1.0):
-    """Spherical void under remote tension. ``t=0`` unloaded, ``t=1`` expanded + GND."""
+def draw_void(ax, *, help_note=False, t=1.0):
+    """Hydrostatic spherical void. ``t=0`` unloaded, ``t=1`` expanded + GND shell."""
     t = _clamp01(t)
     cx, cy = 0.0, 0.08
     R0_0, R0_1 = 0.32, 0.48
@@ -256,62 +256,27 @@ def draw_void(ax, *, hydrostatic=True, help_note=False, t=1.0):
 
     if t > 0.15:
         alpha_arr = min(1.0, 1.4 * (t - 0.15))
-        if hydrostatic:
-            for ang in (22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5):
-                if 240 <= ang <= 300:
-                    continue
-                th = np.deg2rad(ang)
-                _arrow(
-                    ax,
-                    (cx + 1.02 * Rout * np.cos(th), cy + 1.02 * Rout * np.sin(th)),
-                    (cx + 1.16 * Rout * np.cos(th), cy + 1.16 * Rout * np.sin(th)),
-                    color=MECH,
-                    lw=0.8,
-                    scale=5,
-                )
-            if not help_note:
-                ax.text(
-                    cx,
-                    cy - 1.38 * Rout,
-                    r"$\sigma^{\infty}$",
-                    ha="center",
-                    va="top",
-                    fontsize=FS,
-                    color=MECH,
-                    alpha=alpha_arr,
-                )
-        else:
-            for y, s in ((1.02 * Rout, 1.0), (-1.02 * Rout, -1.0)):
-                for x in (-0.26, 0.0, 0.26):
-                    _arrow(ax, (x, cy + y - 0.09 * s), (x, cy + y + 0.09 * s), color=MECH, lw=0.85, scale=4.5)
-            for x, s in ((1.02 * Rout, 1.0), (-1.02 * Rout, -1.0)):
-                for y in (-0.20, 0.20):
-                    _arrow(
-                        ax,
-                        (cx + x - 0.07 * s, cy + y),
-                        (cx + x + 0.07 * s, cy + y),
-                        color=HYDR,
-                        lw=0.75,
-                        scale=4,
-                    )
-            ax.text(
-                cx + 0.72 * Rout,
-                cy + 1.18 * Rout,
-                r"$\sigma_{zz}^{\infty}$",
-                ha="left",
-                va="bottom",
-                fontsize=FS - 1,
+        for ang in (22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5):
+            if 240 <= ang <= 300:
+                continue
+            th = np.deg2rad(ang)
+            _arrow(
+                ax,
+                (cx + 1.02 * Rout * np.cos(th), cy + 1.02 * Rout * np.sin(th)),
+                (cx + 1.16 * Rout * np.cos(th), cy + 1.16 * Rout * np.sin(th)),
                 color=MECH,
-                alpha=alpha_arr,
+                lw=0.8,
+                scale=5,
             )
+        if not help_note:
             ax.text(
-                cx + 1.28 * Rout,
-                cy + 0.28,
-                r"$\sigma_{rr}^{\infty}$",
-                ha="left",
-                va="center",
-                fontsize=FS - 1,
-                color=HYDR,
+                cx,
+                cy - 1.38 * Rout,
+                r"$\sigma^{\infty}$",
+                ha="center",
+                va="top",
+                fontsize=FS,
+                color=MECH,
                 alpha=alpha_arr,
             )
 
@@ -335,9 +300,137 @@ def draw_void(ax, *, hydrostatic=True, help_note=False, t=1.0):
     _title(ax, t)
 
 
+def draw_fem_void(ax, t=1.0):
+    """Axisymmetric meridian of a void under non-hydrostatic remote tension.
+
+    Matches the SI FEM: $\\sigma_{zz}^{\\infty}/\\sigma_{\\mathrm{Y}}=3.6$,
+    $\\sigma_{rr}^{\\infty}/\\sigma_{\\mathrm{Y}}=2.2$ (axial > radial), so the
+    loaded cavity elongates along $z$.
+    """
+    t = _clamp01(t)
+    cx, cy = 0.0, 0.0
+    Rout = 1.05
+    # Undeformed spherical void; after load: prolate ellipse (S_z > S_r).
+    R0 = 0.36
+    stretch_z = 1.0 + 0.38 * t
+    stretch_r = 1.0 + 0.12 * t
+    a_r = R0 * stretch_r
+    a_z = R0 * stretch_z
+    gnd = 0.16 + 0.10 * t
+
+    ax.add_patch(Circle((cx, cy), Rout, facecolor="0.965", edgecolor=EDGE, lw=0.8, zorder=1))
+
+    # Near-wall GND shell (elliptical after load).
+    if t > 0.08:
+        ax.add_patch(
+            Ellipse(
+                (cx, cy),
+                2 * (a_r + gnd),
+                2 * (a_z + gnd),
+                facecolor=FILL2,
+                edgecolor="none",
+                alpha=0.40 + 0.35 * t,
+                zorder=2,
+            )
+        )
+    ax.add_patch(
+        Ellipse(
+            (cx, cy),
+            2 * a_r,
+            2 * a_z,
+            facecolor="white",
+            edgecolor=EDGE,
+            lw=1.05,
+            zorder=3,
+        )
+    )
+
+    ax.text(cx, cy + 0.18 * a_z, "Free", ha="center", va="center", fontsize=FS - 1, color="0.45", zorder=4)
+    if t > 0.25:
+        ax.text(
+            cx + 0.55 * (a_r + gnd),
+            cy + 0.55 * (a_z + gnd),
+            "GND",
+            ha="center",
+            va="center",
+            fontsize=FS - 1,
+            color="0.3",
+            alpha=min(1.0, 1.6 * (t - 0.25)),
+            zorder=4,
+        )
+
+    # R0 on the undeformed equator (reference radius).
+    y_dim = cy - 0.12
+    ax.plot([cx, cx + R0], [y_dim, y_dim], color=EDGE, lw=0.7, zorder=4)
+    ax.plot([cx, cx], [y_dim - 0.03, y_dim + 0.03], color=EDGE, lw=0.7, zorder=4)
+    ax.plot([cx + R0, cx + R0], [y_dim - 0.03, y_dim + 0.03], color=EDGE, lw=0.7, zorder=4)
+    ax.text(cx + 0.5 * R0, y_dim - 0.10, r"$R_0$", fontsize=FS, ha="center", va="top", color=MECH, zorder=4)
+
+    # Axis of revolution (axisymmetric FEM).
+    ax.plot([cx, cx], [cy - 1.22 * Rout, cy + 1.22 * Rout], ls=(0, (2.5, 2.0)), color="0.55", lw=0.7, zorder=0)
+    ax.text(cx + 0.06, cy + 1.28 * Rout, r"$z$", fontsize=FS - 1, ha="left", va="bottom", color="0.4")
+    ax.text(cx + 1.22 * Rout, cy - 0.06, r"$\rho$", fontsize=FS - 1, ha="left", va="top", color="0.4")
+
+    if t > 0.12:
+        # Longer / denser vertical arrows: σ_zz^∞ > σ_rr^∞ (both mechanical).
+        for y, s in ((1.02 * Rout, 1.0), (-1.02 * Rout, -1.0)):
+            for x in (-0.32, -0.11, 0.11, 0.32):
+                _arrow(
+                    ax,
+                    (cx + x, cy + y - 0.11 * s),
+                    (cx + x, cy + y + 0.11 * s),
+                    color=MECH,
+                    lw=0.95,
+                    scale=5.0,
+                )
+        for x, s in ((1.02 * Rout, 1.0), (-1.02 * Rout, -1.0)):
+            for y in (-0.18, 0.18):
+                _arrow(
+                    ax,
+                    (cx + x - 0.07 * s, cy + y),
+                    (cx + x + 0.07 * s, cy + y),
+                    color=MECH,
+                    lw=0.75,
+                    scale=4.0,
+                )
+        ax.text(
+            cx + 0.55 * Rout,
+            cy + 1.20 * Rout,
+            r"$\sigma_{zz}^{\infty}$",
+            ha="left",
+            va="bottom",
+            fontsize=FS - 1,
+            color=MECH,
+        )
+        ax.text(
+            cx + 1.18 * Rout,
+            cy + 0.42,
+            r"$\sigma_{rr}^{\infty}$",
+            ha="left",
+            va="center",
+            fontsize=FS - 1,
+            color=MECH,
+        )
+        ax.text(
+            cx,
+            cy - 1.38 * Rout,
+            r"$\sigma_{zz}^{\infty}>\sigma_{rr}^{\infty}$",
+            ha="center",
+            va="top",
+            fontsize=FS - 2,
+            color="0.35",
+        )
+
+    half = 1.70
+    ax.set_xlim(cx - half, cx + half)
+    ax.set_ylim(cy - half, cy + half)
+    _finish(ax)
+    _title(ax, t)
+
+
 def draw_cavitation(ax, t=1.0):
     """Growing void with HELP softening annotation."""
-    draw_void(ax, hydrostatic=True, help_note=True, t=t)
+    draw_void(ax, help_note=True, t=t)
 
 
 def draw_slit(ax, t=1.0):
@@ -404,9 +497,9 @@ def _drawer(kind: str):
     drawers = {
         "torsion": draw_torsion,
         "bending": draw_bending,
-        "void": lambda a, t=1.0: draw_void(a, hydrostatic=True, t=t),
+        "void": draw_void,
         "cavitation": draw_cavitation,
-        "fem_void": lambda a, t=1.0: draw_void(a, hydrostatic=False, t=t),
+        "fem_void": draw_fem_void,
         "slit": draw_slit,
     }
     return drawers[kind]
