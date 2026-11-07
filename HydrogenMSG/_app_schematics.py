@@ -24,7 +24,7 @@ CARDINAL = "#8C1515"
 FILL = "0.90"
 FILL2 = "0.80"
 EDGE = "0.25"
-FS = 9
+FS = 11
 
 
 def _arrow(ax, p0, p1, color=EDGE, lw=0.9, scale=7, zorder=5):
@@ -553,7 +553,7 @@ def schematic_gif_bytes(
     kind: str,
     *,
     figsize=(3.15, 3.15),
-    dpi=110,
+    dpi=160,
     hold_ms=1400,
 ):
     """Looping two-frame GIF: Before → After → Before … (opaque RGB, no morph)."""

@@ -28,9 +28,6 @@ from _style import (
 import _app_schematics as _schematics
 schematic_gif_bytes = _schematics.schematic_gif_bytes
 
-
-apply_style()
-
 PAGES = [
     "Wire torsion",
     "Beam bending",
@@ -40,11 +37,25 @@ PAGES = [
     "Mode-I slit",
 ]
 
-LEGEND_FS = 7
-TITLE_FS = 9
+LEGEND_FS = 9
+TITLE_FS = 11
 # Near-square panel size; each panel lives in its own Streamlit column so the
 # browser width sets the display scale while the aspect ratio stays stable.
 PANEL = 3.15
+FIG_DPI = 160
+
+apply_style()
+# App panels: denser raster and slightly larger type than the paper defaults.
+plt.rcParams.update({
+    "figure.dpi": FIG_DPI,
+    "savefig.dpi": FIG_DPI,
+    "font.size": 11,
+    "axes.titlesize": 12,
+    "axes.labelsize": 11,
+    "xtick.labelsize": 10,
+    "ytick.labelsize": 10,
+    "legend.fontsize": LEGEND_FS,
+})
 
 # Cold, shallow tech-gray UI (works for local Streamlit and stlite).
 _UI_CSS = """
@@ -128,13 +139,24 @@ _UI_CSS = """
   }
   .stButton > button {
     background-color: var(--msg-accent) !important;
-    color: #f8fafc !important;
+    color: #ffffff !important;
     border: 1px solid var(--msg-accent-dark) !important;
     border-radius: 4px !important;
+  }
+  .stButton > button p,
+  .stButton > button span,
+  .stButton > button div {
+    color: #ffffff !important;
   }
   .stButton > button:hover {
     background-color: var(--msg-accent-bright) !important;
     border-color: var(--msg-accent) !important;
+    color: #ffffff !important;
+  }
+  .stButton > button:hover p,
+  .stButton > button:hover span,
+  .stButton > button:hover div {
+    color: #ffffff !important;
   }
   /* Thin track; only the filled segment is Cardinal. */
   [data-testid="stProgress"] {
@@ -268,15 +290,15 @@ def _new_panel(schematic=False):
 
 
 @st.cache_data(show_spinner=False)
-def _schematic_gif(kind: str, version: int = 7) -> bytes:
+def _schematic_gif(kind: str, version: int = 8) -> bytes:
     # ``version`` busts stale GIF caches when schematics change.
-    return schematic_gif_bytes(kind, figsize=(PANEL, PANEL))
+    return schematic_gif_bytes(kind, figsize=(PANEL, PANEL), dpi=FIG_DPI)
 
 
 def show_schematic(kind: str):
     """Looping Before ↔ After schematic (animated GIF)."""
     try:
-        gif = _schematic_gif(kind, version=7)
+        gif = _schematic_gif(kind, version=8)
         try:
             st.image(gif, use_container_width=True)
         except TypeError:
@@ -300,9 +322,9 @@ def _placeholder_fig(message="Press Solve to compute"):
 
 
 def _style_result_ax(ax):
-    ax.tick_params(labelsize=7)
-    ax.xaxis.label.set_size(8)
-    ax.yaxis.label.set_size(8)
+    ax.tick_params(labelsize=10)
+    ax.xaxis.label.set_size(11)
+    ax.yaxis.label.set_size(11)
     ax.title.set_size(TITLE_FS)
 
 
