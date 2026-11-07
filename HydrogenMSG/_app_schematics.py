@@ -372,30 +372,32 @@ def draw_fem_void(ax, t=1.0):
     ax.text(cx + 1.22 * Rout, cy - 0.06, r"$\rho$", fontsize=FS - 1, ha="left", va="top", color="0.4")
 
     if t > 0.12:
-        # Longer / denser vertical arrows: σ_zz^∞ > σ_rr^∞ (both mechanical).
-        for y, s in ((1.02 * Rout, 1.0), (-1.02 * Rout, -1.0)):
-            for x in (-0.32, -0.11, 0.11, 0.32):
-                _arrow(
-                    ax,
-                    (cx + x, cy + y - 0.11 * s),
-                    (cx + x, cy + y + 0.11 * s),
-                    color=MECH,
-                    lw=0.95,
-                    scale=5.0,
-                )
-        for x, s in ((1.02 * Rout, 1.0), (-1.02 * Rout, -1.0)):
-            for y in (-0.18, 0.18):
-                _arrow(
-                    ax,
-                    (cx + x - 0.07 * s, cy + y),
-                    (cx + x + 0.07 * s, cy + y),
-                    color=MECH,
-                    lw=0.75,
-                    scale=4.0,
-                )
+        # Remote traction on the outer perimeter: t = (S_r n_ρ, S_z n_z),
+        # matching fem_msg._outer_traction (S_z=3.6, S_r=2.2). Arrows follow
+        # the circular boundary (not Cartesian left/right stubs).
+        S_r, S_z = 2.2, 3.6
+        arrow_len = 0.16 * Rout
+        # Skip a gap at the bottom so the inequality caption stays clear.
+        for deg in np.arange(-150.0, 151.0, 30.0):
+            ang = np.deg2rad(deg)
+            n_r, n_z = np.cos(ang), np.sin(ang)
+            tx, ty = S_r * n_r, S_z * n_z
+            tn = np.hypot(tx, ty)
+            ux, uy = tx / tn, ty / tn
+            x0 = cx + 1.02 * Rout * n_r
+            y0 = cy + 1.02 * Rout * n_z
+            _arrow(
+                ax,
+                (x0, y0),
+                (x0 + arrow_len * ux, y0 + arrow_len * uy),
+                color=MECH,
+                lw=0.85,
+                scale=4.8,
+            )
+        # Labels sit on the perimeter belts they refer to.
         ax.text(
-            cx + 0.55 * Rout,
-            cy + 1.20 * Rout,
+            cx + 0.42 * Rout,
+            cy + 1.28 * Rout,
             r"$\sigma_{zz}^{\infty}$",
             ha="left",
             va="bottom",
@@ -403,8 +405,8 @@ def draw_fem_void(ax, t=1.0):
             color=MECH,
         )
         ax.text(
-            cx + 1.18 * Rout,
-            cy + 0.42,
+            cx + 1.28 * Rout,
+            cy + 0.08 * Rout,
             r"$\sigma_{rr}^{\infty}$",
             ha="left",
             va="center",
