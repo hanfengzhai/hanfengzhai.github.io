@@ -839,16 +839,6 @@ def _explorer_detail(item: dict):
         st.markdown(item["body"])
 
 
-def _explorer_relation(drawer, state_key: str, *, figsize=(10.5, 4.4)):
-    """Sketch how the cards on this tab relate; highlight the active card."""
-    hid = st.session_state.get(state_key)
-    fig, ax = plt.subplots(figsize=figsize)
-    fig.patch.set_facecolor("#ffffff")
-    drawer(ax, highlight=hid)
-    fig.tight_layout(pad=0.15)
-    show(fig)
-
-
 def _explorer_grid(items, state_key: str, columns: int = 4):
     if state_key not in st.session_state:
         st.session_state[state_key] = items[0]["id"]
@@ -873,7 +863,7 @@ def _explorer_grid(items, state_key: str, columns: int = 4):
 
 def page_workflow():
     st.header("Explore the constitutive chain")
-    st.caption("Click a card; the map highlights where that symbol sits in the chain.")
+    st.caption("Click a card for its equation and role in the MSG–hydrogen chain.")
     st.markdown(
         '<div class="msg-chip-row">'
         '<span class="msg-chip">MSG plasticity</span>'
@@ -889,23 +879,12 @@ def page_workflow():
     )
 
     with tab_flow:
-        if "explore_workflow" not in st.session_state:
-            st.session_state["explore_workflow"] = _EXPLORER["workflow"][0]["id"]
-        _explorer_relation(_schematics.draw_msg_workflow, "explore_workflow", figsize=(10.5, 4.4))
         _explorer_grid(_EXPLORER["workflow"], "explore_workflow", columns=4)
 
     with tab_eq:
-        if "explore_equations" not in st.session_state:
-            st.session_state["explore_equations"] = _EXPLORER["equations"][0]["id"]
-        _explorer_relation(_schematics.draw_equations_map, "explore_equations", figsize=(10.5, 3.2))
         _explorer_grid(_EXPLORER["equations"], "explore_equations", columns=3)
 
     with tab_inn:
-        if "explore_innovations" not in st.session_state:
-            st.session_state["explore_innovations"] = _EXPLORER["innovations"][0]["id"]
-        _explorer_relation(
-            _schematics.draw_innovations_map, "explore_innovations", figsize=(10.5, 3.5)
-        )
         _explorer_grid(_EXPLORER["innovations"], "explore_innovations", columns=3)
 
 
