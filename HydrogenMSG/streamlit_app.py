@@ -850,7 +850,7 @@ def page_property_contour(p: Params):
     """Interactive Stanford-bunny contours of MSG–hydrogen property fields."""
     st.markdown(
         "Illustrative distributions on the Stanford bunny. "
-        "Not a FEM solve — a playground for how mean stress, trap sites, and "
+        "A testbed demo for how mean stress, trap sites, and "
         "Oriani occupancy combine into trapped hydrogen."
     )
     c1, c2 = st.columns([1.05, 1.35], gap="medium")
