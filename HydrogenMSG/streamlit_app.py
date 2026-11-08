@@ -197,30 +197,7 @@ _UI_CSS = """
     box-shadow: 0 6px 18px rgba(140, 21, 21, 0.12);
     transform: translateY(-1px);
   }
-  /* Explorer detail: bordered container holds title + equation + body. */
-  div[data-testid="stVerticalBlockBorderWrapper"]:has(.msg-kicker) {
-    background: #ffffff !important;
-    border: 1px solid var(--msg-line) !important;
-    border-left: 4px solid var(--msg-accent) !important;
-    border-radius: 10px !important;
-    box-shadow: 0 8px 24px rgba(30, 41, 59, 0.06) !important;
-    padding: 0.55rem 0.95rem 0.35rem 0.95rem !important;
-    margin: 0.35rem 0 0.75rem 0 !important;
-  }
-  div[data-testid="stVerticalBlockBorderWrapper"]:has(.msg-kicker) h3 {
-    margin: 0 0 0.15rem 0 !important;
-    color: var(--msg-accent) !important;
-    font-size: 1.05rem !important;
-    text-transform: none !important;
-    letter-spacing: 0 !important;
-  }
-  div[data-testid="stVerticalBlockBorderWrapper"]:has(.msg-kicker) [data-testid="stMarkdownContainer"] p {
-    margin-bottom: 0.35rem !important;
-  }
-  div[data-testid="stVerticalBlockBorderWrapper"]:has(.msg-kicker) .stLatex,
-  div[data-testid="stVerticalBlockBorderWrapper"]:has(.msg-kicker) [data-testid="stLatex"] {
-    margin: 0.15rem 0 0.35rem 0 !important;
-  }
+  /* Explorer detail: flat (no nested card). */
   .msg-kicker {
     font-size: 0.72rem;
     letter-spacing: 0.12em;
@@ -228,20 +205,16 @@ _UI_CSS = """
     color: var(--msg-muted);
     margin: 0 0 0.2rem 0;
   }
-  .msg-chip-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
-    margin: 0.35rem 0 0.6rem 0;
+  .msg-detail-title {
+    margin: 0 0 0.35rem 0 !important;
+    color: var(--msg-accent) !important;
+    font-size: 1.15rem !important;
+    font-weight: 650 !important;
   }
-  .msg-chip {
-    display: inline-block;
-    padding: 0.15rem 0.55rem;
-    border-radius: 999px;
-    background: #edf1f5;
+  .msg-detail-body {
     color: var(--msg-ink);
-    font-size: 0.78rem;
-    border: 1px solid var(--msg-line);
+    line-height: 1.45;
+    margin-top: 0.35rem;
   }
   /* Thin track; only the filled segment is Cardinal. */
   [data-testid="stProgress"] {
@@ -838,16 +811,15 @@ def _import_fem_plots():
 
 
 def _explorer_detail(item: dict):
-    # One bordered card: kicker, title, equation, and reading note together.
+    # Flat detail pane — no nested bordered card.
     eq = item["equation"].replace("$", "").strip()
-    with st.container(border=True):
-        st.markdown(
-            f'<p class="msg-kicker">{item["chip"]}</p>'
-            f'<h3>{item["title"]}</h3>',
-            unsafe_allow_html=True,
-        )
-        st.latex(eq)
-        st.markdown(item["body"])
+    st.markdown(
+        f'<p class="msg-kicker">{item["chip"]}</p>'
+        f'<p class="msg-detail-title">{item["title"]}</p>',
+        unsafe_allow_html=True,
+    )
+    st.latex(eq)
+    st.markdown(item["body"])
 
 
 def _explorer_panel(items, state_key: str):
