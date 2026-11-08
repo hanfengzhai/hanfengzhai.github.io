@@ -426,8 +426,16 @@ def solve(l_over_a=5.0, S=1.0, p=None, a=None,
             if resid < tol and it > 2:
                 break
 
+    converged = bool(resid < tol)
     if progress is not None:
-        progress(1.0, f"Converged in {it_total} iterations")
+        if converged:
+            progress(1.0, f"Converged in {it_total} iterations")
+        else:
+            progress(
+                1.0,
+                f"Not converged after {it_total} iterations "
+                f"(|Δu|/|u| = {resid:.2e} > tol {tol:.0e})",
+            )
 
     st = state(u)
     sig = 2.0 * st["mu"][:, :, None] * st["dev"] + K * st["tr"][:, :, None] * _M
@@ -436,7 +444,8 @@ def solve(l_over_a=5.0, S=1.0, p=None, a=None,
     u_mag = np.sqrt(ux ** 2 + uy ** 2)
 
     out = dict(mesh=mesh, kin=kin, p=p, u=u, ux=ux, uy=uy, u_mag=u_mag,
-               iters=it_total, resid=resid, l_over_a=l_over_a, S=S, a=a, nu=nu,
+               iters=it_total, resid=resid, converged=converged, tol=tol,
+               l_over_a=l_over_a, S=S, a=a, nu=nu,
                eps=st["eps"], eps_e=st["eps_e"], eta=st["eta"],
                l_eta=p.l * st["eta"], soft=st["soft"],
                sig_m_hat=sig[:, :, :3].sum(axis=2) / 3.0 / p.sigY,
@@ -446,7 +455,10 @@ def solve(l_over_a=5.0, S=1.0, p=None, a=None,
     out["u_mag_a"] = _nodal_to_gauss(kin, u_mag) / a
     out["uy_a"] = _nodal_to_gauss(kin, uy) / a
     out.update(hydrogen_fields(out))
-    out["cod"] = crack_opening(out)
+    # Half-opening on the symmetry model: u_y(0,0+)/a.
+    # Full Mode-I COD/a between opposite faces is twice this value.
+    out["cod"] = float(uy[mesh.left[0]] / a)
+    out["cod_full"] = 2.0 * out["cod"]
     return out
 
 
@@ -456,7 +468,11 @@ def _nodal_to_gauss(kin, nodal):
 
 
 def crack_opening(sol):
-    """Normalised crack-mouth opening u_y(0,0+)/a."""
+    """Half-opening u_y(0,0+)/a on the upper symmetry face.
+
+    For a full centre crack the conventional COD/a between opposite faces is
+    twice this value. Prefer ``sol['cod']`` / ``sol['cod_full']`` from ``solve``.
+    """
     mesh, uy = sol["mesh"], sol["uy"]
     mouth = mesh.left[0]   # (x,y) = (0,0)
     return float(uy[mouth] / mesh.a)

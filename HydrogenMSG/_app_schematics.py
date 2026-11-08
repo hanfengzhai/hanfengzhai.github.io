@@ -434,7 +434,7 @@ def draw_fem_void(ax, t=1.0):
         ax.text(
             cx,
             cy - 1.52 * Rout,
-            r"$\sigma_{zz}^{\infty}>\sigma_{rr}^{\infty}$",
+            r"default demo: $\sigma_{zz}^{\infty}>\sigma_{rr}^{\infty}$",
             ha="center",
             va="top",
             fontsize=FS - 2,
@@ -454,34 +454,43 @@ def draw_cavitation(ax, t=1.0):
 
 
 def draw_slit(ax, t=1.0):
-    """Mode-I centre-crack. ``t=0`` closed notch, ``t=1`` opened faces."""
+    """Mode-I centre crack, upper-right quarter with symmetry boundaries.
+
+    ``t=0`` closed crack face, ``t=1`` opened face. Matches the FEM: ligament
+    symmetry on $y=0$ for $x>a$, mirror symmetry on $x=0$, remote $\\sigma_{yy}$.
+    """
     t = _clamp01(t)
-    ax.add_patch(Rectangle((-1, -1), 2, 2, fill=False, ec="0.15", lw=1.2, zorder=3))
+    # Quarter plate: tip at origin, crack face along x <= 0, ligament x > 0.
+    ax.add_patch(Rectangle((-1.05, 0.0), 2.1, 1.15, fill=False, ec="0.15", lw=1.15, zorder=3))
 
-    open_amp = 0.18 * t
-    # Upper and lower faces diverge with opening.
-    xs = np.linspace(-1.0, 0.0, 40)
-    tip_blend = np.clip((-xs) / 0.35, 0.0, 1.0)  # open more away from tip
+    open_amp = 0.20 * t
+    xs = np.linspace(-1.05, 0.0, 48)
+    tip_blend = np.clip((-xs) / 0.40, 0.0, 1.0)
     yu = open_amp * tip_blend
-    yl = -open_amp * tip_blend
-    ax.plot(xs, yu, color="0.15", lw=2.0, solid_capstyle="butt", zorder=4)
-    ax.plot(xs, yl, color="0.15", lw=2.0, solid_capstyle="butt", zorder=4)
-    if t > 0.05:
-        ax.fill_between(xs, yl, yu, color="white", zorder=3.5, alpha=1.0)
-    ax.plot([0.0], [0.0], "o", color="0.15", ms=3.5, zorder=5)
-    ax.text(-0.5, 0.18 + 0.6 * open_amp, "Notch", fontsize=FS - 1, color="0.25", ha="center")
+    ax.plot(xs, yu, color="0.15", lw=2.0, solid_capstyle="butt", zorder=5)
+    ax.plot([0.0, 1.05], [0.0, 0.0], color="0.15", lw=1.4, solid_capstyle="butt", zorder=5)
+    ax.plot([0.0], [0.0], "o", color="0.15", ms=3.5, zorder=6)
+    if t > 0.08:
+        ax.fill_between(xs, 0.0, yu, color="white", zorder=4, alpha=1.0)
+        ax.text(-0.55, 0.06 + 0.55 * open_amp, "open face", fontsize=FS - 2, color="0.3", ha="center")
 
-    ax.plot([-1.0, 0.0], [-1.14, -1.14], color="0.3", lw=0.7)
-    ax.plot([0.0, 1.0], [-1.14, -1.14], color="0.3", lw=0.7)
-    ax.text(-0.5, -1.28, r"$a$", ha="center", va="top", fontsize=FS)
-    ax.text(0.5, -1.28, r"$a$", ha="center", va="top", fontsize=FS)
+    # Symmetry markers (not roller supports of an edge-notch specimen).
+    for x in np.linspace(0.15, 0.95, 5):
+        ax.plot([x, x], [-0.06, 0.0], color="0.35", lw=0.7, zorder=4)
+    for y in np.linspace(0.15, 0.95, 5):
+        ax.plot([-1.11, -1.05], [y, y], color="0.35", lw=0.7, zorder=4)
+    ax.text(0.55, -0.22, "symmetry", ha="center", va="top", fontsize=FS - 2, color="0.35")
+    ax.text(-1.28, 0.55, "symmetry", ha="center", va="center", fontsize=FS - 2, color="0.35", rotation=90)
+
+    ax.plot([-1.05, 0.0], [-0.38, -0.38], color="0.3", lw=0.7)
+    ax.text(-0.52, -0.50, r"$a$", ha="center", va="top", fontsize=FS)
 
     if t > 0.15:
-        for x in np.linspace(-0.8, 0.8, 6):
+        for x in np.linspace(-0.85, 0.85, 6):
             ax.add_patch(
                 FancyArrowPatch(
-                    (x, 1.02),
-                    (x, 1.16),
+                    (x, 1.18),
+                    (x, 1.32),
                     arrowstyle="-|>",
                     mutation_scale=8,
                     lw=0.8,
@@ -490,14 +499,13 @@ def draw_slit(ax, t=1.0):
                     shrinkB=0,
                 )
             )
-        ax.text(0.0, 1.28, r"$\sigma^{\infty}$", ha="center", va="bottom", fontsize=FS)
+        ax.text(0.0, 1.42, r"$\sigma_{yy}^{\infty}$", ha="center", va="bottom", fontsize=FS)
 
-    # Softening / H band near tip after load.
     if t > 0.35:
         ax.add_patch(
             Circle(
-                (0.12, 0.0),
-                0.22 * t,
+                (0.12, 0.10),
+                0.20 * t,
                 facecolor=HYDR,
                 edgecolor="none",
                 alpha=0.18 * t,
@@ -505,10 +513,8 @@ def draw_slit(ax, t=1.0):
             )
         )
 
-    for x in np.linspace(-0.7, 0.7, 5):
-        ax.add_patch(Circle((x, -1.08), 0.035, facecolor="w", edgecolor="0.15", lw=0.6, zorder=4))
-    ax.set_xlim(-1.45, 1.45)
-    ax.set_ylim(-1.55, 1.55)
+    ax.set_xlim(-1.55, 1.35)
+    ax.set_ylim(-0.70, 1.60)
     _finish(ax)
     _title(ax, t)
 
@@ -680,7 +686,7 @@ def draw_innovations_map(ax, highlight=None):
     )
     _rel_sym(
         ax, 3.5, 1.35, 3.0, 1.0,
-        r"$\theta_{\mathrm{T}}^{\mathrm{odd}},\ N_{\mathrm{T}}^{\mathrm{even}}$",
+        r"$\sigma_{\mathrm{m}}^{\mathrm{odd}},\ N_{\mathrm{T}}^{\mathrm{even}}$",
         active=on("inn-bend"), fs=FS - 1,
     )
     _rel_sym(

@@ -123,8 +123,9 @@ def _slit_structured_field(sol, key, zoom=SLIT_ZOOM, n=560, smooth=2.5, clip_pct
     else:
         f_all = np.concatenate([f, f_u])
 
-    lo_g, hi_g = np.percentile(f_all, clip_pct)
-    f_all = np.clip(f_all, lo_g, hi_g)
+    # Keep raw samples for interpolation. Percentile clipping is applied only
+    # as display colour limits in ``draw_slit_contour`` (saturation), not here.
+    del clip_pct
 
     xi = np.linspace(-1.05, zoom, n)
     yi = np.linspace(-zoom, zoom, n)
@@ -158,9 +159,10 @@ def _slit_axes_frame(ax, zoom=SLIT_ZOOM):
 
 
 def draw_slit_contour(ax, fig, sol, key, cmap, *, label=None, nlev=12, cbar=True, zoom=SLIT_ZOOM, pct=(5.0, 95.0), cbar_mode="axes"):
+    """Tip-window raster. Field is not clipped before interpolate; ``pct`` sets colour saturation."""
     Xi, Yi, Fi, xi, yi = _slit_structured_field(sol, key, zoom=zoom, clip_pct=pct)
     vals = np.asarray(Fi[~np.ma.getmaskarray(Fi)]).ravel()
-    lo, hi = np.percentile(vals, (2.0, 98.0))
+    lo, hi = np.percentile(vals, pct)
     if key in ("uy_a",):
         lim = max(abs(lo), abs(hi), 1e-14)
         lo, hi = -lim, lim

@@ -376,12 +376,21 @@ def solve(l_over_R0=1.0, load=Load(2.2, 1.6), p=None, R0=None,
         if resid < tol and it > 2:
             break
 
+    converged = bool(resid < tol)
     if progress is not None:
-        progress(1.0, f"Converged in {it + 1} iterations")
+        if converged:
+            progress(1.0, f"Converged in {it + 1} iterations")
+        else:
+            progress(
+                1.0,
+                f"Not converged after {it + 1} iterations "
+                f"(|Δu|/|u| = {resid:.2e} > tol {tol:.0e})",
+            )
 
     st = state(u)
     sig = 2.0 * st["mu"][:, :, None] * st["dev"] + K * st["tr"][:, :, None] * _M
     out = dict(mesh=mesh, kin=kin, p=p, u=u, iters=it + 1, resid=resid,
+               converged=converged, tol=tol,
                l_over_R0=l_over_R0, load=load, R0=R0, nu=nu,
                eps=st["eps"], eps_e=st["eps_e"], eta=st["eta"],
                l_eta=p.l * st["eta"],

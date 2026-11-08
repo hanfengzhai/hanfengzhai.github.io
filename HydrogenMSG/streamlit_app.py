@@ -350,7 +350,7 @@ def _new_panel(schematic=False):
 
 
 @st.cache_data(show_spinner=False)
-def _schematic_gif(kind: str, version: int = 8) -> bytes:
+def _schematic_gif(kind: str, version: int = 9) -> bytes:
     # ``version`` busts stale GIF caches when schematics change.
     return schematic_gif_bytes(kind, figsize=(PANEL, PANEL), dpi=FIG_DPI)
 
@@ -358,7 +358,7 @@ def _schematic_gif(kind: str, version: int = 8) -> bytes:
 def show_schematic(kind: str):
     """Looping Before ↔ After schematic (animated GIF)."""
     try:
-        gif = _schematic_gif(kind, version=8)
+        gif = _schematic_gif(kind, version=9)
         try:
             st.image(gif, use_container_width=True)
         except TypeError:
@@ -526,10 +526,11 @@ _EXPLORER = {
             "equation": (
                 r"\varepsilon_{ij}=\tfrac{1}{2}(u_{i,j}+u_{j,i}),"
                 r"\quad \eta_{ijk}=u_{k,ij}"
+                r"\quad\text{(small strain)}"
             ),
             "body": (
-                "A displacement field supplies the strain and strain gradient. "
-                "Every later example starts from this kinematic layer for its own geometry."
+                "Small-strain kinematics used in torsion, bending, and the analytical void. "
+                "Cavitation instead uses finite-strain logarithmic stretch measures."
             ),
         },
         {
@@ -761,11 +762,12 @@ _EXPLORER = {
             "title": "Bending mixes both channels",
             "teaser": "antisymmetric mean stress, even GND sites",
             "equation": (
-                r"\theta_{\mathrm{T}}(-x_2)=-\theta_{\mathrm{T}}(x_2),"
+                r"\sigma_{\mathrm{m}}(-x_2)=-\sigma_{\mathrm{m}}(x_2),"
                 r"\quad N_{\mathrm{T}}^{\mathrm{GND}}(-x_2)=N_{\mathrm{T}}^{\mathrm{GND}}(x_2)"
             ),
             "body": (
-                "Bending raises occupancy on the tensile side while the uniform strain gradient "
+                "Mean stress is antisymmetric, so lattice occupancy is higher on the tensile side "
+                "and lower (but still positive) on the compressive side. The uniform strain gradient "
                 "adds trap sites on both halves. The mechanisms reinforce on the extrados and "
                 "compete on the intrados."
             ),
@@ -886,7 +888,7 @@ def page_property_contour(p: Params):
     st.caption(
         r"$\sigma_{\mathrm{m}}$ follows the chosen pattern; "
         r"$N_{\mathrm{T}}$ rises with curvature (GND proxy); "
-        r"$\theta_{\mathrm{L}}\propto\exp(\sigma_{\mathrm{m}})$; "
+        r"$\theta_{\mathrm{L}}\propto\exp[\sigma_{\mathrm{m}}\bar{V}_{\mathrm{H}}/(RT)]$; "
         r"$c_{\mathrm{T}}=N_{\mathrm{T}}\,\theta_{\mathrm{T}}(\theta_{\mathrm{L}})$."
     )
 
@@ -917,7 +919,10 @@ def page_torsion(p: Params):
     st.markdown(
         r"Mean stress vanishes under the working closure, so the trapped field "
         r"is the trap-site density alone. At fixed surface strain $\Gamma = \kappa a$, "
-        r"the GND floor scales as $l/a$."
+        r"the GND floor scales as $l/a$. "
+        r"Profiles are normalized by $c_{T0}=\chi\theta_{\mathrm{T}}^{0}/(l b^{2})$. "
+        r"The enhancement factor is "
+        r"$Q=1+(N+1)\,l\Gamma/(a\,f^{2}(\Gamma/\sqrt{3}))$."
     )
     gamma = st.slider(r"Surface strain $\Gamma$", 0.02, 0.20, 0.05, 0.01)
     r = np.linspace(0.0, 1.0, 200)
@@ -933,7 +938,7 @@ def page_torsion(p: Params):
             lab = "SSD-only" if lh == 0 else rf"$l/a={lh:g}$"
             ax.plot(r, c_t, color=c, lw=LINE_LW, ls="--" if lh == 0 else "-", label=lab)
         ax.set_xlabel(r"$r/a$")
-        ax.set_ylabel(r"$c_{\mathrm{T}}$ (norm.)")
+        ax.set_ylabel(r"$c_{\mathrm{T}}/c_{T0}$")
         ax.set_title(rf"Trapped H, $\Gamma={gamma:g}$")
         _legend(ax, loc="lower right")
         _style_result_ax(ax)
@@ -960,11 +965,13 @@ def page_bending(p: Params):
     st.markdown(
         r"The outer mean stress is antisymmetric. The strain gradient is uniform, "
         r"so the GND contribution to the trap-site density is even in $x_2$. "
-        r"Fields inside $|x_2| \lesssim l_\varepsilon$ are left blank."
+        r"On MSG curves, profiles leave blank the unresolved higher-order layer "
+        r"$|x_2|\lesssim l_\varepsilon$ (i.e. $|x_2/h|\lesssim (l_\varepsilon/l)(l/h)$). "
+        r"Cross-section averages integrate the full thickness, including that layer. "
+        r"Trapped fields are normalized by $c_{T0}=\chi\theta_{\mathrm{T}}^{0}/(l b^{2})$; "
+        r"the average panel is relative to the thick-beam reference $h=50\,\mu\mathrm{m}$."
     )
     eps_s = st.slider(r"Surface strain $\varepsilon_s$", 0.01, 0.10, 0.05, 0.01)
-    gap = 0.04
-    z = np.concatenate([np.linspace(-0.5, -gap, 200), [np.nan], np.linspace(gap, 0.5, 200)])
     h = np.logspace(np.log10(0.2e-6), np.log10(50e-6), 40)
     c_l, c_t = zip(*[bending_average_uptake(hh, eps_s, p) for hh in h])
     c_l, c_t = np.asarray(c_l), np.asarray(c_t)
@@ -975,15 +982,23 @@ def page_bending(p: Params):
 
     for col, key, xlab, title in (
         (cols[1], "sig_m_hat", r"$\sigma_{\mathrm{m}}/\sigma_{\mathrm{Y}}$", "Mean stress"),
-        (cols[2], "cT_norm", r"$c_{\mathrm{T}}$ (norm.)", "Trapped H"),
+        (cols[2], "cT_norm", r"$c_{\mathrm{T}}/c_{T0}$", "Trapped H"),
     ):
         with col:
             fig, ax = _new_panel()
             for c, lh in zip(COLORS, [0.0, 2.0, 5.0, 10.0]):
+                # Blank |x2/h| < l_ε/h = (l_ε/l)*(l/h) on MSG curves.
+                gap = min(0.45, (p.l_eps / p.l) * lh) if lh > 0 else 0.0
+                if gap > 0:
+                    z = np.concatenate([
+                        np.linspace(-0.5, -gap, 200), [np.nan], np.linspace(gap, 0.5, 200)
+                    ])
+                    ax.axhspan(-gap, gap, color="0.92", zorder=0)
+                else:
+                    z = np.linspace(-0.5, 0.5, 401)
                 field = bending_fields(z, eps_s, lh, p)
                 lab = "SSD" if lh == 0 else rf"$l/h={lh:g}$"
                 ax.plot(field[key], z, color=c, lw=LINE_LW, ls="--" if lh == 0 else "-", label=lab)
-            ax.axhspan(-gap, gap, color="0.92", zorder=0)
             ax.set_xlabel(xlab)
             ax.set_ylabel(r"$x_2/h$")
             ax.set_title(title)
@@ -1000,7 +1015,7 @@ def page_bending(p: Params):
                 lw=LINE_LW, label=r"$\bar c_{\mathrm{T}}$")
         ax.set_xscale("log")
         ax.set_xlabel(r"$h$ [$\mu\mathrm{m}$]")
-        ax.set_ylabel("Avg / thick")
+        ax.set_ylabel(r"Avg / thick ($h=50\,\mu\mathrm{m}$)")
         ax.set_title(rf"Averages, $\varepsilon_s={eps_s:g}$")
         _legend(ax, loc="upper right")
         _style_result_ax(ax)
@@ -1013,11 +1028,14 @@ def page_void(p: Params):
     st.markdown(
         r"At fixed expansion ratio $\delta = u_0/R_0$, the wall GND trap-site density "
         r"scales as $1/R_0$. Mean stress is lowest at the wall and rises toward the "
-        r"remote tension. With $N = 0.2 < 2/3$, the GND fraction is largest at the wall."
+        r"remote tension. With $N = 0.2 < 2/3$, the GND fraction is largest at the wall. "
+        r"Trapped fields use $c_{T0}=\chi\theta_{\mathrm{T}}^{0}/(l b^{2})$. "
+        r"The wall panel plots the dimensionless $l\eta=lb^{2}N_{\mathrm{T}}^{\mathrm{GND}}/\chi$."
     )
     delta = st.slider(r"Expansion ratio $\delta$", 0.05, 0.40, 0.20, 0.01)
     s = np.logspace(0.0, np.log10(8.0), 300)
     r0 = np.logspace(np.log10(0.05e-6), np.log10(20e-6), 80)
+    # l η at the wall (= l b² N_T^GND / χ)
     gnd = 3.0 * np.sqrt(2.5) * delta * (p.l / r0)
 
     cols = st.columns(4, gap="small")
@@ -1026,7 +1044,7 @@ def page_void(p: Params):
 
     for col, key, ylab, title in (
         (cols[1], "sig_m_hat", r"$\sigma_{\mathrm{m}}/\sigma_{\mathrm{Y}}$", "Mean stress"),
-        (cols[2], "cT_norm", r"$c_{\mathrm{T}}$ (norm.)", "Trapped H"),
+        (cols[2], "cT_norm", r"$c_{\mathrm{T}}/c_{T0}$", "Trapped H"),
     ):
         with col:
             fig, ax = _new_panel()
@@ -1045,7 +1063,7 @@ def page_void(p: Params):
         fig, ax = _new_panel()
         ax.loglog(r0 * 1e6, gnd, color="black", lw=LINE_LW)
         ax.set_xlabel(r"$R_0$ [$\mu\mathrm{m}$]")
-        ax.set_ylabel(r"$N_{\mathrm{T}}^{\mathrm{GND}}$")
+        ax.set_ylabel(r"$lb^{2}N_{\mathrm{T}}^{\mathrm{GND}}/\chi$")
         ax.set_title(rf"Wall GND, $\delta={delta:g}$")
         _style_result_ax(ax)
         fig.tight_layout(pad=0.35)
@@ -1057,7 +1075,9 @@ def page_cavitation():
     st.markdown(
         r"Formulation C keeps the hydrogen-free Taylor density and multiplies the "
         r"flow stress by $1 - \xi\,\theta_{\mathrm{T}}$, with $l$ fixed. "
-        r"The cavitation stress is the maximum remote tension over the growth history. "
+        r"The cavitation stress shown here is an approximate sampled maximum of the "
+        r"remote tension over 16 expansion ratios between $1.05$ and $5$ "
+        r"(finite-strain logarithmic measures). "
         r"The quadrature is coarser than the manuscript maps."
     )
     xi = st.slider(r"Softening coefficient $\xi$", 0.0, 0.6, 0.3, 0.05)
@@ -1090,7 +1110,9 @@ def page_fem_void():
     st.markdown(
         r"Axisymmetric CMSG void under remote biaxial tension. "
         r"Hydrogen is a one-way Oriani post-process. "
-        r"The mesh ($n_\rho=24$, $n_\theta=10$) is coarser than the manuscript figure."
+        r"The mesh ($n_\rho=24$, $n_\theta=10$) is coarser than the manuscript figure. "
+        r"The schematic GIF shows the default demo ordering "
+        r"$\sigma_{zz}^{\infty}>\sigma_{rr}^{\infty}$; the sliders may reverse that."
     )
     c1, c2, c3 = st.columns(3)
     l_over = c1.slider(r"$l/R_0$", 1.0, 10.0, 10.0, 1.0)
@@ -1114,13 +1136,20 @@ def page_fem_void():
     cb, finish_bar = _progress_ui("Solving the non-hydrostatic void")
     try:
         sol = _solve_void(*key, progress=cb)
-        finish_bar(f"Converged in {sol['iters']} iterations")
+        if sol.get("converged", False):
+            finish_bar(f"Converged in {sol['iters']} iterations")
+        else:
+            finish_bar(
+                f"Not converged after {sol['iters']} iterations "
+                f"(|Δu|/|u| = {sol['resid']:.2e})"
+            )
     except Exception:
         finish_bar("Solve failed")
         raise
-    m1, m2 = st.columns(2)
+    m1, m2, m3 = st.columns(3)
     m1.metric("Iterations", f"{sol['iters']}")
     m2.metric(r"Expansion $\delta$", f"{sol['delta']:.3f}")
+    m3.metric("|Δu|/|u|", f"{sol['resid']:.2e}")
     cols = st.columns(3, gap="small")
     with cols[0]:
         show_schematic("fem_void")
@@ -1151,8 +1180,11 @@ def page_fem_slit():
 
     st.header("Mode-I slit")
     st.markdown(
-        r"Plane-strain centre crack of half-length $a$ with Formulation C softening. "
-        r"The open slit face is masked. The mesh is coarser than the manuscript figure."
+        r"Plane-strain centre crack of half-length $a$ with Formulation C softening "
+        r"(upper-right quarter with symmetry boundaries). "
+        r"The open slit face is masked. The mesh is coarser than the manuscript figure. "
+        r"Contours interpolate the raw Gauss field with light smoothing; colour limits "
+        r"use the 5th–95th percentiles so tip extrema saturate rather than rewrite the field."
     )
     c1, c2, c3 = st.columns(3)
     l_over = c1.slider(r"$l/a$", 1.0, 8.0, 5.0, 0.5)
@@ -1176,13 +1208,26 @@ def page_fem_slit():
     cb, finish_bar = _progress_ui("Solving the mode-I slit")
     try:
         sol = _solve_slit(*key, progress=cb)
-        finish_bar(f"Converged in {sol['iters']} iterations")
+        if sol.get("converged", False):
+            finish_bar(f"Converged in {sol['iters']} iterations")
+        else:
+            finish_bar(
+                f"Not converged after {sol['iters']} iterations "
+                f"(|Δu|/|u| = {sol['resid']:.2e})"
+            )
     except Exception:
         finish_bar("Solve failed")
         raise
-    m1, m2 = st.columns(2)
-    m1.metric("COD / a", f"{sol['cod']:.3e}")
-    m2.metric("Minimum softening", f"{float(sol['soft'].min()):.3f}")
+    m1, m2, m3 = st.columns(3)
+    m1.metric("Half-opening / a", f"{sol['cod']:.3e}")
+    m2.metric("COD / a (= 2 × half)", f"{sol.get('cod_full', 2.0 * sol['cod']):.3e}")
+    m3.metric("Minimum softening", f"{float(sol['soft'].min()):.3f}")
+    st.caption(
+        r"Half-opening is $u_y(0,0^{+})/a$ on the symmetry model; "
+        r"conventional Mode-I COD$/a$ between opposite faces is twice that. "
+        rf"Final residual $|\Delta u|/|u|={sol['resid']:.2e}$ "
+        rf"(tol ${sol.get('tol', 1e-5):.0e}$)."
+    )
     cols = st.columns(3, gap="small")
     with cols[0]:
         show_schematic("slit")
