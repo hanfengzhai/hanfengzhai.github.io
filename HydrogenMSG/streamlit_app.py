@@ -846,6 +846,37 @@ def _explorer_panel(items, state_key: str):
         _explorer_detail(chosen)
 
 
+@st.cache_data(show_spinner=False)
+def _bunny_spin_gif(
+    prop: str,
+    pattern: str,
+    stress_amp: float,
+    gnd_weight: float,
+    ssd_level: float,
+    theta0: float,
+    KT: float,
+    varsigma: float,
+    elev: float,
+    version: int = 1,
+) -> bytes:
+    del version
+    return _bunny.property_contour_gif_bytes(
+        prop,
+        pattern=pattern,
+        stress_amp=stress_amp,
+        gnd_weight=gnd_weight,
+        ssd_level=ssd_level,
+        theta0=theta0,
+        KT=KT,
+        varsigma=varsigma,
+        elev=elev,
+        n_frames=18,
+        duration_ms=140,
+        figsize=(7.0, 6.0),
+        dpi=100,
+    )
+
+
 def page_property_contour(p: Params):
     """Interactive Stanford-bunny contours of MSG–hydrogen property fields."""
     st.markdown(
@@ -853,7 +884,7 @@ def page_property_contour(p: Params):
         "A testbed demo for how mean stress, trap sites, and "
         "Oriani occupancy combine into trapped hydrogen."
     )
-    c1, c2 = st.columns([1.05, 1.35], gap="medium")
+    c1, c2 = st.columns([0.9, 1.55], gap="medium")
     with c1:
         prop = st.selectbox("Property", list(_bunny.PROPERTY_CHOICES), index=0)
         pattern = st.selectbox("Mean-stress pattern", list(_bunny.PATTERN_CHOICES), index=0)
@@ -866,24 +897,27 @@ def page_property_contour(p: Params):
             value=1e-6,
             format_func=lambda x: f"{x:.0e}",
         )
-        azim = st.slider("View azimuth", -180, 180, -55, 5)
-        elev = st.slider("View elevation", -20, 60, 12, 2)
+        elev = st.slider("View elevation", -10, 45, 14, 1)
     with c2:
-        fig = _bunny.figure_property_contour(
-            prop,
-            pattern=pattern,
-            stress_amp=float(stress_amp),
-            gnd_weight=float(gnd_weight),
-            ssd_level=float(ssd_level),
-            theta0=float(theta0),
-            KT=float(p.KT),
-            varsigma=float(p.varsigma),
-            elev=float(elev),
-            azim=float(azim),
-            figsize=(5.6, 4.7),
-        )
-        show(fig)
+        with st.spinner("Rendering rotating bunny…"):
+            gif = _bunny_spin_gif(
+                prop,
+                pattern,
+                float(stress_amp),
+                float(gnd_weight),
+                float(ssd_level),
+                float(theta0),
+                float(p.KT),
+                float(p.varsigma),
+                float(elev),
+                version=1,
+            )
+        try:
+            st.image(gif, use_container_width=True)
+        except TypeError:
+            st.image(gif, use_column_width=True)
     st.caption(
+        r"Slow spin shows the 3D contour. "
         r"$\sigma_{\mathrm{m}}$ follows the chosen pattern; "
         r"$N_{\mathrm{T}}$ rises with curvature (GND proxy); "
         r"$\theta_{\mathrm{L}}\propto\exp(\sigma_{\mathrm{m}})$; "

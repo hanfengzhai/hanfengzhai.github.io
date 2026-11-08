@@ -175,6 +175,53 @@ def _project(V: np.ndarray, elev: float, azim: float):
     return P, zhat
 
 
+def _scalar_limits(scalar: np.ndarray) -> tuple[float, float]:
+    lo, hi = np.percentile(scalar, [2, 98])
+    if hi - lo < 1e-14:
+        lo, hi = float(scalar.min()), float(scalar.max() + 1e-12)
+    return float(lo), float(hi)
+
+
+def _draw_bunny_frame(
+    ax,
+    V: np.ndarray,
+    F: np.ndarray,
+    fn: np.ndarray,
+    scalar: np.ndarray,
+    *,
+    elev: float,
+    azim: float,
+    cmap: str,
+    vmin: float,
+    vmax: float,
+    radius: float,
+):
+    """One orthographic projected frame; fixed limits so rotation stays centered."""
+    P, zhat = _project(V, elev, azim)
+    front = (fn @ zhat) < 0.02
+    Ff = F[front]
+    depth = P[:, 2][Ff].mean(axis=1)
+    Ff = Ff[np.argsort(depth)]
+    tc = ax.tripcolor(
+        P[:, 0],
+        P[:, 1],
+        Ff,
+        scalar,
+        shading="gouraud",
+        cmap=cmap,
+        vmin=vmin,
+        vmax=vmax,
+        linewidths=0.0,
+    )
+    ax.set_aspect("equal")
+    ax.set_axis_off()
+    # Sphere-based limits keep the bunny large and stable while spinning.
+    lim = 1.02 * radius
+    ax.set_xlim(-lim, lim)
+    ax.set_ylim(-lim, lim)
+    return tc
+
+
 def figure_property_contour(
     property_name: str,
     *,
@@ -185,14 +232,15 @@ def figure_property_contour(
     theta0: float = 1e-6,
     KT: float = 5.98e7,
     varsigma: float = 1.0,
-    elev: float = 12.0,
+    elev: float = 14.0,
     azim: float = -55.0,
-    figsize=(5.4, 4.5),
+    figsize=(6.6, 5.6),
 ):
-    """Projected bunny contour (tripcolor) with colorbar — fast enough for stlite."""
+    """Single projected bunny contour (used as a still / GIF building block)."""
     import matplotlib.pyplot as plt
 
     V, F = load_bunny()
+    fn = face_normals(V, F)
     fields = compute_fields(
         V,
         F,
@@ -206,42 +254,94 @@ def figure_property_contour(
     )
     scalar = fields[property_name]
     cmap = "coolwarm" if property_name == "Mean stress" else "viridis"
-
-    P, zhat = _project(V, elev, azim)
-    fn = face_normals(V, F)
-    # Keep faces that point toward the camera; paint far → near.
-    front = (fn @ zhat) < 0.02
-    Ff = F[front]
-    depth = P[:, 2][Ff].mean(axis=1)
-    order = np.argsort(depth)  # far first
-    Ff = Ff[order]
-
-    lo, hi = np.percentile(scalar, [2, 98])
-    if hi - lo < 1e-14:
-        lo, hi = float(scalar.min()), float(scalar.max() + 1e-12)
+    lo, hi = _scalar_limits(scalar)
+    radius = float(np.max(np.linalg.norm(V, axis=1)))
 
     fig, ax = plt.subplots(figsize=figsize)
     fig.patch.set_facecolor("#ffffff")
     ax.set_facecolor("#e4e9ee")
-    tc = ax.tripcolor(
-        P[:, 0],
-        P[:, 1],
-        Ff,
-        scalar,
-        shading="gouraud",
-        cmap=cmap,
-        vmin=lo,
-        vmax=hi,
-        linewidths=0.0,
+    tc = _draw_bunny_frame(
+        ax, V, F, fn, scalar,
+        elev=elev, azim=azim, cmap=cmap, vmin=lo, vmax=hi, radius=radius,
     )
-    ax.set_aspect("equal")
-    ax.set_axis_off()
-    pad = 0.04 * max(float(np.ptp(P[:, 0])), float(np.ptp(P[:, 1])))
-    ax.set_xlim(float(P[:, 0].min()) - pad, float(P[:, 0].max()) + pad)
-    ax.set_ylim(float(P[:, 1].min()) - pad, float(P[:, 1].max()) + pad)
-    cb = fig.colorbar(tc, ax=ax, fraction=0.046, pad=0.03, aspect=22)
-    cb.set_label(PROPERTY_LABELS.get(property_name, property_name), fontsize=10)
-    cb.ax.tick_params(labelsize=9)
-    ax.set_title(property_name, fontsize=12, color=CARDINAL, pad=6)
-    fig.tight_layout(pad=0.3)
+    cb = fig.colorbar(tc, ax=ax, fraction=0.04, pad=0.02, aspect=26)
+    cb.set_label(PROPERTY_LABELS.get(property_name, property_name), fontsize=11)
+    cb.ax.tick_params(labelsize=10)
+    ax.set_title(property_name, fontsize=13, color=CARDINAL, pad=4)
+    fig.tight_layout(pad=0.2)
     return fig
+
+
+def property_contour_gif_bytes(
+    property_name: str,
+    *,
+    pattern: str = "Bending (vertical)",
+    stress_amp: float = 1.0,
+    gnd_weight: float = 0.7,
+    ssd_level: float = 0.25,
+    theta0: float = 1e-6,
+    KT: float = 5.98e7,
+    varsigma: float = 1.0,
+    elev: float = 14.0,
+    n_frames: int = 18,
+    duration_ms: int = 140,
+    figsize=(6.8, 5.8),
+    dpi: int = 100,
+) -> bytes:
+    """Slow 360° spin GIF (opaque RGB frames) to show the 3D contour."""
+    from io import BytesIO
+
+    import matplotlib.pyplot as plt
+    from PIL import Image
+
+    V, F = load_bunny()
+    fn = face_normals(V, F)
+    fields = compute_fields(
+        V,
+        F,
+        pattern=pattern,
+        stress_amp=stress_amp,
+        gnd_weight=gnd_weight,
+        ssd_level=ssd_level,
+        theta0=theta0,
+        KT=KT,
+        varsigma=varsigma,
+    )
+    scalar = fields[property_name]
+    cmap = "coolwarm" if property_name == "Mean stress" else "viridis"
+    lo, hi = _scalar_limits(scalar)
+    radius = float(np.max(np.linalg.norm(V, axis=1)))
+
+    frames: list[Image.Image] = []
+    for i in range(n_frames):
+        azim = -180.0 + 360.0 * i / n_frames
+        fig, ax = plt.subplots(figsize=figsize)
+        fig.patch.set_facecolor("#ffffff")
+        ax.set_facecolor("#e4e9ee")
+        tc = _draw_bunny_frame(
+            ax, V, F, fn, scalar,
+            elev=elev, azim=azim, cmap=cmap, vmin=lo, vmax=hi, radius=radius,
+        )
+        cb = fig.colorbar(tc, ax=ax, fraction=0.04, pad=0.02, aspect=26)
+        cb.set_label(PROPERTY_LABELS.get(property_name, property_name), fontsize=11)
+        cb.ax.tick_params(labelsize=10)
+        ax.set_title(property_name, fontsize=13, color=CARDINAL, pad=4)
+        fig.tight_layout(pad=0.15)
+        buf = BytesIO()
+        fig.savefig(buf, format="png", dpi=dpi, facecolor="#ffffff", edgecolor="none")
+        plt.close(fig)
+        buf.seek(0)
+        frames.append(Image.open(buf).convert("RGB"))
+
+    out = BytesIO()
+    frames[0].save(
+        out,
+        format="GIF",
+        save_all=True,
+        append_images=frames[1:],
+        duration=duration_ms,
+        loop=0,
+        disposal=1,
+        optimize=False,
+    )
+    return out.getvalue()
