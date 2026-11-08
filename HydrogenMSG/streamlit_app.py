@@ -195,21 +195,29 @@ _UI_CSS = """
     box-shadow: 0 6px 18px rgba(140, 21, 21, 0.12);
     transform: translateY(-1px);
   }
-  .msg-detail {
-    background: #ffffff;
-    border: 1px solid var(--msg-line);
-    border-left: 4px solid var(--msg-accent);
-    border-radius: 10px;
-    padding: 0.9rem 1.1rem 0.75rem 1.1rem;
-    margin: 0.35rem 0 0.75rem 0;
-    box-shadow: 0 8px 24px rgba(30, 41, 59, 0.06);
+  /* Explorer detail: bordered container holds title + equation + body. */
+  div[data-testid="stVerticalBlockBorderWrapper"]:has(.msg-kicker) {
+    background: #ffffff !important;
+    border: 1px solid var(--msg-line) !important;
+    border-left: 4px solid var(--msg-accent) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 8px 24px rgba(30, 41, 59, 0.06) !important;
+    padding: 0.55rem 0.95rem 0.35rem 0.95rem !important;
+    margin: 0.35rem 0 0.75rem 0 !important;
   }
-  .msg-detail h3 {
-    margin: 0 0 0.35rem 0 !important;
+  div[data-testid="stVerticalBlockBorderWrapper"]:has(.msg-kicker) h3 {
+    margin: 0 0 0.15rem 0 !important;
     color: var(--msg-accent) !important;
     font-size: 1.05rem !important;
     text-transform: none !important;
     letter-spacing: 0 !important;
+  }
+  div[data-testid="stVerticalBlockBorderWrapper"]:has(.msg-kicker) [data-testid="stMarkdownContainer"] p {
+    margin-bottom: 0.35rem !important;
+  }
+  div[data-testid="stVerticalBlockBorderWrapper"]:has(.msg-kicker) .stLatex,
+  div[data-testid="stVerticalBlockBorderWrapper"]:has(.msg-kicker) [data-testid="stLatex"] {
+    margin: 0.15rem 0 0.35rem 0 !important;
   }
   .msg-kicker {
     font-size: 0.72rem;
@@ -819,19 +827,16 @@ _EXPLORER = {
 
 
 def _explorer_detail(item: dict):
-    st.markdown(
-        f"""
-<div class="msg-detail">
-  <p class="msg-kicker">{item['chip']}</p>
-  <h3>{item['title']}</h3>
-</div>
-""",
-        unsafe_allow_html=True,
-    )
-    # st.latex wants a single math expression with no $ delimiters.
+    # One bordered card: kicker, title, equation, and reading note together.
     eq = item["equation"].replace("$", "").strip()
-    st.latex(eq)
-    st.markdown(item["body"])
+    with st.container(border=True):
+        st.markdown(
+            f'<p class="msg-kicker">{item["chip"]}</p>'
+            f'<h3>{item["title"]}</h3>',
+            unsafe_allow_html=True,
+        )
+        st.latex(eq)
+        st.markdown(item["body"])
 
 
 def _explorer_relation(drawer, state_key: str, *, figsize=(10.5, 4.4)):
