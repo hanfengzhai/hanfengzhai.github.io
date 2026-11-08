@@ -145,12 +145,13 @@ def compute_fields(
     }
 
 
+# Plain Unicode for Plotly colorbars (matplotlib $...$ is not rendered there).
 PROPERTY_LABELS = {
-    "Mean stress": r"$\sigma_{\mathrm{m}}/\sigma_{\mathrm{Y}}$",
-    "Strain-gradient proxy": r"$\eta$ (norm.)",
-    "Trap-site density": r"$N_{\mathrm{T}}$ (norm.)",
-    "Lattice occupancy": r"$\theta_{\mathrm{L}}$",
-    "Trapped hydrogen": r"$c_{\mathrm{T}}$ (norm.)",
+    "Mean stress": "σₘ / σ_Y",
+    "Strain-gradient proxy": "η (norm.)",
+    "Trap-site density": "N_T (norm.)",
+    "Lattice occupancy": "θ_L",
+    "Trapped hydrogen": "c_T (norm.)",
 }
 
 
