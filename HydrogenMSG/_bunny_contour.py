@@ -272,7 +272,7 @@ def figure_property_contour(
     return fig
 
 
-def property_contour_gif_bytes(
+def plotly_property_contour(
     property_name: str,
     *,
     pattern: str = "Bending (vertical)",
@@ -282,20 +282,12 @@ def property_contour_gif_bytes(
     theta0: float = 1e-6,
     KT: float = 5.98e7,
     varsigma: float = 1.0,
-    elev: float = 14.0,
-    n_frames: int = 18,
-    duration_ms: int = 140,
-    figsize=(6.8, 5.8),
-    dpi: int = 100,
-) -> bytes:
-    """Slow 360° spin GIF (opaque RGB frames) to show the 3D contour."""
-    from io import BytesIO
-
-    import matplotlib.pyplot as plt
-    from PIL import Image
+    height: int = 620,
+):
+    """Interactive Plotly Mesh3d — drag to rotate, scroll to zoom."""
+    import plotly.graph_objects as go
 
     V, F = load_bunny()
-    fn = face_normals(V, F)
     fields = compute_fields(
         V,
         F,
@@ -308,40 +300,58 @@ def property_contour_gif_bytes(
         varsigma=varsigma,
     )
     scalar = fields[property_name]
-    cmap = "coolwarm" if property_name == "Mean stress" else "viridis"
     lo, hi = _scalar_limits(scalar)
-    radius = float(np.max(np.linalg.norm(V, axis=1)))
+    colorscale = "RdBu_r" if property_name == "Mean stress" else "Viridis"
 
-    frames: list[Image.Image] = []
-    for i in range(n_frames):
-        azim = -180.0 + 360.0 * i / n_frames
-        fig, ax = plt.subplots(figsize=figsize)
-        fig.patch.set_facecolor("#ffffff")
-        ax.set_facecolor("#e4e9ee")
-        tc = _draw_bunny_frame(
-            ax, V, F, fn, scalar,
-            elev=elev, azim=azim, cmap=cmap, vmin=lo, vmax=hi, radius=radius,
-        )
-        cb = fig.colorbar(tc, ax=ax, fraction=0.04, pad=0.02, aspect=26)
-        cb.set_label(PROPERTY_LABELS.get(property_name, property_name), fontsize=11)
-        cb.ax.tick_params(labelsize=10)
-        ax.set_title(property_name, fontsize=13, color=CARDINAL, pad=4)
-        fig.tight_layout(pad=0.15)
-        buf = BytesIO()
-        fig.savefig(buf, format="png", dpi=dpi, facecolor="#ffffff", edgecolor="none")
-        plt.close(fig)
-        buf.seek(0)
-        frames.append(Image.open(buf).convert("RGB"))
-
-    out = BytesIO()
-    frames[0].save(
-        out,
-        format="GIF",
-        save_all=True,
-        append_images=frames[1:],
-        duration=duration_ms,
-        loop=0,
-        disposal=1,
-        optimize=False,
+    fig = go.Figure(
+        data=[
+            go.Mesh3d(
+                x=V[:, 0],
+                y=V[:, 1],
+                z=V[:, 2],
+                i=F[:, 0],
+                j=F[:, 1],
+                k=F[:, 2],
+                intensity=scalar,
+                intensitymode="vertex",
+                colorscale=colorscale,
+                cmin=lo,
+                cmax=hi,
+                showscale=True,
+                colorbar=dict(
+                    title=dict(
+                        text=PROPERTY_LABELS.get(property_name, property_name),
+                        side="right",
+                    ),
+                    thickness=14,
+                    len=0.72,
+                ),
+                lighting=dict(
+                    ambient=0.45,
+                    diffuse=0.85,
+                    specular=0.25,
+                    roughness=0.55,
+                    fresnel=0.15,
+                ),
+                lightposition=dict(x=1.2e3, y=2.0e3, z=1.0e3),
+                flatshading=False,
+                hoverinfo="skip",
+                name=property_name,
+            )
+        ]
     )
-    return out.getvalue()
+    fig.update_layout(
+        title=dict(text=property_name, font=dict(size=16, color=CARDINAL), x=0.02, y=0.98),
+        height=height,
+        margin=dict(l=0, r=0, t=36, b=0),
+        paper_bgcolor="#ffffff",
+        scene=dict(
+            bgcolor="#e4e9ee",
+            xaxis=dict(visible=False),
+            yaxis=dict(visible=False),
+            zaxis=dict(visible=False),
+            aspectmode="data",
+            camera=dict(eye=dict(x=1.55, y=0.55, z=1.15)),
+        ),
+    )
+    return fig
