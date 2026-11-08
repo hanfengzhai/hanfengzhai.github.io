@@ -539,13 +539,14 @@ _EXPLORER = {
             "title": "Effective measures",
             "teaser": "effective strain & gradient",
             "equation": (
-                r"\varepsilon_{\mathrm{e}}=\sqrt{\tfrac{2}{3}\varepsilon_{ij}\varepsilon_{ij}},"
+                r"\varepsilon_{\mathrm{e}}=\sqrt{\tfrac{2}{3}\varepsilon'_{ij}\varepsilon'_{ij}},"
                 r"\quad \eta=\tfrac{1}{2}\sqrt{\eta_{ijk}\eta_{ijk}}"
             ),
             "body": (
-                "Scalar invariants collapse the tensors into an effective strain that drives "
-                "statistically stored dislocations (SSDs) and an effective strain gradient that "
-                "drives geometrically necessary dislocations (GNDs)."
+                "Deviatoric effective strain $\\varepsilon'$ drives statistically stored "
+                "dislocations (SSDs); the effective strain gradient drives geometrically "
+                "necessary dislocations (GNDs). A purely hydrostatic strain gives "
+                "$\\varepsilon_{\\mathrm{e}}=0$."
             ),
         },
         {
@@ -851,10 +852,12 @@ def _explorer_panel(items, state_key: str):
 def page_property_contour(p: Params):
     """Interactive Stanford-bunny contours of MSG–hydrogen property fields."""
     st.markdown(
-        "Illustrative distributions on the Stanford bunny. "
-        "A testbed demo for how mean stress, trap sites, and "
-        "Oriani occupancy combine into trapped hydrogen. "
-        "Drag the figure to rotate; scroll to zoom."
+        "Illustrative visualization proxies on the Stanford bunny. "
+        "One curvature field $\\kappa$ drives both the strain-gradient "
+        "proxy and the GND piece of $N_{\\mathrm{T}}$, mirroring "
+        "$N_{\\mathrm{T}}^{\\mathrm{GND}}\\propto\\eta$. "
+        "Mean stress follows the chosen pattern; Oriani occupancy closes "
+        "$c_{\\mathrm{T}}$. Drag to rotate; scroll to zoom."
     )
     c1, c2 = st.columns([0.85, 1.65], gap="medium")
     with c1:
@@ -886,10 +889,11 @@ def page_property_contour(p: Params):
             "scrollZoom": True,
         })
     st.caption(
-        r"$\sigma_{\mathrm{m}}$ follows the chosen pattern; "
-        r"$N_{\mathrm{T}}$ rises with curvature (GND proxy); "
+        r"Coupling: $\eta_{\mathrm{gnd}}=w_{\mathrm{GND}}\,\kappa$, "
+        r"$N_{\mathrm{T}}=N_{\mathrm{SSD}}+\eta_{\mathrm{gnd}}$; "
         r"$\theta_{\mathrm{L}}\propto\exp[\sigma_{\mathrm{m}}\bar{V}_{\mathrm{H}}/(RT)]$; "
-        r"$c_{\mathrm{T}}=N_{\mathrm{T}}\,\theta_{\mathrm{T}}(\theta_{\mathrm{L}})$."
+        r"$c_{\mathrm{T}}=N_{\mathrm{T}}\,\theta_{\mathrm{T}}(\theta_{\mathrm{L}})$. "
+        r"Amplitudes are normalized for display."
     )
 
 
@@ -967,14 +971,19 @@ def page_bending(p: Params):
         r"so the GND contribution to the trap-site density is even in $x_2$. "
         r"On MSG curves, profiles leave blank the unresolved higher-order layer "
         r"$|x_2|\lesssim l_\varepsilon$ (i.e. $|x_2/h|\lesssim (l_\varepsilon/l)(l/h)$). "
-        r"Cross-section averages integrate the full thickness, including that layer. "
+        r"The average panel compares the full-thickness integral with the same "
+        r"average after excluding that core. "
         r"Trapped fields are normalized by $c_{T0}=\chi\theta_{\mathrm{T}}^{0}/(l b^{2})$; "
-        r"the average panel is relative to the thick-beam reference $h=50\,\mu\mathrm{m}$."
+        r"each curve is relative to its own thick-beam reference $h=50\,\mu\mathrm{m}$."
     )
     eps_s = st.slider(r"Surface strain $\varepsilon_s$", 0.01, 0.10, 0.05, 0.01)
     h = np.logspace(np.log10(0.2e-6), np.log10(50e-6), 40)
     c_l, c_t = zip(*[bending_average_uptake(hh, eps_s, p) for hh in h])
+    c_l_x, c_t_x = zip(*[
+        bending_average_uptake(hh, eps_s, p, exclude_core=True) for hh in h
+    ])
     c_l, c_t = np.asarray(c_l), np.asarray(c_t)
+    c_l_x, c_t_x = np.asarray(c_l_x), np.asarray(c_t_x)
 
     cols = st.columns(4, gap="small")
     with cols[0]:
@@ -1009,10 +1018,14 @@ def page_bending(p: Params):
 
     with cols[3]:
         fig, ax = _new_panel()
-        ax.plot(h * 1e6, c_l / c_l[-1], color=COLORS_THREE[0], ls=LINESTYLES_THREE[0],
-                lw=LINE_LW, label=r"$\bar c_{\mathrm{L}}$")
-        ax.plot(h * 1e6, c_t / c_t[-1], color=COLORS_THREE[1], ls=LINESTYLES_THREE[1],
-                lw=LINE_LW, label=r"$\bar c_{\mathrm{T}}$")
+        ax.plot(h * 1e6, c_l / c_l[-1], color=COLORS_THREE[0], ls="-",
+                lw=LINE_LW, label=r"$\bar c_{\mathrm{L}}$ full")
+        ax.plot(h * 1e6, c_t / c_t[-1], color=COLORS_THREE[1], ls="-",
+                lw=LINE_LW, label=r"$\bar c_{\mathrm{T}}$ full")
+        ax.plot(h * 1e6, c_l_x / c_l_x[-1], color=COLORS_THREE[0], ls="--",
+                lw=LINE_LW, label=r"$\bar c_{\mathrm{L}}$ excl. core")
+        ax.plot(h * 1e6, c_t_x / c_t_x[-1], color=COLORS_THREE[1], ls="--",
+                lw=LINE_LW, label=r"$\bar c_{\mathrm{T}}$ excl. core")
         ax.set_xscale("log")
         ax.set_xlabel(r"$h$ [$\mu\mathrm{m}$]")
         ax.set_ylabel(r"Avg / thick ($h=50\,\mu\mathrm{m}$)")
@@ -1021,6 +1034,18 @@ def page_bending(p: Params):
         _style_result_ax(ax)
         fig.tight_layout(pad=0.35)
         show(fig)
+    # Relative difference at the thinnest resolved $h$ with a usable core mask.
+    i_thin = next(
+        (i for i in range(len(h)) if np.isfinite(c_t_x[i]) and c_t[i] != 0),
+        None,
+    )
+    if i_thin is not None:
+        d_t = 100.0 * abs(c_t_x[i_thin] - c_t[i_thin]) / abs(c_t[i_thin])
+        st.caption(
+            rf"At $h={h[i_thin]*1e6:.2f}\,\mu\mathrm{{m}}$, excluding "
+            rf"$|x_2|<l_\varepsilon$ changes $\bar c_{{\mathrm{{T}}}}$ by "
+            rf"${d_t:.1f}\,\%$ relative to the full-thickness average."
+        )
 
 
 def page_void(p: Params):
@@ -1105,6 +1130,7 @@ def page_fem_void():
     if not ensure_scipy():
         return
     draw_meridian_contour = _import_fem_plots().draw_meridian_contour
+    p_ref = Params()
 
     st.header("Non-hydrostatic void")
     st.markdown(
@@ -1112,7 +1138,12 @@ def page_fem_void():
         r"Hydrogen is a one-way Oriani post-process. "
         r"The mesh ($n_\rho=24$, $n_\theta=10$) is coarser than the manuscript figure. "
         r"The schematic GIF shows the default demo ordering "
-        r"$\sigma_{zz}^{\infty}>\sigma_{rr}^{\infty}$; the sliders may reverse that."
+        r"$\sigma_{zz}^{\infty}>\sigma_{rr}^{\infty}$; the sliders may reverse that. "
+        rf"MSG length uses $\mu_{{\mathrm{{ref}}}}/\sigma_{{\mathrm{{Y}}}}"
+        rf"={p_ref.mu_over_sigY:g}$; FEM elasticity uses "
+        rf"$\nu={p_ref.nu_fem:g}$ so "
+        rf"$\mu_{{\mathrm{{FEM}}}}/\sigma_{{\mathrm{{Y}}}}"
+        rf"={p_ref.mu_fem_over_sigY:.2f}$."
     )
     c1, c2, c3 = st.columns(3)
     l_over = c1.slider(r"$l/R_0$", 1.0, 10.0, 10.0, 1.0)
@@ -1141,18 +1172,26 @@ def page_fem_void():
         else:
             finish_bar(
                 f"Not converged after {sol['iters']} iterations "
-                f"(|Δu|/|u| = {sol['resid']:.2e})"
+                f"(|Δu|/|u| = {sol['resid']:.2e}, "
+                f"|Δμ|/|μ| = {sol.get('resid_mu', float('nan')):.2e})"
             )
     except Exception:
         finish_bar("Solve failed")
         raise
-    m1, m2, m3 = st.columns(3)
+    m1, m2, m3, m4 = st.columns(4)
     m1.metric("Iterations", f"{sol['iters']}")
     m2.metric(r"Expansion $\delta$", f"{sol['delta']:.3f}")
     m3.metric("|Δu|/|u|", f"{sol['resid']:.2e}")
+    m4.metric("|Δμ|/|μ|", f"{sol.get('resid_mu', float('nan')):.2e}")
     cols = st.columns(3, gap="small")
     with cols[0]:
         show_schematic("fem_void")
+    if not sol.get("converged", False):
+        st.warning(
+            "Solve did not meet the displacement and secant-modulus "
+            "tolerances; contour plots are withheld."
+        )
+        return
     with cols[1]:
         fig, ax = _new_panel()
         draw_meridian_contour(
@@ -1176,7 +1215,10 @@ def page_fem_void():
 def page_fem_slit():
     if not ensure_scipy():
         return
-    draw_slit_contour = _import_fem_plots().draw_slit_contour
+    fem_plots = _import_fem_plots()
+    draw_slit_contour = fem_plots.draw_slit_contour
+    slit_raw_extrema = fem_plots.slit_raw_extrema
+    p_ref = Params()
 
     st.header("Mode-I slit")
     st.markdown(
@@ -1184,7 +1226,12 @@ def page_fem_slit():
         r"(upper-right quarter with symmetry boundaries). "
         r"The open slit face is masked. The mesh is coarser than the manuscript figure. "
         r"Contours interpolate the raw Gauss field with light smoothing; colour limits "
-        r"use the 5th–95th percentiles so tip extrema saturate rather than rewrite the field."
+        r"use the 5th–95th percentiles so tip extrema saturate on the colour scale. "
+        rf"MSG length uses $\mu_{{\mathrm{{ref}}}}/\sigma_{{\mathrm{{Y}}}}"
+        rf"={p_ref.mu_over_sigY:g}$; FEM elasticity uses "
+        rf"$\nu={p_ref.nu_fem:g}$ so "
+        rf"$\mu_{{\mathrm{{FEM}}}}/\sigma_{{\mathrm{{Y}}}}"
+        rf"={p_ref.mu_fem_over_sigY:.2f}$."
     )
     c1, c2, c3 = st.columns(3)
     l_over = c1.slider(r"$l/a$", 1.0, 8.0, 5.0, 0.5)
@@ -1213,24 +1260,40 @@ def page_fem_slit():
         else:
             finish_bar(
                 f"Not converged after {sol['iters']} iterations "
-                f"(|Δu|/|u| = {sol['resid']:.2e})"
+                f"(|Δu|/|u| = {sol['resid']:.2e}, "
+                f"|Δμ|/|μ| = {sol.get('resid_mu', float('nan')):.2e})"
             )
     except Exception:
         finish_bar("Solve failed")
         raise
-    m1, m2, m3 = st.columns(3)
+    m1, m2, m3, m4 = st.columns(4)
     m1.metric("Half-opening / a", f"{sol['cod']:.3e}")
     m2.metric("COD / a (= 2 × half)", f"{sol.get('cod_full', 2.0 * sol['cod']):.3e}")
     m3.metric("Minimum softening", f"{float(sol['soft'].min()):.3f}")
+    m4.metric("|Δμ|/|μ|", f"{sol.get('resid_mu', float('nan')):.2e}")
+    uy_lo, uy_hi = slit_raw_extrema(sol, "uy_a")
+    ct_lo, ct_hi = slit_raw_extrema(sol, "cT_norm")
     st.caption(
         r"Half-opening is $u_y(0,0^{+})/a$ on the symmetry model; "
         r"conventional Mode-I COD$/a$ between opposite faces is twice that. "
-        rf"Final residual $|\Delta u|/|u|={sol['resid']:.2e}$ "
-        rf"(tol ${sol.get('tol', 1e-5):.0e}$)."
+        rf"Residuals $|\Delta u|/|u|={sol['resid']:.2e}$, "
+        rf"$|\Delta\mu|/|\mu|={sol.get('resid_mu', float('nan')):.2e}$ "
+        rf"(tol ${sol.get('tol', 1e-5):.0e}$ / "
+        rf"${sol.get('tol_mu', sol.get('tol', 1e-5)):.0e}$). "
+        rf"Raw Gauss extrema in the tip window: "
+        rf"$u_y/a\in[{uy_lo:.3e},{uy_hi:.3e}]$, "
+        rf"$c_{{\mathrm{{T}}}}/c_{{T0}}\in[{ct_lo:.3g},{ct_hi:.3g}]$ "
+        r"(contours use 5th–95th percentile colour limits)."
     )
     cols = st.columns(3, gap="small")
     with cols[0]:
         show_schematic("slit")
+    if not sol.get("converged", False):
+        st.warning(
+            "Solve did not meet the displacement and secant-modulus "
+            "tolerances; contour plots are withheld."
+        )
+        return
     with cols[1]:
         fig, ax = _new_panel()
         draw_slit_contour(ax, fig, sol, "uy_a", "coolwarm", label=r"$u_y/a$", cbar_mode="axes")
@@ -1264,6 +1327,12 @@ def main():
         rf"$N={p.N:g}$, $\chi={p.chi:g}$, "
         rf"$\varsigma={p.varsigma:.3f}$, "
         rf"$K_T={kt_mant:.2f}\times 10^{{{kt_exp}}}$"
+    )
+    st.sidebar.caption(
+        rf"$\mu_{{\mathrm{{ref}}}}/\sigma_{{\mathrm{{Y}}}}={p.mu_over_sigY:g}$ "
+        rf"(MSG length); FEM "
+        rf"$\nu={p.nu_fem:g}$, "
+        rf"$\mu_{{\mathrm{{FEM}}}}/\sigma_{{\mathrm{{Y}}}}={p.mu_fem_over_sigY:.1f}$."
     )
     page = st.sidebar.radio("Section", PAGES, index=0)
     if page == "Explore":

@@ -158,6 +158,16 @@ def _slit_axes_frame(ax, zoom=SLIT_ZOOM):
     ax.plot([0.0], [0.0], "o", color="0.15", ms=3.5, zorder=6)
 
 
+def slit_raw_extrema(sol, key, zoom=SLIT_ZOOM):
+    """Min/max of the raw Gauss field inside the tip plotting window."""
+    _xt, _y, m = _slit_window_mask(sol, zoom)
+    vals = np.asarray(sol[key]).ravel()[m]
+    vals = vals[np.isfinite(vals)]
+    if vals.size == 0:
+        return np.nan, np.nan
+    return float(vals.min()), float(vals.max())
+
+
 def draw_slit_contour(ax, fig, sol, key, cmap, *, label=None, nlev=12, cbar=True, zoom=SLIT_ZOOM, pct=(5.0, 95.0), cbar_mode="axes"):
     """Tip-window raster. Field is not clipped before interpolate; ``pct`` sets colour saturation."""
     Xi, Yi, Fi, xi, yi = _slit_structured_field(sol, key, zoom=zoom, clip_pct=pct)

@@ -112,6 +112,22 @@
       font-size: 0.95rem;
       color: var(--muted);
     }
+    #boot-retry {
+      display: none;
+      margin-top: 0.35rem;
+      align-self: flex-start;
+      padding: 0.55rem 1.1rem;
+      border: 1px solid #8c1515;
+      border-radius: 6px;
+      background: #fff;
+      color: #8c1515;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    #boot-retry.visible {
+      display: inline-flex;
+    }
   </style>
 </head>
 <body>
@@ -126,6 +142,7 @@
       <span id="boot-step">1 / 6</span>
       <span id="boot-pct">0%</span>
     </div>
+    <button type="button" id="boot-retry">Retry load</button>
   </div>
   <div id="root"></div>
   <script type="module">
@@ -137,6 +154,7 @@
     const barWrap = document.getElementById("boot-bar-wrap");
     const pctEl = document.getElementById("boot-pct");
     const stepEl = document.getElementById("boot-step");
+    const retryBtn = document.getElementById("boot-retry");
     const root = document.getElementById("root");
 
     let current = 0;
@@ -157,19 +175,24 @@
       detail.textContent = `Failed to start: ${err?.message || err}`;
       pctEl.textContent = "error";
       stepEl.textContent = "failed";
+      retryBtn.classList.add("visible");
       console.error(err);
     };
 
     const appIsReady = () => {
-      // textContent works even while the boot overlay covers the app.
+      // Require sidebar / page chrome that only appears after Streamlit paints.
       const text = (root.textContent || "").replace(/\s+/g, " ");
-      return (
+      const hasChrome =
         text.includes("Size-dependent hydrogen trapping") ||
-        text.includes("Explore the paper logic") ||
+        text.includes("Explore the constitutive chain") ||
         text.includes("Logical workflow") ||
         text.includes("Wire torsion") ||
-        text.includes("Surface strain")
-      );
+        text.includes("Surface strain");
+      const hasWidget =
+        !!root.querySelector('[data-testid="stSidebar"]') ||
+        !!root.querySelector('[data-testid="stAppViewContainer"]') ||
+        !!root.querySelector(".stApp");
+      return hasChrome && hasWidget;
     };
 
     const finish = () => {
@@ -180,8 +203,13 @@
       pctEl.textContent = "100%";
       stepEl.textContent = "6 / 6";
       detail.textContent = "Ready";
+      retryBtn.classList.remove("visible");
       window.setTimeout(() => boot.classList.add("hidden"), 250);
     };
+
+    retryBtn.addEventListener("click", () => {
+      window.location.reload();
+    });
 
     const stages = [
       [8, "Loading stlite runtime…", 1, 0],
@@ -208,12 +236,15 @@
     }, 400);
 
     // Safety: never leave the user on the loader forever.
+    // Do not treat bare DOM insertion as readiness.
     window.setTimeout(() => {
       window.clearInterval(creep);
       window.clearInterval(readyPoll);
       if (!finished) {
-        if (root.childElementCount > 0) finish();
-        else fail("Streamlit never started. Hard-refresh, or use the native app on port 8502.");
+        if (appIsReady()) finish();
+        else fail(
+          "The app never became ready. Use Retry load, hard-refresh, or the native Streamlit app on port 8502."
+        );
       }
     }, 90000);
 
@@ -223,15 +254,15 @@
           requirements: ["numpy", "matplotlib", "pillow", "plotly"],
           entrypoint: "streamlit_app.py",
           files: {
-            "streamlit_app.py": { url: "./HydrogenMSG/streamlit_app.py?v=46" },
-            "msg_hydrogen.py": { url: "./HydrogenMSG/msg_hydrogen.py" },
-            "fem_msg.py": { url: "./HydrogenMSG/fem_msg.py?v=46" },
-            "fem_slit.py": { url: "./HydrogenMSG/fem_slit.py?v=46" },
+            "streamlit_app.py": { url: "./HydrogenMSG/streamlit_app.py?v=47" },
+            "msg_hydrogen.py": { url: "./HydrogenMSG/msg_hydrogen.py?v=47" },
+            "fem_msg.py": { url: "./HydrogenMSG/fem_msg.py?v=47" },
+            "fem_slit.py": { url: "./HydrogenMSG/fem_slit.py?v=47" },
             "_style.py": { url: "./HydrogenMSG/_style.py" },
-            "_fem_plots.py": { url: "./HydrogenMSG/_fem_plots.py?v=46" },
-            "_fem.py": { url: "./HydrogenMSG/_fem.py?v=46" },
-            "_app_schematics.py": { url: "./HydrogenMSG/_app_schematics.py?v=46" },
-            "_bunny_contour.py": { url: "./HydrogenMSG/_bunny_contour.py?v=46" },
+            "_fem_plots.py": { url: "./HydrogenMSG/_fem_plots.py?v=47" },
+            "_fem.py": { url: "./HydrogenMSG/_fem.py?v=47" },
+            "_app_schematics.py": { url: "./HydrogenMSG/_app_schematics.py?v=47" },
+            "_bunny_contour.py": { url: "./HydrogenMSG/_bunny_contour.py?v=47" },
             "bunny.npz": { url: "./HydrogenMSG/bunny.npz?v=40" },
             ".streamlit/config.toml": { url: "./HydrogenMSG/.streamlit/config.toml" },
           },

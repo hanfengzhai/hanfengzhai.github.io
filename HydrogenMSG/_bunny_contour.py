@@ -128,11 +128,18 @@ def compute_fields(
     KT: float,
     varsigma: float = 1.0,
 ) -> dict[str, np.ndarray]:
-    """Return vertex scalars for each named property (already in plot units)."""
+    """Illustrative vertex scalars linked by one curvature proxy κ.
+
+    ``eta_gnd = gnd_weight · κ`` feeds both the strain-gradient proxy and the
+    GND piece of trap-site density, mirroring $N_T^{GND}\\propto\\eta$.
+    These remain visualization proxies, not a FEM solve.
+    """
     kappa = curvature_proxy(V, F)
     sig_m = stress_amp * pattern_field(V, pattern)  # /σ_Y
-    eta = (1.0 - gnd_weight) * 0.15 + gnd_weight * kappa
-    N_T = ssd_level + gnd_weight * kappa
+    eta_floor = (1.0 - gnd_weight) * 0.15
+    eta_gnd = gnd_weight * kappa
+    eta = eta_floor + eta_gnd
+    N_T = ssd_level + eta_gnd
     theta_L = np.clip(theta0 * np.exp(varsigma * sig_m), 1e-8, 0.999)
     theta_T = oriani_theta_T(theta_L, KT)
     c_T = N_T * theta_T
@@ -148,10 +155,10 @@ def compute_fields(
 # Plain Unicode for Plotly colorbars (matplotlib $...$ is not rendered there).
 PROPERTY_LABELS = {
     "Mean stress": "σₘ / σ_Y",
-    "Strain-gradient proxy": "η (norm.)",
-    "Trap-site density": "N_T (norm.)",
+    "Strain-gradient proxy": "η proxy (norm.)",
+    "Trap-site density": "N_T proxy (norm.)",
     "Lattice occupancy": "θ_L",
-    "Trapped hydrogen": "c_T (norm.)",
+    "Trapped hydrogen": "c_T proxy (norm.)",
 }
 
 

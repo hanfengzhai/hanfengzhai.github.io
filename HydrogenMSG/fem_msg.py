@@ -297,18 +297,25 @@ def _outer_traction(mesh, load, sigY):
 
 
 def solve(l_over_R0=1.0, load=Load(2.2, 1.6), p=None, R0=None,
-          n_rho=40, n_th=16, Rout_over_R0=25.0, nu=0.4999,
+          n_rho=40, n_th=16, Rout_over_R0=25.0, nu=None,
           tol=1e-7, itmax=300, relax=0.5, verbose=False,
-          progress=None):
+          progress=None, tol_mu=None):
     """Secant-iteration solution of the CMSG void problem.
 
     `l_over_R0 = 0` recovers classical J2 deformation theory.
     Returns a dict of Gauss-point fields plus the mesh/kinematics.
 
+    Elastic constants: Young modulus from ``p.E_over_sigY``; Poisson ratio
+    defaults to ``p.nu_fem`` (near 1/2). The MSG length ``p.l`` still uses the
+    constitutive reference ``p.mu_over_sigY``, which differs from the FEM
+    elastic shear modulus at this ν.
+
     ``progress``, if given, is called as ``progress(frac, message)`` with
     ``frac`` in ``[0, 1]`` after each secant iteration.
     """
     p = p or Params()
+    nu = p.nu_fem if nu is None else float(nu)
+    tol_mu = tol if tol_mu is None else float(tol_mu)
     R0 = R0 or (p.l / l_over_R0 if l_over_R0 > 0 else 1e-5)
     mesh = make_mesh(R0, Rout_over_R0 * R0, n_rho, n_th)
     kin = Kinematics(mesh)
@@ -350,6 +357,7 @@ def solve(l_over_R0=1.0, load=Load(2.2, 1.6), p=None, R0=None,
         progress(0.05, "Mesh ready — starting secant iterations")
 
     resid = np.inf
+    resid_mu = np.inf
     for it in range(itmax):
         D = np.zeros((kin.ne, kin.ng, 4, 4))
         D[:, :, :3, :3] = (2.0 * mu[:, :, None, None] * Idev
@@ -364,19 +372,24 @@ def solve(l_over_R0=1.0, load=Load(2.2, 1.6), p=None, R0=None,
 
         st = state(unew)
         resid = np.max(np.abs(unew - u)) / max(np.max(np.abs(unew)), 1e-30)
+        mu_new = (1.0 - relax) * mu + relax * st["mu"]
+        resid_mu = (np.max(np.abs(mu_new - mu))
+                    / max(np.max(np.abs(mu_new)), 1e-30))
         u = unew
-        mu = (1.0 - relax) * mu + relax * st["mu"]
+        mu = mu_new
         if verbose and it % 20 == 0:
-            print(f"  it {it:3d}  |du|/|u| = {resid:.2e}")
+            print(f"  it {it:3d}  |du|/|u| = {resid:.2e}  "
+                  f"|dμ|/|μ| = {resid_mu:.2e}")
         if progress is not None:
             progress(
                 min(0.99, (it + 1) / itmax),
-                f"Secant iteration {it + 1}/{itmax}  |Δu|/|u| = {resid:.2e}",
+                f"Secant iteration {it + 1}/{itmax}  "
+                f"|Δu|/|u| = {resid:.2e}, |Δμ|/|μ| = {resid_mu:.2e}",
             )
-        if resid < tol and it > 2:
+        if resid < tol and resid_mu < tol_mu and it > 2:
             break
 
-    converged = bool(resid < tol)
+    converged = bool(resid < tol and resid_mu < tol_mu)
     if progress is not None:
         if converged:
             progress(1.0, f"Converged in {it + 1} iterations")
@@ -384,14 +397,16 @@ def solve(l_over_R0=1.0, load=Load(2.2, 1.6), p=None, R0=None,
             progress(
                 1.0,
                 f"Not converged after {it + 1} iterations "
-                f"(|Δu|/|u| = {resid:.2e} > tol {tol:.0e})",
+                f"(|Δu|/|u| = {resid:.2e}, |Δμ|/|μ| = {resid_mu:.2e})",
             )
 
     st = state(u)
     sig = 2.0 * st["mu"][:, :, None] * st["dev"] + K * st["tr"][:, :, None] * _M
     out = dict(mesh=mesh, kin=kin, p=p, u=u, iters=it + 1, resid=resid,
-               converged=converged, tol=tol,
+               resid_mu=resid_mu, converged=converged, tol=tol, tol_mu=tol_mu,
                l_over_R0=l_over_R0, load=load, R0=R0, nu=nu,
+               mu_fem_over_sigY=mu_e / p.sigY,
+               mu_ref_over_sigY=p.mu_over_sigY,
                eps=st["eps"], eps_e=st["eps_e"], eta=st["eta"],
                l_eta=p.l * st["eta"],
                sig_m_hat=sig[:, :, :3].sum(axis=2) / 3.0 / p.sigY,
@@ -413,9 +428,14 @@ def void_expansion(sol):
 
 
 def hydrogen_fields(sol):
-    """Trap and lattice hydrogen inferred from the mechanical fields."""
+    """Trap and lattice hydrogen inferred from the mechanical fields.
+
+    Formulation C: $N_T$ uses the hydrogen-free Taylor density
+    $\\rho_T=[f^2(\\varepsilon_e)+l\\eta]/(l b)$, never $(\\sigma_e/\\sigma_Y)^2$
+    after HELP softening (which would insert $(1-\\xi\\theta_T)^2$).
+    """
     p = sol["p"]
-    rho_hat = sol["sig_e_hat"] ** 2                    # rho_T l b
+    rho_hat = f_elastic_power(sol["eps_e"], p) ** 2 + sol["l_eta"]
     thL = theta_L_local(sol["sig_m_hat"], p)
     thT = theta_T(thL, p)
     thT0 = theta_T(p.thetaL0, p)
@@ -423,6 +443,7 @@ def hydrogen_fields(sol):
                 N_T=p.chi * rho_hat / (p.l * p.b ** 2),
                 cL_rel=thL / p.thetaL0,
                 theta_T=thT,
+                soft=1.0 - p.xi * thT,
                 cT_norm=(thT / thT0) * rho_hat)
 
 

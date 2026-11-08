@@ -334,17 +334,23 @@ def hydrogen_fields(sol):
 def solve(l_over_a=5.0, S=1.0, p=None, a=None,
           nx_c=14, nx_l=18, ny=20, W_over_a=12.0, H_over_a=12.0,
           ratio=1.10, tip_box=1.0, nx_box=None, ny_box=None,
-          nu=0.4999, tol=1e-7, itmax=400, relax=0.4,
-          verbose=False, progress=None):
+          nu=None, tol=1e-7, itmax=400, relax=0.4,
+          verbose=False, progress=None, tol_mu=None):
     """Secant-iteration CMSG plane-strain slit solution with HELP softening.
 
     ``l_over_a = 0`` recovers classical J2 deformation theory. Returns a dict
     of Gauss-point fields plus mesh / kinematics / nodal displacement.
 
+    Elastic constants: Young modulus from ``p.E_over_sigY``; Poisson ratio
+    defaults to ``p.nu_fem``. The MSG length uses constitutive
+    ``p.mu_over_sigY``, distinct from the FEM elastic shear modulus.
+
     ``progress``, if given, is called as ``progress(frac, message)`` with
     ``frac`` in ``[0, 1]`` after each secant iteration.
     """
     p = p or Params(xi=0.3)
+    nu = p.nu_fem if nu is None else float(nu)
+    tol_mu = tol if tol_mu is None else float(tol_mu)
     a = a or (p.l / l_over_a if l_over_a > 0 else 1e-5)
     mesh = make_mesh(a, W=W_over_a * a, H=H_over_a * a,
                      nx_c=nx_c, nx_l=nx_l, ny=ny, ratio=ratio,
@@ -389,6 +395,7 @@ def solve(l_over_a=5.0, S=1.0, p=None, a=None,
     # under HELP softening near the tip.
     n_ramp = 4
     resid = np.inf
+    resid_mu = np.inf
     it_total = 0
     if progress is not None:
         progress(0.05, "Mesh ready — starting load ramp")
@@ -409,24 +416,27 @@ def solve(l_over_a=5.0, S=1.0, p=None, a=None,
 
             st = state(unew)
             resid = np.max(np.abs(unew - u)) / max(np.max(np.abs(unew)), 1e-30)
+            mu_new = (1.0 - relax) * mu + relax * st["mu"]
+            resid_mu = (np.max(np.abs(mu_new - mu))
+                        / max(np.max(np.abs(mu_new)), 1e-30))
             u = unew
-            mu = (1.0 - relax) * mu + relax * st["mu"]
+            mu = mu_new
             it_total += 1
             if verbose and it_total % 40 == 0:
                 print(f"  step {step}/{n_ramp} it {it_total:3d}  "
-                      f"|du|/|u| = {resid:.2e}")
+                      f"|du|/|u| = {resid:.2e}  |dμ|/|μ| = {resid_mu:.2e}")
             if progress is not None:
                 per_step = max(itmax // n_ramp, 1)
                 frac = ((step - 1) + (it + 1) / per_step) / n_ramp
                 progress(
                     min(0.99, frac),
                     f"Load step {step}/{n_ramp}, iteration {it_total}  "
-                    f"|Δu|/|u| = {resid:.2e}",
+                    f"|Δu|/|u| = {resid:.2e}, |Δμ|/|μ| = {resid_mu:.2e}",
                 )
-            if resid < tol and it > 2:
+            if resid < tol and resid_mu < tol_mu and it > 2:
                 break
 
-    converged = bool(resid < tol)
+    converged = bool(resid < tol and resid_mu < tol_mu)
     if progress is not None:
         if converged:
             progress(1.0, f"Converged in {it_total} iterations")
@@ -434,7 +444,7 @@ def solve(l_over_a=5.0, S=1.0, p=None, a=None,
             progress(
                 1.0,
                 f"Not converged after {it_total} iterations "
-                f"(|Δu|/|u| = {resid:.2e} > tol {tol:.0e})",
+                f"(|Δu|/|u| = {resid:.2e}, |Δμ|/|μ| = {resid_mu:.2e})",
             )
 
     st = state(u)
@@ -444,8 +454,11 @@ def solve(l_over_a=5.0, S=1.0, p=None, a=None,
     u_mag = np.sqrt(ux ** 2 + uy ** 2)
 
     out = dict(mesh=mesh, kin=kin, p=p, u=u, ux=ux, uy=uy, u_mag=u_mag,
-               iters=it_total, resid=resid, converged=converged, tol=tol,
+               iters=it_total, resid=resid, resid_mu=resid_mu,
+               converged=converged, tol=tol, tol_mu=tol_mu,
                l_over_a=l_over_a, S=S, a=a, nu=nu,
+               mu_fem_over_sigY=mu_e / p.sigY,
+               mu_ref_over_sigY=p.mu_over_sigY,
                eps=st["eps"], eps_e=st["eps_e"], eta=st["eta"],
                l_eta=p.l * st["eta"], soft=st["soft"],
                sig_m_hat=sig[:, :, :3].sum(axis=2) / 3.0 / p.sigY,

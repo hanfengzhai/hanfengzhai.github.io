@@ -24,8 +24,14 @@ R_GAS = 8.314  # J/(mol K)
 class Params:
     # Mechanical (Huang et al. 2000)
     sigY: float = 400e6          # yield stress [Pa]
-    mu_over_sigY: float = 200.0  # shear modulus / yield stress
-    E_over_sigY: float = 500.0   # Young's modulus / yield stress
+    # Reference shear modulus for the MSG length l (and l_eps). This is the
+    # Huang et al. constitutive μ/σ_Y = 200. It is intentionally distinct from
+    # the near-incompressible FEM elastic shear modulus built from E and nu_fem.
+    mu_over_sigY: float = 200.0
+    E_over_sigY: float = 500.0   # Young's modulus / yield stress (hardening f)
+    # FEM elastic Poisson ratio ≈ 1/2 for plastic incompressibility. Then
+    # μ_FEM/σ_Y = (E/σ_Y) / (2(1+ν)) ≈ 166.7, which differs from mu_over_sigY.
+    nu_fem: float = 0.4999
     N: float = 0.2               # hardening exponent
     alpha: float = 0.4           # Taylor coefficient
     b: float = 0.25e-9           # Burgers vector [m]
@@ -42,8 +48,16 @@ class Params:
 
     @property
     def l(self):
-        """Intrinsic material length l = 3 alpha^2 (mu/sigY)^2 b."""
+        """Intrinsic material length l = 3 alpha^2 (mu/sigY)^2 b.
+
+        Uses the constitutive reference ``mu_over_sigY``, not the FEM elastic μ.
+        """
         return 3.0 * self.alpha**2 * self.mu_over_sigY**2 * self.b
+
+    @property
+    def mu_fem_over_sigY(self):
+        """Elastic shear modulus used by the near-incompressible FEM solvers."""
+        return self.E_over_sigY / (2.0 * (1.0 + self.nu_fem))
 
     @property
     def l_eps(self):
@@ -188,15 +202,40 @@ def bending_moment(kappa_h, l_over_h, p: Params, n=400):
     return (4.0 / np.sqrt(3.0)) * np.trapz(z * sig, z)
 
 
-def bending_average_uptake(h, eps_s, p: Params, n=801):
+def bending_average_uptake(h, eps_s, p: Params, n=801, exclude_core=False):
     """Cross-section averaged lattice / trapped hydrogen at fixed eps_s.
 
     Returns (cL_avg / cL0, cT_avg normalized by chi theta_T^0/(l b^2)).
+
+    If ``exclude_core`` is True, omit the unresolved higher-order layer
+    $|x_2| < l_\\varepsilon$ (i.e. $|x_2/h| < l_\\varepsilon/h$) from the integral
+    and renormalize by the retained thickness fraction.
     """
     l_over_h = p.l / h
     z = np.linspace(-0.5, 0.5, n)
     F = bending_fields(z, eps_s, l_over_h, p)
-    return np.trapz(F["cL_rel"], z), np.trapz(F["cT_norm"], z)
+    if not exclude_core:
+        return np.trapz(F["cL_rel"], z), np.trapz(F["cT_norm"], z)
+    gap = min(0.45, p.l_eps / h)
+    mask = np.abs(z) >= gap
+    if not np.any(mask):
+        return np.nan, np.nan
+    z_m = z[mask]
+    # trapz on discontinuous outer intervals: integrate each half separately
+    left = z_m <= 0
+    right = z_m >= 0
+    def _avg(vals):
+        acc = 0.0
+        span = 0.0
+        for sel in (left, right):
+            if np.count_nonzero(sel) < 2:
+                continue
+            zz = z_m[sel]
+            vv = vals[sel]
+            acc += float(np.trapz(vv, zz))
+            span += float(zz[-1] - zz[0])
+        return acc / span if span > 0 else np.nan
+    return _avg(F["cL_rel"][mask]), _avg(F["cT_norm"][mask])
 
 
 # ----------------------------------------------------------------------
