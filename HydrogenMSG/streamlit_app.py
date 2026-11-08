@@ -44,8 +44,10 @@ from _style import (  # noqa: E402
     apply_style,
 )
 import _app_schematics as _schematics  # noqa: E402
+import _bunny_contour as _bunny  # noqa: E402
 
 _schematics = importlib.reload(_schematics)
+_bunny = importlib.reload(_bunny)
 schematic_gif_bytes = _schematics.schematic_gif_bytes
 
 PAGES = [
@@ -844,12 +846,57 @@ def _explorer_panel(items, state_key: str):
         _explorer_detail(chosen)
 
 
+def page_property_contour(p: Params):
+    """Interactive Stanford-bunny contours of MSG–hydrogen property fields."""
+    st.markdown(
+        "Illustrative distributions on the Stanford bunny. "
+        "Not a FEM solve — a playground for how mean stress, trap sites, and "
+        "Oriani occupancy combine into trapped hydrogen."
+    )
+    c1, c2 = st.columns([1.05, 1.35], gap="medium")
+    with c1:
+        prop = st.selectbox("Property", list(_bunny.PROPERTY_CHOICES), index=0)
+        pattern = st.selectbox("Mean-stress pattern", list(_bunny.PATTERN_CHOICES), index=0)
+        stress_amp = st.slider(r"Stress amplitude  $\sigma_{\mathrm{m}}/\sigma_{\mathrm{Y}}$", 0.0, 3.0, 1.2, 0.1)
+        gnd_weight = st.slider("GND / curvature weight", 0.0, 1.0, 0.7, 0.05)
+        ssd_level = st.slider("SSD background", 0.05, 1.0, 0.25, 0.05)
+        theta0 = st.select_slider(
+            r"Remote lattice occupancy  $\theta_{\mathrm{L}}^{0}$",
+            options=[1e-7, 1e-6, 1e-5, 1e-4],
+            value=1e-6,
+            format_func=lambda x: f"{x:.0e}",
+        )
+        azim = st.slider("View azimuth", -180, 180, -55, 5)
+        elev = st.slider("View elevation", -20, 60, 12, 2)
+    with c2:
+        fig = _bunny.figure_property_contour(
+            prop,
+            pattern=pattern,
+            stress_amp=float(stress_amp),
+            gnd_weight=float(gnd_weight),
+            ssd_level=float(ssd_level),
+            theta0=float(theta0),
+            KT=float(p.KT),
+            varsigma=float(p.varsigma),
+            elev=float(elev),
+            azim=float(azim),
+            figsize=(5.6, 4.7),
+        )
+        show(fig)
+    st.caption(
+        r"$\sigma_{\mathrm{m}}$ follows the chosen pattern; "
+        r"$N_{\mathrm{T}}$ rises with curvature (GND proxy); "
+        r"$\theta_{\mathrm{L}}\propto\exp(\sigma_{\mathrm{m}})$; "
+        r"$c_{\mathrm{T}}=N_{\mathrm{T}}\,\theta_{\mathrm{T}}(\theta_{\mathrm{L}})$."
+    )
+
+
 def page_workflow():
     st.header("Explore the constitutive chain")
     st.caption("Pick a step on the left; the governing relation opens on the right.")
 
-    tab_flow, tab_eq, tab_inn = st.tabs(
-        ["Logical workflow", "Governing equations", "Key innovations"]
+    tab_flow, tab_eq, tab_inn, tab_bunny = st.tabs(
+        ["Logical workflow", "Governing equations", "Key innovations", "Property contour"]
     )
 
     with tab_flow:
@@ -860,6 +907,9 @@ def page_workflow():
 
     with tab_inn:
         _explorer_panel(_EXPLORER["innovations"], "explore_innovations")
+
+    with tab_bunny:
+        page_property_contour(Params())
 
 
 def page_torsion(p: Params):
