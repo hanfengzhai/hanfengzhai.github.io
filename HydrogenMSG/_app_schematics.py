@@ -513,70 +513,193 @@ def draw_slit(ax, t=1.0):
     _title(ax, t)
 
 
-def draw_msg_workflow(ax):
-    """Compact MSG → Oriani → trapped-H workflow for the app overview."""
+def _rel_sym(ax, x, y, w, h, math, *, active=False, accent=False, fs=None):
+    """Symbol-only node: math in the box, almost no prose."""
     from matplotlib.patches import FancyBboxPatch
 
+    if active:
+        fc, ec, tw, tc = CARDINAL, CARDINAL, 1.55, "white"
+    elif accent:
+        fc, ec, tw, tc = "#f7f0f0", CARDINAL, 1.15, MECH
+    else:
+        fc, ec, tw, tc = "white", EDGE, 0.9, MECH
+    ax.add_patch(
+        FancyBboxPatch(
+            (x, y), w, h,
+            boxstyle="round,pad=0.02,rounding_size=0.1",
+            facecolor=fc, edgecolor=ec, lw=tw, zorder=2,
+        )
+    )
+    ax.text(
+        x + 0.5 * w, y + 0.5 * h, math,
+        ha="center", va="center", fontsize=FS if fs is None else fs,
+        color=tc, zorder=3,
+    )
+
+
+def _rel_link(ax, p0, p1, *, active=False):
+    _arrow(
+        ax, p0, p1,
+        color=CARDINAL if active else EDGE,
+        lw=1.15 if active else 0.85,
+        scale=8 if active else 7,
+    )
+
+
+def draw_msg_workflow(ax, highlight=None):
+    """Symbol map: u → ε,η → ρ_T → {σ_e, N_T}; σ_m → θ_L → θ_T → c_T ← N_T."""
     ax.set_xlim(0, 10)
-    ax.set_ylim(0, 6.2)
+    ax.set_ylim(0, 5.55)
     ax.set_aspect("equal")
     ax.axis("off")
 
-    def box(x, y, w, h, title, eq, *, fc="white"):
-        ax.add_patch(
-            FancyBboxPatch(
-                (x, y), w, h,
-                boxstyle="round,pad=0.02,rounding_size=0.08",
-                facecolor=fc, edgecolor=EDGE, lw=0.9, zorder=2,
-            )
-        )
-        ax.text(x + 0.5 * w, y + 0.62 * h, title, ha="center", va="center",
-                fontsize=FS - 1, color="0.2", zorder=3)
-        ax.text(x + 0.5 * w, y + 0.28 * h, eq, ha="center", va="center",
-                fontsize=FS, color=MECH, zorder=3)
+    def on(nid):
+        return highlight == nid
 
-    def link(x0, y0, x1, y1):
-        _arrow(ax, (x0, y0), (x1, y1), color=EDGE, lw=0.9, scale=7)
-
-    # Row 1: kinematics → invariants → Taylor
-    box(0.25, 4.55, 2.6, 1.15, "Kinematics", r"$u_i,\ \varepsilon_{ij},\ \eta_{ijk}$")
-    box(3.55, 4.55, 2.6, 1.15, "Effective measures", r"$\varepsilon_{\mathrm{e}},\ \eta$")
-    box(6.85, 4.55, 2.9, 1.15, "MSG / Taylor density",
-        r"$\rho_{\mathrm{T}}=\rho_{\mathrm{S}}+\rho_{\mathrm{G}}$", fc="0.94")
-    link(2.85, 5.12, 3.55, 5.12)
-    link(6.15, 5.12, 6.85, 5.12)
-
-    # Split from Taylor
-    ax.plot([8.3, 8.3], [4.55, 3.95], color=EDGE, lw=0.9, zorder=1)
-    ax.plot([2.0, 8.3], [3.95, 3.95], color=EDGE, lw=0.9, zorder=1)
-    link(2.0, 3.95, 2.0, 3.55)
-    link(8.3, 3.95, 8.3, 3.55)
-
-    # Row 2: flow / mean stress | trap sites
-    box(0.35, 2.35, 3.3, 1.2, "Flow stress",
-        r"$\sigma_{\mathrm{e}}=\sigma_{\mathrm{Y}}\sqrt{f^{2}+l\eta}$")
-    box(6.55, 2.35, 3.2, 1.2, "Trap-site density",
-        r"$N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b$", fc="0.94")
-
-    # Left column continues: mean stress → lattice → Oriani
-    link(2.0, 2.35, 2.0, 1.95)
-    box(0.35, 0.75, 3.3, 1.2, "Mean stress $\Rightarrow$ lattice H",
-        r"$\theta_{\mathrm{L}}(\sigma_{\mathrm{m}})$")
-    link(3.65, 1.35, 4.15, 1.35)
-    box(4.15, 0.75, 2.55, 1.2, "Oriani equilibrium",
-        r"$\theta_{\mathrm{T}}(\theta_{\mathrm{L}},K_{\mathrm{T}})$")
-    link(6.70, 1.35, 7.15, 1.35)
-    box(7.15, 0.75, 2.6, 1.2, "Trapped hydrogen",
-        r"$c_{\mathrm{T}}=N_{\mathrm{T}}\,\theta_{\mathrm{T}}$", fc="0.94")
-
-    # N_T feeds c_T from above
-    link(8.15, 2.35, 8.15, 1.95)
-
-    ax.text(
-        5.0, 5.95,
-        "MSG plasticity and hydrogen trapping",
-        ha="center", va="center", fontsize=FS, color=CARDINAL, fontweight="bold",
+    # Top chain
+    _rel_sym(ax, 0.35, 4.15, 1.7, 0.95, r"$u_i$", active=on("kin"))
+    _rel_sym(ax, 2.55, 4.15, 2.2, 0.95, r"$\varepsilon,\ \eta$", active=on("inv"))
+    _rel_sym(
+        ax, 5.3, 4.15, 4.3, 0.95,
+        r"$\rho_{\mathrm{T}}=\rho_{\mathrm{S}}+\rho_{\mathrm{G}}$",
+        active=on("taylor"), accent=True,
     )
+    _rel_link(ax, (2.05, 4.62), (2.55, 4.62), active=on("kin") or on("inv"))
+    _rel_link(ax, (4.75, 4.62), (5.3, 4.62), active=on("inv") or on("taylor"))
+
+    # Split ρ_T → σ_e and N_T
+    ax.plot([7.45, 7.45], [4.15, 3.7], color=EDGE, lw=0.85, zorder=1)
+    ax.plot([2.15, 7.45], [3.7, 3.7], color=EDGE, lw=0.85, zorder=1)
+    _rel_link(ax, (2.15, 3.7), (2.15, 3.35), active=on("taylor") or on("flow"))
+    _rel_link(ax, (7.45, 3.7), (7.45, 3.35), active=on("taylor") or on("nt"))
+
+    _rel_sym(
+        ax, 0.55, 2.3, 3.2, 1.05,
+        r"$\sigma_{\mathrm{e}}(\rho_{\mathrm{T}})$", active=on("flow"),
+    )
+    _rel_sym(
+        ax, 5.85, 2.3, 3.6, 1.05,
+        r"$N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b$",
+        active=on("nt"), accent=True,
+    )
+
+    # Occupancy lane: σ_m → θ_L → θ_T → c_T ← N_T
+    _rel_sym(
+        ax, 0.35, 0.45, 2.7, 1.0,
+        r"$\theta_{\mathrm{L}}(\sigma_{\mathrm{m}})$", active=on("mean"),
+    )
+    _rel_sym(ax, 3.55, 0.45, 2.2, 1.0, r"$\theta_{\mathrm{T}}$", active=on("oriani"))
+    _rel_sym(
+        ax, 6.25, 0.45, 3.35, 1.0,
+        r"$c_{\mathrm{T}}=N_{\mathrm{T}}\,\theta_{\mathrm{T}}$",
+        active=on("ct"), accent=True,
+    )
+    _rel_link(ax, (3.05, 0.95), (3.55, 0.95), active=on("mean") or on("oriani"))
+    _rel_link(ax, (5.75, 0.95), (6.25, 0.95), active=on("oriani") or on("ct"))
+    _rel_link(ax, (7.65, 2.3), (7.9, 1.45), active=on("nt") or on("ct"))
+
+
+def draw_equations_map(ax, highlight=None):
+    """Symbol map among governing relations."""
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 3.9)
+    ax.set_aspect("equal")
+    ax.axis("off")
+
+    def on(nid):
+        return highlight == nid
+
+    _rel_sym(
+        ax, 0.25, 2.45, 3.05, 1.05,
+        r"$\sigma_{\mathrm{e}}=\sigma_{\mathrm{Y}}\sqrt{f^{2}+l\eta}$",
+        active=on("eq-flow"), fs=FS - 1,
+    )
+    _rel_sym(
+        ax, 3.5, 2.45, 3.05, 1.05,
+        r"$N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b$",
+        active=on("eq-nt"), accent=True,
+    )
+    _rel_sym(
+        ax, 6.75, 2.45, 2.95, 1.05,
+        r"$N_{\mathrm{T}}^{\mathrm{GND}}\sim 1/L$",
+        active=on("eq-scale"),
+    )
+    _rel_link(ax, (3.3, 2.97), (3.5, 2.97), active=on("eq-flow") or on("eq-nt"))
+    _rel_link(ax, (6.55, 2.97), (6.75, 2.97), active=on("eq-nt") or on("eq-scale"))
+
+    _rel_sym(
+        ax, 0.25, 0.45, 3.05, 1.05,
+        r"$\theta_{\mathrm{L}}(\sigma_{\mathrm{m}})$", active=on("eq-thL"),
+    )
+    _rel_sym(
+        ax, 3.5, 0.45, 3.05, 1.05,
+        r"$\theta_{\mathrm{T}}\!\leftrightarrow\!\theta_{\mathrm{L}}$",
+        active=on("eq-oriani"),
+    )
+    _rel_sym(
+        ax, 6.75, 0.45, 2.95, 1.05,
+        r"$(1-\xi\theta_{\mathrm{T}})\sigma_{\mathrm{e}}$",
+        active=on("eq-help"), fs=FS - 1,
+    )
+    _rel_link(ax, (3.3, 0.97), (3.5, 0.97), active=on("eq-thL") or on("eq-oriani"))
+
+    # Merge cue: N_T and θ_T → c_T
+    ax.text(
+        5.0, 1.85,
+        r"$c_{\mathrm{T}}=N_{\mathrm{T}}\,\theta_{\mathrm{T}}$",
+        ha="center", va="center", color=MECH, fontsize=FS,
+    )
+    _rel_link(ax, (5.0, 2.45), (5.0, 2.1), active=on("eq-nt") or on("eq-oriani"))
+
+
+def draw_innovations_map(ax, highlight=None):
+    """Symbol map: dual ρ_T roles → channels → examples → 1/L result."""
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 4.15)
+    ax.set_aspect("equal")
+    ax.axis("off")
+
+    def on(nid):
+        return highlight == nid
+
+    _rel_sym(
+        ax, 0.3, 2.85, 4.5, 1.05,
+        r"$\rho_{\mathrm{T}}\ \Rightarrow\ \{\sigma_{\mathrm{e}},\,N_{\mathrm{T}}\}$",
+        active=on("inn-bridge"), accent=True,
+    )
+    _rel_sym(
+        ax, 5.2, 2.85, 4.5, 1.05,
+        r"$c_{\mathrm{T}}=N_{\mathrm{T}}(\rho_{\mathrm{T}})\,\theta_{\mathrm{T}}(\sigma_{\mathrm{m}})$",
+        active=on("inn-channels"), accent=True, fs=FS - 1,
+    )
+    _rel_link(ax, (4.8, 3.37), (5.2, 3.37), active=on("inn-bridge") or on("inn-channels"))
+
+    _rel_sym(
+        ax, 0.3, 1.35, 3.0, 1.0,
+        r"$\sigma_{\mathrm{m}}\approx 0$", active=on("inn-torsion"),
+    )
+    _rel_sym(
+        ax, 3.5, 1.35, 3.0, 1.0,
+        r"$\theta_{\mathrm{T}}^{\mathrm{odd}},\ N_{\mathrm{T}}^{\mathrm{even}}$",
+        active=on("inn-bend"), fs=FS - 1,
+    )
+    _rel_sym(
+        ax, 6.7, 1.35, 3.0, 1.0,
+        r"$N_{\mathrm{T}}^{\mathrm{GND}}\sim 1/R_0$",
+        active=on("inn-void"),
+    )
+    ax.plot([7.45, 7.45], [2.85, 2.55], color=EDGE, lw=0.85, zorder=1)
+    ax.plot([1.8, 8.2], [2.55, 2.55], color=EDGE, lw=0.85, zorder=1)
+    _rel_link(ax, (1.8, 2.55), (1.8, 2.35), active=on("inn-channels") or on("inn-torsion"))
+    _rel_link(ax, (5.0, 2.55), (5.0, 2.35), active=on("inn-channels") or on("inn-bend"))
+    _rel_link(ax, (8.2, 2.55), (8.2, 2.35), active=on("inn-channels") or on("inn-void"))
+
+    _rel_sym(
+        ax, 2.35, 0.2, 5.3, 0.95,
+        r"$L\downarrow\ \Rightarrow\ N_{\mathrm{T}}^{\mathrm{GND}}\uparrow$",
+        active=on("inn-scale"), accent=True,
+    )
+    ax.plot([5.0, 5.0], [1.35, 1.15], color=EDGE, lw=0.85, zorder=1)
 
 
 def _drawer(kind: str):
