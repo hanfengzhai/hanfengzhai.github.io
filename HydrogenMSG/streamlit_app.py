@@ -174,14 +174,16 @@ _UI_CSS = """
   .stButton > button[data-testid="baseButton-primary"]:hover {
     background-color: var(--msg-accent-bright) !important;
   }
-  /* Explorer cards: light surface, ink text, lift on hover. */
+  /* Explorer step list: compact one-line chips. */
   .stButton > button[kind="secondary"],
   .stButton > button[data-testid="baseButton-secondary"] {
     background: #ffffff !important;
     color: var(--msg-ink) !important;
     border: 1px solid var(--msg-line) !important;
-    border-radius: 10px !important;
-    min-height: 4.8rem !important;
+    border-radius: 8px !important;
+    min-height: 2.55rem !important;
+    padding-top: 0.35rem !important;
+    padding-bottom: 0.35rem !important;
     box-shadow: 0 1px 2px rgba(30, 41, 59, 0.06);
     transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
   }
@@ -826,6 +828,15 @@ _EXPLORER = {
 }
 
 
+def _import_fem_plots():
+    """Paper helpers as ``_fem`` locally; stlite ships ``_fem_plots``."""
+    try:
+        import _fem as mod
+    except ModuleNotFoundError:
+        import _fem_plots as mod
+    return importlib.reload(mod)
+
+
 def _explorer_detail(item: dict):
     # One bordered card: kicker, title, equation, and reading note together.
     eq = item["equation"].replace("$", "").strip()
@@ -839,53 +850,44 @@ def _explorer_detail(item: dict):
         st.markdown(item["body"])
 
 
-def _explorer_grid(items, state_key: str, columns: int = 4):
+def _explorer_panel(items, state_key: str):
+    """Side-by-side: compact step list | equation detail (no stacked card grid)."""
     if state_key not in st.session_state:
         st.session_state[state_key] = items[0]["id"]
-    for start in range(0, len(items), columns):
-        chunk = items[start : start + columns]
-        cols = st.columns(len(chunk), gap="small")
-        for col, item in zip(cols, chunk):
+    left, right = st.columns([0.95, 1.35], gap="medium")
+    with left:
+        for item in items:
             selected = st.session_state[state_key] == item["id"]
-            label = f"{'●  ' if selected else ''}{item['title']}\n{item['teaser']}"
-            with col:
-                if st.button(
-                    label,
-                    key=f"{state_key}_{item['id']}",
-                    use_container_width=True,
-                    type="primary" if selected else "secondary",
-                ):
-                    st.session_state[state_key] = item["id"]
-                    st.rerun()
-    chosen = next(it for it in items if it["id"] == st.session_state[state_key])
-    _explorer_detail(chosen)
+            label = f"{'●  ' if selected else ''}{item['title']}"
+            if st.button(
+                label,
+                key=f"{state_key}_{item['id']}",
+                use_container_width=True,
+                type="primary" if selected else "secondary",
+            ):
+                st.session_state[state_key] = item["id"]
+                st.rerun()
+    with right:
+        chosen = next(it for it in items if it["id"] == st.session_state[state_key])
+        _explorer_detail(chosen)
 
 
 def page_workflow():
     st.header("Explore the constitutive chain")
-    st.caption("Click a card for its equation and role in the MSG–hydrogen chain.")
-    st.markdown(
-        '<div class="msg-chip-row">'
-        '<span class="msg-chip">MSG plasticity</span>'
-        '<span class="msg-chip">Oriani trapping</span>'
-        '<span class="msg-chip">1/L trap-site scaling</span>'
-        '<span class="msg-chip">One-way coupling</span>'
-        "</div>",
-        unsafe_allow_html=True,
-    )
+    st.caption("Pick a step on the left; the governing relation opens on the right.")
 
     tab_flow, tab_eq, tab_inn = st.tabs(
         ["Logical workflow", "Governing equations", "Key innovations"]
     )
 
     with tab_flow:
-        _explorer_grid(_EXPLORER["workflow"], "explore_workflow", columns=4)
+        _explorer_panel(_EXPLORER["workflow"], "explore_workflow")
 
     with tab_eq:
-        _explorer_grid(_EXPLORER["equations"], "explore_equations", columns=3)
+        _explorer_panel(_EXPLORER["equations"], "explore_equations")
 
     with tab_inn:
-        _explorer_grid(_EXPLORER["innovations"], "explore_innovations", columns=3)
+        _explorer_panel(_EXPLORER["innovations"], "explore_innovations")
 
 
 def page_torsion(p: Params):
@@ -1060,11 +1062,7 @@ def page_cavitation():
 def page_fem_void():
     if not ensure_scipy():
         return
-    import importlib
-    import _fem
-
-    importlib.reload(_fem)
-    draw_meridian_contour = _fem.draw_meridian_contour
+    draw_meridian_contour = _import_fem_plots().draw_meridian_contour
 
     st.header("Non-hydrostatic void")
     st.markdown(
@@ -1127,11 +1125,7 @@ def page_fem_void():
 def page_fem_slit():
     if not ensure_scipy():
         return
-    import importlib
-    import _fem
-
-    importlib.reload(_fem)
-    draw_slit_contour = _fem.draw_slit_contour
+    draw_slit_contour = _import_fem_plots().draw_slit_contour
 
     st.header("Mode-I slit")
     st.markdown(
