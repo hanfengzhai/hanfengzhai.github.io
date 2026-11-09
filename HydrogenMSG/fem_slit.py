@@ -393,18 +393,21 @@ def solve(l_over_a=5.0, S=1.0, p=None, a=None,
         return dict(eps=eps, dev=dev, tr=tr, eps_e=eps_e, eta=eta,
                     sig_e=sig_e, mu=mu_s, soft=soft)
 
-    # Simple load ramp: a few proportional steps improve secant convergence
-    # under HELP softening near the tip.
+    # Proportional load ramp; unused early-step iterations roll into later
+    # steps so the final HELP-softened tip solve gets enough secant budget.
     n_ramp = 4
     resid = np.inf
     resid_mu = np.inf
     it_total = 0
+    iters_left = int(itmax)
     if progress is not None:
         progress(0.05, "Mesh ready — starting load ramp")
     for step in range(1, n_ramp + 1):
         load_fac = step / n_ramp
         fstep = load_fac * fext
-        for it in range(itmax // n_ramp):
+        steps_left = n_ramp - step + 1
+        budget = max(iters_left // steps_left, 24)
+        for it in range(budget):
             D = np.zeros((kin.ne, kin.ng, 4, 4))
             D[:, :, :3, :3] = (2.0 * mu[:, :, None, None] * Idev
                                + K * np.ones((3, 3)))
@@ -428,8 +431,7 @@ def solve(l_over_a=5.0, S=1.0, p=None, a=None,
                 print(f"  step {step}/{n_ramp} it {it_total:3d}  "
                       f"|du|/|u| = {resid:.2e}  |dμ|/|μ| = {resid_mu:.2e}")
             if progress is not None:
-                per_step = max(itmax // n_ramp, 1)
-                frac = ((step - 1) + (it + 1) / per_step) / n_ramp
+                frac = it_total / max(itmax, 1)
                 progress(
                     min(0.99, frac),
                     f"Load step {step}/{n_ramp}, iteration {it_total}  "
@@ -437,6 +439,7 @@ def solve(l_over_a=5.0, S=1.0, p=None, a=None,
                 )
             if resid < tol and resid_mu < tol_mu and it > 2:
                 break
+        iters_left = max(itmax - it_total, 0)
 
     converged = bool(resid < tol and resid_mu < tol_mu)
     if progress is not None:
