@@ -12,10 +12,12 @@ Implements the closed-form and semi-analytical solutions of the paper:
   - spherical void growth and cavitation with HELP softening (Section 5)
 
 Mechanical constants follow Huang et al. (JMPS 48, 2000). Lattice hydrogen
-parameters (VH, NL, theta_L^0) are representative of bcc iron at 300 K
-(Sofronis & McMeeking 1989; Krom 1999). Default WB = 30 kJ/mol is a
-representative reversible-dislocation binding energy; deep traps reported by
-Kumnick & Johnson (1980) are ~60 kJ/mol and are not the value used here.
+parameters VH and NL are representative of bcc iron at 300 K (Sofronis &
+McMeeking 1989; Krom 1999); theta_L^0 = 1e-6 is the reference lattice
+occupancy used in the examples. Default WB = 30 kJ/mol is a representative
+reversible-dislocation binding energy (~20–30 kJ/mol; Hirth 1980); deep traps
+reported by Kumnick & Johnson (1980) are ~60 kJ/mol and are not the value
+used here.
 """
 
 from dataclasses import dataclass, field
@@ -45,12 +47,13 @@ class Params:
     # Hydrogen (bcc iron, 300 K)
     T: float = 300.0             # temperature [K]
     VH: float = 2.0e-6           # partial molar volume of H [m^3/mol]
-    # Reversible dislocation trapping (~24–30 kJ/mol). Not the ~60 kJ/mol
-    # deep-trap value of Kumnick & Johnson (1980) / Sofronis–Krom crack-tip models.
+    # Reversible dislocation trapping (~20–30 kJ/mol; Hirth 1980). Not the
+    # ~60 kJ/mol deep-trap value of Kumnick & Johnson (1980) / Sofronis–Krom
+    # crack-tip models.
     WB: float = 30e3             # trap binding energy [J/mol]
     NL: float = 5.1e29           # lattice site density [1/m^3]
     chi: float = 1.0             # trap sites per Burgers length of line
-    thetaL0: float = 1e-6        # reference lattice occupancy
+    thetaL0: float = 1e-6        # reference/environmental lattice occupancy
     xi: float = 0.0              # HELP softening coefficient
 
     @property

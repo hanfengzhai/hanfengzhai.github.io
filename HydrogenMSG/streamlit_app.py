@@ -1229,7 +1229,8 @@ def page_fem_slit():
 
     st.header("Mode-I slit")
     st.markdown(
-        r"Plane-strain centre crack of half-length $a$ with Formulation C softening "
+        r"Plane-strain centre crack of half-length $a$ using lower-order "
+        r"deformation-theory MSG with Formulation C softening "
         r"(upper-right quarter with symmetry boundaries). "
         r"The open slit face is masked. The mesh is coarser than the manuscript figure. "
         r"Contours interpolate the raw Gauss field with light smoothing; colour limits "
