@@ -12,7 +12,9 @@ neglecting the O(l_eps^2) terms, so the MSG flow stress
 can be carried by an ordinary displacement formulation (Huang et al.,
 Int. J. Plasticity 20 (2004) 753).  Deformation theory is retained, so each
 load level is a nonlinear-elastic boundary value problem, solved here by
-secant-modulus iteration.
+secant-modulus iteration.  For this qualitative FEM demonstration the
+uniaxial response f uses the elastic--power-law regularization of the
+cavitation extension (linear below eps_Y = sigY/E, power law above).
 
 Discretisation
 --------------

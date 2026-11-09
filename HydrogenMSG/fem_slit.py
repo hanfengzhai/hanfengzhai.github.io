@@ -4,6 +4,8 @@ Qualitative appendix demonstration: a center-crack quarter model under remote
 tension, solved with the same lower-order deformation-theory MSG secant
 scheme as ``fem_msg.py``, but in plane strain and with Formulation~C HELP
 amplitude softening (``Params.xi > 0``) active in the constitutive loop.
+As in ``fem_msg.py``, the uniaxial response uses the elastic--power-law
+regularization of the cavitation extension.
 
 Geometry (quarter model)
 ------------------------

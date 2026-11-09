@@ -1143,6 +1143,8 @@ def page_fem_void():
     st.markdown(
         r"Axisymmetric lower-order deformation-theory MSG void under remote biaxial tension. "
         r"Hydrogen is a one-way Oriani post-process. "
+        r"For the qualitative FEM demonstrations, the uniaxial response is regularized "
+        r"with the elastic--power-law form used in the cavitation extension. "
         r"The mesh ($n_\rho=24$, $n_\theta=10$) is coarser than the manuscript figure. "
         r"The schematic GIF shows the default demo ordering "
         r"$\sigma_{zz}^{\infty}>\sigma_{rr}^{\infty}$; the sliders may reverse that. "
@@ -1232,6 +1234,8 @@ def page_fem_slit():
         r"Plane-strain centre crack of half-length $a$ using lower-order "
         r"deformation-theory MSG with Formulation C softening "
         r"(upper-right quarter with symmetry boundaries). "
+        r"For the qualitative FEM demonstrations, the uniaxial response is regularized "
+        r"with the elastic--power-law form used in the cavitation extension. "
         r"The open slit face is masked. The mesh is coarser than the manuscript figure. "
         r"Contours interpolate the raw Gauss field with light smoothing; colour limits "
         r"use the 5th–95th percentiles so tip extrema saturate on the colour scale. "
