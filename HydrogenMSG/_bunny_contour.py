@@ -281,9 +281,9 @@ def figure_property_contour(
     theta0: float = 1e-6,
     KT: float = 5.98e7,
     varsigma: float = 1.0,
-    # Face toward camera. User-confirmed: azim=168 shows the BACK; face = 168+180.
-    elev: float = -6.0,
-    azim: float = 348.0,
+    # Terracotta reference pose (silhouette IoU match): head left, face out.
+    elev: float = 8.0,
+    azim: float = 95.0,
     figsize=(6.6, 5.6),
 ):
     """Single projected bunny contour (used as a still / GIF building block)."""
@@ -411,9 +411,9 @@ def plotly_property_contour(
             yaxis=dict(visible=False),
             zaxis=dict(visible=False),
             aspectmode="data",
-            # Face toward camera (elev=-6, azim=348). Do not use 160/168 (back).
+            # Terracotta pose (elev=8, azim=95): head left, face toward camera.
             camera=dict(
-                eye=dict(x=2.09, y=-0.23, z=-0.45),
+                eye=dict(x=-0.19, y=0.31, z=2.17),
                 up=dict(x=0, y=1, z=0),
                 center=dict(x=0, y=0, z=0),
             ),
