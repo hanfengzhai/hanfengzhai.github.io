@@ -705,10 +705,15 @@ _EXPLORER = {
             "chip": "HELP",
             "title": "HELP amplitude law",
             "teaser": "occupancy softens flow stress",
-            "equation": r"\sigma_{\mathrm{e}}^{\mathrm{HELP}}=(1-\xi\,\theta_{\mathrm{T}})\,\sigma_{\mathrm{e}}",
+            "equation": (
+                r"\sigma_{\mathrm{e}}^{\mathrm{HELP}}=(1-\xi\,\theta_{\mathrm{T}})\,\sigma_{\mathrm{e}}^{(0)},"
+                r"\quad \rho_{\mathrm{T}}=[f^{2}+l\eta]/(l b)"
+            ),
             "body": (
-                "Formulation C keeps the hydrogen-free Taylor density and multiplies the flow stress "
-                "by an occupancy-dependent amplitude. "
+                "Formulation C keeps the hydrogen-free Taylor density "
+                r"$\rho_{\mathrm{T}}=[f^{2}(\varepsilon_{\mathrm{e}})+l\eta]/(l b)$ "
+                "and multiplies the hydrogen-free flow stress "
+                r"$\sigma_{\mathrm{e}}^{(0)}$ by an occupancy-dependent amplitude. "
                 "Used only in cavitation and the mode-I slit."
             ),
         },
@@ -1103,6 +1108,8 @@ def page_cavitation():
         r"The cavitation stress shown here is an approximate sampled maximum of the "
         r"remote tension over 16 expansion ratios between $1.05$ and $5$ "
         r"(finite-strain logarithmic measures). "
+        r"The higher-order $O(l_\varepsilon^2)$ stress terms are neglected in this "
+        r"lower-order approximation. "
         r"The quadrature is coarser than the manuscript maps."
     )
     xi = st.slider(r"Softening coefficient $\xi$", 0.0, 0.6, 0.3, 0.05)
@@ -1134,7 +1141,7 @@ def page_fem_void():
 
     st.header("Non-hydrostatic void")
     st.markdown(
-        r"Axisymmetric CMSG void under remote biaxial tension. "
+        r"Axisymmetric lower-order deformation-theory MSG void under remote biaxial tension. "
         r"Hydrogen is a one-way Oriani post-process. "
         r"The mesh ($n_\rho=24$, $n_\theta=10$) is coarser than the manuscript figure. "
         r"The schematic GIF shows the default demo ordering "

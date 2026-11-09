@@ -1,7 +1,7 @@
 """Plane-strain mode-I slit FEM with MSG plasticity and HELP softening.
 
 Qualitative appendix demonstration: a center-crack quarter model under remote
-tension, solved with the same lower-order CMSG deformation-theory secant
+tension, solved with the same lower-order deformation-theory MSG secant
 scheme as ``fem_msg.py``, but in plane strain and with Formulation~C HELP
 amplitude softening (``Params.xi > 0``) active in the constitutive loop.
 
@@ -336,7 +336,7 @@ def solve(l_over_a=5.0, S=1.0, p=None, a=None,
           ratio=1.10, tip_box=1.0, nx_box=None, ny_box=None,
           nu=None, tol=1e-7, itmax=400, relax=0.4,
           verbose=False, progress=None, tol_mu=None):
-    """Secant-iteration CMSG plane-strain slit solution with HELP softening.
+    """Secant-iteration lower-order deformation-theory MSG plane-strain slit with HELP softening.
 
     ``l_over_a = 0`` recovers classical J2 deformation theory. Returns a dict
     of Gauss-point fields plus mesh / kinematics / nodal displacement.

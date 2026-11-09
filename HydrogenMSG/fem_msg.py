@@ -300,7 +300,7 @@ def solve(l_over_R0=1.0, load=Load(2.2, 1.6), p=None, R0=None,
           n_rho=40, n_th=16, Rout_over_R0=25.0, nu=None,
           tol=1e-7, itmax=300, relax=0.5, verbose=False,
           progress=None, tol_mu=None):
-    """Secant-iteration solution of the CMSG void problem.
+    """Secant-iteration solution of the lower-order deformation-theory MSG void problem.
 
     `l_over_R0 = 0` recovers classical J2 deformation theory.
     Returns a dict of Gauss-point fields plus the mesh/kinematics.

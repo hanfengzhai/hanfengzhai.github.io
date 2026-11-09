@@ -3,14 +3,19 @@ gradient (MSG) plasticity.
 
 Implements the closed-form and semi-analytical solutions of the paper:
   - Taylor dislocation density / trap density (Proposition 1):
-        rho_T = (sigma_e / sigma_Y)^2 / (l b)
+        rho_T = [f^2(eps_e) + l eta] / (l b)
+    Under HELP (Formulation C) this is the hydrogen-free density; the flow
+    stress is then scaled by (1 - xi theta_T) without feeding soft sigma_e
+    back into rho_T / N_T.
   - torsion of thin wires      (Section 3)
   - bending of ultra-thin beams (Section 4)
   - spherical void growth and cavitation with HELP softening (Section 5)
 
-Mechanical constants follow Huang et al. (JMPS 48, 2000); hydrogen data are
-representative of bcc iron at 300 K (Sofronis & McMeeking 1989; Krom 1999;
-Kumnick & Johnson 1980).
+Mechanical constants follow Huang et al. (JMPS 48, 2000). Lattice hydrogen
+parameters (VH, NL, theta_L^0) are representative of bcc iron at 300 K
+(Sofronis & McMeeking 1989; Krom 1999). Default WB = 30 kJ/mol is a
+representative reversible-dislocation binding energy; deep traps reported by
+Kumnick & Johnson (1980) are ~60 kJ/mol and are not the value used here.
 """
 
 from dataclasses import dataclass, field
@@ -40,6 +45,8 @@ class Params:
     # Hydrogen (bcc iron, 300 K)
     T: float = 300.0             # temperature [K]
     VH: float = 2.0e-6           # partial molar volume of H [m^3/mol]
+    # Reversible dislocation trapping (~24–30 kJ/mol). Not the ~60 kJ/mol
+    # deep-trap value of Kumnick & Johnson (1980) / Sofronis–Krom crack-tip models.
     WB: float = 30e3             # trap binding energy [J/mol]
     NL: float = 5.1e29           # lattice site density [1/m^3]
     chi: float = 1.0             # trap sites per Burgers length of line
@@ -282,7 +289,12 @@ def cavitation_sigma_inf(r0_over_R0, l_over_R0, p: Params,
                          s_max=1e3, n=1500, n_iter=40, tol=1e-10):
     """Remote stress sigma_inf/sigY for current void radius r0 (finite
     strain, elastic--power-law solid), with HELP softening solved by
-    fixed-point iteration. Returns (sigma_inf_hat, info dict)."""
+    fixed-point iteration.
+
+    Uses the lower-order quadrature sigma_inf = 2 int (sigma/r) dr and
+    neglects the higher-order O(l_eps^2) stress contribution of Huang et al.
+    (2000). Returns (sigma_inf_hat, info dict).
+    """
     c = float(r0_over_R0)
     # log-spaced current radii r / r0
     s = np.logspace(0.0, np.log10(s_max), n)          # r / r0
