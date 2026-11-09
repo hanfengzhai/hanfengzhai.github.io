@@ -246,7 +246,8 @@ def _draw_bunny_frame(
 ):
     """One orthographic projected frame; fixed limits so rotation stays centered."""
     P, zhat = _project(V, elev, azim)
-    front = (fn @ zhat) < 0.02
+    # Keep outward-facing front faces (toward the camera).
+    front = (fn @ zhat) > 0.0
     Ff = F[front]
     depth = P[:, 2][Ff].mean(axis=1)
     Ff = Ff[np.argsort(depth)]
@@ -282,7 +283,7 @@ def figure_property_contour(
     varsigma: float = 1.0,
     # Face-out: snout toward the camera. azim≈262 is the rump view — do not restore it.
     elev: float = -8.0,
-    azim: float = 168.0,
+    azim: float = 160.0,
     figsize=(6.6, 5.6),
 ):
     """Single projected bunny contour (used as a still / GIF building block)."""
@@ -410,9 +411,10 @@ def plotly_property_contour(
             yaxis=dict(visible=False),
             zaxis=dict(visible=False),
             aspectmode="data",
-            # Face-out (elev=-8, azim=168): snout toward camera. Not azim=262 (rump).
+            # Face-out three-quarter look-up (elev=-8, azim=160): chest toward
+            # camera, head left / tail right (matches terracotta reference).
             camera=dict(
-                eye=dict(x=-2.08, y=-0.30, z=0.44),
+                eye=dict(x=-2.05, y=-0.31, z=0.75),
                 up=dict(x=0, y=1, z=0),
                 center=dict(x=0, y=0, z=0),
             ),
