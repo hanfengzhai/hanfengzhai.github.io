@@ -281,9 +281,9 @@ def figure_property_contour(
     theta0: float = 1e-6,
     KT: float = 5.98e7,
     varsigma: float = 1.0,
-    # Face-out: snout toward the camera. azim≈262 is the rump view — do not restore it.
-    elev: float = -8.0,
-    azim: float = 160.0,
+    # Face toward camera. User-confirmed: azim=168 shows the BACK; face = 168+180.
+    elev: float = -6.0,
+    azim: float = 348.0,
     figsize=(6.6, 5.6),
 ):
     """Single projected bunny contour (used as a still / GIF building block)."""
@@ -411,10 +411,9 @@ def plotly_property_contour(
             yaxis=dict(visible=False),
             zaxis=dict(visible=False),
             aspectmode="data",
-            # Face-out three-quarter look-up (elev=-8, azim=160): chest toward
-            # camera, head left / tail right (matches terracotta reference).
+            # Face toward camera (elev=-6, azim=348). Do not use 160/168 (back).
             camera=dict(
-                eye=dict(x=-2.05, y=-0.31, z=0.75),
+                eye=dict(x=2.09, y=-0.23, z=-0.45),
                 up=dict(x=0, y=1, z=0),
                 center=dict(x=0, y=0, z=0),
             ),
