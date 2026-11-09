@@ -281,7 +281,7 @@ def figure_property_contour(
     KT: float = 5.98e7,
     varsigma: float = 1.0,
     elev: float = -4.0,
-    azim: float = 262.0,
+    azim: float = 82.0,
     figsize=(6.6, 5.6),
 ):
     """Single projected bunny contour (used as a still / GIF building block)."""
@@ -410,8 +410,8 @@ def plotly_property_contour(
             zaxis=dict(visible=False),
             aspectmode="data",
             # Face toward the camera (matches README elev=20, azim=85).
-            # Three-quarter, slight look-up (matches README elev=-4, azim=262).
-            camera=dict(eye=dict(x=-0.35, y=-0.20, z=-2.15), up=dict(x=0, y=1, z=0)),
+            # Three-quarter look-up, mirrored (matches README elev=-4, azim=82).
+            camera=dict(eye=dict(x=0.35, y=-0.20, z=2.15), up=dict(x=0, y=1, z=0)),
         ),
     )
     return fig
