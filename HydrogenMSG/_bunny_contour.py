@@ -102,7 +102,7 @@ def oriani_theta_T(theta_L: np.ndarray, KT: float) -> np.ndarray:
 PROPERTY_CHOICES = (
     "Mean stress",
     "Strain-gradient proxy",
-    "Trap-site density",
+    "Dislocation density",
     "Lattice occupancy",
     "Trapped hydrogen",
 )
@@ -114,6 +114,28 @@ PATTERN_CHOICES = (
     "Ear tip hotspots",
     "Hydrostatic core",
 )
+
+
+def vertex_gradient_mag(V: np.ndarray, F: np.ndarray, s: np.ndarray) -> np.ndarray:
+    """Cheap per-vertex |∇s| from edge slopes on each face (stlite-safe)."""
+    i, j, k = F.T
+    lij = np.maximum(np.linalg.norm(V[j] - V[i], axis=1), 1e-16)
+    ljk = np.maximum(np.linalg.norm(V[k] - V[j], axis=1), 1e-16)
+    lki = np.maximum(np.linalg.norm(V[i] - V[k], axis=1), 1e-16)
+    gm = (
+        np.abs(s[i] - s[j]) / lij
+        + np.abs(s[j] - s[k]) / ljk
+        + np.abs(s[k] - s[i]) / lki
+    ) / 3.0
+    acc = np.zeros(len(V))
+    cnt = np.zeros(len(V))
+    np.add.at(acc, F[:, 0], gm)
+    np.add.at(acc, F[:, 1], gm)
+    np.add.at(acc, F[:, 2], gm)
+    np.add.at(cnt, F[:, 0], 1.0)
+    np.add.at(cnt, F[:, 1], 1.0)
+    np.add.at(cnt, F[:, 2], 1.0)
+    return acc / np.maximum(cnt, 1.0)
 
 
 def compute_fields(
@@ -128,25 +150,35 @@ def compute_fields(
     KT: float,
     varsigma: float = 1.0,
 ) -> dict[str, np.ndarray]:
-    """Illustrative vertex scalars linked by one curvature proxy κ.
+    """Illustrative vertex scalars from one shared deformation pattern.
 
-    ``eta_gnd = gnd_weight · κ`` feeds both the strain-gradient proxy and the
-    GND piece of trap-site density, mirroring $N_T^{GND}\\propto\\eta$.
-    These remain visualization proxies, not a FEM solve.
+    Mean stress is the signed pattern. Dislocation density follows the
+    Formulation C shape $\\rho_T\\propto f^{2}(\\varepsilon_e)+l\\eta$ on the
+    same field: $\\varepsilon_e\\sim|\\mathrm{pattern}|$ (outer-fiber SSD) and
+    $\\eta$ from $|\\nabla\\varepsilon_e|$ mixed with a light curvature proxy
+    (GND). Trap sites track $\\rho_T$ through $N_T=\\chi\\rho_T/b$.
+    Visualization proxies only — not a FEM solve.
     """
     kappa = curvature_proxy(V, F)
-    sig_m = stress_amp * pattern_field(V, pattern)  # /σ_Y
-    eta_floor = (1.0 - gnd_weight) * 0.15
-    eta_gnd = gnd_weight * kappa
-    eta = eta_floor + eta_gnd
-    N_T = ssd_level + eta_gnd
+    pat = pattern_field(V, pattern)
+    sig_m = stress_amp * pat  # /σ_Y
+    eps = np.abs(pat)
+    f2 = eps ** 1.25
+    eta_grad = vertex_gradient_mag(V, F, eps)
+    eta_grad = eta_grad / max(float(np.percentile(eta_grad, 98)), 1e-12)
+    eta_grad = np.clip(eta_grad, 0.0, 1.5)
+    # GND weight blends strain-gradient content with a mild geometric cue.
+    eta = (1.0 - gnd_weight) * 0.12 + gnd_weight * (0.82 * eta_grad + 0.18 * kappa)
+    # SSD floor + rising outer-fiber density; gnd_weight scales the η piece.
+    rho_T = ssd_level + 0.75 * f2 + gnd_weight * 0.55 * (0.82 * eta_grad + 0.18 * kappa)
+    N_T = rho_T  # spatial proxy; N_T ∝ ρ_T
     theta_L = np.clip(theta0 * np.exp(varsigma * sig_m), 1e-8, 0.999)
     theta_T = oriani_theta_T(theta_L, KT)
     c_T = N_T * theta_T
     return {
         "Mean stress": sig_m,
         "Strain-gradient proxy": eta,
-        "Trap-site density": N_T,
+        "Dislocation density": rho_T,
         "Lattice occupancy": theta_L,
         "Trapped hydrogen": c_T,
     }
@@ -156,7 +188,7 @@ def compute_fields(
 PROPERTY_LABELS = {
     "Mean stress": "σₘ / σ_Y",
     "Strain-gradient proxy": "η proxy (norm.)",
-    "Trap-site density": "N_T proxy (norm.)",
+    "Dislocation density": "ρ_T (norm.)",
     "Lattice occupancy": "θ_L",
     "Trapped hydrogen": "c_T proxy (norm.)",
 }
@@ -261,7 +293,12 @@ def figure_property_contour(
         varsigma=varsigma,
     )
     scalar = fields[property_name]
-    cmap = "coolwarm" if property_name == "Mean stress" else "viridis"
+    if property_name == "Mean stress":
+        cmap = "coolwarm"
+    elif property_name == "Dislocation density":
+        cmap = "BuPu"
+    else:
+        cmap = "viridis"
     lo, hi = _scalar_limits(scalar)
     radius = float(np.max(np.linalg.norm(V, axis=1)))
 
@@ -309,7 +346,12 @@ def plotly_property_contour(
     )
     scalar = fields[property_name]
     lo, hi = _scalar_limits(scalar)
-    colorscale = "RdBu_r" if property_name == "Mean stress" else "Viridis"
+    if property_name == "Mean stress":
+        colorscale = "RdBu_r"
+    elif property_name == "Dislocation density":
+        colorscale = "PuBu"
+    else:
+        colorscale = "Viridis"
 
     fig = go.Figure(
         data=[
@@ -335,13 +377,13 @@ def plotly_property_contour(
                     len=0.72,
                 ),
                 lighting=dict(
-                    ambient=0.45,
-                    diffuse=0.85,
-                    specular=0.25,
-                    roughness=0.55,
-                    fresnel=0.15,
+                    ambient=0.22,
+                    diffuse=0.95,
+                    specular=0.55,
+                    roughness=0.32,
+                    fresnel=0.28,
                 ),
-                lightposition=dict(x=1.2e3, y=2.0e3, z=1.0e3),
+                lightposition=dict(x=1.6e3, y=2.4e3, z=1.2e3),
                 flatshading=False,
                 hoverinfo="skip",
                 name=property_name,

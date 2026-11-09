@@ -857,19 +857,22 @@ def _explorer_panel(items, state_key: str):
 def page_property_contour(p: Params):
     """Interactive Stanford-bunny contours of MSG–hydrogen property fields."""
     st.markdown(
-        "Illustrative visualization proxies on the Stanford bunny. "
-        "One curvature field $\\kappa$ drives both the strain-gradient "
-        "proxy and the GND piece of $N_{\\mathrm{T}}$, mirroring "
-        "$N_{\\mathrm{T}}^{\\mathrm{GND}}\\propto\\eta$. "
-        "Mean stress follows the chosen pattern; Oriani occupancy closes "
-        "$c_{\\mathrm{T}}$. Drag to rotate; scroll to zoom."
+        "Illustrative proxies of the two Fig.&nbsp;1 channels on one shared "
+        "deformation pattern mapped to the Stanford bunny. "
+        "Signed mean stress $\\sigma_{\\mathrm{m}}$ sets Oriani occupancy; "
+        "dislocation density "
+        "$\\rho_{\\mathrm{T}}\\propto f^{2}(\\varepsilon_{e})+l\\eta$ "
+        "tracks the same field through outer-fiber $|\\varepsilon_{e}|$ and a "
+        "GND strain-gradient piece, and sets "
+        "$N_{\\mathrm{T}}=\\chi\\rho_{\\mathrm{T}}/b$. "
+        "Drag to rotate; scroll to zoom."
     )
     c1, c2 = st.columns([0.85, 1.65], gap="medium")
     with c1:
         prop = st.selectbox("Property", list(_bunny.PROPERTY_CHOICES), index=0)
-        pattern = st.selectbox("Mean-stress pattern", list(_bunny.PATTERN_CHOICES), index=0)
+        pattern = st.selectbox("Deformation pattern", list(_bunny.PATTERN_CHOICES), index=0)
         stress_amp = st.slider(r"Stress amplitude  $\sigma_{\mathrm{m}}/\sigma_{\mathrm{Y}}$", 0.0, 3.0, 1.2, 0.1)
-        gnd_weight = st.slider("GND / curvature weight", 0.0, 1.0, 0.7, 0.05)
+        gnd_weight = st.slider("GND weight in $\\rho_{\\mathrm{T}}$", 0.0, 1.0, 0.7, 0.05)
         ssd_level = st.slider("SSD background", 0.05, 1.0, 0.25, 0.05)
         theta0 = st.select_slider(
             r"Remote lattice occupancy  $\theta_{\mathrm{L}}^{0}$",
@@ -894,8 +897,11 @@ def page_property_contour(p: Params):
             "scrollZoom": True,
         })
     st.caption(
-        r"Coupling: $\eta_{\mathrm{gnd}}=w_{\mathrm{GND}}\,\kappa$, "
-        r"$N_{\mathrm{T}}=N_{\mathrm{SSD}}+\eta_{\mathrm{gnd}}$; "
+        r"Shared pattern $p$: $\sigma_{\mathrm{m}}=A\,p$, "
+        r"$\varepsilon_e\sim|p|$, "
+        r"$\rho_{\mathrm{T}}\sim N_{\mathrm{SSD}}+f^{2}(\varepsilon_e)"
+        r"+w_{\mathrm{GND}}\,\eta$; "
+        r"$N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b$; "
         r"$\theta_{\mathrm{L}}\propto\exp[\sigma_{\mathrm{m}}\bar{V}_{\mathrm{H}}/(RT)]$; "
         r"$c_{\mathrm{T}}=N_{\mathrm{T}}\,\theta_{\mathrm{T}}(\theta_{\mathrm{L}})$. "
         r"Amplitudes are normalized for display."
