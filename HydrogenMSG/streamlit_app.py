@@ -862,8 +862,8 @@ def page_property_contour(p: Params):
         "Signed mean stress $\\sigma_{\\mathrm{m}}$ sets Oriani occupancy; "
         "dislocation density "
         "$\\rho_{\\mathrm{T}}\\propto f^{2}(\\varepsilon_{e})+l\\eta$ "
-        "tracks the same field through outer-fiber $|\\varepsilon_{e}|$ and a "
-        "GND strain-gradient piece, and sets "
+        "with $f^{2}\\propto|\\varepsilon_{e}|^{2N}$ ($N=0.2$) and one shared "
+        "$\\eta$ proxy for display and the GND term, and sets "
         "$N_{\\mathrm{T}}=\\chi\\rho_{\\mathrm{T}}/b$. "
         "Drag to rotate; scroll to zoom."
     )

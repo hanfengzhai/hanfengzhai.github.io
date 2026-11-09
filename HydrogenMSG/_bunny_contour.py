@@ -154,23 +154,27 @@ def compute_fields(
 
     Mean stress is the signed pattern. Dislocation density follows the
     Formulation C shape $\\rho_T\\propto f^{2}(\\varepsilon_e)+l\\eta$ on the
-    same field: $\\varepsilon_e\\sim|\\mathrm{pattern}|$ (outer-fiber SSD) and
-    $\\eta$ from $|\\nabla\\varepsilon_e|$ mixed with a light curvature proxy
-    (GND). Trap sites track $\\rho_T$ through $N_T=\\chi\\rho_T/b$.
+    same field: $\\varepsilon_e\\sim|\\mathrm{pattern}|$ with
+    $f^{2}\\propto\\varepsilon_e^{2N}$ ($N=0.2$), and one shared normalized
+    $\\eta$ proxy (gradient of $|\\varepsilon_e|$ mixed with mild curvature)
+    for both the displayed strain-gradient field and the GND piece of
+    $\\rho_T$. The GND weight scales only that $\\eta$ contribution to
+    $\\rho_T$. Trap sites track $\\rho_T$ through $N_T=\\chi\\rho_T/b$.
     Visualization proxies only — not a FEM solve.
     """
+    N = 0.2  # paper hardening exponent
     kappa = curvature_proxy(V, F)
     pat = pattern_field(V, pattern)
     sig_m = stress_amp * pat  # /σ_Y
     eps = np.abs(pat)
-    f2 = eps ** 1.25
+    f2 = eps ** (2.0 * N)  # ∝ f²(ε_e) = (E ε_e / σ_Y)^{2N}
     eta_grad = vertex_gradient_mag(V, F, eps)
     eta_grad = eta_grad / max(float(np.percentile(eta_grad, 98)), 1e-12)
     eta_grad = np.clip(eta_grad, 0.0, 1.5)
-    # GND weight blends strain-gradient content with a mild geometric cue.
-    eta = (1.0 - gnd_weight) * 0.12 + gnd_weight * (0.82 * eta_grad + 0.18 * kappa)
-    # SSD floor + rising outer-fiber density; gnd_weight scales the η piece.
-    rho_T = ssd_level + 0.75 * f2 + gnd_weight * 0.55 * (0.82 * eta_grad + 0.18 * kappa)
+    # One η proxy for display and for the GND term in ρ_T.
+    eta = 0.82 * eta_grad + 0.18 * kappa
+    # SSD floor + outer-fiber f²; gnd_weight scales only the η piece.
+    rho_T = ssd_level + 0.75 * f2 + gnd_weight * 0.55 * eta
     N_T = rho_T  # spatial proxy; N_T ∝ ρ_T
     theta_L = np.clip(theta0 * np.exp(varsigma * sig_m), 1e-8, 0.999)
     theta_T = oriani_theta_T(theta_L, KT)
@@ -215,11 +219,15 @@ def _project(V: np.ndarray, elev: float, azim: float):
     return P, zhat
 
 
-def _scalar_limits(scalar: np.ndarray) -> tuple[float, float]:
+def _scalar_limits(scalar: np.ndarray, *, symmetric: bool = False) -> tuple[float, float]:
     lo, hi = np.percentile(scalar, [2, 98])
     if hi - lo < 1e-14:
         lo, hi = float(scalar.min()), float(scalar.max() + 1e-12)
-    return float(lo), float(hi)
+    lo, hi = float(lo), float(hi)
+    if symmetric:
+        vmax = max(abs(lo), abs(hi), 1e-12)
+        return -vmax, vmax
+    return lo, hi
 
 
 def _draw_bunny_frame(
@@ -299,7 +307,7 @@ def figure_property_contour(
         cmap = "BuPu"
     else:
         cmap = "viridis"
-    lo, hi = _scalar_limits(scalar)
+    lo, hi = _scalar_limits(scalar, symmetric=(property_name == "Mean stress"))
     radius = float(np.max(np.linalg.norm(V, axis=1)))
 
     fig, ax = plt.subplots(figsize=figsize)
@@ -345,7 +353,7 @@ def plotly_property_contour(
         varsigma=varsigma,
     )
     scalar = fields[property_name]
-    lo, hi = _scalar_limits(scalar)
+    lo, hi = _scalar_limits(scalar, symmetric=(property_name == "Mean stress"))
     if property_name == "Mean stress":
         colorscale = "RdBu_r"
     elif property_name == "Dislocation density":
