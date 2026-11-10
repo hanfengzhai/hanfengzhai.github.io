@@ -459,11 +459,14 @@ def draw_slit(ax, t=1.0):
     Tip at the origin; open faces for $x\\le 0$; ligament $x\\ge 0$ with
     symmetry ticks $u_y=0$ (not roller supports). Remote tension on top.
     The FEM solves the upper-right quarter of the specimen.
+
+    All annotations stay inside the axes limits with clear gaps so the
+    compact Streamlit panel / GIF never stacks labels on each other.
     """
     t = _clamp01(t)
     ax.add_patch(Rectangle((-1, -1), 2, 2, fill=False, ec="0.15", lw=1.2, zorder=3))
 
-    open_amp = 0.18 * t
+    open_amp = 0.16 * t
     xs = np.linspace(-1.0, 0.0, 40)
     tip_blend = np.clip((-xs) / 0.35, 0.0, 1.0)
     yu = open_amp * tip_blend
@@ -476,22 +479,33 @@ def draw_slit(ax, t=1.0):
     ax.plot([0.0, 1.0], [0.0, 0.0], color="0.15", lw=1.2, solid_capstyle="butt", zorder=4)
     ax.plot([0.0], [0.0], "o", color="0.15", ms=3.5, zorder=5)
 
-    ax.plot([-1.0, 0.0], [-1.18, -1.18], color="0.3", lw=0.7)
-    ax.plot([0.0, 1.0], [-1.18, -1.18], color="0.3", lw=0.7)
-    ax.text(-0.5, -1.32, r"$a$", ha="center", va="top", fontsize=FS)
-    ax.text(0.5, -1.32, r"$a$", ha="center", va="top", fontsize=FS)
-    # Caption below the a-bar so it never meets the load / title band.
+    if t > 0.35:
+        ax.add_patch(
+            Circle(
+                (0.10, 0.0),
+                0.18 * t,
+                facecolor=HYDR,
+                edgecolor="none",
+                alpha=0.18 * t,
+                zorder=2,
+            )
+        )
+
+    # Ligament symmetry ticks; label well below the ticks.
+    for x in np.linspace(0.22, 0.90, 5):
+        ax.plot([x, x], [-0.05, 0.05], color="0.15", lw=0.7, zorder=4)
     ax.text(
-        0.0, -1.58, "Local tip window",
-        fontsize=FS - 2, color="0.4", ha="center", va="top",
+        0.55, -0.42, r"$u_y=0$",
+        fontsize=FS - 1, color="0.35", ha="center", va="top",
     )
 
+    # Remote tension: arrows on the top edge; load symbol outside to the right.
     if t > 0.15:
-        for x in np.linspace(-0.8, 0.8, 6):
+        for x in np.linspace(-0.75, 0.75, 6):
             ax.add_patch(
                 FancyArrowPatch(
                     (x, 1.02),
-                    (x, 1.16),
+                    (x, 1.18),
                     arrowstyle="-|>",
                     mutation_scale=8,
                     lw=0.8,
@@ -500,33 +514,25 @@ def draw_slit(ax, t=1.0):
                     shrinkB=0,
                 )
             )
-        # Place load label to the right of the arrow row (clear of the title).
         ax.text(
-            1.05, 1.09, r"$\sigma_{yy}^{\infty}$",
+            1.12, 1.10, r"$\sigma_{yy}^{\infty}$",
             ha="left", va="center", fontsize=FS,
         )
 
-    if t > 0.35:
-        ax.add_patch(
-            Circle(
-                (0.12, 0.0),
-                0.22 * t,
-                facecolor=HYDR,
-                edgecolor="none",
-                alpha=0.18 * t,
-                zorder=2,
-            )
-        )
-
-    # Ligament symmetry ticks on y = 0, x > 0 (uy = 0); not roller supports.
-    for x in np.linspace(0.18, 0.92, 5):
-        ax.plot([x, x], [-0.06, 0.06], color="0.15", lw=0.7, zorder=4)
+    # Dimension bar and a-labels, then caption underneath with a clear gap.
+    ax.plot([-1.0, 0.0], [-1.22, -1.22], color="0.3", lw=0.7)
+    ax.plot([0.0, 1.0], [-1.22, -1.22], color="0.3", lw=0.7)
+    ax.plot([0.0, 0.0], [-1.26, -1.18], color="0.3", lw=0.7)
+    ax.text(-0.5, -1.36, r"$a$", ha="center", va="top", fontsize=FS)
+    ax.text(0.5, -1.36, r"$a$", ha="center", va="top", fontsize=FS)
     ax.text(
-        0.55, -0.28, r"$u_y=0$",
-        fontsize=FS - 2, color="0.35", ha="center", va="top",
+        0.0, -1.58, "Local tip window",
+        fontsize=FS - 2, color="0.4", ha="center", va="top",
     )
-    ax.set_xlim(-1.45, 1.55)
-    ax.set_ylim(-1.82, 1.45)
+
+    # Room for title above, caption below, and σ to the right — no shared band.
+    ax.set_xlim(-1.35, 1.70)
+    ax.set_ylim(-1.78, 1.40)
     _finish(ax)
     _title(ax, t)
 
