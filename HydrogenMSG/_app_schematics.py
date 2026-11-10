@@ -475,19 +475,16 @@ def draw_slit(ax, t=1.0):
     # Ligament ahead of the tip (closed).
     ax.plot([0.0, 1.0], [0.0, 0.0], color="0.15", lw=1.2, solid_capstyle="butt", zorder=4)
     ax.plot([0.0], [0.0], "o", color="0.15", ms=3.5, zorder=5)
-    ax.text(
-        -0.5, 0.16 + 0.55 * open_amp, "Centre crack",
-        fontsize=FS - 1, color="0.25", ha="center",
-    )
-    ax.text(
-        0.0, 1.42, "Local tip window",
-        fontsize=FS - 2, color="0.4", ha="center", va="bottom",
-    )
 
-    ax.plot([-1.0, 0.0], [-1.14, -1.14], color="0.3", lw=0.7)
-    ax.plot([0.0, 1.0], [-1.14, -1.14], color="0.3", lw=0.7)
-    ax.text(-0.5, -1.28, r"$a$", ha="center", va="top", fontsize=FS)
-    ax.text(0.5, -1.28, r"$a$", ha="center", va="top", fontsize=FS)
+    ax.plot([-1.0, 0.0], [-1.18, -1.18], color="0.3", lw=0.7)
+    ax.plot([0.0, 1.0], [-1.18, -1.18], color="0.3", lw=0.7)
+    ax.text(-0.5, -1.32, r"$a$", ha="center", va="top", fontsize=FS)
+    ax.text(0.5, -1.32, r"$a$", ha="center", va="top", fontsize=FS)
+    # Caption below the a-bar so it never meets the load / title band.
+    ax.text(
+        0.0, -1.58, "Local tip window",
+        fontsize=FS - 2, color="0.4", ha="center", va="top",
+    )
 
     if t > 0.15:
         for x in np.linspace(-0.8, 0.8, 6):
@@ -503,7 +500,11 @@ def draw_slit(ax, t=1.0):
                     shrinkB=0,
                 )
             )
-        ax.text(0.0, 1.28, r"$\sigma_{yy}^{\infty}$", ha="center", va="bottom", fontsize=FS)
+        # Place load label to the right of the arrow row (clear of the title).
+        ax.text(
+            1.05, 1.09, r"$\sigma_{yy}^{\infty}$",
+            ha="left", va="center", fontsize=FS,
+        )
 
     if t > 0.35:
         ax.add_patch(
@@ -521,11 +522,11 @@ def draw_slit(ax, t=1.0):
     for x in np.linspace(0.18, 0.92, 5):
         ax.plot([x, x], [-0.06, 0.06], color="0.15", lw=0.7, zorder=4)
     ax.text(
-        0.55, -0.22, r"ligament symmetry ($u_y=0$)",
+        0.55, -0.28, r"$u_y=0$",
         fontsize=FS - 2, color="0.35", ha="center", va="top",
     )
-    ax.set_xlim(-1.45, 1.45)
-    ax.set_ylim(-1.55, 1.55)
+    ax.set_xlim(-1.45, 1.55)
+    ax.set_ylim(-1.82, 1.45)
     _finish(ax)
     _title(ax, t)
 
