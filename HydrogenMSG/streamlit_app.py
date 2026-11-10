@@ -159,6 +159,20 @@ _UI_CSS = """
   [data-testid="stSlider"] {
     padding-top: 0.1rem !important;
     padding-bottom: 0.15rem !important;
+    overflow: hidden !important;
+  }
+  /* Keep thumb values and min/max ticks inside each column (no bleed into neighbours). */
+  div[data-testid="column"]:has([data-testid="stSlider"]) {
+    overflow: hidden !important;
+    min-width: 0 !important;
+  }
+  [data-testid="stThumbValue"] {
+    font-size: 0.72rem !important;
+    padding: 0 0.15rem !important;
+  }
+  [data-testid="stTickBarMin"],
+  [data-testid="stTickBarMax"] {
+    font-size: 0.62rem !important;
   }
   /* Solve / primary actions: Cardinal fill, white label. */
   .stButton > button[kind="primary"],
@@ -350,7 +364,7 @@ def _new_panel(schematic=False):
 
 
 @st.cache_data(show_spinner=False)
-def _schematic_gif(kind: str, version: int = 13) -> bytes:
+def _schematic_gif(kind: str, version: int = 14) -> bytes:
     # ``version`` busts stale GIF caches when schematics change.
     return schematic_gif_bytes(kind, figsize=(PANEL, PANEL), dpi=FIG_DPI)
 
@@ -358,7 +372,7 @@ def _schematic_gif(kind: str, version: int = 13) -> bytes:
 def show_schematic(kind: str):
     """Looping Before ↔ After schematic (animated GIF)."""
     try:
-        gif = _schematic_gif(kind, version=13)
+        gif = _schematic_gif(kind, version=14)
         try:
             st.image(gif, use_container_width=True)
         except TypeError:
@@ -874,11 +888,11 @@ def page_property_contour(p: Params):
     with c1:
         prop = st.selectbox("Property", list(_bunny.PROPERTY_CHOICES), index=0)
         pattern = st.selectbox("Deformation pattern", list(_bunny.PATTERN_CHOICES), index=0)
-        stress_amp = st.slider(r"Stress amplitude  $\sigma_{\mathrm{m}}/\sigma_{\mathrm{Y}}$", 0.0, 3.0, 1.2, 0.1)
-        gnd_weight = st.slider("GND weight in $\\rho_{\\mathrm{T}}$", 0.0, 1.0, 0.7, 0.05)
+        stress_amp = st.slider("Stress amplitude σ_m / σ_Y", 0.0, 3.0, 1.2, 0.1)
+        gnd_weight = st.slider("GND weight in ρ_T", 0.0, 1.0, 0.7, 0.05)
         ssd_level = st.slider("SSD background", 0.05, 1.0, 0.25, 0.05)
         theta0 = st.select_slider(
-            r"Remote lattice occupancy  $\theta_{\mathrm{L}}^{0}$",
+            "Remote lattice occupancy θ_L⁰",
             options=[1e-7, 1e-6, 1e-5, 1e-4],
             value=1e-6,
             format_func=lambda x: f"{x:.0e}",
@@ -942,7 +956,7 @@ def page_torsion(p: Params):
         r"The enhancement factor is "
         r"$Q=1+(N+1)\,l\Gamma/(a\,f^{2}(\Gamma/\sqrt{3}))$."
     )
-    gamma = st.slider(r"Surface strain $\Gamma$", 0.02, 0.20, 0.05, 0.01)
+    gamma = st.slider("Surface strain Γ", 0.02, 0.20, 0.05, 0.01)
     r = np.linspace(0.0, 1.0, 200)
     c0, c1, c2 = st.columns(3, gap="small")
 
@@ -990,7 +1004,7 @@ def page_bending(p: Params):
         r"Trapped fields are normalized by $c_{T0}=\chi\theta_{\mathrm{T}}^{0}/(l b^{2})$; "
         r"each curve is relative to its own thick-beam reference $h=50\,\mu\mathrm{m}$."
     )
-    eps_s = st.slider(r"Surface strain $\varepsilon_s$", 0.01, 0.10, 0.05, 0.01)
+    eps_s = st.slider("Surface strain ε_s", 0.01, 0.10, 0.05, 0.01)
     h = np.logspace(np.log10(0.2e-6), np.log10(50e-6), 40)
     c_l, c_t = zip(*[bending_average_uptake(hh, eps_s, p) for hh in h])
     c_l_x, c_t_x = zip(*[
@@ -1071,7 +1085,7 @@ def page_void(p: Params):
         r"Trapped fields use $c_{T0}=\chi\theta_{\mathrm{T}}^{0}/(l b^{2})$. "
         r"The wall panel plots the dimensionless $l\eta=lb^{2}N_{\mathrm{T}}^{\mathrm{GND}}/\chi$."
     )
-    delta = st.slider(r"Expansion ratio $\delta$", 0.05, 0.40, 0.20, 0.01)
+    delta = st.slider("Expansion ratio δ", 0.05, 0.40, 0.20, 0.01)
     s = np.logspace(0.0, np.log10(8.0), 300)
     r0 = np.logspace(np.log10(0.05e-6), np.log10(20e-6), 80)
     # l η at the wall (= l b² N_T^GND / χ)
@@ -1121,7 +1135,7 @@ def page_cavitation():
         r"lower-order approximation. "
         r"The quadrature is coarser than the manuscript maps."
     )
-    xi = st.slider(r"Softening coefficient $\xi$", 0.0, 0.6, 0.3, 0.05)
+    xi = st.slider("Softening coefficient ξ", 0.0, 0.6, 0.3, 0.05)
     l_over = (0.0, 0.5, 1.0, 2.0, 5.0, 10.0)
     c0, c1 = st.columns([0.9, 1.2], gap="small")
     with c0:
@@ -1163,10 +1177,10 @@ def page_fem_void():
         rf"$\mu_{{\mathrm{{FEM}}}}/\sigma_{{\mathrm{{Y}}}}"
         rf"={p_ref.mu_fem_over_sigY:.2f}$."
     )
-    c1, c2, c3 = st.columns(3)
-    l_over = c1.slider(r"$l/R_0$", 1.0, 10.0, 10.0, 1.0)
-    s_z = c2.slider(r"$\sigma_{zz}^{\infty}/\sigma_{\mathrm{Y}}$", 1.0, 4.0, 3.6, 0.1)
-    s_r = c3.slider(r"$\sigma_{rr}^{\infty}/\sigma_{\mathrm{Y}}$", 0.5, 3.0, 2.2, 0.1)
+    c1, c2, c3 = st.columns(3, gap="medium")
+    l_over = c1.slider("l / R₀", 1.0, 10.0, 10.0, 1.0)
+    s_z = c2.slider("σ_zz^∞ / σ_Y", 1.0, 4.0, 3.6, 0.1)
+    s_r = c3.slider("σ_rr^∞ / σ_Y", 0.5, 3.0, 2.2, 0.1)
     st.caption("The first solve on a new setting takes about ten seconds. Repeated settings are cached.")
     if st.button("Solve void", type="primary"):
         st.session_state["void_key"] = (float(l_over), float(s_z), float(s_r))
@@ -1256,10 +1270,10 @@ def page_fem_slit():
         rf"$\mu_{{\mathrm{{FEM}}}}/\sigma_{{\mathrm{{Y}}}}"
         rf"={p_ref.mu_fem_over_sigY:.2f}$."
     )
-    c1, c2, c3 = st.columns(3)
-    l_over = c1.slider(r"$l/a$", 1.0, 8.0, 5.0, 0.5)
-    remote = c2.slider(r"$\sigma_{yy}^{\infty}/\sigma_{\mathrm{Y}}$", 0.4, 1.4, 1.0, 0.1)
-    xi = c3.slider(r"Softening $\xi$", 0.0, 0.5, 0.3, 0.05)
+    c1, c2, c3 = st.columns(3, gap="medium")
+    l_over = c1.slider("l / a", 1.0, 8.0, 5.0, 0.5)
+    remote = c2.slider("σ_yy^∞ / σ_Y", 0.4, 1.4, 1.0, 0.1)
+    xi = c3.slider("Softening ξ", 0.0, 0.5, 0.3, 0.05)
     st.caption("The first solve on a new setting takes about half a minute. Repeated settings are cached.")
     if st.button("Solve slit", type="primary"):
         st.session_state["slit_key"] = (float(l_over), float(remote), float(xi))

@@ -519,20 +519,16 @@ def draw_slit(ax, t=1.0):
             ha="left", va="center", fontsize=FS,
         )
 
-    # Dimension bar and a-labels, then caption underneath with a clear gap.
+    # Dimension bar and a-labels only (page copy names the local tip window).
     ax.plot([-1.0, 0.0], [-1.22, -1.22], color="0.3", lw=0.7)
     ax.plot([0.0, 1.0], [-1.22, -1.22], color="0.3", lw=0.7)
     ax.plot([0.0, 0.0], [-1.26, -1.18], color="0.3", lw=0.7)
-    ax.text(-0.5, -1.36, r"$a$", ha="center", va="top", fontsize=FS)
-    ax.text(0.5, -1.36, r"$a$", ha="center", va="top", fontsize=FS)
-    ax.text(
-        0.0, -1.58, "Local tip window",
-        fontsize=FS - 2, color="0.4", ha="center", va="top",
-    )
+    ax.text(-0.5, -1.40, r"$a$", ha="center", va="top", fontsize=FS)
+    ax.text(0.5, -1.40, r"$a$", ha="center", va="top", fontsize=FS)
 
-    # Room for title above, caption below, and σ to the right — no shared band.
+    # Room for title above and σ to the right — no shared label band.
     ax.set_xlim(-1.35, 1.70)
-    ax.set_ylim(-1.78, 1.40)
+    ax.set_ylim(-1.65, 1.40)
     _finish(ax)
     _title(ax, t)
 
