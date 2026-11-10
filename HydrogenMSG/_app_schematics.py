@@ -454,10 +454,11 @@ def draw_cavitation(ax, t=1.0):
 
 
 def draw_slit(ax, t=1.0):
-    """Mode-I centre-crack plate (full specimen view).
+    """Local tip window of a Mode-I centre crack (side $2a$).
 
-    ``t=0`` closed notch, ``t=1`` opened faces under remote tension.
-    Tip-centred square of side $2a$; the FEM solves the upper-right quarter.
+    Tip at the origin; open faces for $x\\le 0$; ligament $x\\ge 0$ with
+    symmetry ticks $u_y=0$ (not roller supports). Remote tension on top.
+    The FEM solves the upper-right quarter of the specimen.
     """
     t = _clamp01(t)
     ax.add_patch(Rectangle((-1, -1), 2, 2, fill=False, ec="0.15", lw=1.2, zorder=3))
@@ -471,8 +472,17 @@ def draw_slit(ax, t=1.0):
     ax.plot(xs, yl, color="0.15", lw=2.0, solid_capstyle="butt", zorder=4)
     if t > 0.05:
         ax.fill_between(xs, yl, yu, color="white", zorder=3.5, alpha=1.0)
+    # Ligament ahead of the tip (closed).
+    ax.plot([0.0, 1.0], [0.0, 0.0], color="0.15", lw=1.2, solid_capstyle="butt", zorder=4)
     ax.plot([0.0], [0.0], "o", color="0.15", ms=3.5, zorder=5)
-    ax.text(-0.5, 0.16 + 0.55 * open_amp, "Notch", fontsize=FS - 1, color="0.25", ha="center")
+    ax.text(
+        -0.5, 0.16 + 0.55 * open_amp, "Centre crack",
+        fontsize=FS - 1, color="0.25", ha="center",
+    )
+    ax.text(
+        0.0, 1.42, "Local tip window",
+        fontsize=FS - 2, color="0.4", ha="center", va="bottom",
+    )
 
     ax.plot([-1.0, 0.0], [-1.14, -1.14], color="0.3", lw=0.7)
     ax.plot([0.0, 1.0], [-1.14, -1.14], color="0.3", lw=0.7)
@@ -507,8 +517,13 @@ def draw_slit(ax, t=1.0):
             )
         )
 
-    for x in np.linspace(-0.7, 0.7, 5):
-        ax.add_patch(Circle((x, -1.08), 0.035, facecolor="w", edgecolor="0.15", lw=0.6, zorder=4))
+    # Ligament symmetry ticks on y = 0, x > 0 (uy = 0); not roller supports.
+    for x in np.linspace(0.18, 0.92, 5):
+        ax.plot([x, x], [-0.06, 0.06], color="0.15", lw=0.7, zorder=4)
+    ax.text(
+        0.55, -0.22, r"ligament symmetry ($u_y=0$)",
+        fontsize=FS - 2, color="0.35", ha="center", va="top",
+    )
     ax.set_xlim(-1.45, 1.45)
     ax.set_ylim(-1.55, 1.55)
     _finish(ax)

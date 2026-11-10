@@ -350,7 +350,7 @@ def _new_panel(schematic=False):
 
 
 @st.cache_data(show_spinner=False)
-def _schematic_gif(kind: str, version: int = 10) -> bytes:
+def _schematic_gif(kind: str, version: int = 11) -> bytes:
     # ``version`` busts stale GIF caches when schematics change.
     return schematic_gif_bytes(kind, figsize=(PANEL, PANEL), dpi=FIG_DPI)
 
@@ -358,7 +358,7 @@ def _schematic_gif(kind: str, version: int = 10) -> bytes:
 def show_schematic(kind: str):
     """Looping Before ↔ After schematic (animated GIF)."""
     try:
-        gif = _schematic_gif(kind, version=10)
+        gif = _schematic_gif(kind, version=11)
         try:
             st.image(gif, use_container_width=True)
         except TypeError:
@@ -559,8 +559,10 @@ _EXPLORER = {
                 r"\quad \rho_{\mathrm{G}}=\eta/b"
             ),
             "body": (
-                "MSG identifies the total dislocation line length per unit volume with the sum of "
-                "SSD and GND densities. The GND term is fixed by lattice curvature through $\\eta$."
+                "MSG takes $\\rho_{\\mathrm{T}}$ as an effective forest-dislocation density "
+                "(SSD + GND) that sets the flow stress. The GND term follows lattice curvature "
+                "through $\\eta$. It need not equal the complete geometric line density "
+                "available for trapping."
             ),
         },
         {
@@ -584,9 +586,9 @@ _EXPLORER = {
             "teaser": "Taylor density → trap sites",
             "equation": r"N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b",
             "body": (
-                "Key constitutive closure: dislocation line length also sets the "
-                "hydrogen trap-site inventory. Size-dependent plasticity therefore sets local "
-                "storage capacity as well as strength."
+                "Modelling closure: the Taylor density is converted to a dislocation trap-site "
+                "inventory through $N_{\\mathrm{T}}=\\chi\\rho_{\\mathrm{T}}/b$. "
+                "Size-dependent plasticity therefore sets local storage capacity as well as strength."
             ),
         },
         {
@@ -614,7 +616,8 @@ _EXPLORER = {
             ),
             "body": (
                 "Oriani local equilibrium maps lattice occupancy into trap occupancy at each material "
-                "point. No separate transient diffusion solve is required under this closure."
+                "point. No transient diffusion solve is performed because this demo assumes global "
+                "transport equilibrium with a fixed-potential reservoir."
             ),
         },
         {
@@ -1240,6 +1243,8 @@ def page_fem_slit():
         r"Plane-strain centre crack of half-length $a$ using lower-order "
         r"deformation-theory MSG with Formulation C softening "
         r"(upper-right quarter with symmetry boundaries). "
+        r"The schematic is a local tip window of that centre crack: open faces behind "
+        r"the tip and ligament symmetry ahead ($u_y=0$). "
         r"For the qualitative FEM demonstrations, the uniaxial response is regularized "
         r"with the elastic--power-law form used in the cavitation extension. "
         r"The open slit face is masked. The mesh is coarser than the manuscript figure. "
