@@ -914,14 +914,12 @@ def page_property_contour(p: Params):
             "scrollZoom": True,
         })
     st.caption(
-        r"Shared pattern $p$: $\sigma_{\mathrm{m}}=A\,p$, "
-        r"$\varepsilon_e\sim|p|$, "
-        r"$\rho_{\mathrm{T}}\sim N_{\mathrm{SSD}}+f^{2}(\varepsilon_e)"
-        r"+w_{\mathrm{GND}}\,\eta$; "
-        r"$N_{\mathrm{T}}=\chi\rho_{\mathrm{T}}/b$; "
-        r"$\theta_{\mathrm{L}}\propto\exp[\sigma_{\mathrm{m}}\bar{V}_{\mathrm{H}}/(RT)]$; "
-        r"$c_{\mathrm{T}}=N_{\mathrm{T}}\,\theta_{\mathrm{T}}(\theta_{\mathrm{L}})$. "
-        r"Amplitudes are normalized for display."
+        "Shared pattern p: σ_m = A p, ε_e ∼ |p|, "
+        "ρ_T ∼ N_SSD + f²(ε_e) + w_GND η; "
+        "N_T = χ ρ_T / b; "
+        "θ_L ∝ exp[σ_m V̄_H / (RT)]; "
+        "c_T = N_T θ_T(θ_L). "
+        "Amplitudes are normalized for display."
     )
 
 
@@ -1359,17 +1357,16 @@ def main():
         "analytical and interactive examples"
     )
     st.sidebar.caption(
-        rf"$l={p.l * 1e6:.1f}\,\mu\mathrm{{m}}$, "
-        rf"$l_\varepsilon={p.l_eps * 1e6:.3f}\,\mu\mathrm{{m}}$, "
-        rf"$N={p.N:g}$, $\chi={p.chi:g}$, "
-        rf"$\varsigma={p.varsigma:.3f}$, "
-        rf"$K_T={kt_mant:.2f}\times 10^{{{kt_exp}}}$"
+        f"l = {p.l * 1e6:.1f} μm, "
+        f"l_ε = {p.l_eps * 1e6:.3f} μm, "
+        f"N = {p.N:g}, χ = {p.chi:g}, "
+        f"ς = {p.varsigma:.3f}, "
+        f"K_T = {kt_mant:.2f}×10^{kt_exp}"
     )
     st.sidebar.caption(
-        rf"$\mu_{{\mathrm{{ref}}}}/\sigma_{{\mathrm{{Y}}}}={p.mu_over_sigY:g}$ "
-        rf"(MSG length); FEM "
-        rf"$\nu={p.nu_fem:g}$, "
-        rf"$\mu_{{\mathrm{{FEM}}}}/\sigma_{{\mathrm{{Y}}}}={p.mu_fem_over_sigY:.1f}$."
+        f"μ_ref / σ_Y = {p.mu_over_sigY:g} (MSG length); "
+        f"FEM ν = {p.nu_fem:g}, "
+        f"μ_FEM / σ_Y = {p.mu_fem_over_sigY:.1f}."
     )
     page = st.sidebar.radio("Section", PAGES, index=0)
     if page == "Explore":
