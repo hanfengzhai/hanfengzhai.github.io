@@ -16,6 +16,10 @@
   --site-gutter: clamp(24px, 3vw, 56px);
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 html,
 body {
   /* clip avoids creating a secondary scrollport (hidden can break sticky/fixed nav) */

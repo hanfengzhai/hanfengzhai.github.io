@@ -117,6 +117,10 @@ hr{
 	border-radius: 0;
 }
 
+.scrolling-track::-webkit-scrollbar-thumb:hover {
+	background-color: #b5aa95;
+}
+
 .scrolling-card {
 	border: 0;
 	border-radius: 0;

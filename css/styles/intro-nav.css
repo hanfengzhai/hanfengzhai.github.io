@@ -1,32 +1,44 @@
-/* Full-bleed edge-to-edge minimalist scholarly sticky top navigation bar */
-#content > .intro-inline-nav,
-#content > .site-pill-nav,
-#content > .home-pill-nav,
+/* Single-source-of-truth sticky minimalist scholarly top navigation bar across all site pages */
+html {
+  scrollbar-gutter: stable;
+}
+
 .intro-inline-nav,
-.site-pill-nav {
+.site-pill-nav,
+.home-pill-nav {
   position: sticky;
   top: 0;
   z-index: 120;
-  width: auto;
+  width: 100%;
   max-width: none;
-  margin: 0 calc(-1 * var(--site-gutter, 32px)) 24px;
-  padding: env(safe-area-inset-top, 0px) var(--site-gutter, 32px) 0;
-  background-color: rgba(245, 240, 228, 0.96);
+  margin: 0;
+  padding: env(safe-area-inset-top, 0px) var(--site-gutter, clamp(24px, 3vw, 56px)) 0;
+  background-color: #f5f0e4;
   border: 0;
   border-bottom: 1px solid #dcd4c4;
   border-radius: 0;
   box-shadow: none;
   box-sizing: border-box;
-  transition: background-color 0.15s ease, border-bottom-color 0.15s ease;
+  text-rendering: optimizeLegibility;
+  transition: border-bottom-color 0.15s ease;
 }
 
+/* Inside #content.outer, bleed edge-to-edge past horizontal gutters with uniform 24px bottom rhythm */
+#content > .intro-inline-nav,
+#content > .site-pill-nav,
+#content > .home-pill-nav {
+  width: auto;
+  margin: 0 calc(-1 * var(--site-gutter, clamp(24px, 3vw, 56px))) 24px;
+}
+
+.intro-inline-nav.is-stuck,
+.site-pill-nav.is-stuck,
+.home-pill-nav.is-stuck,
 #content > .intro-inline-nav.is-stuck,
 #content > .site-pill-nav.is-stuck,
-#content > .home-pill-nav.is-stuck,
-.intro-inline-nav.is-stuck,
-.site-pill-nav.is-stuck {
-  background-color: rgba(245, 240, 228, 0.98);
-  border-bottom-color: #cfc6b4;
+#content > .home-pill-nav.is-stuck {
+  background-color: #f5f0e4;
+  border-bottom-color: #cbc1ad;
   box-shadow: none;
 }
 
@@ -45,21 +57,28 @@
   border-radius: 0;
   background: transparent;
   box-shadow: none;
+  box-sizing: border-box;
 }
 
 .intro-nav-link,
+.intro-nav-link:link,
+.intro-nav-link:visited,
 .intro-nav-bar .intro-nav-link,
+.intro-nav-bar .intro-nav-link:link,
+.intro-nav-bar .intro-nav-link:visited,
 .article-entry .intro-nav-bar .intro-nav-link {
   display: inline-block;
   padding: 13px 2px 11px;
-  margin-bottom: -1px;
+  margin: 0 0 -1px;
   border: 0;
   border-bottom: 2px solid transparent;
   border-radius: 0;
+  box-sizing: border-box;
   font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 14px;
   line-height: 20px;
   font-weight: 400;
+  font-style: normal;
   letter-spacing: 0.01em;
   color: #4a443b;
   background: transparent;
@@ -81,7 +100,11 @@
 }
 
 .intro-nav-link-active,
+.intro-nav-link-active:link,
+.intro-nav-link-active:visited,
 .intro-nav-bar .intro-nav-link-active,
+.intro-nav-bar .intro-nav-link-active:link,
+.intro-nav-bar .intro-nav-link-active:visited,
 .article-entry .intro-nav-bar .intro-nav-link-active {
   color: #1a1815;
   font-weight: 500;
@@ -101,13 +124,16 @@
 }
 
 @media (max-width: 767px) {
+  .intro-inline-nav,
+  .site-pill-nav,
+  .home-pill-nav {
+    padding: env(safe-area-inset-top, 0px) var(--site-gutter, 16px) 0;
+  }
+
   #content > .intro-inline-nav,
   #content > .site-pill-nav,
-  #content > .home-pill-nav,
-  .intro-inline-nav,
-  .site-pill-nav {
+  #content > .home-pill-nav {
     margin: 0 calc(-1 * var(--site-gutter, 16px)) 20px;
-    padding: env(safe-area-inset-top, 0px) var(--site-gutter, 16px) 0;
   }
 
   .intro-nav-bar,
@@ -118,6 +144,8 @@
   }
 
   .intro-nav-link,
+  .intro-nav-link:link,
+  .intro-nav-link:visited,
   .intro-nav-bar .intro-nav-link,
   .article-entry .intro-nav-bar .intro-nav-link {
     padding: 11px 1px 9px;
@@ -135,6 +163,8 @@
   }
 
   .intro-nav-link,
+  .intro-nav-link:link,
+  .intro-nav-link:visited,
   .intro-nav-bar .intro-nav-link,
   .article-entry .intro-nav-bar .intro-nav-link {
     padding: 10px 1px 8px;
@@ -148,6 +178,7 @@
   display: none !important;
 }
 
+.intro-inline-nav + section#main .article,
 .site-pill-nav + section#main .article,
 .home-pill-nav + section#main .article {
   margin-top: 0;
