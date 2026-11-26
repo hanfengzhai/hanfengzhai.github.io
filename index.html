@@ -70,11 +70,11 @@
     color: #26221d;
   }
 
-  /* Full-screen two-column editorial split */
+  /* Full-screen two-column editorial split: main content dominant (~58%), compact publications rail (~42%) */
   #post-index .article-entry .home-split {
     display: grid;
-    grid-template-columns: clamp(380px, 31.5%, 520px) minmax(0, 1fr);
-    column-gap: clamp(24px, 2.2vw, 40px);
+    grid-template-columns: minmax(0, 1.38fr) minmax(0, 1fr);
+    column-gap: clamp(28px, 2.5vw, 44px);
     align-items: start;
   }
 
@@ -85,7 +85,7 @@
 
   #post-index .article-entry .home-right-rail {
     border-left: 1px solid #dfd7c7;
-    padding-left: clamp(24px, 2.2vw, 40px);
+    padding-left: clamp(28px, 2.5vw, 44px);
   }
 
   @media (min-width: 961px) and (min-height: 820px) {
@@ -130,7 +130,7 @@
     font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
     font-variant: small-caps;
     font-feature-settings: "smcp" 1;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 400;
     letter-spacing: 0.04em;
     line-height: 1.12;
@@ -146,14 +146,14 @@
     background: transparent;
     width: 100%;
     height: 0;
-    margin: 7px 0 8px;
+    margin: 8px 0 9px;
     padding: 0;
   }
 
   #post-index .article-entry .intro-header-affil {
     margin: 0;
-    font-size: 13.5px;
-    line-height: 1.5;
+    font-size: 15px;
+    line-height: 1.52;
     color: #26221d;
   }
 
@@ -192,9 +192,9 @@
   }
 
   #post-index .article-entry .intro-header-photo {
-    flex: 0 0 104px;
-    width: 104px;
-    height: 104px;
+    flex: 0 0 128px;
+    width: 128px;
+    height: 128px;
     padding: 0;
     background: transparent;
     border: 1px solid #d5cbb8;
@@ -229,21 +229,21 @@
 
   #post-index .article-entry .intro-header-contact .intro-header-line {
     margin: 0;
-    font-size: 13.5px;
-    line-height: 1.44;
+    font-size: 14.5px;
+    line-height: 1.48;
     color: #4a443b;
   }
 
   #post-index .article-entry .intro-header-email {
     font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 12.5px;
+    font-size: 13px;
     font-weight: 400;
     line-height: 1.4;
     color: #1a1815;
     background: #e6e4de;
     border: 0;
     border-radius: 0;
-    padding: 2px 7px;
+    padding: 2px 8px;
     white-space: nowrap;
     display: inline-block;
   }
@@ -332,13 +332,13 @@
     text-decoration: none;
   }
 
-  /* Left rail: open-paper bio */
+  /* Left rail: primary open-paper bio */
   #post-index .article-entry .intro-bio {
-    margin-top: 11px;
+    margin-top: 18px;
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 13px;
   }
 
   #post-index .article-entry .intro-bio-section {
@@ -348,8 +348,8 @@
 
   #post-index .article-entry .intro-bio p {
     margin: 0;
-    font-size: 14.5px;
-    line-height: 1.5;
+    font-size: 16px;
+    line-height: 1.65;
     color: #26221d;
   }
 
@@ -377,25 +377,25 @@
   }
 
   #post-index .article-entry .intro-bio .intro-research-list {
-    margin: 6px 0 0;
-    padding: 0 0 0 16px;
+    margin: 8px 0 0;
+    padding: 0 0 0 18px;
     list-style: none;
   }
 
   #post-index .article-entry .intro-bio .intro-research-list li {
     position: relative;
-    margin: 0 0 4px;
+    margin: 0 0 6px;
     padding-left: 2px;
-    font-size: 14.5px;
-    line-height: 1.54;
+    font-size: 16px;
+    line-height: 1.62;
     color: #26221d;
   }
 
   #post-index .article-entry .intro-bio .intro-research-list li::before {
     content: "";
     position: absolute;
-    left: -14px;
-    top: 8px;
+    left: -15px;
+    top: 10px;
     width: 5px;
     height: 5px;
     border-radius: 50%;
@@ -429,12 +429,16 @@
     padding: 0;
   }
 
+  #post-index .article-entry .home-right-rail .hp-section-title {
+    font-size: 18px;
+  }
+
   #post-index .article-entry .hp-section-all {
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.3;
   }
 
-  /* Right rail: unboxed scholarly publication rows */
+  /* Right rail: compact subordinate publication rows */
   #post-index .article-entry .paper-list {
     display: flex;
     flex-direction: column;
@@ -446,8 +450,8 @@
   #post-index .article-entry .paper-item {
     display: flex;
     align-items: flex-start;
-    gap: 18px;
-    padding: 12px 0;
+    gap: 14px;
+    padding: 11px 0;
     background: transparent;
     border: 0;
     border-bottom: 1px solid #dfd7c7;
@@ -462,9 +466,9 @@
   }
 
   #post-index .article-entry .paper-schematic-frame {
-    flex: 0 0 clamp(156px, 11.8vw, 200px);
-    width: clamp(156px, 11.8vw, 200px);
-    height: clamp(104px, 7.8vw, 134px);
+    flex: 0 0 clamp(108px, 7.6vw, 138px);
+    width: clamp(108px, 7.6vw, 138px);
+    height: clamp(76px, 5.4vw, 96px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -492,8 +496,8 @@
   }
 
   #post-index .article-entry .paper-title {
-    margin: 0 0 4px;
-    font-size: 16px;
+    margin: 0 0 3px;
+    font-size: 14.5px;
     font-weight: 700;
     line-height: 1.34;
     color: #1a1815;
@@ -514,8 +518,8 @@
 
   #post-index .article-entry .paper-authors {
     margin: 0 0 2px;
-    font-size: 13.5px;
-    line-height: 1.42;
+    font-size: 12.5px;
+    line-height: 1.4;
     color: #4a443b;
   }
 
@@ -526,8 +530,8 @@
 
   #post-index .article-entry .paper-venue {
     margin: 0;
-    font-size: 13.5px;
-    line-height: 1.42;
+    font-size: 12.5px;
+    line-height: 1.4;
     color: #4a443b;
   }
 
@@ -540,18 +544,18 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 8px;
-    margin: 5px 0 0;
+    gap: 7px;
+    margin: 4px 0 0;
   }
 
   #post-index .article-entry .paper-links .bracket-link {
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.35;
   }
 
   /* Native zero-JS collapsible TL;DR disclosure */
   #post-index .article-entry details.paper-tldr {
-    margin: 6px 0 0;
+    margin: 4px 0 0;
     padding: 0;
   }
 
@@ -562,7 +566,7 @@
     list-style: none;
     cursor: pointer;
     font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 500;
     letter-spacing: 0.02em;
     line-height: 1.4;
@@ -767,7 +771,7 @@
   /* Compact desktop: 961px to 1159px */
   @media (max-width: 1159px) and (min-width: 961px) {
     #post-index .article-entry .home-split {
-      grid-template-columns: clamp(336px, 34%, 390px) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1.32fr) minmax(0, 1fr);
       column-gap: 24px;
     }
 
@@ -776,19 +780,24 @@
     }
 
     #post-index .article-entry .intro-header-photo {
-      flex: 0 0 96px;
-      width: 96px;
-      height: 96px;
+      flex: 0 0 108px;
+      width: 108px;
+      height: 108px;
+    }
+
+    #post-index .article-entry .intro-bio p,
+    #post-index .article-entry .intro-bio .intro-research-list li {
+      font-size: 15px;
     }
 
     #post-index .article-entry .paper-item {
-      gap: 15px;
+      gap: 12px;
     }
 
     #post-index .article-entry .paper-schematic-frame {
-      flex: 0 0 164px;
-      width: 164px;
-      height: 112px;
+      flex: 0 0 100px;
+      width: 100px;
+      height: 72px;
     }
   }
 
