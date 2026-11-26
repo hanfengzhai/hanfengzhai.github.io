@@ -17,190 +17,170 @@
     <link rel="stylesheet" href="/css/vendor/bootstrap.css">
     <link rel="stylesheet" href="/css/styles/dialog.css">
     <link rel="stylesheet" href="/css/styles/header-post.css">
-    <link rel="stylesheet" href="/css/styles/archive.css">
+    <link rel="stylesheet" href="/css/styles/archive.css?v=2">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/styles/site-fonts.css?v=3">
-    <link rel="stylesheet" href="/css/styles/intro-nav.css?v=5">
+    <link rel="stylesheet" href="/css/styles/site-fonts.css?v=4">
+    <link rel="stylesheet" href="/css/styles/intro-nav.css?v=6">
     <style>
-      .teaching-blocks {
-        display: flex;
-        flex-direction: column;
-        gap: 1.25em;
-        margin: 0 0 1.25em;
-      }
-
-      .teaching-block {
-        padding: 1.25em 1.5em 1.5em;
-        border: 1px solid #e8e2d6;
-        border-radius: 0;
-        background: rgba(255, 255, 255, 0.55);
-      }
-
-      .article-entry .teaching-block blockquote {
-        margin: 0 0 1em;
-        padding: 0.1px 16px;
-        font-size: 0.875em;
-        line-height: 1.55;
-        color: inherit;
-        border-left: 2px solid #414141;
-        background: rgba(208, 211, 248, 0.12);
-      }
-
-      .teaching-block ul {
-        margin: 0 0 0 1.5em;
-        padding: 0;
-      }
-
-      .teaching-block li {
-        line-height: 2;
-        margin: 0;
-      }
-
-      .article-entry blockquote {
-        font-size: 0.875em;
-        line-height: 1.55;
-      }
-
       .site-pill-nav + section#main .note-page.article,
       .note-page.article {
         margin-top: 0;
       }
 
+      .note-page .article-entry {
+        color: #1f1c18;
+      }
+
       .note-page .article-entry h1.notes-section-heading {
-        font-size: 1.75rem;
-        font-weight: bold;
-        line-height: 1.2;
-        color: #000;
-        margin: 0;
-        padding: 0 !important;
-      }
-
-      .note-page .article-entry h1.notes-section-heading + .teaching-blocks {
-        margin-top: 1.5em;
-      }
-
-      .note-page .article-entry h1.notes-section-heading + .course-notes-grid {
-        margin-top: 20px;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1.25;
+        color: #1a1815;
+        margin: 0 0 20px;
+        padding: 0 0 10px;
+        border-bottom: 1px solid #dcd4c4;
       }
 
       .note-page .article-entry h1.notes-section-heading:not(:first-child) {
-        margin-top: 26px;
+        margin-top: 40px;
       }
 
       .note-page .article-entry > hr {
         display: none;
       }
 
-      .course-notes-grid {
+      .note-page .teaching-blocks {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 20px;
-        margin: 0 0 28px;
+        grid-template-columns: 1fr;
+        row-gap: 32px;
+        margin: 0;
+        align-items: start;
       }
 
-      .note-group-card {
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        padding: 18px 22px 18px;
-        border: 1px solid #e8e2d6;
+      .note-page .teaching-block {
+        position: relative;
+        padding: 0;
+        border: 0;
         border-radius: 0;
-        background: rgba(255, 255, 255, 0.55);
-        transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        background: transparent;
+        box-shadow: none;
       }
 
-      .note-group-card:hover {
-        border-color: #d9cfbd;
-        background: rgba(255, 255, 255, 0.68);
-        box-shadow: 0 4px 16px rgba(45, 36, 22, 0.045);
-      }
-
-      .note-group-header {
-        display: flex;
-        align-items: baseline;
-        justify-content: space-between;
-        gap: 12px;
-        padding-bottom: 11px;
-        margin-bottom: 6px;
-        border-bottom: 1px solid #e4dccd;
-      }
-
-      .note-group-heading {
-        display: flex;
-        align-items: baseline;
-        gap: 9px;
-        min-width: 0;
-      }
-
-      .note-page .article-entry .note-group-index {
-        font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-        font-size: 12px;
-        font-weight: 600;
-        line-height: 1.2;
-        letter-spacing: 0.04em;
-        color: #8c1515;
-        flex-shrink: 0;
-      }
-
-      .note-page .article-entry h2.note-group-title {
-        margin: 0 !important;
-        padding: 0 !important;
-        border: 0 !important;
-        font-size: 17px;
+      .note-page .article-entry h2.teaching-course-title {
+        margin: 0 0 8px;
+        padding: 0;
+        border: 0;
+        font-size: 19px;
         font-weight: 700;
-        line-height: 1.28;
+        line-height: 1.3;
         color: #1a1815;
       }
 
-      .note-page .article-entry .note-group-count {
-        font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-        font-size: 11.5px;
-        font-weight: 500;
-        line-height: 1.2;
-        letter-spacing: 0.02em;
-        color: #7a7062;
-        white-space: nowrap;
-        flex-shrink: 0;
+      .note-page .article-entry p.teaching-course-desc {
+        margin: 0 0 16px;
+        font-size: 14.5px;
+        line-height: 1.6;
+        color: #524b40;
+      }
+
+      .note-page .article-entry ul.teaching-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        border-top: 1px solid #e6dfd1;
+      }
+
+      .note-page .article-entry ul.teaching-list li {
+        list-style: none;
+        margin: 0;
+        padding: 8px 0;
+        border-bottom: 1px solid #e6dfd1;
+        font-size: 15px;
+        line-height: 1.55;
+        color: #1f1c18;
+      }
+
+      .note-page .article-entry ul.teaching-list li:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .note-page .article-entry ul.teaching-list .legacy-size-3 {
+        font-size: 15px;
+      }
+
+      .note-page .article-entry ul.teaching-list .legacy-color-dimgray {
+        color: #524b40;
+      }
+
+      .note-page .article-entry ul.teaching-list .bracket-link + .bracket-link {
+        margin-left: 8px;
+      }
+
+      .note-page .course-notes-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        row-gap: 28px;
+        margin: 0 0 24px;
+        align-items: start;
+      }
+
+      .note-page .note-group {
+        position: relative;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+      }
+
+      .note-page .article-entry h2.note-group-title {
+        margin: 0 0 8px;
+        padding: 0 0 10px;
+        border: 0;
+        border-bottom: 1px solid #dcd4c4;
+        font-size: 17px;
+        font-weight: 700;
+        line-height: 1.3;
+        color: #1a1815;
       }
 
       .note-page .article-entry ul.note-group-list {
-        list-style: none !important;
-        margin: 0 !important;
-        padding: 0 !important;
+        list-style: none;
+        margin: 0;
+        padding: 0;
       }
 
       .note-page .article-entry ul.note-group-list li.note-item {
         box-sizing: border-box;
-        list-style: none !important;
+        list-style: none;
         display: flex;
         flex-wrap: wrap;
-        align-items: center;
+        align-items: baseline;
         justify-content: space-between;
-        gap: 6px 12px;
-        margin: 0 !important;
-        padding: 9px 6px;
+        gap: 4px 10px;
+        margin: 0;
+        padding: 9px 0;
         line-height: 1.4;
-        border-bottom: 1px solid rgba(212, 203, 186, 0.55);
+        border-bottom: 1px solid #e6dfd1;
         border-radius: 0;
-        transition: background-color 0.16s ease;
       }
 
       .note-page .article-entry ul.note-group-list li.note-item:last-child {
         border-bottom: 0;
-        padding-bottom: 4px;
+        padding-bottom: 0;
       }
 
-      .note-page .article-entry ul.note-group-list li.note-item:hover {
-        background: rgba(245, 240, 228, 0.62);
-      }
-
-      .note-item-title {
+      .note-page .note-item-title {
         flex: 1 1 auto;
         min-width: 0;
         font-size: 15.5px;
-        line-height: 1.4;
+        line-height: 1.42;
         color: #1f1c18;
       }
 
@@ -215,28 +195,89 @@
         border-bottom-color: #003d82;
       }
 
-      .note-item-links {
+      .note-page .note-item-links {
         display: inline-flex;
         flex-wrap: wrap;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
         flex-shrink: 0;
         max-width: 100%;
       }
 
       .note-page .article-entry .note-item-links .bracket-link {
-        font-size: 13px;
-        line-height: 1.3;
+        font-size: 12.5px;
+        line-height: 1.35;
       }
 
-      @media screen and (max-width: 767px) {
-        .course-notes-grid {
-          grid-template-columns: 1fr;
-          gap: 16px;
+      @media (max-width: 1079px) {
+        .note-page .teaching-block:not(:last-child) {
+          padding-bottom: 24px;
+          border-bottom: 1px solid #dcd4c4;
+        }
+      }
+
+      @media (min-width: 1080px) {
+        .note-page .teaching-blocks {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          column-gap: 48px;
+          row-gap: 0;
+          align-items: stretch;
         }
 
-        .note-group-card {
-          padding: 16px 16px 16px;
+        .note-page .teaching-block:not(:first-child)::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: -24px;
+          width: 1px;
+          background: #dcd4c4;
+        }
+      }
+
+      @media (min-width: 768px) and (max-width: 1599px) {
+        .note-page .course-notes-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          column-gap: 48px;
+          row-gap: 36px;
+          align-items: stretch;
+        }
+
+        .note-page .note-group:nth-child(even)::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: -24px;
+          width: 1px;
+          background: #dcd4c4;
+        }
+      }
+
+      @media (min-width: 1600px) {
+        .note-page .course-notes-grid {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          column-gap: 32px;
+          row-gap: 0;
+          align-items: stretch;
+        }
+
+        .note-page .note-group:not(:first-child)::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: -16px;
+          width: 1px;
+          background: #dcd4c4;
+        }
+
+        .note-page .article-entry h2.note-group-title {
+          font-size: 17px;
+        }
+
+        .note-page .note-item-title {
+          font-size: 15px;
         }
       }
     </style>
@@ -327,52 +368,44 @@
                                 <h1 class="notes-section-heading">Teaching notes</h1>
                                 <div class="teaching-blocks">
                                 <section class="teaching-block">
-                                <blockquote><span class="legacy-size-2">
-                                <strong><a target="_blank" rel="noopener" href="https://explorecourses.stanford.edu/search?q=ME335A&amp;view=catalog&amp;filter-coursestatus-Active=on&amp;academicYear=20242025">Finite Element Analysis</a>:</strong> Fundamental concepts and techniques of primal finite element methods. Method of weighted residuals, Galerkin's method and variational equations. Linear eliptic boundary value problems in one, two and three space dimensions; applications in structural, solid and fluid mechanics and heat transfer. Properties of standard element families and numerically integrated elements. Implementation of the finite element method using Matlab, assembly of equations, and element routines. Lagrange multiplier and penalty methods for treatment of constraints. The mathematical theory of finite elements.
-                                </span></blockquote>
-                                <ul class="legacy-size-3">
-                                    <li style="line-height: 2;"> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/intros/me335/">Course Intro</a>]</span> · <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/intros/ME335_Intro.pdf">PDF</a>]</span></li>
-                                    <li style="line-height: 2;"> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/ProbSess1.pdf">Problem Session 1</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Formulation of variational problems for PDEs.</span> </li>
-                                    <li style="line-height: 2;"> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/ProbSess2.pdf">Problem Session 2</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Vector space of functions and clarification of concepts.</span></li>
-                                    <li style="line-height: 2;"> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/ProbSess3.pdf">Problem Session 3</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Solving (discretized) variational problems with shape functions.</span></li>
-                                    <li style="line-height: 2;"> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/ProbSess4.pdf">Problem Session 4</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Local-to-global map and assembly with shape functions.</span></li>
-                                    <li style="line-height: 2;"> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/ProbSess5.pdf">Problem Session 5</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Solving variational problems with LG matrix.</span></li>
-                                    <li style="line-height: 2;"> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/ProbSess6.pdf">Problem Session 6</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Global assembly in 2D with P1 elements.</span></li>
-                                    <li style="line-height: 2;"> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/Firedrake_tutorial.pdf">Firedrake Tutorial</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Solving a 2D Poisson equation.</span></li>
-                                    <li style="line-height: 2;"> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/FEniCS_tutorial.pdf">FEniCS Tutorial</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Solving a 2D Poisson equation.</span></li>
-                                    <li style="line-height: 2;"> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/ProbSess8.pdf">Problem Session 8</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Norms and convergence (numerical analysis).</span></li>
-                                    <li style="line-height: 2;"> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/ProbSess9.pdf">Problem Session 9</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">(final review) Heat transfer in 2D using P1 elements.</span></li>
-                                    <li style="line-height: 2;"> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/FEARev.pdf">Course Summary</a>]</span> | <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/FEA_W25_TeachEval.pdf">Teaching Evaluation</a>]</span></li>
+                                <h2 class="teaching-course-title"><a target="_blank" rel="noopener" href="https://explorecourses.stanford.edu/search?q=ME335A&amp;view=catalog&amp;filter-coursestatus-Active=on&amp;academicYear=20242025">Finite Element Analysis</a></h2>
+                                <p class="teaching-course-desc">Fundamental concepts and techniques of primal finite element methods. Method of weighted residuals, Galerkin's method and variational equations. Linear elliptic boundary value problems in one, two and three space dimensions; applications in structural, solid and fluid mechanics and heat transfer. Properties of standard element families and numerically integrated elements. Implementation of the finite element method using Matlab, assembly of equations, and element routines. Lagrange multiplier and penalty methods for treatment of constraints. The mathematical theory of finite elements.</p>
+                                <ul class="teaching-list">
+                                    <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/intros/me335/">Course Intro</a>]</span> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/intros/ME335_Intro.pdf">PDF</a>]</span></li>
+                                    <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/ProbSess1.pdf">Problem Session 1</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Formulation of variational problems for PDEs.</span></li>
+                                    <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/ProbSess2.pdf">Problem Session 2</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Vector space of functions and clarification of concepts.</span></li>
+                                    <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/ProbSess3.pdf">Problem Session 3</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Solving (discretized) variational problems with shape functions.</span></li>
+                                    <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/ProbSess4.pdf">Problem Session 4</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Local-to-global map and assembly with shape functions.</span></li>
+                                    <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/ProbSess5.pdf">Problem Session 5</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Solving variational problems with LG matrix.</span></li>
+                                    <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/ProbSess6.pdf">Problem Session 6</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Global assembly in 2D with P1 elements.</span></li>
+                                    <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/Firedrake_tutorial.pdf">Firedrake Tutorial</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Solving a 2D Poisson equation.</span></li>
+                                    <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/FEniCS_tutorial.pdf">FEniCS Tutorial</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Solving a 2D Poisson equation.</span></li>
+                                    <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/ProbSess8.pdf">Problem Session 8</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Norms and convergence (numerical analysis).</span></li>
+                                    <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/ProbSess9.pdf">Problem Session 9</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">(final review) Heat transfer in 2D using P1 elements.</span></li>
+                                    <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/FEARev.pdf">Course Summary</a>]</span> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/FEA_W25_TeachEval.pdf">Teaching Evaluation</a>]</span></li>
                                 </ul>
                                 </section>
 
                                 <section class="teaching-block">
-                                <blockquote><span class="legacy-size-2">
-                                <strong><a target="_blank" rel="noopener" href="https://explorecourses.stanford.edu/search?q=ME340&amp;view=catalog&amp;filter-coursestatus-Active=on&amp;academicYear=20252026">Mechanics: Elasticity and Inelasticity</a>:</strong> Introduction to the theory of elasticity, plasticity and fracture and their applications. Elasticity: stress function approach to solve 2D problems and Green's function in 3D; applications to contact problems. Plasticity: yield surface, associative flow rule, strain hardening models; and applications to plastic bending, torsion and pressure vessels. Fracture: linear elastic fracture mechanics, J-integral, plastic zone in front of crack tip; applications to brittle fracture and fatigue crack growth. Computer programming in Matlab is used to aid analytic derivation and numerical solutions.
-                                </span></blockquote>
-                                <ul class="legacy-size-3">
-                                    <li style="line-height: 2;"> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/intros/me340/">Course Intro</a>]</span> · <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/intros/ME340_Intro.pdf">PDF</a>]</span></li>
-                                    <li style="line-height: 2;"> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/elasticity/ProbSess1.pdf">Problem Session 1</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">General solution strategies for elasticity problems.</span> </li>
-                                    <li style="line-height: 2;"> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/elasticity/ProbSess2.pdf">Problem Session 2</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Euler-Bernoulli beam theory and stress functions.</span></li>
-                                    <li style="line-height: 2;"> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/elasticity/ProbSess4.pdf">Problem Session 4</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Biharmonic equation in polar coordinates and Michell solutions.</span></li>
-                                    <li style="line-height: 2;"> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/elasticity/ProbSess6.pdf">Problem Session 6</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">(midterm review) Basic equations, beams, Green's functions, contact, wedge &amp; crack.</span></li>
-                                    <li style="line-height: 2;"> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/elasticity/ProbSess7.pdf">Problem Session 7</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Plasticity with loading paths under tension and shear.</span></li>
-                                    <li style="line-height: 2;"> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/elasticity/ProbSess8.pdf">Problem Session 8</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Flow rule, fracture mechanics, and the J-integral.</span></li>
-                                    <li style="line-height: 2;"> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/elasticity/ProbSess9.pdf">Problem Session 9</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Linear elastic fracture mechanics and crack opening displacement.</span></li>
-                                    <li style="line-height: 2;"> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/elasticity/ME340_FinalRev.pdf">Final Review</a>]</span> | <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/elasticity/ME340_TeachEval.pdf">Teaching Evaluation</a>]</span></li>
+                                <h2 class="teaching-course-title"><a target="_blank" rel="noopener" href="https://explorecourses.stanford.edu/search?q=ME340&amp;view=catalog&amp;filter-coursestatus-Active=on&amp;academicYear=20252026">Mechanics: Elasticity and Inelasticity</a></h2>
+                                <p class="teaching-course-desc">Introduction to the theory of elasticity, plasticity and fracture and their applications. Elasticity: stress function approach to solve 2D problems and Green's function in 3D; applications to contact problems. Plasticity: yield surface, associative flow rule, strain hardening models; and applications to plastic bending, torsion and pressure vessels. Fracture: linear elastic fracture mechanics, J-integral, plastic zone in front of crack tip; applications to brittle fracture and fatigue crack growth. Computer programming in Matlab is used to aid analytic derivation and numerical solutions.</p>
+                                <ul class="teaching-list">
+                                    <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/intros/me340/">Course Intro</a>]</span> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/intros/ME340_Intro.pdf">PDF</a>]</span></li>
+                                    <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/elasticity/ProbSess1.pdf">Problem Session 1</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">General solution strategies for elasticity problems.</span></li>
+                                    <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/elasticity/ProbSess2.pdf">Problem Session 2</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Euler-Bernoulli beam theory and stress functions.</span></li>
+                                    <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/elasticity/ProbSess4.pdf">Problem Session 4</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Biharmonic equation in polar coordinates and Michell solutions.</span></li>
+                                    <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/elasticity/ProbSess6.pdf">Problem Session 6</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">(midterm review) Basic equations, beams, Green's functions, contact, wedge &amp; crack.</span></li>
+                                    <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/elasticity/ProbSess7.pdf">Problem Session 7</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Plasticity with loading paths under tension and shear.</span></li>
+                                    <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/elasticity/ProbSess8.pdf">Problem Session 8</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Flow rule, fracture mechanics, and the J-integral.</span></li>
+                                    <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/elasticity/ProbSess9.pdf">Problem Session 9</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Linear elastic fracture mechanics and crack opening displacement.</span></li>
+                                    <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/elasticity/ME340_FinalRev.pdf">Final Review</a>]</span> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/elasticity/ME340_TeachEval.pdf">Teaching Evaluation</a>]</span></li>
                                 </ul>
                                 </section>
                                 </div>
                                 <h1 class="notes-section-heading">Course &amp; learning notes</h1>
                                 <div class="course-notes-grid">
-                                    <section class="note-group-card">
-                                        <div class="note-group-header">
-                                            <div class="note-group-heading">
-                                                <span class="note-group-index">01</span>
-                                                <h2 class="note-group-title">Mechanics, Materials &amp; Physics</h2>
-                                            </div>
-                                            <span class="note-group-count">7 notes</span>
-                                        </div>
+                                    <section class="note-group">
+                                        <h2 class="note-group-title">Mechanics, Materials &amp; Physics</h2>
                                         <ul class="note-group-list">
                                             <li class="note-item">
                                                 <span class="note-item-title">Foundations of Solid Mechanics</span>
@@ -408,14 +441,8 @@
                                         </ul>
                                     </section>
 
-                                    <section class="note-group-card">
-                                        <div class="note-group-header">
-                                            <div class="note-group-heading">
-                                                <span class="note-group-index">02</span>
-                                                <h2 class="note-group-title">Computational Methods &amp; Fluids</h2>
-                                            </div>
-                                            <span class="note-group-count">6 notes</span>
-                                        </div>
+                                    <section class="note-group">
+                                        <h2 class="note-group-title">Computational Methods &amp; Fluids</h2>
                                         <ul class="note-group-list">
                                             <li class="note-item">
                                                 <span class="note-item-title">Finite Element Analysis</span>
@@ -444,14 +471,8 @@
                                         </ul>
                                     </section>
 
-                                    <section class="note-group-card">
-                                        <div class="note-group-header">
-                                            <div class="note-group-heading">
-                                                <span class="note-group-index">03</span>
-                                                <h2 class="note-group-title">Applied Mathematics</h2>
-                                            </div>
-                                            <span class="note-group-count">5 notes</span>
-                                        </div>
+                                    <section class="note-group">
+                                        <h2 class="note-group-title">Applied Mathematics</h2>
                                         <ul class="note-group-list">
                                             <li class="note-item">
                                                 <span class="note-item-title">Functional Analysis</span>
@@ -480,14 +501,8 @@
                                         </ul>
                                     </section>
 
-                                    <section class="note-group-card">
-                                        <div class="note-group-header">
-                                            <div class="note-group-heading">
-                                                <span class="note-group-index">04</span>
-                                                <h2 class="note-group-title">Machine Learning &amp; Optimization</h2>
-                                            </div>
-                                            <span class="note-group-count">5 notes</span>
-                                        </div>
+                                    <section class="note-group">
+                                        <h2 class="note-group-title">Machine Learning &amp; Optimization</h2>
                                         <ul class="note-group-list">
                                             <li class="note-item">
                                                 <span class="note-item-title"><a target="_blank" rel="noopener" href="https://www.cs.cornell.edu/courses/cs4787/2022fa/">Principles of Large-Scale Machine Learning</a></span>
@@ -513,13 +528,14 @@
                                     </section>
                                 </div>
                             </div>
+                        </div>
                     </article>
                 </section>
             </div>
             <footer id="footer">
                 <div class="container">
                     <div class="row">
-                        <p id="copyRightEn">Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> · &copy; Hanfeng Zhai, All Rights Reserved.</p>
+                        <p id="copyRightEn">Powered by <a href="http://hexo.io/" target="_blank" rel="noopener">Hexo</a>, &copy; Hanfeng Zhai, All Rights Reserved.</p>
                         <div class="wrapper">
                             <ul class="social-icons icon-circle list-unstyled list-inline">
                                 <li><a href="https://www.researchgate.net/profile/Hanfeng-Zhai" target="_blank" rel="noopener" aria-label="ResearchGate"><i class="icon-researchgate" aria-hidden="true"></i></a></li>
@@ -532,6 +548,7 @@
                             </ul>
                             	<a target="_blank" rel="noopener" href="https://info.flagcounter.com/x6ta"><img src="https://s11.flagcounter.com/count2/x6ta/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
                             <hr>
+                        </div>
                     </div>
                 </div>
             </footer>

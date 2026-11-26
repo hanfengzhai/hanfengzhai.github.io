@@ -14,71 +14,86 @@
 <link rel="apple-touch-icon" href="/css/images/site/favicon.jpg">
 
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-  <style type="text/css">
-  .code-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin: 0.35em 0 1em;
-  }
-
-  @media (min-width: 721px) {
-    .code-list {
-      margin-left: -12px;
-    }
-  }
-
-  .code-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #eef1f8;
-  }
-
-  .code-item:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
-
-  .code-item-featured {
-    background: rgba(0, 0, 0, 0.03);
-    padding: 16px;
-    border-radius: 0;
-    border-bottom: none;
-  }
-
-  #content > .site-pill-nav {
-    margin: 0.5em auto 0.25em;
-  }
-
+<link rel="stylesheet" href="/css/styles/style.css?v=sticky1">
+<script src="/js/jquery-3.1.1.min.js"></script>
+<script src="/js/bootstrap.js"></script>
+<link rel="stylesheet" href="/css/vendor/bootstrap.css">
+<link rel="stylesheet" href="/css/styles/dialog.css">
+<link rel="stylesheet" href="/css/styles/header-post.css">
+<link rel="stylesheet" href="/css/styles/archive.css?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/styles/site-fonts.css?v=4">
+<link rel="stylesheet" href="/css/styles/intro-nav.css?v=6">
+<style type="text/css">
   .site-pill-nav + section#main .code-page.article,
   .code-page.article {
     margin-top: 0;
   }
 
-  .code-page .article-entry > h1:first-of-type {
-    margin-top: 0;
+  .code-page .article-entry {
+    color: #1f1c18;
+  }
+
+  .code-page .article-entry h1 {
+    margin: 0 0 20px;
+    padding: 0 0 10px;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: #1a1815;
+    border-bottom: 1px solid #dcd4c4;
+  }
+
+  .code-page .article-entry h1#Education {
+    margin-top: 36px;
+  }
+
+  .code-page .code-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 0;
+  }
+
+  .code-page .code-item {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 22px;
+    padding: 20px 0;
+    border: 0;
+    border-bottom: 1px solid #e6dfd1;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .code-page .code-item:first-child {
     padding-top: 0;
   }
 
-  .code-page .article-entry > h1 {
-    margin-bottom: 0.75em;
+  .code-page .code-item:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
   }
 
-  .code-schematic-frame {
-    flex: 0 0 240px;
-    width: 240px;
-    height: 180px;
+  .code-page .code-schematic-frame {
+    flex: 0 0 220px;
+    width: 220px;
+    height: 165px;
     display: block;
-    border: 5px solid lightgray;
+    padding: 6px;
+    border: 1px solid #d8d0c0;
     border-radius: 0;
     box-sizing: border-box;
     overflow: hidden;
     background: #fff;
+    box-shadow: none;
   }
 
-  .code-item .code-schematic-frame img {
+  .code-page .code-item .code-schematic-frame img {
     width: 100%;
     height: 100%;
     max-width: none;
@@ -87,81 +102,139 @@
     display: block;
   }
 
-  .code-schematic-frame .caption {
+  .code-page .code-schematic-frame .caption {
     display: none !important;
   }
 
-  .code-content {
+  .code-page .code-content {
     flex: 1;
     min-width: 0;
+    font-size: 15.5px;
     line-height: 1.55;
+    color: #1f1c18;
     text-align: left;
   }
 
-  .code-content .code-title {
-    margin: 0 0 0.4em;
-    font-size: 1.05em;
+  .code-page .article-entry .code-content .code-title {
+    margin: 0 0 6px;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.35;
   }
 
-  .code-content .code-desc {
-    margin: 0 0 0.75em;
+  .code-page .article-entry .code-content .code-desc {
+    margin: 0 0 8px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: #2b2721;
   }
 
-  .code-content ul {
-    margin: 0.75em 0 0 1.2em;
+  .code-page .article-entry .code-content .code-desc:last-child {
+    margin-bottom: 0;
+  }
+
+  .code-page .article-entry .code-content ul {
+    margin: 6px 0 0 18px;
     padding: 0;
     list-style: disc;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: #3d3830;
   }
 
-  .code-content li {
-    margin: 0.25em 0;
+  .code-page .article-entry .code-content li {
+    margin: 3px 0;
+  }
+
+  @media (min-width: 721px) and (max-width: 1099px) {
+    .code-page .code-schematic-frame {
+      flex: 0 0 220px !important;
+      width: 220px !important;
+      height: 165px;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .code-page .code-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 48px;
+      row-gap: 0;
+      align-items: stretch;
+    }
+
+    .code-page .code-item {
+      gap: 16px;
+      padding: 20px 0;
+      border-bottom: 1px solid #e6dfd1;
+    }
+
+    .code-page .code-item:nth-child(1),
+    .code-page .code-item:nth-child(2) {
+      padding-top: 0;
+    }
+
+    .code-page .code-item:last-child,
+    .code-page .code-item:nth-last-child(2):nth-child(odd) {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .code-page .code-item:nth-child(even)::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: -24px;
+      width: 1px;
+      background: #dcd4c4;
+    }
+
+    .code-page .code-schematic-frame {
+      flex: 0 0 168px;
+      width: 168px;
+      height: 126px;
+    }
+  }
+
+  @media (min-width: 1440px) {
+    .code-page .code-item {
+      gap: 20px;
+    }
+
+    .code-page .code-schematic-frame {
+      flex: 0 0 220px;
+      width: 220px;
+      height: 165px;
+    }
   }
 
   @media (max-width: 720px) {
-    .code-item {
+    .code-page .code-item {
       flex-direction: column;
       align-items: stretch;
-      gap: 16px;
+      gap: 14px;
     }
 
-    .code-item-featured {
-      padding: 12px;
-      box-sizing: border-box;
-      width: 100%;
-      max-width: 100%;
-    }
-
-    .code-schematic-frame {
+    .code-page .code-schematic-frame {
       flex: 0 0 auto;
       width: 100%;
       max-width: 100%;
+      height: auto;
+      aspect-ratio: 4 / 3;
     }
 
-    .code-content {
+    .code-page .code-content {
       width: 100%;
       max-width: 100%;
       overflow-wrap: anywhere;
     }
 
-    .code-content ul {
-      margin-left: 1em;
-      padding-right: 0;
+    .code-page .article-entry .code-content ul {
+      margin-left: 16px;
     }
   }
 </style>
-  
-<link rel="stylesheet" href="/css/styles/style.css?v=sticky1">
-<script src="/js/jquery-3.1.1.min.js"></script>
-<script src="/js/bootstrap.js"></script>
-<link rel="stylesheet" href="/css/vendor/bootstrap.css" >
-<link rel="stylesheet" href="/css/styles/dialog.css">
-<link rel="stylesheet" href="/css/styles/header-post.css" >
-<link rel="stylesheet" href="/css/styles/archive.css" >
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/styles/site-fonts.css?v=3" >
-<link rel="stylesheet" href="/css/styles/intro-nav.css?v=5" >
 </head>
 <body>
 
@@ -251,10 +324,10 @@
 
 <div class="legacy-size-3 legacy-color-black">
 
-<h1 class="headerlink" title="Research Projects">Research</h1>
+<h1 id="Research">Research</h1>
 
 <div class="code-list">
-  <article class="code-item code-item-featured">
+  <article class="code-item">
     <div class="code-schematic-frame"><img src="/assets/img/code/opendis-logo.png" alt=""></div>
     <div class="code-content">
       <p class="code-title"><a target="_blank" rel="noopener" href="https://github.com/OpenDiS/OpenDiS">OpenDiS</a></p>
@@ -327,7 +400,7 @@
   </article>
 </div>
 
-<h1 id="Research-Projects"><a href="#Research-Projects" class="headerlink" title="Research Projects"></a>Education</h1>
+<h1 id="Education">Education</h1>
 
 <div class="code-list">
   <article class="code-item">
@@ -341,13 +414,14 @@
 
 </div>
 </div>
+</div>
 </article>
 </section>
 </div>
 <footer id="footer">
 <div class="container">
       	<div class="row">
-	      <p id="copyRightEn">Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> · &copy; Hanfeng Zhai, All Rights Reserved.</p>
+	      <p id="copyRightEn">Powered by <a href="http://hexo.io/" target="_blank" rel="noopener">Hexo</a>, &copy; Hanfeng Zhai, All Rights Reserved.</p>
 		
         <div class="wrapper">
 	<ul class="social-icons icon-circle list-unstyled list-inline"> 
@@ -362,6 +436,7 @@
 	      <a target="_blank" rel="noopener" href="https://info.flagcounter.com/x6ta"><img src="https://s11.flagcounter.com/count2/x6ta/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
 	</div>
   </div>
+</div>
 </footer>
 
 </div>

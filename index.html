@@ -21,10 +21,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/styles/site-fonts.css?v=3" >
-<link rel="stylesheet" href="/css/styles/intro-nav.css?v=5" >
+<link rel="stylesheet" href="/css/styles/site-fonts.css?v=4" >
+<link rel="stylesheet" href="/css/styles/intro-nav.css?v=6" >
 <style>
-  /* Homepage scoped layout and visual design system (all explicit px for Bootstrap 3 safety) */
+  /* Homepage scoped minimalist scholarly layout (explicit px/clamp/ch only; zero rem for Bootstrap 3 safety) */
   html.home-html,
   body.home-page,
   body.home-page #container {
@@ -37,10 +37,10 @@
   }
 
   body.home-page #content.home-outer {
-    max-width: 1280px;
     width: 100%;
-    margin: 0 auto;
-    padding: 14px 32px 24px;
+    max-width: none;
+    margin: 0;
+    padding: 0 var(--site-gutter) 32px;
     box-sizing: border-box;
   }
 
@@ -48,12 +48,15 @@
     display: block;
     float: none;
     width: 100%;
+    max-width: none;
     margin: 0;
+    padding: 0;
   }
 
   body.home-page #post-index.article {
     margin: 0;
     width: 100%;
+    max-width: none;
   }
 
   body.home-page #post-index .article-meta {
@@ -67,72 +70,11 @@
     color: #26221d;
   }
 
-  /* Top sticky pill navigation */
-  body.home-page #content.home-outer .home-pill-nav {
-    position: sticky;
-    top: 10px;
-    z-index: 120;
-    width: fit-content;
-    max-width: 100%;
-    margin: 0 auto 16px;
-    padding: 0;
-  }
-
-  #content.home-outer .home-pill-nav .intro-nav-bar {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    padding: 6px 10px;
-    gap: 6px;
-    border: 1px solid #e2dbcc;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.56);
-    box-shadow: 0 1px 4px rgba(42, 34, 20, 0.05);
-    transition: background-color 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-  }
-
-  #content.home-outer .home-pill-nav.is-stuck .intro-nav-bar {
-    background: rgba(255, 255, 255, 0.94);
-    border-color: #d5cbb8;
-    backdrop-filter: saturate(160%) blur(12px);
-    -webkit-backdrop-filter: saturate(160%) blur(12px);
-    box-shadow: 0 4px 18px rgba(42, 34, 20, 0.09);
-  }
-
-  #content.home-outer .home-pill-nav .intro-nav-link {
-    display: inline-block;
-    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 14px;
-    line-height: 20px;
-    font-weight: 500;
-    letter-spacing: 0.01em;
-    padding: 6px 15px;
-    border-radius: 999px;
-    color: #0645ad;
-    text-decoration: none;
-    white-space: nowrap;
-    transition: background-color 0.15s ease, color 0.15s ease;
-  }
-
-  #content.home-outer .home-pill-nav .intro-nav-link:hover,
-  #content.home-outer .home-pill-nav .intro-nav-link:focus-visible {
-    background: rgba(6, 69, 173, 0.09);
-    color: #003d82;
-    text-decoration: none;
-  }
-
-  #content.home-outer .home-pill-nav .intro-nav-link-active {
-    background: rgba(6, 69, 173, 0.14);
-    color: #003d82;
-    font-weight: 600;
-  }
-
-  /* Two-column editorial split */
+  /* Full-screen two-column editorial split */
   #post-index .article-entry .home-split {
     display: grid;
-    grid-template-columns: 452px minmax(0, 1fr);
-    column-gap: 36px;
+    grid-template-columns: clamp(380px, 31.5%, 520px) minmax(0, 1fr);
+    column-gap: clamp(24px, 2.2vw, 40px);
     align-items: start;
   }
 
@@ -141,23 +83,29 @@
     min-width: 0;
   }
 
-  @media (min-width: 961px) and (min-height: 850px) {
+  #post-index .article-entry .home-right-rail {
+    border-left: 1px solid #dfd7c7;
+    padding-left: clamp(24px, 2.2vw, 40px);
+  }
+
+  @media (min-width: 961px) and (min-height: 820px) {
     body.home-page #post-index .article-entry .home-left-rail {
       position: sticky;
-      top: 68px;
+      top: 64px;
       align-self: start;
     }
   }
 
-  /* Left rail: 2-tier translucent identity card */
+  /* Left rail: unboxed identity header directly on parchment */
   #post-index .article-entry .intro-header {
     display: block;
     margin: 0;
-    padding: 13px 17px;
-    background: rgba(255, 255, 255, 0.58);
-    border: 1px solid #e6dfd1;
+    padding: 0 0 16px;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid #dcd4c4;
     border-radius: 0;
-    box-shadow: 0 1px 3px rgba(42, 34, 20, 0.04);
+    box-shadow: none;
     box-sizing: border-box;
   }
 
@@ -182,7 +130,7 @@
     font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
     font-variant: small-caps;
     font-feature-settings: "smcp" 1;
-    font-size: 23px;
+    font-size: 24px;
     font-weight: 400;
     letter-spacing: 0.04em;
     line-height: 1.12;
@@ -193,7 +141,7 @@
 
   #post-index .article-entry .intro-header-rule {
     border: 0;
-    border-top: 1px dashed #d5cbb8;
+    border-top: 1px solid #d5cbb8;
     border-bottom: 0;
     background: transparent;
     width: 100%;
@@ -205,7 +153,7 @@
   #post-index .article-entry .intro-header-affil {
     margin: 0;
     font-size: 13.5px;
-    line-height: 1.48;
+    line-height: 1.5;
     color: #26221d;
   }
 
@@ -243,24 +191,15 @@
     text-decoration-color: #8C1515;
   }
 
-  #post-index .article-entry .intro-header-sep {
-    margin: 0 4px;
-    color: #8C1515;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 1;
-    vertical-align: baseline;
-  }
-
   #post-index .article-entry .intro-header-photo {
-    flex: 0 0 98px;
-    width: 98px;
-    height: 98px;
-    padding: 3px;
-    background: #ffffff;
-    border: 1px solid #dfd7c6;
+    flex: 0 0 104px;
+    width: 104px;
+    height: 104px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid #d5cbb8;
     border-radius: 0;
-    box-shadow: 0 2px 8px rgba(42, 34, 20, 0.08);
+    box-shadow: none;
     box-sizing: border-box;
     overflow: hidden;
   }
@@ -276,9 +215,9 @@
   }
 
   #post-index .article-entry .intro-header-details {
-    margin-top: 9px;
-    padding-top: 8px;
-    border-top: 1px solid #ede7da;
+    margin-top: 10px;
+    padding-top: 9px;
+    border-top: 1px solid #e5dfd1;
   }
 
   #post-index .article-entry .intro-header-contact {
@@ -292,19 +231,19 @@
     margin: 0;
     font-size: 13.5px;
     line-height: 1.44;
-    color: #524b40;
+    color: #4a443b;
   }
 
   #post-index .article-entry .intro-header-email {
     font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 12px;
-    font-weight: 500;
+    font-size: 12.5px;
+    font-weight: 400;
     line-height: 1.4;
-    color: #26221d;
-    background: rgba(245, 240, 228, 0.92);
-    border: 1px solid #e2dbcc;
+    color: #1a1815;
+    background: #e6e4de;
+    border: 0;
     border-radius: 0;
-    padding: 2px 8px;
+    padding: 2px 7px;
     white-space: nowrap;
     display: inline-block;
   }
@@ -330,17 +269,18 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     border-radius: 0;
     color: #4a443c;
+    background: transparent;
     text-decoration: none;
-    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    transition: color 0.15s ease;
   }
 
   #post-index .article-entry .intro-header-social a:hover,
   #post-index .article-entry .intro-header-social a:focus-visible {
-    background: rgba(140, 21, 21, 0.08);
+    background: transparent;
     color: #8C1515;
     text-decoration: none;
   }
@@ -369,43 +309,36 @@
 
   #post-index .article-entry .intro-header-social a.intro-header-link-tree {
     width: auto;
-    height: 24px;
-    padding: 0 9px;
+    height: 20px;
+    padding: 0 7px;
     box-sizing: border-box;
-    gap: 4px;
     font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
     font-size: 11px;
     font-weight: 500;
     letter-spacing: 0.02em;
-    line-height: 1;
+    line-height: 20px;
     white-space: nowrap;
-    color: #3a342c;
-    background: rgba(245, 240, 228, 0.9);
-    border: 1px solid #d5cbb8;
+    color: #f5f0e4;
+    background: #4a443c;
+    border: 0;
     border-radius: 0;
-  }
-
-  #post-index .article-entry .intro-header-social a.intro-header-link-tree::after {
-    content: "↗";
-    font-size: 10.5px;
-    opacity: 0.72;
+    transition: background-color 0.15s ease, color 0.15s ease;
   }
 
   #post-index .article-entry .intro-header-social a.intro-header-link-tree:hover,
   #post-index .article-entry .intro-header-social a.intro-header-link-tree:focus-visible {
-    color: #8C1515;
-    background: rgba(140, 21, 21, 0.08);
-    border-color: rgba(140, 21, 21, 0.35);
+    color: #ffffff;
+    background: #8C1515;
     text-decoration: none;
   }
 
   /* Left rail: open-paper bio */
   #post-index .article-entry .intro-bio {
-    margin-top: 12px;
-    padding: 0 2px;
+    margin-top: 11px;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 9px;
+    gap: 8px;
   }
 
   #post-index .article-entry .intro-bio-section {
@@ -434,7 +367,7 @@
     color: #003d82;
     text-decoration: underline;
     text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
+    text-underline-offset: 2px;
   }
 
   #post-index .article-entry .intro-bio strong {
@@ -454,7 +387,7 @@
     margin: 0 0 4px;
     padding-left: 2px;
     font-size: 14.5px;
-    line-height: 1.5;
+    line-height: 1.54;
     color: #26221d;
   }
 
@@ -479,15 +412,10 @@
     align-items: baseline;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 8px 16px;
-    padding-bottom: 10px;
-    margin: 0 0 16px;
-    border-bottom: 1px solid #e2dbcc;
-  }
-
-  #post-index .article-entry .home-right-rail .hp-section-header {
-    padding-top: 2px;
-    margin-bottom: 14px;
+    gap: 6px 16px;
+    padding: 0 0 8px;
+    margin: 0 0 4px;
+    border-bottom: 1px solid #dcd4c4;
   }
 
   #post-index .article-entry .hp-section-title {
@@ -501,80 +429,48 @@
     padding: 0;
   }
 
-  #post-index .article-entry .hp-section-meta {
-    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 11.5px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
+  #post-index .article-entry .hp-section-all {
+    font-size: 13px;
     line-height: 1.3;
-    color: #7a7265;
-    text-transform: uppercase;
-    white-space: nowrap;
   }
 
-  #post-index .article-entry .hp-meta-dot {
-    color: #8C1515;
-    font-weight: 700;
-    margin: 0 4px;
-  }
-
-  #post-index .article-entry .hp-section-meta a.hp-section-all {
-    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    color: #0645ad;
-    text-decoration: none;
-    transition: color 0.15s ease;
-  }
-
-  #post-index .article-entry .hp-section-meta a.hp-section-all::after {
-    content: " ↗";
-  }
-
-  #post-index .article-entry .hp-section-meta a.hp-section-all:hover {
-    color: #003d82;
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 2px;
-  }
-
-  /* Right rail: translucent publication plates */
+  /* Right rail: unboxed scholarly publication rows */
   #post-index .article-entry .paper-list {
     display: flex;
     flex-direction: column;
-    gap: 13px;
+    gap: 0;
     margin: 0;
     padding: 0;
   }
 
   #post-index .article-entry .paper-item {
     display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 14px 16px;
-    background: rgba(255, 255, 255, 0.58);
-    border: 1px solid #e6dfd1;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 12px 0;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid #dfd7c7;
     border-radius: 0;
-    box-shadow: 0 1px 3px rgba(42, 34, 20, 0.04);
+    box-shadow: none;
     box-sizing: border-box;
-    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   }
 
-  #post-index .article-entry .paper-item:hover {
-    background: rgba(255, 255, 255, 0.80);
-    border-color: #d5cbb8;
-    box-shadow: 0 6px 18px rgba(42, 34, 20, 0.075);
-    transform: translateY(-1px);
+  #post-index .article-entry .paper-item:last-child {
+    border-bottom: 0;
+    padding-bottom: 4px;
   }
 
   #post-index .article-entry .paper-schematic-frame {
-    flex: 0 0 196px;
-    width: 196px;
-    height: 147px;
+    flex: 0 0 clamp(156px, 11.8vw, 200px);
+    width: clamp(156px, 11.8vw, 200px);
+    height: clamp(104px, 7.8vw, 134px);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 6px;
+    padding: 0;
     background: #ffffff;
-    border: 1px solid #e2dbcc;
+    border: 1px solid #dcd4c4;
     border-radius: 0;
     box-sizing: border-box;
     overflow: hidden;
@@ -596,12 +492,11 @@
   }
 
   #post-index .article-entry .paper-title {
-    margin: 0 0 5px;
+    margin: 0 0 4px;
     font-size: 16px;
     font-weight: 700;
     line-height: 1.34;
     color: #1a1815;
-    text-wrap: balance;
   }
 
   #post-index .article-entry .paper-title a {
@@ -618,10 +513,10 @@
   }
 
   #post-index .article-entry .paper-authors {
-    margin: 0 0 3px;
+    margin: 0 0 2px;
     font-size: 13.5px;
-    line-height: 1.44;
-    color: #524b40;
+    line-height: 1.42;
+    color: #4a443b;
   }
 
   #post-index .article-entry .paper-authors strong {
@@ -633,20 +528,12 @@
     margin: 0;
     font-size: 13.5px;
     line-height: 1.42;
-    color: #524b40;
+    color: #4a443b;
   }
 
   #post-index .article-entry .paper-venue em {
     font-style: italic;
-    color: #3a342c;
-  }
-
-  #post-index .article-entry .paper-venue .paper-year {
-    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 11.5px;
-    font-weight: 500;
-    color: #7a7265;
-    letter-spacing: 0.02em;
+    color: #26221d;
   }
 
   #post-index .article-entry .paper-links {
@@ -654,87 +541,113 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 8px;
-    margin: 6px 0 0;
+    margin: 5px 0 0;
   }
 
   #post-index .article-entry .paper-links .bracket-link {
-    font-size: 12.5px;
+    font-size: 13px;
     line-height: 1.35;
   }
 
-  #post-index .article-entry .paper-content blockquote.paper-tldr {
-    margin: 8px 0 0;
-    padding: 6px 11px;
-    border-left: 2px solid #8C1515;
-    border-radius: 0;
-    background: rgba(245, 240, 228, 0.76);
-    font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
-    font-size: 13px;
-    line-height: 1.46;
-    color: #524b40;
+  /* Native zero-JS collapsible TL;DR disclosure */
+  #post-index .article-entry details.paper-tldr {
+    margin: 6px 0 0;
+    padding: 0;
   }
 
-  #post-index .article-entry .paper-content blockquote.paper-tldr .paper-tldr-label {
+  #post-index .article-entry details.paper-tldr > summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    list-style: none;
+    cursor: pointer;
     font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+    color: #5c5549;
+    user-select: none;
+    transition: color 0.15s ease;
+  }
+
+  #post-index .article-entry details.paper-tldr > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  #post-index .article-entry details.paper-tldr > summary::marker {
+    display: none;
+    content: "";
+  }
+
+  #post-index .article-entry details.paper-tldr > summary::before {
+    content: "\25B8";
+    display: inline-block;
+    font-size: 11px;
+    line-height: 1;
     color: #8C1515;
-    margin-right: 2px;
+    transition: transform 0.15s ease;
   }
 
-  #post-index .article-entry .paper-content blockquote.paper-tldr .paper-tldr-label::after {
-    content: ":";
+  #post-index .article-entry details.paper-tldr[open] > summary::before {
+    transform: rotate(90deg);
   }
 
-  /* Full-width Recent Highlights band */
+  #post-index .article-entry details.paper-tldr > summary:hover,
+  #post-index .article-entry details.paper-tldr > summary:focus-visible {
+    color: #8C1515;
+  }
+
+  #post-index .article-entry details.paper-tldr > summary:focus-visible {
+    outline: 2px solid #0645ad;
+    outline-offset: 2px;
+    border-radius: 0;
+  }
+
+  #post-index .article-entry details.paper-tldr > p {
+    margin: 6px 0 0;
+    padding: 0 0 0 12px;
+    border-left: 1px solid #d5cbb8;
+    font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #4a443b;
+    max-width: 96ch;
+  }
+
+  /* Full-width Recent Highlights band (unboxed on parchment, overriding home.css cards) */
   #post-index .article-entry .timeline-section {
-    margin: 40px 0 12px;
+    margin: 34px 0 10px;
   }
 
   #post-index .article-entry .timeline-gallery {
     position: relative;
-    margin: 0;
-  }
-
-  @media (min-width: 768px) {
-    #post-index .article-entry .timeline-gallery::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 18px;
-      width: 30px;
-      background: linear-gradient(to right, rgba(245, 240, 228, 0), rgba(245, 240, 228, 0.92));
-      pointer-events: none;
-      z-index: 2;
-    }
+    margin: 14px 0 0;
   }
 
   #post-index .article-entry .timeline-scroll {
     display: flex;
-    gap: 18px;
+    gap: 22px;
     overflow-x: auto;
-    padding: 4px 28px 18px 2px;
+    padding: 0 0 16px;
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
-    scrollbar-color: #cfc6b4 rgba(226, 219, 204, 0.45);
+    scrollbar-color: #cfc6b4 transparent;
   }
 
   #post-index .article-entry .timeline-scroll::-webkit-scrollbar {
-    height: 7px;
+    height: 6px;
   }
 
   #post-index .article-entry .timeline-scroll::-webkit-scrollbar-track {
-    background: rgba(226, 219, 204, 0.45);
-    border-radius: 999px;
+    background: transparent;
+    border-radius: 0;
   }
 
   #post-index .article-entry .timeline-scroll::-webkit-scrollbar-thumb {
     background: #cfc6b4;
-    border-radius: 999px;
+    border-radius: 0;
   }
 
   #post-index .article-entry .timeline-scroll::-webkit-scrollbar-thumb:hover {
@@ -742,47 +655,49 @@
   }
 
   #post-index .article-entry .timeline-card {
-    flex: 0 0 336px;
-    width: 336px;
-    background: rgba(255, 255, 255, 0.58);
-    border: 1px solid #e6dfd1;
+    flex: 0 0 304px;
+    width: 304px;
+    background: transparent;
+    border: 0;
     border-radius: 0;
-    box-shadow: 0 1px 3px rgba(42, 34, 20, 0.04);
-    overflow: hidden;
+    box-shadow: none;
+    overflow: visible;
     scroll-snap-align: start;
     display: flex;
     flex-direction: column;
-    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    transition: none;
   }
 
   #post-index .article-entry .timeline-card:hover,
   #post-index .article-entry .timeline-card:focus-within {
-    background: rgba(255, 255, 255, 0.84);
-    border-color: #d5cbb8;
-    box-shadow: 0 8px 22px rgba(42, 34, 20, 0.085);
-    transform: translateY(-2px);
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    transform: none;
   }
 
   #post-index .article-entry .timeline-image {
     width: 100%;
-    height: 174px;
+    height: 168px;
     overflow: hidden;
     background: #ede7da;
-    border-bottom: 1px solid #ede7da;
+    border: 1px solid #d8d0c0;
+    border-radius: 0;
+    box-sizing: border-box;
   }
 
   #post-index .article-entry .timeline-image img {
     width: 100%;
-    height: 174px;
+    height: 100%;
     max-width: none;
     margin: 0;
     object-fit: cover;
     display: block;
-    transition: transform 0.35s ease;
+    transition: none;
   }
 
   #post-index .article-entry .timeline-card:hover .timeline-image img {
-    transform: scale(1.02);
+    transform: none;
   }
 
   #post-index .article-entry .timeline-image img.timeline-image-from-top {
@@ -790,21 +705,22 @@
   }
 
   #post-index .article-entry .timeline-content {
-    padding: 12px 14px 14px;
+    padding: 9px 0 0;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
+    gap: 3px;
     font-size: 13.5px;
     line-height: 1.48;
-    color: #3a342c;
+    color: #26221d;
+    background: transparent;
   }
 
   #post-index .article-entry .timeline-content p {
     margin: 0;
     font-size: 13.5px;
     line-height: 1.48;
-    color: #3a342c;
+    color: #26221d;
   }
 
   #post-index .article-entry .timeline-content a {
@@ -821,24 +737,24 @@
   }
 
   #post-index .article-entry .timeline-content p.timeline-year {
-    display: inline-block;
+    display: block;
     margin: 0;
-    padding: 2px 8px;
+    padding: 0;
     font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 11px;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 500;
     line-height: 1.35;
-    letter-spacing: 0.04em;
-    color: #8C1515;
-    background: rgba(140, 21, 21, 0.08);
-    border: 1px solid rgba(140, 21, 21, 0.16);
+    letter-spacing: 0.03em;
+    color: #6b6357;
+    background: transparent;
+    border: 0;
     border-radius: 0;
   }
 
   /* Homepage footer polish */
   body.home-page #footer .wrapper > a img[alt="Flag Counter"] {
     border-radius: 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+    box-shadow: none;
   }
 
   /* Focus accessibility */
@@ -850,17 +766,13 @@
 
   /* Compact desktop: 961px to 1159px */
   @media (max-width: 1159px) and (min-width: 961px) {
-    body.home-page #content.home-outer {
-      padding: 14px 24px 24px;
-    }
-
     #post-index .article-entry .home-split {
-      grid-template-columns: 380px minmax(0, 1fr);
-      column-gap: 28px;
+      grid-template-columns: clamp(336px, 34%, 390px) minmax(0, 1fr);
+      column-gap: 24px;
     }
 
-    #post-index .article-entry .intro-header {
-      padding: 15px 16px;
+    #post-index .article-entry .home-right-rail {
+      padding-left: 24px;
     }
 
     #post-index .article-entry .intro-header-photo {
@@ -869,70 +781,59 @@
       height: 96px;
     }
 
-    #post-index .article-entry .intro-header-affil-org .intro-header-sep {
-      display: none;
-    }
-
-    #post-index .article-entry .intro-header-affil-org a {
-      display: block;
-    }
-
     #post-index .article-entry .paper-item {
       gap: 15px;
-      padding: 14px 16px;
     }
 
     #post-index .article-entry .paper-schematic-frame {
-      flex: 0 0 172px;
-      width: 172px;
-      height: 130px;
+      flex: 0 0 164px;
+      width: 164px;
+      height: 112px;
     }
   }
 
   /* Tablet: 768px to 960px */
   @media (max-width: 960px) {
     body.home-page #content.home-outer {
-      max-width: 740px;
-      padding: 14px 24px 24px;
+      padding: 0 var(--site-gutter) 28px;
     }
 
     #post-index .article-entry .home-split {
       display: flex;
       flex-direction: column;
-      gap: 30px;
+      gap: 28px;
+    }
+
+    #post-index .article-entry .home-right-rail {
+      border-left: 0;
+      padding-left: 0;
     }
 
     #post-index .article-entry .intro-header-photo {
-      flex: 0 0 132px;
-      width: 132px;
-      height: 132px;
+      flex: 0 0 116px;
+      width: 116px;
+      height: 116px;
     }
 
     #post-index .article-entry .paper-schematic-frame {
       flex: 0 0 184px;
       width: 184px;
-      height: 138px;
+      height: 126px;
     }
   }
 
   /* Mobile: up to 767px */
   @media (max-width: 767px) {
     body.home-page #content.home-outer {
-      max-width: 100%;
-      padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 20px;
-    }
-
-    body.home-page #content.home-outer .home-pill-nav {
-      top: calc(8px + env(safe-area-inset-top, 0px));
-      margin: 0 auto 18px;
+      padding: 0 var(--site-gutter) 24px;
     }
 
     #post-index .article-entry .home-split {
-      gap: 26px;
+      gap: 24px;
     }
 
     #post-index .article-entry .intro-header {
-      padding: 16px 16px;
+      padding: 0 0 14px;
     }
 
     #post-index .article-entry .intro-header-top {
@@ -953,9 +854,9 @@
 
     #post-index .article-entry .intro-header-photo {
       order: 2;
-      flex: 0 0 136px;
-      width: 136px;
-      height: 136px;
+      flex: 0 0 124px;
+      width: 124px;
+      height: 124px;
       margin: 10px auto 12px;
     }
 
@@ -972,12 +873,12 @@
     #post-index .article-entry .intro-header-social {
       justify-content: center;
       flex-wrap: wrap;
-      gap: 5px;
+      gap: 6px;
     }
 
     #post-index .article-entry .intro-header-social a {
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
     }
 
     #post-index .article-entry .intro-header-social .intro-header-icon {
@@ -1000,8 +901,9 @@
 
     #post-index .article-entry .intro-header-social a.intro-header-link-tree {
       width: auto;
-      height: 28px;
-      padding: 0 9px;
+      height: 24px;
+      line-height: 24px;
+      padding: 0 8px;
       font-size: 11px;
       margin-left: 2px;
     }
@@ -1009,8 +911,8 @@
     #post-index .article-entry .paper-item {
       flex-direction: column;
       align-items: stretch;
-      padding: 14px 15px;
-      gap: 14px;
+      padding: 14px 0;
+      gap: 12px;
     }
 
     #post-index .article-entry .paper-schematic-frame {
@@ -1019,7 +921,7 @@
       max-width: 100% !important;
       height: auto;
       aspect-ratio: 4 / 3;
-      max-height: 220px;
+      max-height: 210px;
     }
 
     #post-index .article-entry .paper-content {
@@ -1029,7 +931,7 @@
     }
 
     #post-index .article-entry .timeline-section {
-      margin: 32px 0 8px;
+      margin: 28px 0 8px;
     }
 
     #post-index .article-entry .hp-section-title {
@@ -1039,79 +941,21 @@
 
   @media (max-width: 600px) {
     #post-index .article-entry .timeline-scroll {
-      gap: 14px;
-      padding: 4px 2px 16px;
+      gap: 16px;
+      padding: 0 0 14px;
     }
 
     #post-index .article-entry .timeline-card {
-      flex: 0 0 264px;
-      width: 264px;
+      flex: 0 0 260px;
+      width: 260px;
     }
 
-    #post-index .article-entry .timeline-image,
-    #post-index .article-entry .timeline-image img {
+    #post-index .article-entry .timeline-image {
       height: 148px;
     }
   }
 
-  @media (max-width: 540px) {
-    #content.home-outer .home-pill-nav .intro-nav-bar {
-      padding: 6px 8px;
-      gap: 4px;
-      border-radius: 999px;
-    }
-
-    #content.home-outer .home-pill-nav .intro-nav-link {
-      font-size: 13px;
-      line-height: 18px;
-      padding: 6px 10px;
-    }
-  }
-
-  @media (max-width: 440px) {
-    body.home-page #footer .social-icons {
-      gap: 6px 4px;
-    }
-
-    body.home-page #footer .social-icons a {
-      min-width: 38px;
-      min-height: 38px;
-    }
-
-    body.home-page #footer .social-icons .fa,
-    body.home-page #footer .social-icons .icon-scholar,
-    body.home-page #footer .social-icons .icon-orcid,
-    body.home-page #footer .social-icons .icon-researchgate {
-      width: 38px;
-      height: 38px;
-      line-height: 38px;
-      font-size: 1.15em;
-    }
-
-    body.home-page #footer .social-icons .icon-scholar::before,
-    body.home-page #footer .social-icons .icon-orcid::before {
-      width: 19px;
-      height: 19px;
-    }
-
-    body.home-page #footer .social-icons .icon-researchgate::before {
-      width: 24px;
-      height: 16px;
-    }
-  }
-
   @media (max-width: 375px) {
-    #content.home-outer .home-pill-nav .intro-nav-bar {
-      padding: 5px 6px;
-      gap: 2px;
-    }
-
-    #content.home-outer .home-pill-nav .intro-nav-link {
-      font-size: 12.5px;
-      line-height: 18px;
-      padding: 6px 8px;
-    }
-
     #post-index .article-entry .intro-header-email {
       white-space: normal;
       word-break: break-word;
@@ -1122,8 +966,8 @@
     }
 
     #post-index .article-entry .intro-header-social a {
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
     }
 
     #post-index .article-entry .intro-header-social a.intro-header-link-tree {
@@ -1134,18 +978,8 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    #content.home-outer .home-pill-nav .intro-nav-bar,
-    #post-index .article-entry .paper-item,
-    #post-index .article-entry .timeline-card,
-    #post-index .article-entry .timeline-image img {
+    #post-index .article-entry details.paper-tldr > summary::before {
       transition: none;
-    }
-
-    #post-index .article-entry .paper-item:hover,
-    #post-index .article-entry .timeline-card:hover,
-    #post-index .article-entry .timeline-card:focus-within,
-    #post-index .article-entry .timeline-card:hover .timeline-image img {
-      transform: none;
     }
   }
 </style>
@@ -1193,7 +1027,7 @@
       </div>
       <p class="intro-header-affil">
         <span class="intro-header-affil-role"><a class="intro-header-title" href="https://micronano.stanford.edu/people/hanfeng-zhai" target="_blank" rel="noopener">PhD Candidate</a></span>
-        <span class="intro-header-affil-org"><a href="https://me.stanford.edu/" target="_blank" rel="noopener">Mechanical Engineering</a><span class="intro-header-sep" aria-hidden="true">·</span><a href="https://www.stanford.edu/" target="_blank" rel="noopener">Stanford University</a></span>
+        <span class="intro-header-affil-org"><a href="https://me.stanford.edu/" target="_blank" rel="noopener">Mechanical Engineering</a>, <a href="https://www.stanford.edu/" target="_blank" rel="noopener">Stanford University</a></span>
       </p>
     </div>
     <div class="intro-header-photo">
@@ -1239,7 +1073,7 @@
 <section class="home-right-rail" aria-labelledby="selected-publications-heading">
   <div class="hp-section-header">
     <h2 id="selected-publications-heading" class="hp-section-title">Selected Publications</h2>
-    <span class="hp-section-meta">05 SELECTED <span class="hp-meta-dot" aria-hidden="true">·</span> <a class="hp-section-all" href="/research">ALL RESEARCH</a></span>
+    <span class="bracket-link hp-section-all">[<a href="/research">All Research</a>]</span>
   </div>
 <div class="paper-list">
   <article class="paper-item">
@@ -1247,14 +1081,17 @@
     <div class="paper-content">
       <p class="paper-title"><a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.jmps.2026.106533">Link Statistics of Dislocation Network during Strain Hardening</a></p>
       <p class="paper-authors">Akhondzadeh$^1$, <strong>Zhai</strong>$^1$, Jian, Sills, Bertin, Cai$^\star$</p>
-      <p class="paper-venue"><em>Journal of the Mechanics and Physics of Solids</em> <span class="hp-meta-dot" aria-hidden="true">·</span> <span class="paper-year">2026</span></p>
+      <p class="paper-venue"><em>Journal of the Mechanics and Physics of Solids</em>, 2026</p>
       <div class="paper-links">
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/publications/AkhondzadehZhai_2026_JMPS.pdf">PDF</a>]</span>
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/ref/akhondzadeh2026.html">Cite</a>]</span>
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=rkU7lEMtu0s">Video</a>]</span>
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/dislocation2025.pdf">Poster</a>]</span>
       </div>
-      <blockquote class="paper-tldr"><span class="paper-tldr-label">TL;DR</span> Over 100 DDD simulations reveal that inactive slip systems follow single-exponential link length distributions, while active ones evolve into stress-driven double exponentials—explained by a generalized Poisson process.</blockquote>
+      <details class="paper-tldr">
+        <summary>TL;DR</summary>
+        <p>Over 100 DDD simulations reveal that inactive slip systems follow single-exponential link length distributions, while active ones evolve into stress-driven double exponentials—explained by a generalized Poisson process.</p>
+      </details>
     </div>
   </article>
   <article class="paper-item">
@@ -1262,12 +1099,15 @@
     <div class="paper-content">
       <p class="paper-title"><a target="_blank" rel="noopener" href="https://link.springer.com/article/10.1007/s00466-025-02604-6">Stress predictions in polycrystal plasticity using graph neural networks with subgraph training</a></p>
       <p class="paper-authors"><strong>Zhai</strong></p>
-      <p class="paper-venue"><em>Computational Mechanics</em> <span class="hp-meta-dot" aria-hidden="true">·</span> <span class="paper-year">2025</span></p>
+      <p class="paper-venue"><em>Computational Mechanics</em>, 2025</p>
       <div class="paper-links">
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/publications/zhai_compmech_2025.pdf">PDF</a>]</span>
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/ref/zhai2025.html">Cite</a>]</span>
       </div>
-      <blockquote class="paper-tldr"><span class="paper-tldr-label">TL;DR</span> GNNs are used to efficiently predict stress in polycrystal plasticity, achieving over 150x speedup compared to FEM with high accuracy.</blockquote>
+      <details class="paper-tldr">
+        <summary>TL;DR</summary>
+        <p>GNNs are used to efficiently predict stress in polycrystal plasticity, achieving over 150x speedup compared to FEM with high accuracy.</p>
+      </details>
     </div>
   </article>
   <article class="paper-item">
@@ -1275,12 +1115,15 @@
     <div class="paper-content">
       <p class="paper-title"><a target="_blank" rel="noopener" href="https://doi.org/10.1063/5.0177266">Benchmarking inverse optimization algorithms for materials design</a></p>
       <p class="paper-authors"><strong>Zhai</strong>, Hao, Yeo$^\star$</p>
-      <p class="paper-venue"><em>APL Materials</em> <span class="hp-meta-dot" aria-hidden="true">·</span> <span class="paper-year">2024</span></p>
+      <p class="paper-venue"><em>APL Materials</em>, 2024</p>
       <div class="paper-links">
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/publications/zhai_aplmat_2024.pdf">PDF</a>]</span>
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/ref/zhai2024.html">Cite</a>]</span>
       </div>
-      <blockquote class="paper-tldr"><span class="paper-tldr-label">TL;DR</span> We benchmarked different heuristic and machine learning optimization algorithms for designing elemental crystals for targeted properties.</blockquote>
+      <details class="paper-tldr">
+        <summary>TL;DR</summary>
+        <p>We benchmarked different heuristic and machine learning optimization algorithms for designing elemental crystals for targeted properties.</p>
+      </details>
     </div>
   </article>
   <article class="paper-item">
@@ -1288,12 +1131,15 @@
     <div class="paper-content">
       <p class="paper-title"><a target="_blank" rel="noopener" href="https://doi.org/10.1021/acsbiomaterials.2c01079">Computational design of antimicrobial active surfaces via automated Bayesian optimization</a></p>
       <p class="paper-authors"><strong>Zhai</strong> &amp; Yeo$^\star$</p>
-      <p class="paper-venue"><em>ACS Biomat. Sci. &amp; Eng.</em> <span class="hp-meta-dot" aria-hidden="true">·</span> <span class="paper-year">2023</span></p>
+      <p class="paper-venue"><em>ACS Biomat. Sci. &amp; Eng.</em>, 2023</p>
       <div class="paper-links">
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/publications/zhai_acsbio_2023.pdf">PDF</a>]</span>
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/ref/zhaiyeo2022.html">Cite</a>]</span>
       </div>
-      <blockquote class="paper-tldr"><span class="paper-tldr-label">TL;DR</span> A new workflow to digitally design antimicrobial surfaces in the mesoscale using Bayesian optimization and discrete element methods.</blockquote>
+      <details class="paper-tldr">
+        <summary>TL;DR</summary>
+        <p>A new workflow to digitally design antimicrobial surfaces in the mesoscale using Bayesian optimization and discrete element methods.</p>
+      </details>
     </div>
   </article>
   <article class="paper-item">
@@ -1301,12 +1147,15 @@
     <div class="paper-content">
       <p class="paper-title"><a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.jmbbm.2023.106127">Controlling biofilm transport with porous metamaterials designed with Bayesian learning</a></p>
       <p class="paper-authors"><strong>Zhai</strong> &amp; Yeo$^\star$</p>
-      <p class="paper-venue"><em>J. Mech. Behav. Biomed. Mat.</em> <span class="hp-meta-dot" aria-hidden="true">·</span> <span class="paper-year">2023</span></p>
+      <p class="paper-venue"><em>J. Mech. Behav. Biomed. Mat.</em>, 2023</p>
       <div class="paper-links">
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/publications/zhai_2023_jmbbm.pdf">PDF</a>]</span>
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/ref/zhaiyeo2023.html">Cite</a>]</span>
       </div>
-      <blockquote class="paper-tldr"><span class="paper-tldr-label">TL;DR</span> We use Bayesian optimization to design porous materials with enhanced biomass transport and insights into growth mechanisms.</blockquote>
+      <details class="paper-tldr">
+        <summary>TL;DR</summary>
+        <p>We use Bayesian optimization to design porous materials with enhanced biomass transport and insights into growth mechanisms.</p>
+      </details>
     </div>
   </article>
 </div>
@@ -1316,7 +1165,6 @@
 <section class="timeline-section" aria-labelledby="recent-highlights-heading">
   <div class="hp-section-header">
     <h2 id="recent-highlights-heading" class="hp-section-title">Recent Highlights</h2>
-    <span class="hp-section-meta">11 HIGHLIGHTS <span class="hp-meta-dot" aria-hidden="true">·</span> SCROLL ⇄</span>
   </div>
 <div class="timeline-gallery" role="region" aria-label="Recent highlights">
   <div class="timeline-scroll">
@@ -1432,7 +1280,7 @@
 <footer id="footer">
   <div class="container">
       	<div class="row">
-	      <p id="copyRightEn">Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> · &copy; Hanfeng Zhai, All Rights Reserved.</p>
+	      <p id="copyRightEn">Powered by <a href="http://hexo.io/" target="_blank" rel="noopener">Hexo</a>, &copy; Hanfeng Zhai, All Rights Reserved.</p>
         <div class="wrapper">
 	<ul class="social-icons icon-circle list-unstyled list-inline"> 
 	<li> <a href="https://www.researchgate.net/profile/Hanfeng-Zhai" target="_blank" rel="noopener" aria-label="ResearchGate"><i class="icon-researchgate" aria-hidden="true"></i></a></li>
@@ -1446,6 +1294,7 @@
 	<a target="_blank" rel="noopener" href="https://info.flagcounter.com/x6ta"><img src="https://s11.flagcounter.com/count2/x6ta/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>	  	
 	<hr>
 	</div>
+      </div>
   </div>
 </footer>
 </div>
@@ -1469,7 +1318,6 @@
 <script src="/js/scripts.js"></script>
 <script src="/js/intro-nav.js?v=4"></script>
 <script src="/js/home.js"></script>
-</div>
   <a id="rocket" href="#top" class=""></a>
   <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
 </body>

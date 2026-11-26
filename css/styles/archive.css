@@ -10,7 +10,6 @@ h1>a {
 	padding: 4px 8px 0;
 	text-align: center;
 }
-}
 hr{
 	margin: 5px 5px;
 	border-top:2px solid #1C1E26 ;
@@ -86,100 +85,110 @@ hr{
 
 
 .scrolling-gallery {
-        margin: 30px 0;
+	margin: 24px 0;
 }
 
 .scrolling-gallery .caption {
-        display: none !important;
+	display: none !important;
 }
 
 .scrolling-track {
-        display: flex;
-        gap: 18px;
-        padding: 10px 5px 20px;
-        overflow-x: auto;
-        overscroll-behavior-x: contain;
-        scroll-snap-type: x proximity;
-        -webkit-overflow-scrolling: touch;
+	display: flex;
+	gap: 20px;
+	padding: 4px 0 16px;
+	overflow-x: auto;
+	overscroll-behavior-x: contain;
+	scroll-snap-type: x proximity;
+	-webkit-overflow-scrolling: touch;
+	scrollbar-width: thin;
+	scrollbar-color: #cfc6b4 transparent;
 }
 
 .scrolling-track::-webkit-scrollbar {
-        height: 8px;
+	height: 6px;
+}
+
+.scrolling-track::-webkit-scrollbar-track {
+	background: transparent;
 }
 
 .scrolling-track::-webkit-scrollbar-thumb {
-        background-color: rgba(0, 0, 0, 0.2);
-        border-radius: 999px;
+	background-color: #cfc6b4;
+	border-radius: 0;
 }
 
 .scrolling-card {
-        border: 1px solid #dcdcdc;
-        border-radius: 10px;
-        background-color: #ffffff;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-        flex: 0 0 220px;
-        scroll-snap-align: start;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+	border: 0;
+	border-radius: 0;
+	background-color: transparent;
+	box-shadow: none;
+	overflow: visible;
+	display: flex;
+	flex-direction: column;
+	text-align: left;
+	flex: 0 0 228px;
+	scroll-snap-align: start;
 }
 
 .scrolling-card:hover,
 .scrolling-card:focus-within {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 26px rgba(0, 0, 0, 0.15);
+	transform: none;
+	box-shadow: none;
 }
 
 .scrolling-card figure {
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        background-color: #ffffff;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	background-color: transparent;
 }
 
 .scrolling-card img {
-        width: 100%;
-        height: 240px;
-        object-fit: cover;
-        display: block;
-        background-color: #ffffff;
+	width: 100%;
+	height: 240px;
+	object-fit: cover;
+	display: block;
+	background-color: #ede7da;
+	border: 1px solid #d8d0c0;
+	border-radius: 0;
+	box-sizing: border-box;
 }
 
 .scrolling-caption {
-        padding: 12px 14px 16px;
-        font-size: 1.32rem;
-        line-height: 1.5;
-        color: #333333;
-        background-color: #ffffff;
+	padding: 9px 0 0;
+	font-size: 14px;
+	line-height: 1.5;
+	color: #26221d;
+	background-color: transparent;
 }
 
 .scrolling-links {
-        margin-top: 6px;
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 8px;
-        font-size: 1.2rem;
+	margin-top: 6px;
+	display: flex;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+	gap: 8px;
+	font-size: 13px;
 }
 
 .scrolling-links a {
-        color: #1a4d8f;
+	color: #0645ad;
+	text-decoration: none;
 }
 
 .scrolling-links a:hover,
 .scrolling-links a:focus {
-        text-decoration: underline;
+	color: #003d82;
+	text-decoration: underline;
 }
 
 @media (max-width: 480px) {
-        .scrolling-card {
-                flex-basis: 180px;
-        }
+	.scrolling-card {
+		flex-basis: 188px;
+	}
 
-        .scrolling-card img {
-                height: 210px;
-        }
+	.scrolling-card img {
+		height: 210px;
+	}
 }

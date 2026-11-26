@@ -12,37 +12,74 @@
   <link rel="icon" href="/css/images/site/favicon.jpg">
   <link rel="apple-touch-icon" href="/css/images/site/favicon.jpg">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-  <style type="text/css">
+<link rel="stylesheet" href="/css/styles/style.css?v=sticky1">
+<script src="/js/jquery-3.1.1.min.js"></script>
+<script src="/js/bootstrap.js"></script>
+<link rel="stylesheet" href="/css/vendor/bootstrap.css">
+<link rel="stylesheet" href="/css/styles/dialog.css">
+<link rel="stylesheet" href="/css/styles/header-post.css">
+<link rel="stylesheet" href="/css/styles/archive.css?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/styles/site-fonts.css?v=4">
+<link rel="stylesheet" href="/css/styles/intro-nav.css?v=6">
+<style type="text/css">
   .site-pill-nav + section#main .research-page.article,
   .research-page.article {
     margin-top: 0;
   }
 
-  .research-page .article-header h1 {
-    margin: 0 0 1.4em;
-    font-size: 1.75rem;
-    line-height: 1.2;
-  }
-
-  .research-page .article-header .thumb {
-    margin-top: 0;
-    margin-bottom: 0;
-  }
-
-  .research-page .research-intro blockquote {
-    margin: 0 auto 1.1em;
-    padding: 0.5em 1em;
+  .research-page .article-header {
     text-align: center;
+    margin: 0 0 18px;
   }
 
-  .research-page .research-intro blockquote p {
-    margin: 0.2em 0;
-    line-height: 1.45;
+  .research-page .article-header h1,
+  .research-page .article-header h1.thumb {
+    margin: 0;
+    padding: 0;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #1a1815;
+  }
+
+  .research-page .article-entry {
+    font-size: 16px;
+    color: #1f1c18;
+    line-height: 1.7;
+  }
+
+  #main.main-full-width .research-page .article-entry .research-intro blockquote {
+    max-width: 680px;
+    margin: 0 auto 22px;
+    padding: 12px 16px;
+    background: transparent;
+    border: 0;
+    border-top: 1px solid #dcd4c4;
+    border-bottom: 1px solid #dcd4c4;
+    border-radius: 0;
+    text-align: center;
+    color: #3a352c;
+  }
+
+  #main.main-full-width .research-page .article-entry .research-intro blockquote p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.55;
+    color: #3a352c;
+  }
+
+  #main.main-full-width .research-page .article-entry .research-intro blockquote p + p {
+    margin-top: 6px;
+    font-size: 14px;
+    color: #524b40;
   }
 
   .research-page .research-figure {
-    max-width: 660px;
-    margin: 0 auto 0.65em;
+    max-width: 860px;
+    margin: 0 auto 18px;
     overflow: hidden;
   }
 
@@ -53,73 +90,161 @@
     margin: 0 auto;
     padding: 0;
     border: 0;
+    border-radius: 0;
   }
 
-  .research-page .article-entry {
+  .research-page .article-entry p.research-overview-copy {
+    max-width: 860px;
+    margin: 0 auto 32px;
     font-size: 16px;
-    color: #000;
-    line-height: 1.65;
+    line-height: 1.7;
+    color: #1f1c18;
+    text-align: left;
   }
 
   .research-page .research-section-blocks {
     display: flex;
     flex-direction: column;
-    gap: 1.25em;
-    margin: 1em 0 0;
+    gap: 28px;
+    margin: 0;
+    padding-top: 24px;
+    border-top: 1px solid #dcd4c4;
   }
 
   .research-page .research-section-block {
-    padding: 1.25em 1.5em 1.5em;
-    border: 1px solid #e8e2d6;
+    position: relative;
+    padding: 0 0 24px;
+    border: 0;
+    border-bottom: 1px solid #dcd4c4;
     border-radius: 0;
-    background: rgba(255, 255, 255, 0.55);
+    background: transparent;
+    box-shadow: none;
   }
 
-  .research-page .research-section-block h2 {
-    margin: 0 0 0.75em;
-    font-size: 1.5rem;
-    font-weight: bold;
-    line-height: 1.35;
-    color: #000;
+  .research-page .research-section-block:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
   }
 
-  .research-page .research-section-block li,
-  .research-page .research-section-block p {
-    font-size: 16px;
-    line-height: 1.8;
+  .research-page .article-entry .research-section-block h2 {
+    margin: 0 0 14px;
+    padding: 0 0 10px;
+    border-bottom: 1px solid #dcd4c4;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #1a1815;
   }
 
-  .research-page .research-section-block ul {
-    margin: 0 0 0 1.5em;
+  .research-page .article-entry .research-section-block ul {
+    list-style: none;
+    margin: 0;
     padding: 0;
   }
 
-  .research-page .research-section-block li {
-    line-height: 1.75;
-    margin: 0 0 0.85em;
+  .research-page .article-entry .research-section-block li {
+    list-style: none;
+    margin: 0;
+    padding: 12px 0;
+    border-bottom: 1px solid #e6dfd1;
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: #1f1c18;
   }
 
-  .research-page .research-section-block li:last-child {
-    margin-bottom: 0;
+  .research-page .article-entry .research-section-block li:first-child {
+    padding-top: 0;
+  }
+
+  .research-page .article-entry .research-section-block li:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .research-page .article-entry .research-section-block li p {
+    margin: 0;
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: #1f1c18;
   }
 
   .research-page .article-entry > hr {
     display: none;
   }
-  </style>
-  
-<link rel="stylesheet" href="/css/styles/style.css?v=sticky1">
-<script src="/js/jquery-3.1.1.min.js"></script>
-<script src="/js/bootstrap.js"></script>
-<link rel="stylesheet" href="/css/vendor/bootstrap.css" >
-<link rel="stylesheet" href="/css/styles/dialog.css">
-<link rel="stylesheet" href="/css/styles/header-post.css" >
-<link rel="stylesheet" href="/css/styles/archive.css" >
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/styles/site-fonts.css?v=3" >
-<link rel="stylesheet" href="/css/styles/intro-nav.css?v=5" >
+
+  @media (min-width: 900px) and (max-width: 1359px) {
+    .research-page .research-section-blocks {
+      gap: 0;
+      padding-top: 0;
+    }
+
+    .research-page .research-section-block {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      column-gap: 36px;
+      align-items: start;
+      padding: 24px 0;
+      border-bottom: 1px solid #dcd4c4;
+    }
+
+    .research-page .research-section-block:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .research-page .article-entry .research-section-block h2 {
+      margin: 0;
+      padding: 0;
+      border-bottom: 0;
+    }
+  }
+
+  @media (min-width: 1360px) {
+    .research-page .research-section-blocks {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: 44px;
+      row-gap: 0;
+      align-items: stretch;
+      padding-top: 24px;
+    }
+
+    .research-page .research-section-block {
+      padding: 0;
+      border-bottom: 0;
+    }
+
+    .research-page .article-entry .research-section-block h2 {
+      min-height: 36px;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .research-page .research-section-block:not(:first-child)::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: -22px;
+      width: 1px;
+      background: #dcd4c4;
+    }
+  }
+
+  @media (min-width: 1360px) and (max-width: 1620px) {
+    .research-page .article-entry .research-section-block h2 {
+      font-size: 17px;
+      min-height: 44px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .research-page .article-header h1,
+    .research-page .article-header h1.thumb {
+      font-size: 24px;
+    }
+  }
+</style>
 </head>
 
 <body>
@@ -222,12 +347,12 @@
   <figcaption class="sr-only">Animated multiscale materials modeling sequence: atomistic molecular dynamics polycrystal, mesoscale discrete dislocation dynamics, and macroscale continuum polycrystal.</figcaption>
 </figure>
  
-<p>A time-honored objective in engineering sciences is the theoretical and computational understanding of multiscale problems. As the world moves towards sustainability, multiscale computational modeling can greatly accelerate scientific research and industrial production, e.g., faster drug discovery, efficient battery design, novel energy sources exploration, and systems and materials design. My research goal is to <strong>develop computational methods</strong> to better model and simulate <strong>multiscale engineering phenomena</strong> that can bring good for mechanical, materials, and systems design with practical applications in <strong>energy</strong>, <strong>bioengineering</strong>, and <strong>manufacturing</strong>. My research briefly focuses on the following three aspects, combined with selected works. <span class="bracket-link">[<a href="/research/overview/" target="_blank" rel="noopener">Overview</a>]</span></p>
+<p class="research-overview-copy">A time-honored objective in engineering sciences is the theoretical and computational understanding of multiscale problems. As the world moves towards sustainability, multiscale computational modeling can greatly accelerate scientific research and industrial production, e.g., faster drug discovery, efficient battery design, novel energy sources exploration, and systems and materials design. My research goal is to <strong>develop computational methods</strong> to better model and simulate <strong>multiscale engineering phenomena</strong> that can bring good for mechanical, materials, and systems design with practical applications in <strong>energy</strong>, <strong>bioengineering</strong>, and <strong>manufacturing</strong>. My research briefly focuses on the following three aspects, combined with selected works. <span class="bracket-link">[<a href="/research/overview/" target="_blank" rel="noopener">Overview</a>]</span></p>
 
 <div class="research-section-blocks">
 
 <section class="research-section-block">
-<h2>Multiscale Physics + Theory:</h2>
+<h2>Multiscale Physics + Theory</h2>
 <ul>
 
 <li><p>Akhondzadeh$^1$, <strong>H. Zhai</strong>$^1$, Jian, Sills, Bertin, Cai$^\star$. <u>Link Statistics of Dislocation Network during Strain Hardening</u>. <em>Journal of the Mechanics and Physics of Solids</em> 210, 106533 (2026). DOI:<a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.jmps.2026.106533">10.1016/j.jmps.2026.106533</a>; arXiv:<a href="https://arxiv.org/abs/2509.03743">2509.03743</a>. <span class="bracket-link">[<a href="/file/publications/AkhondzadehZhai_2026_JMPS.pdf">PDF</a>]</span> <span class="bracket-link">[<a href="/file/ref/akhondzadeh2026.html">Cite</a>]</span></p></li>
@@ -240,12 +365,12 @@
 </section>
 
 <section class="research-section-block">
-<h2>Computational Mechanics + SciML:</h2>
+<h2>Computational Mechanics + SciML</h2>
 <ul>
 
-<li><strong>H. Zhai</strong>. <u>Stress predictions in polycrystal plasticity using graph neural networks with subgraph training.</u> <em>Computational Mechanics</em>. (2025). DOI:<a target="_blank" rel="noopener" href="https://doi.org/10.1007/s00466-025-02604-6">10.1007/s00466-025-02604-6</a>; arXiv:<a href="https://arxiv.org/abs/2409.05169">2409.05169</a>. <span class="bracket-link">[<a href="/file/publications/zhai_compmech_2025.pdf">PDF</a>]</span> <span class="bracket-link">[<a href="/file/ref/zhai2025.html">Cite</a>]</span></p></li>
+<li><p><strong>H. Zhai</strong>. <u>Stress predictions in polycrystal plasticity using graph neural networks with subgraph training.</u> <em>Computational Mechanics</em>. (2025). DOI:<a target="_blank" rel="noopener" href="https://doi.org/10.1007/s00466-025-02604-6">10.1007/s00466-025-02604-6</a>; arXiv:<a href="https://arxiv.org/abs/2409.05169">2409.05169</a>. <span class="bracket-link">[<a href="/file/publications/zhai_compmech_2025.pdf">PDF</a>]</span> <span class="bracket-link">[<a href="/file/ref/zhai2025.html">Cite</a>]</span></p></li>
 
-<li><strong>H. Zhai</strong>, Q. Zhou, G. Hu. <u>Predicting micro-bubble dynamics with semi-physics-informed deep learning.</u> <em>AIP Advances</em> 12, 035153; (2022). DOI:<a target="_blank" rel="noopener" href="https://doi.org/10.1063/5.0079602">10.1063/5.0079602</a>; arXiv:<a href="https://arxiv.org/abs/2105.07179">2105.07179</a>. <span class="bracket-link">[<a href="/file/publications/zhai_aipadv_2021.pdf">PDF</a>]</span> <span class="bracket-link">[<a href="/file/ref/zhai2022aipadv.html">Cite</a>]</span></p></li>
+<li><p><strong>H. Zhai</strong>, Q. Zhou, G. Hu. <u>Predicting micro-bubble dynamics with semi-physics-informed deep learning.</u> <em>AIP Advances</em> 12, 035153; (2022). DOI:<a target="_blank" rel="noopener" href="https://doi.org/10.1063/5.0079602">10.1063/5.0079602</a>; arXiv:<a href="https://arxiv.org/abs/2105.07179">2105.07179</a>. <span class="bracket-link">[<a href="/file/publications/zhai_aipadv_2021.pdf">PDF</a>]</span> <span class="bracket-link">[<a href="/file/ref/zhai2022aipadv.html">Cite</a>]</span></p></li>
 
 <li><p><strong>H. Zhai</strong>, T. Sands. <u>Controlling Chaos in Van Der Pol Dynamics Using Signal-Encoded Deep Learning.</u> <em>Mathematics</em> 10, 453; (2022). DOI:<a target="_blank" rel="noopener" href="https://doi.org/10.3390/math10030453">10.3390/math10030453</a>; arXiv:<a href="https://arxiv.org/abs/2112.14707">2112.14707</a>. <span class="bracket-link">[<a href="/file/publications/zhai_math_2022.pdf">PDF</a>]</span> <span class="bracket-link">[<a href="/file/ref/zhai2022math.html">Cite</a>]</span></p></li>
 
@@ -257,14 +382,14 @@
 </section>
 
 <section class="research-section-block">
-<h2>Computational Materials Science + Inverse Design:</h2>
+<h2>Computational Materials Science + Inverse Design</h2>
 <ul>
 
-<li><p><strong>H. Zhai</strong>, H. Hao, J. Yeo. <u>Benchmarking Inverse Optimization Algorithms for Materials Design</u>. <em>APL Materials</em>, 12, 021107 (2024). DOI:<a href="https://doi.org/10.1063/5.0177266">10.1063/5.0177266</a>; arXiv:<a href="https://arxiv.org/abs/2309.02646">2309.02646</a>. <span class="bracket-link">[<a href="/file/publications/zhai_aplmat_2024.pdf">PDF</a>]</span> <span class="bracket-link">[<a href="/file/ref/zhai2024.html">Cite</a>]</span></li>
+<li><p><strong>H. Zhai</strong>, H. Hao, J. Yeo. <u>Benchmarking Inverse Optimization Algorithms for Materials Design</u>. <em>APL Materials</em>, 12, 021107 (2024). DOI:<a href="https://doi.org/10.1063/5.0177266">10.1063/5.0177266</a>; arXiv:<a href="https://arxiv.org/abs/2309.02646">2309.02646</a>. <span class="bracket-link">[<a href="/file/publications/zhai_aplmat_2024.pdf">PDF</a>]</span> <span class="bracket-link">[<a href="/file/ref/zhai2024.html">Cite</a>]</span></p></li>
 
 <li><p><strong>H. Zhai</strong>, J. Yeo. <u>Controlling biofilm transport with porous metamaterials designed with Bayesian learning</u>. <em>Journal of the Mechanical Behavior of Biomedical Materials</em> (2023). DOI:<a href="https://doi.org/10.1016/j.jmbbm.2023.106127">10.1016/j.jmbbm.2023.106127</a>; arXiv:<a href="https://arxiv.org/abs/2305.08574">2305.08574</a>. <span class="bracket-link">[<a href="/file/publications/zhai_2023_jmbbm.pdf">PDF</a>]</span> <span class="bracket-link">[<a href="/file/ref/zhaiyeo2023.html">Cite</a>]</span></p></li>
 
-<li><p><strong>H. Zhai</strong>, J. Yeo. <u>Computational design of antimicrobial active surfaces via automated Bayesian optimization</u>. <em>ACS Biomaterials Science & Engineering</em>, 9, 1, 269–279 (2023). DOI:<a href="https://doi.org/10.1021/acsbiomaterials.2c01079">10.1021/acsbiomaterials.2c01079</a>; arXiv:<a href="https://doi.org/10.48550/arXiv.2209.00055">2209.00055</a>. <span class="bracket-link">[<a href="/file/publications/zhai_acsbio_2023.pdf">PDF</a>]</span> <span class="bracket-link">[<a href="/file/ref/zhaiyeo2022.html">Cite</a>]</span></li>
+<li><p><strong>H. Zhai</strong>, J. Yeo. <u>Computational design of antimicrobial active surfaces via automated Bayesian optimization</u>. <em>ACS Biomaterials Science & Engineering</em>, 9, 1, 269–279 (2023). DOI:<a href="https://doi.org/10.1021/acsbiomaterials.2c01079">10.1021/acsbiomaterials.2c01079</a>; arXiv:<a href="https://doi.org/10.48550/arXiv.2209.00055">2209.00055</a>. <span class="bracket-link">[<a href="/file/publications/zhai_acsbio_2023.pdf">PDF</a>]</span> <span class="bracket-link">[<a href="/file/ref/zhaiyeo2022.html">Cite</a>]</span></p></li>
 
 <!-- hidden for now
 <li><p>Wang, Shi, Li, Zhao, <strong>Zhai</strong>, Korani, & Yeo. <u>Computational and data-driven modeling of solid polymer electrolytes.</u> <em>Digital Discovery</em> (2023). DOI:<a target="_blank" rel="noopener" href="https://doi.org/10.1039/D3DD00078H">10.1039/D3DD00078H</a>. <span class="bracket-link">[<a href="/file/publications/wang_dd_2023.pdf">PDF</a>]</span> <span class="bracket-link">[<a href="/file/ref/wang2023dd.html">Cite</a>]</span></p></li>
@@ -275,6 +400,7 @@
 
 </div>
 </div>
+</div>
 </article>
 </section>
 </div>
@@ -282,7 +408,7 @@
 
 <div class="container">
 <div class="row">
-  <p id="copyRightEn">Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> · &copy; Hanfeng Zhai, All Rights Reserved.</p>      		
+  <p id="copyRightEn">Powered by <a href="http://hexo.io/" target="_blank" rel="noopener">Hexo</a>, &copy; Hanfeng Zhai, All Rights Reserved.</p>      		
         <div class="wrapper">
 	    <ul class="social-icons icon-circle list-unstyled list-inline"> 
           <li> <a href="https://www.researchgate.net/profile/Hanfeng-Zhai" target="_blank" rel="noopener" aria-label="ResearchGate"><i class="icon-researchgate" aria-hidden="true"></i></a></li>
@@ -296,6 +422,7 @@
 	<a target="_blank" rel="noopener" href="https://info.flagcounter.com/x6ta"><img src="https://s11.flagcounter.com/count2/x6ta/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
 <hr>
 </div>	
+</div>
 </div>
 </footer>
 </div>

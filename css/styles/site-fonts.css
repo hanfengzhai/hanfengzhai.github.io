@@ -1,8 +1,19 @@
-/* Site-wide TeX Gyre Pagella typography. Load after bootstrap.css. */
+/* Site-wide TeX Gyre Pagella typography and full-screen scholarly shell. Load after bootstrap.css. */
 :root {
   --page-bg: #f5f0e4;
+  --ink: #1a1815;
+  --ink-body: #26221d;
+  --ink-muted: #4a443b;
+  --ink-subtle: #6b6357;
+  --rule: #dcd4c4;
+  --rule-subtle: #e5dfd1;
+  --accent: #8C1515;
+  --link-blue: #0645ad;
+  --link-blue-hover: #003d82;
+  --email-bg: #e6e4de;
   --footer-red: #5c0c0c;
   --footer-red-hover: #4a0808;
+  --site-gutter: clamp(24px, 3vw, 56px);
 }
 
 html,
@@ -10,6 +21,13 @@ body {
   /* clip avoids creating a secondary scrollport (hidden can break sticky/fixed nav) */
   overflow-x: clip;
   background-color: var(--page-bg);
+}
+
+html,
+body,
+#container {
+  height: auto;
+  min-height: 100%;
 }
 
 #container,
@@ -22,6 +40,65 @@ body {
 #articleInner,
 .article-entry {
   background-color: var(--page-bg);
+}
+
+/* Full-screen fluid layout shell overriding style.css 1040px .outer cap and 73% #main float */
+#content {
+  min-height: auto !important;
+}
+
+#content.outer {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 var(--site-gutter) 44px;
+  box-sizing: border-box;
+  min-height: auto !important;
+}
+
+#content.outer > #main.main-full-width {
+  display: block;
+  float: none;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#content.outer > #main.main-full-width > .article {
+  width: 100%;
+  max-width: none;
+  margin: 0 0 12px;
+}
+
+#content.outer > #main.main-full-width .article-inner {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+}
+
+#content.outer > #main.main-full-width .article-entry {
+  margin: 0;
+  padding: 0;
+  color: var(--ink-body);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+#main.main-full-width .article-entry blockquote {
+  margin: 18px 0;
+  padding: 4px 0 4px 18px;
+  border-left: 1px solid #cfc6b4;
+  border-radius: 0;
+  background: transparent;
+  color: #4a443c;
+  font-size: 15px;
+  line-height: 1.6;
 }
 
 .navbar-default,
@@ -72,21 +149,23 @@ tt,
 }
 
 .article-entry a {
-  color: #0645ad;
+  color: var(--link-blue);
   text-decoration: none;
 }
 
 .article-entry a:hover {
-  color: #003d82;
-  text-decoration: none;
+  color: var(--link-blue-hover);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
 }
 
 .article-entry .bracket-link {
   font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.84em;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: 0.01em;
-  color: rgba(140, 21, 21, 0.62);
+  color: rgba(140, 21, 21, 0.65);
   white-space: nowrap;
 }
 
@@ -94,20 +173,29 @@ tt,
   font-family: inherit;
   font-weight: 500;
   color: #8C1515;
-  padding: 1px 2px;
+  padding: 0 1px;
   border-radius: 0;
   text-decoration: none;
-  transition: color 0.15s ease, background-color 0.15s ease;
+  transition: color 0.15s ease;
 }
 
 .article-entry .bracket-link a:hover,
 .article-entry .bracket-link a:focus-visible {
-  color: #660c0c;
-  background-color: rgba(140, 21, 21, 0.1);
-  text-decoration: none;
+  color: #5c0c0c;
+  background-color: transparent;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
-@media screen and (max-width: 767px) {
+@media (max-width: 767px) {
+  :root {
+    --site-gutter: 16px;
+  }
+
+  #content.outer {
+    padding: 0 var(--site-gutter) 28px;
+  }
+
   .paper-list,
   .code-list {
     margin-left: 0 !important;
@@ -143,18 +231,23 @@ tt,
   }
 }
 
-#content {
-  min-height: auto !important;
-}
-
-#content .article {
-  margin-bottom: 8px;
-}
-
 #footer {
   background-color: var(--footer-red) !important;
   color: rgba(255, 255, 255, 0.92);
   padding: 14px 0 12px;
+}
+
+#footer .container {
+  width: 100%;
+  max-width: none;
+  padding-left: var(--site-gutter);
+  padding-right: var(--site-gutter);
+  box-sizing: border-box;
+}
+
+#footer .row {
+  margin-left: 0;
+  margin-right: 0;
 }
 
 #footer #copyRightEn,
@@ -336,10 +429,6 @@ tt,
 .legacy-color-dimgray { color: dimgray; }
 .legacy-text-center { text-align: center; }
 
-#main.main-full-width {
-  float: none;
-}
-
 .footer-rule-wrap {
   margin-top: 8px;
   background-color: #5c0c0c;
@@ -360,6 +449,11 @@ tt,
     margin-left: auto;
     margin-right: auto;
     overflow-x: hidden;
+  }
+
+  #footer .row {
+    margin-left: 0;
+    margin-right: 0;
   }
 
   #footer #copyRightEn {
@@ -421,10 +515,15 @@ tt,
   }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 440px) {
   #footer .social-icons {
     gap: 6px 4px;
     padding: 0 6px;
+  }
+
+  #footer .social-icons a {
+    min-width: 38px;
+    min-height: 38px;
   }
 
   #footer .social-icons .fa,
