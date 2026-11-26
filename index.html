@@ -653,40 +653,13 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 6px;
-    margin: 7px 0 0;
+    gap: 8px;
+    margin: 6px 0 0;
   }
 
-  #post-index .article-entry .paper-links a.paper-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 3px 9px;
-    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 11px;
-    font-weight: 500;
+  #post-index .article-entry .paper-links .bracket-link {
+    font-size: 12.5px;
     line-height: 1.35;
-    letter-spacing: 0.02em;
-    color: #8C1515;
-    background: rgba(140, 21, 21, 0.06);
-    border: 1px solid rgba(140, 21, 21, 0.24);
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-  }
-
-  #post-index .article-entry .paper-links a.paper-pill::after {
-    content: "↗";
-    font-size: 10px;
-    opacity: 0.78;
-  }
-
-  #post-index .article-entry .paper-links a.paper-pill:hover,
-  #post-index .article-entry .paper-links a.paper-pill:focus-visible {
-    color: #660c0c;
-    background: rgba(140, 21, 21, 0.13);
-    border-color: rgba(140, 21, 21, 0.48);
-    text-decoration: none;
   }
 
   #post-index .article-entry .paper-content blockquote.paper-tldr {
@@ -1276,10 +1249,10 @@
       <p class="paper-authors">Akhondzadeh$^1$, <strong>Zhai</strong>$^1$, Jian, Sills, Bertin, Cai$^\star$</p>
       <p class="paper-venue"><em>Journal of the Mechanics and Physics of Solids</em> <span class="hp-meta-dot" aria-hidden="true">·</span> <span class="paper-year">2026</span></p>
       <div class="paper-links">
-        <a class="paper-pill" target="_blank" rel="noopener" href="/file/publications/AkhondzadehZhai_2026_JMPS.pdf">PDF</a>
-        <a class="paper-pill" target="_blank" rel="noopener" href="/file/ref/akhondzadeh2026.html">Cite</a>
-        <a class="paper-pill" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=rkU7lEMtu0s">Video</a>
-        <a class="paper-pill" target="_blank" rel="noopener" href="/file/posters/dislocation2025.pdf">Poster</a>
+        <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/publications/AkhondzadehZhai_2026_JMPS.pdf">PDF</a>]</span>
+        <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/ref/akhondzadeh2026.html">Cite</a>]</span>
+        <span class="bracket-link">[<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=rkU7lEMtu0s">Video</a>]</span>
+        <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/dislocation2025.pdf">Poster</a>]</span>
       </div>
       <blockquote class="paper-tldr"><span class="paper-tldr-label">TL;DR</span> Over 100 DDD simulations reveal that inactive slip systems follow single-exponential link length distributions, while active ones evolve into stress-driven double exponentials—explained by a generalized Poisson process.</blockquote>
     </div>
@@ -1291,8 +1264,8 @@
       <p class="paper-authors"><strong>Zhai</strong></p>
       <p class="paper-venue"><em>Computational Mechanics</em> <span class="hp-meta-dot" aria-hidden="true">·</span> <span class="paper-year">2025</span></p>
       <div class="paper-links">
-        <a class="paper-pill" target="_blank" rel="noopener" href="/file/publications/zhai_compmech_2025.pdf">PDF</a>
-        <a class="paper-pill" target="_blank" rel="noopener" href="/file/ref/zhai2025.html">Cite</a>
+        <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/publications/zhai_compmech_2025.pdf">PDF</a>]</span>
+        <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/ref/zhai2025.html">Cite</a>]</span>
       </div>
       <blockquote class="paper-tldr"><span class="paper-tldr-label">TL;DR</span> GNNs are used to efficiently predict stress in polycrystal plasticity, achieving over 150x speedup compared to FEM with high accuracy.</blockquote>
     </div>
@@ -1304,8 +1277,8 @@
       <p class="paper-authors"><strong>Zhai</strong>, Hao, Yeo$^\star$</p>
       <p class="paper-venue"><em>APL Materials</em> <span class="hp-meta-dot" aria-hidden="true">·</span> <span class="paper-year">2024</span></p>
       <div class="paper-links">
-        <a class="paper-pill" target="_blank" rel="noopener" href="/file/publications/zhai_aplmat_2024.pdf">PDF</a>
-        <a class="paper-pill" target="_blank" rel="noopener" href="/file/ref/zhai2024.html">Cite</a>
+        <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/publications/zhai_aplmat_2024.pdf">PDF</a>]</span>
+        <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/ref/zhai2024.html">Cite</a>]</span>
       </div>
       <blockquote class="paper-tldr"><span class="paper-tldr-label">TL;DR</span> We benchmarked different heuristic and machine learning optimization algorithms for designing elemental crystals for targeted properties.</blockquote>
     </div>
@@ -1317,8 +1290,8 @@
       <p class="paper-authors"><strong>Zhai</strong> &amp; Yeo$^\star$</p>
       <p class="paper-venue"><em>ACS Biomat. Sci. &amp; Eng.</em> <span class="hp-meta-dot" aria-hidden="true">·</span> <span class="paper-year">2023</span></p>
       <div class="paper-links">
-        <a class="paper-pill" target="_blank" rel="noopener" href="/file/publications/zhai_acsbio_2023.pdf">PDF</a>
-        <a class="paper-pill" target="_blank" rel="noopener" href="/file/ref/zhaiyeo2022.html">Cite</a>
+        <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/publications/zhai_acsbio_2023.pdf">PDF</a>]</span>
+        <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/ref/zhaiyeo2022.html">Cite</a>]</span>
       </div>
       <blockquote class="paper-tldr"><span class="paper-tldr-label">TL;DR</span> A new workflow to digitally design antimicrobial surfaces in the mesoscale using Bayesian optimization and discrete element methods.</blockquote>
     </div>
@@ -1330,8 +1303,8 @@
       <p class="paper-authors"><strong>Zhai</strong> &amp; Yeo$^\star$</p>
       <p class="paper-venue"><em>J. Mech. Behav. Biomed. Mat.</em> <span class="hp-meta-dot" aria-hidden="true">·</span> <span class="paper-year">2023</span></p>
       <div class="paper-links">
-        <a class="paper-pill" target="_blank" rel="noopener" href="/file/publications/zhai_2023_jmbbm.pdf">PDF</a>
-        <a class="paper-pill" target="_blank" rel="noopener" href="/file/ref/zhaiyeo2023.html">Cite</a>
+        <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/publications/zhai_2023_jmbbm.pdf">PDF</a>]</span>
+        <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/ref/zhaiyeo2023.html">Cite</a>]</span>
       </div>
       <blockquote class="paper-tldr"><span class="paper-tldr-label">TL;DR</span> We use Bayesian optimization to design porous materials with enhanced biomass transport and insights into growth mechanisms.</blockquote>
     </div>
