@@ -78,11 +78,74 @@
         color: #1a1815;
       }
 
-      .note-page .article-entry p.teaching-course-desc {
-        margin: 0 0 16px;
+      .note-page .article-entry details.teaching-course-desc {
+        margin: 0 0 12px;
+        padding: 0;
+      }
+
+      .note-page .article-entry details.teaching-course-desc > summary {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        list-style: none;
+        cursor: pointer;
+        font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        line-height: 1.4;
+        color: #5c5549;
+        user-select: none;
+        transition: color 0.15s ease;
+      }
+
+      .note-page .article-entry details.teaching-course-desc > summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .note-page .article-entry details.teaching-course-desc > summary::marker {
+        display: none;
+        content: "";
+      }
+
+      .note-page .article-entry details.teaching-course-desc > summary::before {
+        content: "\25B8";
+        display: inline-block;
+        font-size: 11px;
+        line-height: 1;
+        color: #8C1515;
+        transition: transform 0.15s ease;
+      }
+
+      .note-page .article-entry details.teaching-course-desc[open] > summary::before {
+        transform: rotate(90deg);
+      }
+
+      .note-page .article-entry details.teaching-course-desc > summary:hover,
+      .note-page .article-entry details.teaching-course-desc > summary:focus-visible {
+        color: #8C1515;
+      }
+
+      .note-page .article-entry details.teaching-course-desc > summary:focus-visible {
+        outline: 2px solid #0645ad;
+        outline-offset: 2px;
+        border-radius: 0;
+      }
+
+      .note-page .article-entry details.teaching-course-desc > p {
+        margin: 8px 0 4px;
+        padding: 0 0 0 12px;
+        border-left: 1px solid #d5cbb8;
+        font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
         font-size: 14.5px;
         line-height: 1.6;
         color: #524b40;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .note-page .article-entry details.teaching-course-desc > summary::before {
+          transition: none;
+        }
       }
 
       .note-page .article-entry ul.teaching-list {
@@ -369,7 +432,10 @@
                                 <div class="teaching-blocks">
                                 <section class="teaching-block">
                                 <h2 class="teaching-course-title"><a target="_blank" rel="noopener" href="https://explorecourses.stanford.edu/search?q=ME335A&amp;view=catalog&amp;filter-coursestatus-Active=on&amp;academicYear=20242025">Finite Element Analysis</a></h2>
-                                <p class="teaching-course-desc">Fundamental concepts and techniques of primal finite element methods. Method of weighted residuals, Galerkin's method and variational equations. Linear elliptic boundary value problems in one, two and three space dimensions; applications in structural, solid and fluid mechanics and heat transfer. Properties of standard element families and numerically integrated elements. Implementation of the finite element method using Matlab, assembly of equations, and element routines. Lagrange multiplier and penalty methods for treatment of constraints. The mathematical theory of finite elements.</p>
+                                <details class="teaching-course-desc">
+                                    <summary>Course info</summary>
+                                    <p>Fundamental concepts and techniques of primal finite element methods. Method of weighted residuals, Galerkin's method and variational equations. Linear elliptic boundary value problems in one, two and three space dimensions; applications in structural, solid and fluid mechanics and heat transfer. Properties of standard element families and numerically integrated elements. Implementation of the finite element method using Matlab, assembly of equations, and element routines. Lagrange multiplier and penalty methods for treatment of constraints. The mathematical theory of finite elements.</p>
+                                </details>
                                 <ul class="teaching-list">
                                     <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/intros/me335/">Course Intro</a>]</span> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/intros/ME335_Intro.pdf">PDF</a>]</span></li>
                                     <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/fea/ProbSess1.pdf">Problem Session 1</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">Formulation of variational problems for PDEs.</span></li>
@@ -388,7 +454,10 @@
 
                                 <section class="teaching-block">
                                 <h2 class="teaching-course-title"><a target="_blank" rel="noopener" href="https://explorecourses.stanford.edu/search?q=ME340&amp;view=catalog&amp;filter-coursestatus-Active=on&amp;academicYear=20252026">Mechanics: Elasticity and Inelasticity</a></h2>
-                                <p class="teaching-course-desc">Introduction to the theory of elasticity, plasticity and fracture and their applications. Elasticity: stress function approach to solve 2D problems and Green's function in 3D; applications to contact problems. Plasticity: yield surface, associative flow rule, strain hardening models; and applications to plastic bending, torsion and pressure vessels. Fracture: linear elastic fracture mechanics, J-integral, plastic zone in front of crack tip; applications to brittle fracture and fatigue crack growth. Computer programming in Matlab is used to aid analytic derivation and numerical solutions.</p>
+                                <details class="teaching-course-desc">
+                                    <summary>Course info</summary>
+                                    <p>Introduction to the theory of elasticity, plasticity and fracture and their applications. Elasticity: stress function approach to solve 2D problems and Green's function in 3D; applications to contact problems. Plasticity: yield surface, associative flow rule, strain hardening models; and applications to plastic bending, torsion and pressure vessels. Fracture: linear elastic fracture mechanics, J-integral, plastic zone in front of crack tip; applications to brittle fracture and fatigue crack growth. Computer programming in Matlab is used to aid analytic derivation and numerical solutions.</p>
+                                </details>
                                 <ul class="teaching-list">
                                     <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/intros/me340/">Course Intro</a>]</span> <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/intros/ME340_Intro.pdf">PDF</a>]</span></li>
                                     <li><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/elasticity/ProbSess1.pdf">Problem Session 1</a>]</span>: <span class="legacy-size-3 legacy-color-dimgray">General solution strategies for elasticity problems.</span></li>
