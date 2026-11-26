@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <title>Talks | Hanfeng Zhai</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Talks">
 <meta property="og:site_name" content="Hanfeng Zhai">
@@ -11,18 +11,18 @@
 <link rel="alternate" href="/atom.xml" title="Hanfeng Zhai" type="application/atom+xml">
 <link rel="icon" href="/css/images/site/favicon.jpg">
 <link rel="apple-touch-icon" href="/css/images/site/favicon.jpg">
-  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 <link rel="stylesheet" href="/css/styles/style.css?v=sticky1">
 <script src="/js/jquery-3.1.1.min.js"></script>
 <script src="/js/bootstrap.js"></script>
 <link rel="stylesheet" href="/css/vendor/bootstrap.css">
 <link rel="stylesheet" href="/css/styles/dialog.css">
-<link rel="stylesheet" href="/css/styles/header-post.css">
+<link rel="stylesheet" href="/css/styles/header-post.css?v=2">
 <link rel="stylesheet" href="/css/styles/archive.css?v=3">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/styles/site-fonts.css?v=5">
+<link rel="stylesheet" href="/css/styles/site-fonts.css?v=6">
 <link rel="stylesheet" href="/css/styles/intro-nav.css?v=8">
 <style type="text/css">
   .site-pill-nav + section#main .talk-page.article,
@@ -31,7 +31,7 @@
   }
 
   .talk-page .article-entry {
-    color: #1f1c18;
+    color: #26221d;
   }
 
   .talk-page .article-entry #Highlights {
@@ -52,7 +52,8 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 36px;
-    margin: 0 0 36px;
+    max-width: 1440px;
+    margin: 0 auto 36px;
   }
 
   .talk-page .article-entry .talk-highlight-card {
@@ -107,7 +108,7 @@
   .talk-page .article-entry .talk-highlight-title {
     margin: 0;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
     line-height: 1.4;
     color: #1a1815;
   }
@@ -132,7 +133,7 @@
 
   .talk-page .article-entry .talk-highlight-award {
     color: #8C1515;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .talk-page .article-entry .talk-highlight-footer .bracket-link {
@@ -186,7 +187,7 @@
     border-bottom: 1px solid #e6dfd1;
     font-size: 15.5px;
     line-height: 1.6;
-    color: #1f1c18;
+    color: #26221d;
   }
 
   .talk-page .article-entry .talk-block li:first-child {
@@ -202,13 +203,18 @@
     margin: 0;
     font-size: 15.5px;
     line-height: 1.6;
-    color: #1f1c18;
+    color: #26221d;
   }
 
-  @media (min-width: 1080px) {
+  .talk-page .article-entry .talk-block li .bracket-link {
+    margin-left: 4px;
+    font-size: 12.5px;
+  }
+
+  @media (min-width: 960px) {
     .talk-page .article-entry .talk-blocks {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: 56px;
+      column-gap: 40px;
       row-gap: 0;
       align-items: stretch;
     }
@@ -218,9 +224,19 @@
       position: absolute;
       top: 0;
       bottom: 0;
-      left: -28px;
+      left: -20px;
       width: 1px;
       background: #dcd4c4;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .talk-page .article-entry .talk-blocks {
+      column-gap: 56px;
+    }
+
+    .talk-page .article-entry .talk-block:not(:first-child)::before {
+      left: -28px;
     }
   }
 
@@ -237,228 +253,109 @@
 </style>
 </head>
 <body>
-  
-  <div id="container">
-    <div id="wrap">
-        <header>
-
-    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
-        <div class="navbar-inner">
-          
-          <div class="container"> 
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button> 
-
-              <a class="brand" style="
-                 margin-top: 0px;"  
-                 >
-                  <img width="124px" height="124px" alt="Hike News" src="/css/images/site/favicon.jpg">
-              </a>
-            
-            <div class="navbar-collapse collapse">
-              <ul class="hnav navbar-nav">
-                
-                  <li> <a class="main-nav-link beautifont" href="/">Home</a> </li>      
-	      
-                  <li> <a class="main-nav-link beautifont" href="/research">Research</a> </li>
-        
-                  <li> <a class="main-nav-link beautifont" href="/talk">Talks</a> </li>
-
-		  		        <li> <a class="main-nav-link beautifont" href="/note">Notes</a> </li>
-        
-                  <li> <a class="main-nav-link beautifont" href="/code">Code</a> </li>
-                
-                  <li><div id="search-form-wrap">
-
-    <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="" />
-        <button type="submit" class="search-form-submit"></button>
-    </form>
-    <div class="ins-search">
-    <div class="ins-search-mask"></div>
-    <div class="ins-search-container">
-        <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="Type something..." />
-            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+<div id="container">
+  <div id="wrap">
+    <div id="content" class="outer">
+      <nav class="intro-inline-nav site-pill-nav" aria-label="Site sections">
+        <div class="intro-nav-bar">
+          <a class="intro-nav-link" href="/">Home</a>
+          <a class="intro-nav-link" href="/research/">Research</a>
+          <a class="intro-nav-link intro-nav-link-active" href="/talk" aria-current="page">Talks</a>
+          <a class="intro-nav-link" href="/note">Notes</a>
+          <a class="intro-nav-link" href="/code">Code</a>
         </div>
-        <div class="ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
+      </nav>
+      <section id="main" class="main-full-width">
+        <article id="page-talk" class="article article-type-page talk-page" itemscope itemprop="blogPost">
+          <div id="articleInner" class="article-inner">
+            <div class="article-entry" itemprop="articleBody">
+              <h1 id="Highlights">Highlights</h1>
+              <div class="talk-highlights-grid">
+                <figure class="talk-highlight-card">
+                  <a class="talk-highlight-frame" target="_blank" rel="noopener" href="/file/posters/AESCAPE2026_Poster.pdf" aria-label="Open AESCAPE 2026 poster PDF">
+                    <img src="/file/posters/AESCAPE2026_Poster.png" alt="AESCAPE 2026 Best Poster Award poster">
+                  </a>
+                  <figcaption class="talk-highlight-caption">
+                    <p class="talk-highlight-title">Scalable and generalizable dynamics predictions of dislocation Nye tensor fields</p>
+                    <div class="talk-highlight-footer">
+                      <span class="talk-highlight-venue"><em><a target="_blank" rel="noopener" href="https://aescape2026.usacm.org/home">AESCAPE 2026</a></em> (Sep. 2026), <span class="talk-highlight-award">Best Poster Award</span></span>
+                      <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/AESCAPE2026_Poster.pdf">PDF</a>]</span>
+                    </div>
+                  </figcaption>
+                </figure>
+
+                <figure class="talk-highlight-card">
+                  <a class="talk-highlight-frame" target="_blank" rel="noopener" href="/file/posters/dislocation2025.pdf" aria-label="Open Dislocations 2025 poster PDF">
+                    <img src="/file/posters/dislocation2025.png" alt="Dislocations 2025 Best Poster Award poster">
+                  </a>
+                  <figcaption class="talk-highlight-caption">
+                    <p class="talk-highlight-title">Link Statistics of Dislocation Network during Strain Hardening</p>
+                    <div class="talk-highlight-footer">
+                      <span class="talk-highlight-venue"><em><a target="_blank" rel="noopener" href="https://www.coe.miami.edu/events/dislocations-conference/index.html">Dislocations 2025</a></em> (Nov. 2025), <span class="talk-highlight-award">Best Poster Award</span></span>
+                      <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/dislocation2025.pdf">PDF</a>]</span>
+                    </div>
+                  </figcaption>
+                </figure>
+              </div>
+
+              <div class="talk-blocks">
+                <section class="talk-block">
+                  <h1 id="Presentations">Presentations</h1>
+                  <ul>
+                    <li><p>Learning a Nye-field update for mesoscale dislocation dynamics. <em><a target="_blank" rel="noopener" href="https://aescape2026.usacm.org/home">AESCAPE 2026</a></em>, Sep. 2026. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/AESCAPE2026_LightningTalk_Zhai.pdf">PDF</a>]</span></p></li>
+                    <li><p>Link Statistics of Dislocation Network during Strain Hardening. <em><a target="_blank" rel="noopener" href="https://www.mrs.org/meetings-events/annual-meetings/2026-mrs-spring-meeting-exhibit">MRS Spring Meeting</a></em>, Apr. 2026. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/MRS2026.pdf">PDF</a>]</span></p></li>
+                    <li><p>Link Statistics of Dislocation Network during Strain Hardening. <em><a target="_blank" rel="noopener" href="https://compfest.berkeley.edu/">CompFest 2025</a></em>, Feb. 2025. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/CompFest2025.pdf">PDF</a>]</span></p></li>
+                    <li><p>Evaluation of Hierarchical Homogenization on Gassmann Equation and Analysis of Generated Superresolution Digital Rocks. <em>Shell Stanford Visit</em>, June 2024. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/shell_junevisit_2024.pdf">PDF</a>]</span></p></li>
+                    <li><p>Machine Learning for Multiscale Materials Modeling, Design &amp; Discovery. <em><a target="_blank" rel="noopener" href="https://blogs.cornell.edu/sgrs/">Sibley Graduate Research Symposium</a></em>, May 2023. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/SGRS_2023.pdf">PDF</a>]</span></p></li>
+                    <li><p>Multiscale Modeling and Machine Learning Design Optimization of Nanomaterials for Sustainability. <em>Master's Thesis Defense at <a target="_blank" rel="noopener" href="https://cornell.edu/">Cornell</a></em>, Apr. 2023. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/career/MS-Defense.pdf">PDF</a>]</span></p></li>
+                    <li><p>An automated Bayesian optimization workflow for antimicrobial nanosurfaces. <em><a target="_blank" rel="noopener" href="https://blogs.cornell.edu/sgrs/">Sibley Graduate Research Symposium</a></em>, May 2022. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/Hanfeng_SGRS.pdf">PDF</a>]</span></p></li>
+                    <li><p>Antifouling active surface-by-design from automated Bayesian optimization. <em>Cornell Antifouling Meeting, hosted by <a target="_blank" rel="noopener" href="https://silbersteinlab.com/">Mechanics for Material Design Group</a></em>, Apr. 2022. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/HZ_Antifouling_Apr26.pdf">PDF</a>]</span></p></li>
+                    <li><p>Computation Methods for Applied Mechanics Problem. <em>The 3rd Undergraduate Academic Forum of Shanghai University</em>, Dec. 2020. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/SHU_UGAF.pdf">PDF</a>]</span></p></li>
+                  </ul>
+                </section>
+
+                <section class="talk-block">
+                  <h1 id="Posters">Posters</h1>
+                  <ul>
+                    <li><p>Scalable and generalizable dynamics predictions of dislocation Nye tensor fields. <em><a target="_blank" rel="noopener" href="https://aescape2026.usacm.org/home">AESCAPE 2026</a></em>, Sep. 2026. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/AESCAPE2026_Poster.pdf">PDF</a>]</span></p></li>
+                    <li><p>Link Statistics of Dislocation Network during Strain Hardening. <em><a target="_blank" rel="noopener" href="https://www.coe.miami.edu/events/dislocations-conference/index.html">Dislocations 2025</a></em>, Nov. 2025. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/dislocation2025.pdf">PDF</a>]</span></p></li>
+                    <li><p>Bayesian Optimization Designs Metamaterials for Biofilm Control. <em><a target="_blank" rel="noopener" href="https://elmi.cornell.edu/">Engineered Living Materials Institute Research Symposium</a></em>, May 2023. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/biofilm_poster_ELMI-compressed.pdf">PDF</a>]</span></p></li>
+                    <li><p>Multiscale Computational Mechanics &amp; AI for Materials Design. <em><a target="_blank" rel="noopener" href="https://gradschool.cornell.edu/admissions/admitted-students/">Cornell PhD Visit Day</a></em>, Mar. 2023. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/cornell_mae_visit_2023_poster_hanfeng.pdf">PDF</a>]</span></p></li>
+                    <li><p>Multiscale Characterization of Graphene Fracture using Machine Learning &amp; Empirical Interatomic Potentials and Mechanics. <em><a target="_blank" rel="noopener" href="https://www.moml22.mit.edu/">Molecular Machine Learning Conference @ MIT</a></em>, Dec. 2022. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/Poster_MIT_MoML_MA.pdf">PDF</a>]</span></p></li>
+                    <li><p>Multiscale Mechanics of Graphene Fracture under Thermal Gradients using Empirical and Machine-Learned Interatomic Forcefields. <em><a target="_blank" rel="noopener" href="https://www.mse.cornell.edu/mse/programs/graduate-programs/annual-research-symposia/2022-research-symposium">Materials Science &amp; Engineering Research Symposium</a></em>, June 2022. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/Poster_CornellMSE_Symposium-compressed.pdf">PDF</a>]</span></p></li>
+                    <li><p>Designing next generation biocompatible materials with Machine Learning + Multiscale &amp; Multiphysics Modeling. <em><a target="_blank" rel="noopener" href="https://gradschool.cornell.edu/admissions/admitted-students/">Cornell PhD Visit Day</a></em>, Mar. 2022. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/biofilm_poster.pdf">PDF</a>]</span></p></li>
+                  </ul>
+                </section>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
     </div>
-</div>
-<script>
-(function (window) {
-    var INSIGHT_CONFIG = {
-        TRANSLATION: {
-            POSTS: 'Posts',
-            PAGES: 'Pages',
-            CATEGORIES: 'Categories',
-            TAGS: 'Tags',
-            UNTITLED: 'Hanfeng Zhai',
-        },
-        ROOT_URL: '/',
-        CONTENT_URL: '/content.json',
-    };
-    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-})(window);
-</script>
-
-<script src="/js/insight.js"></script>
-
-</div></li>
-</div>
-</div>
-</div>
-</div>
-
-</header>
-
-<div id="content" class="outer">
-<nav class="intro-inline-nav site-pill-nav" aria-label="Site sections">
-  <div class="intro-nav-bar">
-    <a class="intro-nav-link" href="/">Home</a>
-    <a class="intro-nav-link" href="/research/">Research</a>
-    <a class="intro-nav-link intro-nav-link-active" href="/talk" aria-current="page">Talks</a>
-    <a class="intro-nav-link" href="/note">Notes</a>
-    <a class="intro-nav-link" href="/code">Code</a>
+    <footer id="footer">
+      <div class="container">
+        <div class="row">
+          <p id="copyRightEn">&copy; Hanfeng Zhai. All rights reserved.</p>
+          <div class="wrapper">
+            <ul class="social-icons icon-circle list-unstyled list-inline">
+              <li><a href="https://www.researchgate.net/profile/Hanfeng-Zhai" target="_blank" rel="noopener" aria-label="ResearchGate"><i class="icon-researchgate" aria-hidden="true"></i></a></li>
+              <li><a href="https://orcid.org/0000-0003-1511-7597" target="_blank" rel="noopener" aria-label="ORCID"><i class="icon-orcid" aria-hidden="true"></i></a></li>
+              <li><a href="https://www.linkedin.com/in/hanfengzhai/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+              <li><a href="https://twitter.com/HanfengZhai" target="_blank" rel="noopener" aria-label="Twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+              <li><a href="https://github.com/hanfengzhai" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa fa-github" aria-hidden="true"></i></a></li>
+              <li><a href="https://scholar.google.com/citations?hl=en&amp;user=S5jCDXcAAAAJ&amp;view_op=list_works&amp;sortby=pubdate" target="_blank" rel="noopener" aria-label="Google Scholar"><i class="icon-scholar" aria-hidden="true"></i></a></li>
+              <li><a href="https://www.youtube.com/channel/UCn7UKJez4SV9VkO8pNqI5Pw" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
+            </ul>
+            <a target="_blank" rel="noopener" href="https://info.flagcounter.com/x6ta"><img src="https://s11.flagcounter.com/count2/x6ta/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+          </div>
+        </div>
+      </div>
+    </footer>
   </div>
-</nav>
-<section id="main" class="main-full-width"><article id="page-talk" class="article article-type-page talk-page" itemscope itemprop="blogPost" >
-<div id="articleInner" class="article-inner">
-
-<div class="article-entry" itemprop="articleBody">
-<div class="legacy-size-3 legacy-color-black">
-
-<h1 id="Highlights"><a href="#Highlights" class="headerlink" title="Highlights"></a>Highlights</h1>
-<div class="talk-highlights-grid">
-  <figure class="talk-highlight-card">
-    <a class="talk-highlight-frame" target="_blank" rel="noopener" href="/file/posters/AESCAPE2026_Poster.pdf" aria-label="Open AESCAPE 2026 poster PDF">
-      <img src="/file/posters/AESCAPE2026_Poster.png" alt="AESCAPE 2026 Best Poster Award poster">
-    </a>
-    <figcaption class="talk-highlight-caption">
-      <p class="talk-highlight-title">Scalable and generalizable dynamics predictions of dislocation Nye tensor fields</p>
-      <div class="talk-highlight-footer">
-        <span class="talk-highlight-venue"><em><a target="_blank" rel="noopener" href="https://aescape2026.usacm.org/home">AESCAPE 2026</a></em> (Sep. 2026), <span class="talk-highlight-award">Best Poster Award</span></span>
-        <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/AESCAPE2026_Poster.pdf">PDF</a>]</span>
-      </div>
-    </figcaption>
-  </figure>
-
-  <figure class="talk-highlight-card">
-    <a class="talk-highlight-frame" target="_blank" rel="noopener" href="/file/posters/dislocation2025.pdf" aria-label="Open Dislocations 2025 poster PDF">
-      <img src="/file/posters/dislocation2025.png" alt="Dislocations 2025 Best Poster Award poster">
-    </a>
-    <figcaption class="talk-highlight-caption">
-      <p class="talk-highlight-title">Link Statistics of Dislocation Network during Strain Hardening</p>
-      <div class="talk-highlight-footer">
-        <span class="talk-highlight-venue"><em><a target="_blank" rel="noopener" href="https://www.coe.miami.edu/events/dislocations-conference/index.html">Dislocations 2025</a></em> (Nov. 2025), <span class="talk-highlight-award">Best Poster Award</span></span>
-        <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/dislocation2025.pdf">PDF</a>]</span>
-      </div>
-    </figcaption>
-  </figure>
 </div>
-	
-<div class="talk-blocks">
-<section class="talk-block">
-<h1 id="Presentations"><a href="#Presentations" class="headerlink" title="Presentations"></a>Presentations</h1>
-
-<ul>
-<li><p>Learning a Nye-field update for mesoscale dislocation dynamics. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/AESCAPE2026_LightningTalk_Zhai.pdf">PDF</a>]</span> <em><a target="_blank" rel="noopener" href="https://aescape2026.usacm.org/home">AESCAPE 2026</a></em>, Sep. <strong>2026</strong>.</p>
-</li>
-<li><p>Link Statistics of Dislocation Network during Strain Hardening. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/MRS2026.pdf">PDF</a>]</span> <em><a target="_blank" rel="noopener" href="https://www.mrs.org/meetings-events/annual-meetings/2026-mrs-spring-meeting-exhibit">MRS Spring Meeting</a></em>, Apr. <strong>2026</strong>.</p>
-</li>
-<li><p>Link Statistics of Dislocation Network during Strain Hardening. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/CompFest2025.pdf">PDF</a>]</span> <em><a target="_blank" rel="noopener" href="https://compfest.berkeley.edu/">CompFest 2025</a></em>, Feb. <strong>2025</strong>.</p>
-</li>
-<li><p>Evaluation of Hierarchical Homogenization on Gassmann Equation and Analysis of Generated Superresolution Digital Rocks. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/shell_junevisit_2024.pdf">PDF</a>]</span> <em>Shell Stanford Visit</em>, June <strong>2024</strong>.</p>
-</li>
-<li><p>Machine Learning for Multiscale Materials Modeling, Design & Discovery. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/SGRS_2023.pdf">PDF</a>]</span> <em><a target="_blank" rel="noopener" href="https://blogs.cornell.edu/sgrs/">Sibley Graduate Research Symposium</a></em>, May <strong>2023</strong>.</p>
-</li>
-<li><p>Multiscale Modeling and Machine Learning Design Optimization of Nanomaterials for Sustainability. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/career/MS-Defense.pdf">PDF</a>]</span> <em>Master's Thesis Defense at <a target="_blank" rel="noopener" href="https://cornell.edu/">Cornell</a></em>, Apr. <strong>2023</strong>.</p>
-</li>
-<li><p>An automated Bayesian optimization workflow for antimicrobial nanosurfaces. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/Hanfeng_SGRS.pdf">PDF</a>]</span> <em><a target="_blank" rel="noopener" href="https://blogs.cornell.edu/sgrs/">Sibley Graduate Research Symposium</a></em>, May <strong>2022</strong>.</p>
-</li>
-<li><p>Antifouling active surface-by-design from automated Bayesian optimization. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/HZ_Antifouling_Apr26.pdf">PDF</a>]</span> <em>Cornell Antifouling Meeting, hosted by <a target="_blank" rel="noopener" href="https://silbersteinlab.com/">Mechanics for Material Design Group</a></em>, Apr. <strong>2022</strong>.</p>
-</li>
-<li><p>Computation Methods for Applied Mechanics Problem. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/SHU_UGAF.pdf">PDF</a>]</span> <em>The 3rd Undergraduate Academic Forum of Shanghai University</em>, Dec. <strong>2020</strong>.</p>
-</li>
-</ul>
-</section>
-
-<section class="talk-block">
-<h1 id="Posters"><a href="#Posters" class="headerlink" title="Posters"></a>Posters</h1>
-<ul>
-<li><p>Scalable and generalizable dynamics predictions of dislocation Nye tensor fields. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/AESCAPE2026_Poster.pdf">PDF</a>]</span> <em><a target="_blank" rel="noopener" href="https://aescape2026.usacm.org/home">AESCAPE 2026</a></em>, Sep. <strong>2026</strong>.</p>
-</li>
-<li><p>Link Statistics of Dislocation Network during Strain Hardening. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/dislocation2025.pdf">PDF</a>]</span> <em><a target="_blank" rel="noopener" href="https://www.coe.miami.edu/events/dislocations-conference/index.html">Dislocations 2025</a></em>, Nov. <strong>2025</strong>.</p>
-</li>
-<li><p>Bayesian Optimization Designs Metamaterials for Biofilm Control. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/biofilm_poster_ELMI-compressed.pdf">PDF</a>]</span> <em><a target="_blank" rel="noopener" href="https://elmi.cornell.edu/">Engineered Living Materials Institute Research Symposium</a></em>, May <strong>2023</strong>.</p>
-</li>
-<li><p>Multiscale Computational Mechanics & AI for Materials Design. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/cornell_mae_visit_2023_poster_hanfeng.pdf">PDF</a>]</span> <em><a target="_blank" rel="noopener" href="https://gradschool.cornell.edu/admissions/admitted-students/">Cornell PhD Visit Day</a></em>, Mar. <strong>2023</strong>.</p>
-</li>
-<li><p>Multiscale Characterization of Graphene Fracture using Machine Learning & Empirical Interatomic Potentials and Mechanics. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/Poster_MIT_MoML_MA.pdf">PDF</a>]</span> <em><a target="_blank" rel="noopener" href="https://www.moml22.mit.edu/">Molecular Machine Learning Conference @ MIT</a></em>, Dec. <strong>2022</strong>.</p>
-</li>
-<li><p>Multiscale Mechanics of Graphene Fracture under Thermal Gradients using Empirical and Machine-Learned Interatomic Forcefields. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/Poster_CornellMSE_Symposium-compressed.pdf">PDF</a>]</span> <em><a target="_blank" rel="noopener" href="https://www.mse.cornell.edu/mse/programs/graduate-programs/annual-research-symposia/2022-research-symposium">Materials Science & Engineering Research Symposium</a></em>, June <strong>2022</strong>.</p>
-</li>
-<li><p>Designing next generation biocompatible materials with Machine Learning + Multiscale & Multiphysics Modeling. <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/biofilm_poster.pdf">PDF</a>]</span> <em><a target="_blank" rel="noopener" href="https://gradschool.cornell.edu/admissions/admitted-students/">Cornell PhD Visit Day</a></em>, Mar. <strong>2022</strong>.</p>
-</li>
-</ul>
-</section>
-</div>
-
-</div>
-</div>
-</div>
-</article>
-</section>
-</div>
-<footer id="footer">
-  
-<div class="container">
-      	<div class="row">
-	<p id="copyRightEn">Powered by <a href="http://hexo.io/" target="_blank" rel="noopener">Hexo</a>, &copy; Hanfeng Zhai, All Rights Reserved.</p>
-		
-        <div class="wrapper">
-	<ul class="social-icons icon-circle list-unstyled list-inline"> 
-        <li> <a href="https://www.researchgate.net/profile/Hanfeng-Zhai" target="_blank" rel="noopener" aria-label="ResearchGate"><i class="icon-researchgate" aria-hidden="true"></i></a></li>
-	<li> <a href="https://orcid.org/0000-0003-1511-7597" target="_blank" rel="noopener" aria-label="ORCID"><i class="icon-orcid" aria-hidden="true"></i></a></li>
-	<li> <a href="https://www.linkedin.com/in/hanfengzhai/"><i class="fa fa-linkedin"></i></a></li> 
-	<li> <a href="https://twitter.com/HanfengZhai"><i class="fa fa-twitter"></i></a></li>
-        <li> <a href="https://github.com/hanfengzhai"><i class="fa fa-github"></i></a></li> 
-	<li> <a href="https://scholar.google.com/citations?hl=en&user=S5jCDXcAAAAJ&view_op=list_works&sortby=pubdate" aria-label="Google Scholar"><i class="icon-scholar" aria-hidden="true"></i></a></li>  
-	<li> <a href="https://www.youtube.com/channel/UCn7UKJez4SV9VkO8pNqI5Pw"><i class="fa fa-youtube-play"></i></a></li>
-	</ul>
-	  
-        <a target="_blank" rel="noopener" href="https://info.flagcounter.com/x6ta"><img src="https://s11.flagcounter.com/count2/x6ta/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
-</div>
-</div>
-</div>
-</footer>
-</div>
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true,
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    }
-  });
-  MathJax.Hub.Queue(function () {
-    var all = MathJax.Hub.getAllJax(), i;
-    for (i = 0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 <script src="/js/scripts.js"></script>
 <script src="/js/intro-nav.js?v=5"></script>
-</div>
-  <a id="rocket" href="#top" class=""></a>
-  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+<a id="rocket" href="#top" class=""></a>
+<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
 </body>
 </html>

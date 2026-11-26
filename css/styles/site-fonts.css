@@ -1,4 +1,36 @@
 /* Site-wide TeX Gyre Pagella typography and full-screen scholarly shell. Load after bootstrap.css. */
+@font-face {
+  font-family: 'TeX Gyre Pagella';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/assets/fonts/tex-gyre-pagella/texgyrepagella-regular.otf') format('opentype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TeX Gyre Pagella';
+  font-style: italic;
+  font-weight: 400;
+  src: url('/assets/fonts/tex-gyre-pagella/texgyrepagella-italic.otf') format('opentype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TeX Gyre Pagella';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/assets/fonts/tex-gyre-pagella/texgyrepagella-bold.otf') format('opentype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TeX Gyre Pagella';
+  font-style: italic;
+  font-weight: 700;
+  src: url('/assets/fonts/tex-gyre-pagella/texgyrepagella-bolditalic.otf') format('opentype');
+  font-display: swap;
+}
+
 :root {
   --page-bg: #f5f0e4;
   --ink: #1a1815;
@@ -149,7 +181,23 @@ code,
 pre,
 tt,
 .article-entry code {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+sup {
+  font-size: 0.72em;
+  line-height: 0;
+  position: relative;
+  top: -0.35em;
+  vertical-align: baseline;
+}
+
+a:focus-visible,
+summary:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--link-blue);
+  outline-offset: 2px;
+  border-radius: 0;
 }
 
 .article-entry a {
@@ -212,14 +260,7 @@ tt,
     max-width: 100%;
   }
 
-  .code-item-featured {
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .paper-schematic-frame,
-  .code-schematic-frame {
+  .paper-schematic-frame {
     flex: 0 0 auto !important;
     width: 100% !important;
     max-width: 100% !important;
@@ -394,7 +435,7 @@ tt,
 #footer .social-icons .icon-researchgate:active {
   background-color: rgba(255, 255, 255, 0.88);
   color: var(--footer-red-hover);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  box-shadow: none;
 }
 
 #footer .social-icons .fa-envelope,
@@ -422,6 +463,8 @@ tt,
   margin-top: 10px;
   max-width: 240px;
   height: auto;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 /* Legacy <font> / <center> replacements (Chromium font-size mapping) */
@@ -432,18 +475,6 @@ tt,
 .legacy-color-gray { color: gray; }
 .legacy-color-dimgray { color: dimgray; }
 .legacy-text-center { text-align: center; }
-
-.footer-rule-wrap {
-  margin-top: 8px;
-  background-color: #5c0c0c;
-  text-align: center;
-}
-
-.footer-rule-wrap .hr {
-  margin: 0;
-  height: 1px;
-  border: 0;
-}
 
 @media (max-width: 720px) {
   #footer .container,

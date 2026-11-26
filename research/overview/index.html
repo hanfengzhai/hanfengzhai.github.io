@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/styles/site-fonts.css?v=5">
+  <link rel="stylesheet" href="/css/styles/site-fonts.css?v=6">
   <link rel="stylesheet" href="/css/styles/intro-nav.css?v=8">
   <style>
     body {
@@ -22,10 +22,49 @@
     .overview-stage {
       flex: 1 0 auto;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
       padding: 24px var(--site-gutter, clamp(24px, 3vw, 56px)) 36px;
       box-sizing: border-box;
+    }
+
+    .overview-header {
+      width: 100%;
+      text-align: center;
+      margin: 0 0 20px;
+      padding: 0 0 10px;
+      border-bottom: 1px solid #dcd4c4;
+    }
+
+    .overview-header h1 {
+      margin: 0 0 6px;
+      font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+      font-size: 26px;
+      font-weight: 700;
+      font-variant: small-caps;
+      font-feature-settings: "smcp" 1;
+      letter-spacing: 0.05em;
+      line-height: 1.25;
+      color: #1a1815;
+    }
+
+    .overview-back {
+      font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: rgba(140, 21, 21, 0.65);
+    }
+
+    .overview-back a {
+      color: #8C1515;
+      text-decoration: none;
+    }
+
+    .overview-back a:hover,
+    .overview-back a:focus-visible {
+      color: #5c0c0c;
+      text-decoration: underline;
+      text-underline-offset: 2px;
     }
 
     .overview-frame {
@@ -57,6 +96,10 @@
     </div>
   </nav>
   <main class="overview-stage">
+    <header class="overview-header">
+      <h1>Research Overview</h1>
+      <span class="overview-back">[<a href="/research/">← Back to Research</a>]</span>
+    </header>
     <figure class="overview-frame">
       <img src="/assets/img/research/research.png" alt="Multiscale research overview schematic">
     </figure>

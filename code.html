@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <title>Code | Hanfeng Zhai</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Code">
 <meta property="og:site_name" content="Hanfeng Zhai">
@@ -12,19 +12,18 @@
 <link rel="alternate" href="/atom.xml" title="Hanfeng Zhai" type="application/atom+xml">
 <link rel="icon" href="/css/images/site/favicon.jpg">
 <link rel="apple-touch-icon" href="/css/images/site/favicon.jpg">
-
-  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 <link rel="stylesheet" href="/css/styles/style.css?v=sticky1">
 <script src="/js/jquery-3.1.1.min.js"></script>
 <script src="/js/bootstrap.js"></script>
 <link rel="stylesheet" href="/css/vendor/bootstrap.css">
 <link rel="stylesheet" href="/css/styles/dialog.css">
-<link rel="stylesheet" href="/css/styles/header-post.css">
+<link rel="stylesheet" href="/css/styles/header-post.css?v=2">
 <link rel="stylesheet" href="/css/styles/archive.css?v=3">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/styles/site-fonts.css?v=5">
+<link rel="stylesheet" href="/css/styles/site-fonts.css?v=6">
 <link rel="stylesheet" href="/css/styles/intro-nav.css?v=8">
 <style type="text/css">
   .site-pill-nav + section#main .code-page.article,
@@ -33,7 +32,7 @@
   }
 
   .code-page .article-entry {
-    color: #1f1c18;
+    color: #26221d;
   }
 
   .code-page .article-entry h1 {
@@ -115,7 +114,7 @@
     min-width: 0;
     font-size: 15.5px;
     line-height: 1.55;
-    color: #1f1c18;
+    color: #26221d;
     text-align: left;
   }
 
@@ -150,14 +149,6 @@
     margin: 3px 0;
   }
 
-  @media (min-width: 721px) and (max-width: 1099px) {
-    .code-page .code-schematic-frame {
-      flex: 0 0 220px !important;
-      width: 220px !important;
-      height: 165px;
-    }
-  }
-
   @media (min-width: 1100px) {
     .code-page .code-list {
       display: grid;
@@ -165,6 +156,12 @@
       column-gap: 48px;
       row-gap: 0;
       align-items: stretch;
+    }
+
+    .code-page .code-list.code-list-single {
+      grid-template-columns: minmax(0, 1fr);
+      max-width: 920px;
+      margin-inline: auto;
     }
 
     .code-page .code-item {
@@ -213,7 +210,7 @@
     }
   }
 
-  @media (max-width: 720px) {
+  @media (max-width: 767px) {
     .code-page .code-item {
       flex-direction: column;
       align-items: stretch;
@@ -241,236 +238,136 @@
 </style>
 </head>
 <body>
-
 <div id="container">
-<div id="wrap">
-      
-<header>
-
-    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
-        <div class="navbar-inner">
-          <div class="container"> 
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button> 
-
-              <a class="brand" style="
-                 margin-top: 0px;"  
-                 >
-                  <img width="124px" height="124px" alt="Hike News" src="/css/images/site/favicon.jpg">
-              </a>
-
-            <div class="navbar-collapse collapse">
-              <ul class="hnav navbar-nav">
-                  <li> <a class="main-nav-link beautifont" href="/">Home</a> </li>      
-                  <li> <a class="main-nav-link beautifont" href="/research">Research</a> </li>
-                  <li> <a class="main-nav-link beautifont" href="/talk">Talks</a> </li>
-		              <li> <a class="main-nav-link beautifont" href="/note">Notes</a> </li>
-		              <li> <a class="main-nav-link beautifont" href="/code">Code</a> </li>
-                  <li><div id="search-form-wrap">
-
-    <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="" />
-        <button type="submit" class="search-form-submit"></button>
-    </form>
-    <div class="ins-search">
-    <div class="ins-search-mask"></div>
-    <div class="ins-search-container">
-        <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="Type something..." />
-            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+  <div id="wrap">
+    <div id="content" class="outer">
+      <nav class="intro-inline-nav site-pill-nav" aria-label="Site sections">
+        <div class="intro-nav-bar">
+          <a class="intro-nav-link" href="/">Home</a>
+          <a class="intro-nav-link" href="/research/">Research</a>
+          <a class="intro-nav-link" href="/talk">Talks</a>
+          <a class="intro-nav-link" href="/note">Notes</a>
+          <a class="intro-nav-link intro-nav-link-active" href="/code" aria-current="page">Code</a>
         </div>
-        <div class="ins-section-wrapper">
-            <div class="ins-section-container"></div>
+      </nav>
+      <section id="main" class="main-full-width">
+        <article id="page-code" class="article article-type-page code-page" itemscope itemprop="blogPost">
+          <div id="articleInner" class="article-inner">
+            <div class="article-entry" itemprop="articleBody">
+              <h1 id="Research">Research Software</h1>
+              <div class="code-list">
+                <article class="code-item">
+                  <div class="code-schematic-frame"><img src="/assets/img/code/opendis-logo.png" alt=""></div>
+                  <div class="code-content">
+                    <p class="code-title"><a target="_blank" rel="noopener" href="https://github.com/OpenDiS/OpenDiS">OpenDiS</a></p>
+                    <p class="code-desc">Open Dislocation Simulator: revolutionizing dislocation dynamics simulations through open source collaboration. Updated version of <a target="_blank" rel="noopener" href="https://www.llnl.gov/sites/www/files/2020-05/Paradis-STR-Nov-05.pdf">ParaDiS</a>.</p>
+                    <ul>
+                      <li><strong>Interface</strong>: Python 3; <strong>Documentation</strong>: <a target="_blank" rel="noopener" href="https://opendis.github.io/OpenDiS/">OpenDiS webpage</a>.</li>
+                      <li><strong>References</strong>: <a target="_blank" rel="noopener" href="https://doi.org/10.1088/1361-651X/ab3a03">Bertin et al., <em>MSMSE</em>, 2019</a>; <a target="_blank" rel="noopener" href="https://doi.org/10.1088/0965-0393/15/6/001">Arsenlis et al., <em>MSMSE</em>, 2007</a>.</li>
+                    </ul>
+                  </div>
+                </article>
+
+                <article class="code-item">
+                  <div class="code-schematic-frame"><img src="/assets/img/code/AI_DislLinks_DDD.png" alt=""></div>
+                  <div class="code-content">
+                    <p class="code-title"><a target="_blank" rel="noopener" href="https://gitlab.com/micronano_public/Dislocation_Links">Dislocation Link Analysis</a></p>
+                    <p class="code-desc">Analysis toolkit for link statistics of dislocation networks during strain hardening from discrete dislocation dynamics (DDD) simulations.</p>
+                    <ul>
+                      <li><strong>Dependencies</strong>: Data from <a target="_blank" rel="noopener" href="https://github.com/LLNL/ParaDiS">ParaDiS</a> (<a target="_blank" rel="noopener" href="https://www.llnl.gov/sites/www/files/2020-05/Paradis-STR-Nov-05.pdf">S&amp;TR feature</a>).</li>
+                      <li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.jmps.2026.106533">Akhondzadeh, Zhai et al., <em>JMPS</em>, 2026</a>.</li>
+                    </ul>
+                  </div>
+                </article>
+
+                <article class="code-item">
+                  <div class="code-schematic-frame"><img src="/assets/img/code/gnn_plasti_fem.png" alt=""></div>
+                  <div class="code-content">
+                    <p class="code-title"><a target="_blank" rel="noopener" href="https://gitlab.com/hanfengzhai2/GNN-FEM-PolyPlas">GNN FEM Polycrystal Plasticity</a></p>
+                    <p class="code-desc">Using graph neural networks to predict stress in polycrystal plasticity based on finite element meshes to accelerate simulations.</p>
+                    <ul>
+                      <li><strong>Dependencies</strong>: <a target="_blank" rel="noopener" href="https://pypi.org/project/torch/">torch</a>, <a target="_blank" rel="noopener" href="https://pytorch-geometric.readthedocs.io/en/latest/">torch_geometric</a>, <a target="_blank" rel="noopener" href="https://pytorch-scatter.readthedocs.io/en/latest/index.html">Torch Scatter</a>.</li>
+                      <li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="https://doi.org/10.1007/s00466-025-02604-6">Zhai, <em>Computational Mechanics</em>, 2025</a>.</li>
+                    </ul>
+                  </div>
+                </article>
+
+                <article class="code-item">
+                  <div class="code-schematic-frame"><img src="/assets/img/code/code_matdes.png" alt=""></div>
+                  <div class="code-content">
+                    <p class="code-title"><a target="_blank" rel="noopener" href="https://github.com/hanfengzhai/materials-discovery-benchmark/tree/master/inverse_opt">Materials Discovery Benchmark</a></p>
+                    <p class="code-desc">Optimization methods for materials design and discovery based on the <a target="_blank" rel="noopener" href="https://next-gen.materialsproject.org/">Materials Project</a> database with targeted properties.</p>
+                    <ul>
+                      <li><strong>Dependencies</strong>: <a target="_blank" rel="noopener" href="https://pymatgen.org/">pymatgen</a>, <a target="_blank" rel="noopener" href="https://github.com/materialsvirtuallab/megnet">MEGNet</a>, <a target="_blank" rel="noopener" href="https://pypi.org/project/mealpy/">MEALPY</a>.</li>
+                      <li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="https://doi.org/10.1063/5.0177266">Zhai et al., <em>APL Materials</em>, 2024</a>.</li>
+                    </ul>
+                  </div>
+                </article>
+
+                <article class="code-item">
+                  <div class="code-schematic-frame"><img src="/assets/img/code/pylamdo.jpeg" alt=""></div>
+                  <div class="code-content">
+                    <p class="code-title"><a target="_blank" rel="noopener" href="https://github.com/hanfengzhai/PyLAMDO">PyLAMDO</a></p>
+                    <p class="code-desc"><strong>Py</strong>thon-<strong>LA</strong>MMPS toolkit for <strong>M</strong>ultiscale, <strong>M</strong>ultiphysics, <strong>M</strong>aterials <strong>D</strong>esign &amp; <strong>O</strong>ptimization. Used for designing antibiofilm active surfaces and porous materials.</p>
+                    <ul>
+                      <li><strong>Dependencies</strong>: <a target="_blank" rel="noopener" href="https://www.lammps.org/">LAMMPS 19.X</a>, <a target="_blank" rel="noopener" href="https://github.com/bayesian-optimization/BayesianOptimization">BayesianOptimization</a>.</li>
+                      <li><strong>References</strong>: <a target="_blank" rel="noopener" href="https://doi.org/10.1021/acsbiomaterials.2c01079">Zhai &amp; Yeo, <em>ACS Biomaterials Sci. &amp; Eng.</em>, 2023</a>; <a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.jmbbm.2023.106127">Zhai &amp; Yeo, <em>JMBBM</em>, 2023</a>.</li>
+                    </ul>
+                  </div>
+                </article>
+
+                <article class="code-item">
+                  <div class="code-schematic-frame"><img src="/assets/img/code/bblnet.png" alt=""></div>
+                  <div class="code-content">
+                    <p class="code-title"><a target="_blank" rel="noopener" href="https://github.com/hanfengzhai/BubbleNet">BubbleNet</a></p>
+                    <p class="code-desc">Deep learning framework to predict and obtain the physics of micro-bubble dynamics based on the general structure of <a target="_blank" rel="noopener" href="https://maziarraissi.github.io/PINNs/">PINNs</a>.</p>
+                    <ul>
+                      <li><strong>Dependencies</strong>: <a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/compat/v1">TensorFlow 1.X</a>, <a target="_blank" rel="noopener" href="https://www.comsol.com/comsol-multiphysics">COMSOL Multiphysics</a> (data).</li>
+                      <li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="https://doi.org/10.1063/5.0079602">Zhai et al., <em>AIP Advances</em>, 2022</a>.</li>
+                    </ul>
+                  </div>
+                </article>
+              </div>
+
+              <h1 id="Education">Education</h1>
+              <div class="code-list code-list-single">
+                <article class="code-item">
+                  <div class="code-schematic-frame"><img src="/assets/img/code/dft.jpeg" alt=""></div>
+                  <div class="code-content">
+                    <p class="code-title"><a target="_blank" rel="noopener" href="https://github.com/hanfengzhai/MSE5720-HW">Density Functional Theory Computation of Materials</a></p>
+                    <p class="code-desc">Code and data archive for <a target="_blank" rel="noopener" href="https://classes.cornell.edu/browse/roster/SP21/class/MSE/5720">Computational Materials Science</a>, containing <a target="_blank" rel="noopener" href="https://www.quantum-espresso.org/">Quantum ESPRESSO</a> workflows for DFT computation of materials properties. Originally run on <a target="_blank" rel="noopener" href="https://tacc.utexas.edu/systems/stampede2/">TACC Stampede2</a>.</p>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+    </div>
+    <footer id="footer">
+      <div class="container">
+        <div class="row">
+          <p id="copyRightEn">&copy; Hanfeng Zhai. All rights reserved.</p>
+          <div class="wrapper">
+            <ul class="social-icons icon-circle list-unstyled list-inline">
+              <li><a href="https://www.researchgate.net/profile/Hanfeng-Zhai" target="_blank" rel="noopener" aria-label="ResearchGate"><i class="icon-researchgate" aria-hidden="true"></i></a></li>
+              <li><a href="https://orcid.org/0000-0003-1511-7597" target="_blank" rel="noopener" aria-label="ORCID"><i class="icon-orcid" aria-hidden="true"></i></a></li>
+              <li><a href="https://www.linkedin.com/in/hanfengzhai/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+              <li><a href="https://twitter.com/HanfengZhai" target="_blank" rel="noopener" aria-label="Twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+              <li><a href="https://github.com/hanfengzhai" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa fa-github" aria-hidden="true"></i></a></li>
+              <li><a href="https://scholar.google.com/citations?hl=en&amp;user=S5jCDXcAAAAJ&amp;view_op=list_works&amp;sortby=pubdate" target="_blank" rel="noopener" aria-label="Google Scholar"><i class="icon-scholar" aria-hidden="true"></i></a></li>
+              <li><a href="https://www.youtube.com/channel/UCn7UKJez4SV9VkO8pNqI5Pw" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
+            </ul>
+            <a target="_blank" rel="noopener" href="https://info.flagcounter.com/x6ta"><img src="https://s11.flagcounter.com/count2/x6ta/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+          </div>
         </div>
-    </div>
-</div>
-<script>
-(function (window) {
-    var INSIGHT_CONFIG = {
-        TRANSLATION: {
-            POSTS: 'Posts',
-            PAGES: 'Pages',
-            CATEGORIES: 'Categories',
-            TAGS: 'Tags',
-            UNTITLED: 'Hanfeng Zhai',
-        },
-        ROOT_URL: '/',
-        CONTENT_URL: '/content.json',
-    };
-    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-})(window);
-</script>
-<script src="/js/insight.js"></script>
-</div></li>
-</div>
-</div>             
-</div>
-</div>
-</header>
-
-<div id="content" class="outer">
-<nav class="intro-inline-nav site-pill-nav" aria-label="Site sections">
-  <div class="intro-nav-bar">
-    <a class="intro-nav-link" href="/">Home</a>
-    <a class="intro-nav-link" href="/research/">Research</a>
-    <a class="intro-nav-link" href="/talk">Talks</a>
-    <a class="intro-nav-link" href="/note">Notes</a>
-    <a class="intro-nav-link intro-nav-link-active" href="/code" aria-current="page">Code</a>
-  </div>
-</nav>
-<section id="main" class="main-full-width"><article id="page-code" class="article article-type-page code-page" itemscope itemprop="blogPost" >
-<div id="articleInner" class="article-inner">
-<div class="article-entry" itemprop="articleBody">
-
-<div class="legacy-size-3 legacy-color-black">
-
-<h1 id="Research">Research</h1>
-
-<div class="code-list">
-  <article class="code-item">
-    <div class="code-schematic-frame"><img src="/assets/img/code/opendis-logo.png" alt=""></div>
-    <div class="code-content">
-      <p class="code-title"><a target="_blank" rel="noopener" href="https://github.com/OpenDiS/OpenDiS">OpenDiS</a></p>
-      <p class="code-desc">Open Dislocation Simulator: revolutionizing dislocation dynamics simulations through open source collaboration. Updated version of <a target="_blank" rel="noopener" href="https://www.llnl.gov/sites/www/files/2020-05/Paradis-STR-Nov-05.pdf">ParaDiS</a>.</p>
-      <ul>
-        <li><strong>Interface</strong>: Python3; <strong>Documentation</strong>: <a target="_blank" rel="noopener" href="https://opendis.github.io/OpenDiS/">OpenDiS webpage</a>.</li>
-        <li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="http://doi.org/10.1088/1361-651X/ab3a03">Bertin et al., MSMSE, 2019</a>, <a target="_blank" rel="noopener" href="http://doi.org/10.1088/0965-0393/15/6/001">Arsenlis et al., MSMSE, 2007</a>.</li>
-      </ul>
-    </div>
-  </article>
-
-  <article class="code-item">
-    <div class="code-schematic-frame"><img src="/assets/img/code/AI_DislLinks_DDD.png" alt=""></div>
-    <div class="code-content">
-      <p class="code-title"><a target="_blank" rel="noopener" href="https://gitlab.com/micronano_public/Dislocation_Links">Dislocation Link Analysis</a></p>
-      <p class="code-desc">Analysis toolkit for link statistics of dislocation networks during strain hardening from discrete dislocation dynamics (DDD) simulations.</p>
-      <ul>
-        <li><strong>Dependence</strong>: Data from <a target="_blank" rel="noopener" href="https://github.com/LLNL/ParaDiS">ParaDiS</a> (<a target="_blank" rel="noopener" href="https://www.llnl.gov/sites/www/files/2020-05/Paradis-STR-Nov-05.pdf">S&amp;TR feature</a>).</li>
-        <li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.jmps.2026.106533">Akhondzadeh, Zhai et al., JMPS, 2026</a>.</li>
-      </ul>
-    </div>
-  </article>
-
-  <article class="code-item">
-    <div class="code-schematic-frame"><img src="/assets/img/code/gnn_plasti_fem.png" alt=""></div>
-    <div class="code-content">
-      <p class="code-title"><a target="_blank" rel="noopener" href="https://gitlab.com/hanfengzhai2/GNN-FEM-PolyPlas">GNN FEM Polycrystal Plasticity</a></p>
-      <p class="code-desc">Using graph neural networks to predict stress in polycrystal plasticity based on finite element meshes to accelerate simulations.</p>
-      <ul>
-        <li><strong>Dependence</strong>: <a target="_blank" rel="noopener" href="https://pypi.org/project/torch/">torch</a>, <a target="_blank" rel="noopener" href="https://pytorch-geometric.readthedocs.io/en/latest/">torch_geometric</a>, <a target="_blank" rel="noopener" href="https://pytorch-scatter.readthedocs.io/en/latest/index.html">Torch Scatter</a>.</li>
-        <li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="https://doi.org/10.1007/s00466-025-02604-6">Zhai, Computational Mechanics, 2025</a>.</li>
-      </ul>
-    </div>
-  </article>
-
-  <article class="code-item">
-    <div class="code-schematic-frame"><img src="/assets/img/code/code_matdes.png" alt=""></div>
-    <div class="code-content">
-      <p class="code-title"><a target="_blank" rel="noopener" href="https://github.com/hanfengzhai/materials-discovery-benchmark/tree/master/inverse_opt">Materials Discovery Benchmark</a></p>
-      <p class="code-desc">Optimization methods for materials design and discovery based on the <a target="_blank" rel="noopener" href="https://next-gen.materialsproject.org/">Materials Project</a> database with targeted properties.</p>
-      <ul>
-        <li><strong>Dependence</strong>: <a target="_blank" rel="noopener" href="https://pymatgen.org/">pymatgen</a>, <a target="_blank" rel="noopener" href="https://github.com/materialsvirtuallab/megnet">MEGNet</a>, <a target="_blank" rel="noopener" href="https://pypi.org/project/mealpy/">MEALPY</a>.</li>
-        <li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="https://doi.org/10.1063/5.0177266">Zhai et al., APL Materials, 2024</a>.</li>
-      </ul>
-    </div>
-  </article>
-
-  <article class="code-item">
-    <div class="code-schematic-frame"><img src="/assets/img/code/pylamdo.jpeg" alt=""></div>
-    <div class="code-content">
-      <p class="code-title"><a target="_blank" rel="noopener" href="https://github.com/hanfengzhai/PyLAMDO">PyLAMDO</a></p>
-      <p class="code-desc"><strong>Py</strong>thon-<strong>LA</strong>MMPS toolkit for <strong>M</strong>ultiscale, <strong>M</strong>ultiphysics, <strong>M</strong>aterials <strong>D</strong>esign &amp; <strong>O</strong>ptimization. Used for designing antibiofilm active surfaces and porous materials.</p>
-      <ul>
-        <li><strong>Dependence</strong>: <a target="_blank" rel="noopener" href="https://www.lammps.org/">LAMMPS 19.X</a>, <a target="_blank" rel="noopener" href="https://github.com/bayesian-optimization/BayesianOptimization">BayesianOptimization</a>.</li>
-        <li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="https://doi.org/10.1021/acsbiomaterials.2c01079">Zhai &amp; Yeo, ACS Biomaterials Sci. &amp; Eng., 2023</a>, <a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.jmbbm.2023.106127">Zhai &amp; Yeo, JMBBM, 2023</a>.</li>
-      </ul>
-    </div>
-  </article>
-
-  <article class="code-item">
-    <div class="code-schematic-frame"><img src="/assets/img/code/bblnet.png" alt=""></div>
-    <div class="code-content">
-      <p class="code-title"><a target="_blank" rel="noopener" href="https://github.com/hanfengzhai/BubbleNet">BubbleNet</a></p>
-      <p class="code-desc">Deep learning framework to predict and obtain the physics of micro-bubble dynamics based on the general structure of <a target="_blank" rel="noopener" href="https://maziarraissi.github.io/PINNs/">PINNs</a>.</p>
-      <ul>
-        <li><strong>Dependence</strong>: <a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/compat/v1">TensorFlow 1.X</a>, <a target="_blank" rel="noopener" href="https://www.comsol.com/comsol-multiphysics">COMSOL Multiphysics</a> (data).</li>
-        <li><strong>Reference</strong>: <a target="_blank" rel="noopener" href="https://doi.org/10.1063/5.0079602">Zhai et al., AIP Advances, 2022</a>.</li>
-      </ul>
-    </div>
-  </article>
-</div>
-
-<h1 id="Education">Education</h1>
-
-<div class="code-list">
-  <article class="code-item">
-    <div class="code-schematic-frame"><img src="/assets/img/code/dft.jpeg" alt=""></div>
-    <div class="code-content">
-      <p class="code-title"><a target="_blank" rel="noopener" href="https://github.com/hanfengzhai/MSE5720-HW">Density Functional Theory Computation of Materials</a></p>
-      <p class="code-desc">Code and data archive for <a target="_blank" rel="noopener" href="https://classes.cornell.edu/browse/roster/SP21/class/MSE/5720">Computational Materials Science</a>, containing <a target="_blank" rel="noopener" href="https://www.quantum-espresso.org/">Quantum ESPRESSO</a> workflows for DFT computation of materials properties. Originally run on <a target="_blank" rel="noopener" href="https://tacc.utexas.edu/systems/stampede2/">TACC Stampede2</a>.</p>
-    </div>
-  </article>
-</div>
-
-</div>
-</div>
-</div>
-</article>
-</section>
-</div>
-<footer id="footer">
-<div class="container">
-      	<div class="row">
-	      <p id="copyRightEn">Powered by <a href="http://hexo.io/" target="_blank" rel="noopener">Hexo</a>, &copy; Hanfeng Zhai, All Rights Reserved.</p>
-		
-        <div class="wrapper">
-	<ul class="social-icons icon-circle list-unstyled list-inline"> 
-          <li> <a href="https://www.researchgate.net/profile/Hanfeng-Zhai" target="_blank" rel="noopener" aria-label="ResearchGate"><i class="icon-researchgate" aria-hidden="true"></i></a></li>
-	      <li> <a href="https://orcid.org/0000-0003-1511-7597" target="_blank" rel="noopener" aria-label="ORCID"><i class="icon-orcid" aria-hidden="true"></i></a></li>
-	      <li> <a href="https://www.linkedin.com/in/hanfengzhai/"><i class="fa fa-linkedin"></i></a></li> 
-	      <li> <a href="https://twitter.com/HanfengZhai"><i class="fa fa-twitter"></i></a></li>
-          <li> <a href="https://github.com/hanfengzhai"><i class="fa fa-github"></i></a></li> 
-	      <li> <a href="https://scholar.google.com/citations?hl=en&user=S5jCDXcAAAAJ&view_op=list_works&sortby=pubdate" aria-label="Google Scholar"><i class="icon-scholar" aria-hidden="true"></i></a></li>  
-	      <li> <a href="https://www.youtube.com/channel/UCn7UKJez4SV9VkO8pNqI5Pw"><i class="fa fa-youtube-play"></i></a></li>
-	</ul>
-	      <a target="_blank" rel="noopener" href="https://info.flagcounter.com/x6ta"><img src="https://s11.flagcounter.com/count2/x6ta/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
-	</div>
+      </div>
+    </footer>
   </div>
 </div>
-</footer>
-
-</div>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true,
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    }
-  });
-  MathJax.Hub.Queue(function () {
-    var all = MathJax.Hub.getAllJax(), i;
-    for (i = 0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
 <script src="/js/scripts.js"></script>
 <script src="/js/intro-nav.js?v=5"></script>
-
-  </div>
-
-  <a id="rocket" href="#top" class=""></a>
-  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
-  
+<a id="rocket" href="#top" class=""></a>
+<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Notes | Hanfeng Zhai</title>
     <meta property="og:type" content="website">
     <meta property="og:title" content="Notes">
@@ -12,16 +12,16 @@
     <link rel="alternate" href="/atom.xml" title="Hanfeng Zhai" type="application/atom+xml">
     <link rel="icon" href="/css/images/site/favicon.jpg">
     <link rel="apple-touch-icon" href="/css/images/site/favicon.jpg">
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles/style.css?v=sticky1">
     <link rel="stylesheet" href="/css/vendor/bootstrap.css">
     <link rel="stylesheet" href="/css/styles/dialog.css">
-    <link rel="stylesheet" href="/css/styles/header-post.css">
+    <link rel="stylesheet" href="/css/styles/header-post.css?v=2">
     <link rel="stylesheet" href="/css/styles/archive.css?v=3">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/styles/site-fonts.css?v=5">
+    <link rel="stylesheet" href="/css/styles/site-fonts.css?v=6">
     <link rel="stylesheet" href="/css/styles/intro-nav.css?v=8">
     <style>
       .site-pill-nav + section#main .note-page.article,
@@ -253,13 +253,15 @@
 
       .note-page .article-entry .note-item-title a {
         color: #0645ad;
-        border-bottom: 1px dotted rgba(6, 69, 173, 0.42);
-        transition: color 0.16s ease, border-color 0.16s ease;
+        text-decoration: none;
+        transition: color 0.16s ease;
       }
 
       .note-page .article-entry .note-item-title a:hover {
         color: #003d82;
-        border-bottom-color: #003d82;
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 2px;
       }
 
       .note-page .note-item-links {
@@ -276,17 +278,17 @@
         line-height: 1.35;
       }
 
-      @media (max-width: 1079px) {
+      @media (max-width: 959px) {
         .note-page .teaching-block:not(:last-child) {
           padding-bottom: 24px;
           border-bottom: 1px solid #dcd4c4;
         }
       }
 
-      @media (min-width: 1080px) {
+      @media (min-width: 960px) {
         .note-page .teaching-blocks {
           grid-template-columns: repeat(2, minmax(0, 1fr));
-          column-gap: 48px;
+          column-gap: 40px;
           row-gap: 0;
           align-items: stretch;
         }
@@ -296,9 +298,19 @@
           position: absolute;
           top: 0;
           bottom: 0;
-          left: -24px;
+          left: -20px;
           width: 1px;
           background: #dcd4c4;
+        }
+      }
+
+      @media (min-width: 1200px) {
+        .note-page .teaching-blocks {
+          column-gap: 48px;
+        }
+
+        .note-page .teaching-block:not(:first-child)::before {
+          left: -24px;
         }
       }
 
@@ -363,69 +375,6 @@
 <body>
     <div id="container">
         <div id="wrap">
-            <header>
-                <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
-                    <div class="navbar-inner">
-                        <div class="container">
-                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                                <span class="sr-only">Toggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                            <a class="brand" style="margin-top: 0px;">
-                                <img width="124px" height="124px" alt="Hike News" src="/css/images/site/favicon.jpg">
-                            </a>
-                            <div class="navbar-collapse collapse">
-                                <ul class="hnav navbar-nav">
-                                    <li><a class="main-nav-link beautifont" href="/">Home</a></li>
-                                    <li><a class="main-nav-link beautifont" href="/research">Research</a></li>
-                                    <li><a class="main-nav-link beautifont" href="/talk">Talks</a></li>
-                                    <li><a class="main-nav-link beautifont" href="/note">Notes</a></li>
-                                    <li><a class="main-nav-link beautifont" href="/code">Code</a></li>
-                                    <li>
-                                        <div id="search-form-wrap">
-                                            <form class="search-form">
-                                                <input type="text" class="ins-search-input search-form-input" placeholder="">
-                                                <button type="submit" class="search-form-submit"></button>
-                                            </form>
-                                            <div class="ins-search">
-                                                <div class="ins-search-mask"></div>
-                                                <div class="ins-search-container">
-                                                    <div class="ins-input-wrapper">
-                                                        <input type="text" class="ins-search-input" placeholder="Type something...">
-                                                        <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-                                                    </div>
-                                                    <div class="ins-section-wrapper">
-                                                        <div class="ins-section-container"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <script>
-                                                (function (window) {
-                                                    var INSIGHT_CONFIG = {
-                                                        TRANSLATION: {
-                                                            POSTS: 'Posts',
-                                                            PAGES: 'Pages',
-                                                            CATEGORIES: 'Categories',
-                                                            TAGS: 'Tags',
-                                                            UNTITLED: 'Hanfeng Zhai',
-                                                        },
-                                                        ROOT_URL: '/',
-                                                        CONTENT_URL: '/content.json',
-                                                    };
-                                                    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-                                                })(window);
-                                            </script>
-                                            <script src="/js/insight.js"></script>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
             <div id="content" class="outer">
                 <nav class="intro-inline-nav site-pill-nav" aria-label="Site sections">
                     <div class="intro-nav-bar">
@@ -542,7 +491,7 @@
                                                 <span class="note-item-links"><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/notes/FVM.pdf">PDF</a>]</span></span>
                                             </li>
                                             <li class="note-item">
-                                                <span class="note-item-title">Smoothed-Particles Hydrodynamics</span>
+                                                <span class="note-item-title">Smoothed-Particle Hydrodynamics</span>
                                                 <span class="note-item-links"><span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/notes/SPH.pdf">PDF</a>]</span></span>
                                             </li>
                                             <li class="note-item">
@@ -559,7 +508,7 @@
                                                 <span class="note-item-title">Functional Analysis</span>
                                                 <span class="note-item-links">
                                                     <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/notes/ME412_CourseSummary.pdf">PDF</a>]</span>
-                                                    <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/intros/funcana/">PROM slides</a>]</span>
+                                                    <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/intros/funcana/">PROM Slides</a>]</span>
                                                     <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/teaching/notes/ME412_FinalPresentation.pdf">Presentation</a>]</span>
                                                 </span>
                                             </li>
@@ -616,40 +565,23 @@
             <footer id="footer">
                 <div class="container">
                     <div class="row">
-                        <p id="copyRightEn">Powered by <a href="http://hexo.io/" target="_blank" rel="noopener">Hexo</a>, &copy; Hanfeng Zhai, All Rights Reserved.</p>
+                        <p id="copyRightEn">&copy; Hanfeng Zhai. All rights reserved.</p>
                         <div class="wrapper">
                             <ul class="social-icons icon-circle list-unstyled list-inline">
                                 <li><a href="https://www.researchgate.net/profile/Hanfeng-Zhai" target="_blank" rel="noopener" aria-label="ResearchGate"><i class="icon-researchgate" aria-hidden="true"></i></a></li>
                                 <li><a href="https://orcid.org/0000-0003-1511-7597" target="_blank" rel="noopener" aria-label="ORCID"><i class="icon-orcid" aria-hidden="true"></i></a></li>
-                                <li><a href="https://www.linkedin.com/in/hanfengzhai/"><i class="fa fa-linkedin"></i></a></li>
-                                <li><a href="https://twitter.com/HanfengZhai"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="https://github.com/hanfengzhai"><i class="fa fa-github"></i></a></li>
-                                <li><a href="https://scholar.google.com/citations?hl=en&user=S5jCDXcAAAAJ&view_op=list_works&sortby=pubdate" aria-label="Google Scholar"><i class="icon-scholar" aria-hidden="true"></i></a></li>
-                                <li><a href="https://www.youtube.com/channel/UCn7UKJez4SV9VkO8pNqI5Pw"><i class="fa fa-youtube-play"></i></a></li>
+                                <li><a href="https://www.linkedin.com/in/hanfengzhai/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                                <li><a href="https://twitter.com/HanfengZhai" target="_blank" rel="noopener" aria-label="Twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                <li><a href="https://github.com/hanfengzhai" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa fa-github" aria-hidden="true"></i></a></li>
+                                <li><a href="https://scholar.google.com/citations?hl=en&amp;user=S5jCDXcAAAAJ&amp;view_op=list_works&amp;sortby=pubdate" target="_blank" rel="noopener" aria-label="Google Scholar"><i class="icon-scholar" aria-hidden="true"></i></a></li>
+                                <li><a href="https://www.youtube.com/channel/UCn7UKJez4SV9VkO8pNqI5Pw" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
                             </ul>
-                            	<a target="_blank" rel="noopener" href="https://info.flagcounter.com/x6ta"><img src="https://s11.flagcounter.com/count2/x6ta/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
-                            <hr>
+                            <a target="_blank" rel="noopener" href="https://info.flagcounter.com/x6ta"><img src="https://s11.flagcounter.com/count2/x6ta/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
                         </div>
                     </div>
                 </div>
             </footer>
         </div>
-        <script type="text/x-mathjax-config">
-            MathJax.Hub.Config({
-                tex2jax: {
-                    inlineMath: [['$', '$'], ["\\(", "\\)"]],
-                    processEscapes: true,
-                    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-                }
-            });
-            MathJax.Hub.Queue(function () {
-                var all = MathJax.Hub.getAllJax(), i;
-                for (i = 0; i < all.length; i += 1) {
-                    all[i].SourceElement().parentNode.className += ' has-jax';
-                }
-            });
-        </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script src="/js/scripts.js"></script>
         <script src="/js/intro-nav.js?v=5"></script>
         <a id="rocket" href="#top"></a>
