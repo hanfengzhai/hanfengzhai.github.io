@@ -95,7 +95,7 @@ tt,
   font-weight: 500;
   color: #8C1515;
   padding: 1px 2px;
-  border-radius: 3px;
+  border-radius: 0;
   text-decoration: none;
   transition: color 0.15s ease, background-color 0.15s ease;
 }
