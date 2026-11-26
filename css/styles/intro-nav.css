@@ -147,6 +147,8 @@ html {
   .intro-nav-link:link,
   .intro-nav-link:visited,
   .intro-nav-bar .intro-nav-link,
+  .intro-nav-bar .intro-nav-link:link,
+  .intro-nav-bar .intro-nav-link:visited,
   .article-entry .intro-nav-bar .intro-nav-link {
     padding: 11px 1px 9px;
     font-size: 13px;
@@ -166,6 +168,8 @@ html {
   .intro-nav-link:link,
   .intro-nav-link:visited,
   .intro-nav-bar .intro-nav-link,
+  .intro-nav-bar .intro-nav-link:link,
+  .intro-nav-bar .intro-nav-link:visited,
   .article-entry .intro-nav-bar .intro-nav-link {
     padding: 10px 1px 8px;
     font-size: 12.5px;
