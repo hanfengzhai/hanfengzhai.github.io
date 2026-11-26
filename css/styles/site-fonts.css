@@ -45,7 +45,7 @@
   --email-bg: #e6e4de;
   --footer-red: #5c0c0c;
   --footer-red-hover: #4a0808;
-  --site-gutter: clamp(24px, 3vw, 56px);
+  --site-gutter: clamp(28px, 4.5vw, 84px);
 }
 
 html {
@@ -87,7 +87,7 @@ body,
   width: 100%;
   max-width: none;
   margin: 0;
-  padding: 0 var(--site-gutter) 44px;
+  padding: 0 var(--site-gutter) 60px;
   box-sizing: border-box;
   min-height: auto !important;
 }

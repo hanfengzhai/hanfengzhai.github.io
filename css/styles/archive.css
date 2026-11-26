@@ -94,8 +94,8 @@ hr{
 
 .scrolling-track {
 	display: flex;
-	gap: 20px;
-	padding: 4px 0 16px;
+	gap: 26px;
+	padding: 6px 0 18px;
 	overflow-x: auto;
 	overscroll-behavior-x: contain;
 	scroll-snap-type: x proximity;

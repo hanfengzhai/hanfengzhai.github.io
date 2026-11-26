@@ -18,12 +18,12 @@
 <link rel="stylesheet" href="/css/vendor/bootstrap.css">
 <link rel="stylesheet" href="/css/styles/dialog.css">
 <link rel="stylesheet" href="/css/styles/header-post.css?v=2">
-<link rel="stylesheet" href="/css/styles/archive.css?v=3">
+<link rel="stylesheet" href="/css/styles/archive.css?v=4">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/styles/site-fonts.css?v=6">
-<link rel="stylesheet" href="/css/styles/intro-nav.css?v=8">
+<link rel="stylesheet" href="/css/styles/site-fonts.css?v=7">
+<link rel="stylesheet" href="/css/styles/intro-nav.css?v=9">
 <style type="text/css">
   .site-pill-nav + section#main .research-page.article,
   .research-page.article {
@@ -32,7 +32,7 @@
 
   .research-page .article-header {
     text-align: center;
-    margin: 0 0 18px;
+    margin: 0 0 24px;
   }
 
   .research-page .article-header h1,
@@ -55,9 +55,9 @@
   }
 
   #main.main-full-width .research-page .article-entry .research-intro blockquote {
-    max-width: 680px;
-    margin: 0 auto 22px;
-    padding: 12px 16px;
+    max-width: 700px;
+    margin: 0 auto 28px;
+    padding: 14px 20px;
     background: transparent;
     border: 0;
     border-top: 1px solid #dcd4c4;
@@ -82,7 +82,7 @@
 
   .research-page .research-figure {
     max-width: 860px;
-    margin: 0 auto 18px;
+    margin: 0 auto 24px;
     overflow: hidden;
   }
 
@@ -98,9 +98,9 @@
 
   .research-page .article-entry p.research-overview-copy {
     max-width: 860px;
-    margin: 0 auto 32px;
+    margin: 0 auto 40px;
     font-size: 16px;
-    line-height: 1.7;
+    line-height: 1.75;
     color: #26221d;
     text-align: left;
   }
@@ -108,15 +108,15 @@
   .research-page .research-section-blocks {
     display: flex;
     flex-direction: column;
-    gap: 28px;
+    gap: 32px;
     margin: 0;
-    padding-top: 24px;
+    padding-top: 32px;
     border-top: 1px solid #dcd4c4;
   }
 
   .research-page .research-section-block {
     position: relative;
-    padding: 0 0 24px;
+    padding: 0 0 28px;
     border: 0;
     border-bottom: 1px solid #dcd4c4;
     border-radius: 0;
@@ -130,8 +130,8 @@
   }
 
   .research-page .article-entry .research-section-block h2 {
-    margin: 0 0 14px;
-    padding: 0 0 10px;
+    margin: 0 0 18px;
+    padding: 0 0 12px;
     border-bottom: 1px solid #dcd4c4;
     font-size: 19px;
     font-weight: 700;
@@ -148,7 +148,7 @@
   .research-page .article-entry .research-section-block li {
     list-style: none;
     margin: 0;
-    padding: 13px 0;
+    padding: 18px 0;
     border-bottom: 1px solid #e6dfd1;
     color: #26221d;
   }
@@ -163,10 +163,10 @@
   }
 
   .research-page .article-entry .research-paper-title {
-    margin: 0 0 3px;
+    margin: 0 0 5px;
     font-size: 15.5px;
     font-weight: 700;
-    line-height: 1.4;
+    line-height: 1.42;
     color: #1a1815;
   }
 
@@ -185,16 +185,16 @@
   }
 
   .research-page .article-entry .research-paper-authors {
-    margin: 0 0 2px;
+    margin: 0 0 3px;
     font-size: 14.5px;
-    line-height: 1.5;
+    line-height: 1.52;
     color: #3d3830;
   }
 
   .research-page .article-entry .research-paper-venue {
-    margin: 0 0 6px;
+    margin: 0 0 8px;
     font-size: 14.5px;
-    line-height: 1.48;
+    line-height: 1.5;
     color: #524b40;
   }
 
@@ -202,7 +202,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 4px 8px;
+    gap: 5px 9px;
     margin: 0;
   }
 
@@ -212,8 +212,8 @@
   }
 
   .research-page .article-entry p.research-footnote {
-    margin: 22px 0 0;
-    padding-top: 10px;
+    margin: 28px 0 0;
+    padding-top: 14px;
     border-top: 1px solid #e6dfd1;
     font-size: 13px;
     line-height: 1.45;
@@ -253,10 +253,10 @@
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       grid-template-rows: auto 1fr;
-      column-gap: 44px;
+      column-gap: 48px;
       row-gap: 0;
       align-items: stretch;
-      padding-top: 24px;
+      padding-top: 32px;
     }
 
     .research-page .research-section-block {
@@ -278,9 +278,19 @@
       position: absolute;
       top: 0;
       bottom: 0;
-      left: -22px;
+      left: -24px;
       width: 1px;
       background: #dcd4c4;
+    }
+  }
+
+  @media (min-width: 1680px) {
+    .research-page .research-section-blocks {
+      column-gap: 64px;
+    }
+
+    .research-page .research-section-block:not(:first-child)::before {
+      left: -32px;
     }
   }
 

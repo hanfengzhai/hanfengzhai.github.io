@@ -66,7 +66,7 @@ a:hover {
 }
 
 .hero {
-  padding: 24px var(--site-gutter, clamp(24px, 3vw, 56px)) 20px;
+  padding: 34px var(--site-gutter, clamp(28px, 4.5vw, 84px)) 28px;
   text-align: center;
 }
 
@@ -76,7 +76,7 @@ a:hover {
 }
 
 .hero h1 {
-  margin: 0 0 12px;
+  margin: 0 0 14px;
   padding: 0 0 10px;
   border-bottom: 1px solid var(--tree-rule);
   font-family: var(--tree-serif);
@@ -98,9 +98,9 @@ a:hover {
 
 .tree-wrap {
   position: relative;
-  max-width: 960px;
+  max-width: 1040px;
   margin: 0 auto;
-  padding: 10px var(--site-gutter, clamp(24px, 3vw, 56px)) 40px;
+  padding: 14px var(--site-gutter, clamp(28px, 4.5vw, 84px)) 52px;
 }
 
 .tree-rail {
@@ -117,12 +117,12 @@ a:hover {
 .gen {
   position: relative;
   z-index: 1;
-  margin: 0 0 22px;
+  margin: 0 0 28px;
 }
 
 .gen-label {
   display: table;
-  margin: 0 auto 12px;
+  margin: 0 auto 14px;
   padding: 2px 10px;
   background: var(--tree-bg);
   font-family: var(--tree-mono);
@@ -134,16 +134,16 @@ a:hover {
 }
 
 .gen > .node {
-  max-width: 620px;
+  max-width: 660px;
   margin-inline: auto;
 }
 
 .node {
   display: grid;
   grid-template-columns: 88px minmax(0, 1fr);
-  gap: 16px;
+  gap: 18px;
   align-items: start;
-  padding: 14px 16px;
+  padding: 18px 20px;
   background: var(--tree-surface);
   border: 1px solid #d8d0c0;
   border-radius: 0;
@@ -262,9 +262,9 @@ a:hover {
 .full-lineage {
   position: relative;
   z-index: 1;
-  max-width: 620px;
-  margin: 14px auto 0;
-  padding: 10px 14px;
+  max-width: 660px;
+  margin: 16px auto 0;
+  padding: 12px 16px;
   background: var(--tree-bg);
   border: 1px solid #d8d0c0;
   border-radius: 0;
@@ -381,17 +381,17 @@ a:hover {
 .gen-dual .dual-cols {
   position: relative;
   background: var(--tree-bg);
-  padding: 6px 0;
+  padding: 8px 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
+  gap: 28px;
   align-items: start;
 }
 
 .dual-col {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 18px;
 }
 
 .path-label {

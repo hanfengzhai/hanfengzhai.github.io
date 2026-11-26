@@ -12,7 +12,7 @@ html {
   width: 100%;
   max-width: none;
   margin: 0;
-  padding: env(safe-area-inset-top, 0px) var(--site-gutter, clamp(24px, 3vw, 56px)) 0;
+  padding: env(safe-area-inset-top, 0px) var(--site-gutter, clamp(28px, 4.5vw, 84px)) 0;
   background-color: #f5f0e4;
   border: 0;
   border-bottom: 1px solid #dcd4c4;
@@ -23,12 +23,12 @@ html {
   transition: border-bottom-color 0.15s ease;
 }
 
-/* Inside #content.outer, bleed edge-to-edge past horizontal gutters with uniform 24px bottom rhythm */
+/* Inside #content.outer, bleed edge-to-edge past horizontal gutters with comfortable 34px bottom rhythm */
 #content > .intro-inline-nav,
 #content > .site-pill-nav,
 #content > .home-pill-nav {
   width: auto;
-  margin: 0 calc(-1 * var(--site-gutter, clamp(24px, 3vw, 56px))) 24px;
+  margin: 0 calc(-1 * var(--site-gutter, clamp(28px, 4.5vw, 84px))) 34px;
 }
 
 .intro-inline-nav.is-stuck,
@@ -133,7 +133,7 @@ html {
   #content > .intro-inline-nav,
   #content > .site-pill-nav,
   #content > .home-pill-nav {
-    margin: 0 calc(-1 * var(--site-gutter, 16px)) 20px;
+    margin: 0 calc(-1 * var(--site-gutter, 16px)) 24px;
   }
 
   .intro-nav-bar,

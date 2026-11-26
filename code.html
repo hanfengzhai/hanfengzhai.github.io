@@ -19,12 +19,12 @@
 <link rel="stylesheet" href="/css/vendor/bootstrap.css">
 <link rel="stylesheet" href="/css/styles/dialog.css">
 <link rel="stylesheet" href="/css/styles/header-post.css?v=2">
-<link rel="stylesheet" href="/css/styles/archive.css?v=3">
+<link rel="stylesheet" href="/css/styles/archive.css?v=4">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/styles/site-fonts.css?v=6">
-<link rel="stylesheet" href="/css/styles/intro-nav.css?v=8">
+<link rel="stylesheet" href="/css/styles/site-fonts.css?v=7">
+<link rel="stylesheet" href="/css/styles/intro-nav.css?v=9">
 <style type="text/css">
   .site-pill-nav + section#main .code-page.article,
   .code-page.article {
@@ -36,7 +36,7 @@
   }
 
   .code-page .article-entry h1 {
-    margin: 0 0 22px;
+    margin: 0 0 28px;
     padding: 0 0 10px;
     font-size: 26px;
     font-weight: 700;
@@ -50,7 +50,7 @@
   }
 
   .code-page .article-entry h1#Education {
-    margin-top: 36px;
+    margin-top: 52px;
   }
 
   .code-page .code-list {
@@ -64,8 +64,8 @@
     position: relative;
     display: flex;
     align-items: flex-start;
-    gap: 22px;
-    padding: 20px 0;
+    gap: 24px;
+    padding: 26px 0;
     border: 0;
     border-bottom: 1px solid #e6dfd1;
     border-radius: 0;
@@ -153,7 +153,7 @@
     .code-page .code-list {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: 48px;
+      column-gap: 56px;
       row-gap: 0;
       align-items: stretch;
     }
@@ -165,8 +165,8 @@
     }
 
     .code-page .code-item {
-      gap: 16px;
-      padding: 20px 0;
+      gap: 20px;
+      padding: 26px 0;
       border-bottom: 1px solid #e6dfd1;
     }
 
@@ -186,7 +186,7 @@
       position: absolute;
       top: 0;
       bottom: 0;
-      left: -24px;
+      left: -28px;
       width: 1px;
       background: #dcd4c4;
     }
@@ -199,8 +199,16 @@
   }
 
   @media (min-width: 1440px) {
+    .code-page .code-list {
+      column-gap: 68px;
+    }
+
+    .code-page .code-item:nth-child(even)::before {
+      left: -34px;
+    }
+
     .code-page .code-item {
-      gap: 20px;
+      gap: 24px;
     }
 
     .code-page .code-schematic-frame {
