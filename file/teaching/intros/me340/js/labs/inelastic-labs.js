@@ -186,6 +186,220 @@
     };
   }
 
+  function getStageWidth(stage, canvas) {
+    const target = stage || (canvas && canvas.parentElement) || canvas;
+    if (!target) return 0;
+    let w = Math.floor(target.getBoundingClientRect().width);
+    if (w < 10 && target.parentElement) {
+      w = Math.floor(target.parentElement.getBoundingClientRect().width);
+    }
+    return w;
+  }
+
+  function syncStageHeight(stage, narrowH, applyNarrow) {
+    if (!stage) return false;
+    const want = applyNarrow && narrowH > 0 ? (Math.round(narrowH) + 'px') : '';
+    const wantFlex = applyNarrow && narrowH > 0 ? '0 0 auto' : '';
+    if (stage.style.minHeight !== want || stage.style.height !== want || stage.style.flex !== wantFlex) {
+      stage.style.minHeight = want;
+      stage.style.height = want;
+      stage.style.flex = wantFlex;
+      return true;
+    }
+    return false;
+  }
+
+  function parseMathTokens(str) {
+    const s = String(str);
+    const out = [];
+    let i = 0;
+    let buf = '';
+    function flush() {
+      if (buf) {
+        out.push({ kind: 'text', t: buf });
+        buf = '';
+      }
+    }
+    while (i < s.length) {
+      const ch = s.charAt(i);
+      if ((ch === '_' || ch === '^') && i + 1 < s.length) {
+        const kind = ch === '_' ? 'sub' : 'sup';
+        if (s.charAt(i + 1) === '{') {
+          const close = s.indexOf('}', i + 2);
+          if (close > i + 2) {
+            flush();
+            out.push({ kind: kind, t: s.slice(i + 2, close) });
+            i = close + 1;
+            continue;
+          }
+        } else {
+          const rest = s.slice(i + 1);
+          const m = rest.match(/^[A-Za-z0-9α-ωΑ-Ω∞]+/);
+          if (m) {
+            flush();
+            out.push({ kind: kind, t: m[0] });
+            i += 1 + m[0].length;
+            continue;
+          }
+        }
+      }
+      buf += ch;
+      i++;
+    }
+    flush();
+    return out;
+  }
+
+  function measureMathRun(ctx, str, px, mono, weight) {
+    const tokens = parseMathTokens(str);
+    const hasScript = tokens.some(function (tk) { return tk.kind !== 'text'; });
+    const basePx = Math.max(hasScript ? 16 : 15, Math.round(px || 15));
+    const scriptPx = 15; // Strict >= 15px Canvas font floor
+    const w = weight || 500;
+    let totalW = 0;
+    ctx.save();
+    for (let i = 0; i < tokens.length; i++) {
+      const tk = tokens[i];
+      setFont(ctx, tk.kind === 'text' ? basePx : scriptPx, mono, w);
+      totalW += ctx.measureText(tk.t).width;
+    }
+    ctx.restore();
+    return totalW;
+  }
+
+  function drawMathRun(ctx, str, x, y, opts) {
+    const o = opts || {};
+    const tokens = parseMathTokens(str);
+    const hasScript = tokens.some(function (tk) { return tk.kind !== 'text'; });
+    const basePx = Math.max(hasScript ? 16 : 15, Math.round(o.px || 15));
+    const scriptPx = 15; // Strict >= 15px Canvas font floor
+    const mono = Boolean(o.mono);
+    const weight = o.weight || 500;
+    const align = o.align || 'left';
+    const baseline = o.baseline || 'middle';
+    const color = o.color || ctx.fillStyle;
+
+    ctx.save();
+    const widths = [];
+    let totalW = 0;
+    for (let i = 0; i < tokens.length; i++) {
+      const tk = tokens[i];
+      setFont(ctx, tk.kind === 'text' ? basePx : scriptPx, mono, weight);
+      const tw = ctx.measureText(tk.t).width;
+      widths.push(tw);
+      totalW += tw;
+    }
+
+    let cx = x;
+    if (align === 'center') cx = x - totalW * 0.5;
+    else if (align === 'right') cx = x - totalW;
+
+    let midY = y;
+    if (baseline === 'top') midY = y + basePx * 0.56;
+    else if (baseline === 'bottom') midY = y - basePx * 0.52;
+
+    if (o.bg) {
+      const padX = o.padX !== undefined ? o.padX : 6;
+      const padY = o.padY !== undefined ? o.padY : 4;
+      const boxH = basePx + padY * 2 + (hasScript ? 3 : 0);
+      roundRectPath(ctx, cx - padX, midY - boxH * 0.5, totalW + padX * 2, boxH, o.radius || 2);
+      ctx.fillStyle = o.bg;
+      ctx.fill();
+      if (o.border) {
+        ctx.strokeStyle = o.border;
+        ctx.lineWidth = o.borderWidth || 1.2;
+        ctx.stroke();
+      }
+    }
+
+    ctx.fillStyle = color;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    for (let i = 0; i < tokens.length; i++) {
+      const tk = tokens[i];
+      const isBase = tk.kind === 'text';
+      setFont(ctx, isBase ? basePx : scriptPx, mono, weight);
+      const dy = tk.kind === 'sub' ? 4.2 : (tk.kind === 'sup' ? -4.8 : 0);
+      ctx.fillText(tk.t, cx, midY + dy);
+      cx += widths[i];
+    }
+    ctx.restore();
+    return totalW;
+  }
+
+  function bindHandleTouch(bag, stage, canvas, handlers) {
+    if (stage) stage.style.touchAction = 'pan-y';
+    if (canvas) canvas.style.touchAction = 'pan-y';
+
+    let mouseDragging = false;
+    let touchState = { mode: 'idle', startX: 0, startY: 0, moved: false };
+
+    bag.on(canvas, 'pointerdown', function (ev) {
+      if (ev.pointerType === 'touch') return;
+      mouseDragging = true;
+      canvas.style.cursor = 'grabbing';
+      try { canvas.setPointerCapture(ev.pointerId); } catch (e) {}
+      handlers.onStart(getPointerPos(canvas, ev));
+    });
+
+    bag.on(canvas, 'pointermove', function (ev) {
+      if (ev.pointerType === 'touch' || !mouseDragging) return;
+      handlers.onMove(getPointerPos(canvas, ev));
+    });
+
+    function endMouse(ev) {
+      if (ev.pointerType === 'touch' || !mouseDragging) return;
+      mouseDragging = false;
+      canvas.style.cursor = 'grab';
+      try { canvas.releasePointerCapture(ev.pointerId); } catch (e) {}
+      if (handlers.onEnd) handlers.onEnd();
+    }
+
+    bag.on(canvas, 'pointerup', endMouse);
+    bag.on(canvas, 'pointercancel', endMouse);
+
+    bag.on(canvas, 'touchstart', function (ev) {
+      if (ev.touches.length !== 1) return;
+      const t = ev.touches[0];
+      const pt = getPointerPos(canvas, t);
+      if (handlers.isNearHandle(pt)) {
+        touchState = { mode: 'drag', startX: t.clientX, startY: t.clientY, moved: false };
+        ev.preventDefault();
+        handlers.onStart(pt);
+      } else {
+        touchState = { mode: 'tap-or-scroll', startX: t.clientX, startY: t.clientY, moved: false };
+      }
+    }, { passive: false });
+
+    bag.on(canvas, 'touchmove', function (ev) {
+      if (ev.touches.length !== 1) return;
+      const t = ev.touches[0];
+      if (touchState.mode === 'drag') {
+        ev.preventDefault();
+        handlers.onMove(getPointerPos(canvas, t));
+      } else if (touchState.mode === 'tap-or-scroll') {
+        if (Math.hypot(t.clientX - touchState.startX, t.clientY - touchState.startY) > 10) {
+          touchState.moved = true;
+        }
+      }
+    }, { passive: false });
+
+    bag.on(canvas, 'touchend', function (ev) {
+      if (touchState.mode === 'drag') {
+        if (handlers.onEnd) handlers.onEnd();
+      } else if (touchState.mode === 'tap-or-scroll' && !touchState.moved && ev.changedTouches.length === 1) {
+        const pt = getPointerPos(canvas, ev.changedTouches[0]);
+        if (handlers.onTap) handlers.onTap(pt);
+      }
+      touchState.mode = 'idle';
+    }, { passive: true });
+
+    bag.on(canvas, 'touchcancel', function () {
+      if (touchState.mode === 'drag' && handlers.onEnd) handlers.onEnd();
+      touchState.mode = 'idle';
+    }, { passive: true });
+  }
+
   function el(tag, cls, text) {
     const node = document.createElement(tag);
     if (cls) node.className = cls;
@@ -204,15 +418,23 @@
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
-      .replace(/_([A-Za-z0-9α-ωΑ-Ω]+)/g, '<sub>$1</sub>')
-      .replace(/\^([A-Za-z0-9+\-]+)/g, '<sup>$1</sup>');
+      .replace(/_{([^}]+)}/g, '<sub>$1</sub>')
+      .replace(/\^{([^}]+)}/g, '<sup>$1</sup>')
+      .replace(/_([A-Za-z0-9α-ωΑ-Ω∞]+)/g, '<sub>$1</sub>')
+      .replace(/\^([A-Za-z0-9+\-−∞]+)/g, '<sup>$1</sup>');
   }
 
-  function createReadoutChip(keyText, valText) {
+  function setMathText(node, text) {
+    if (node) node.innerHTML = formatMathHtml(text);
+  }
+
+  function createReadoutChip(keyText, valText, mathVal) {
     const chip = el('div', 'lab-readout-chip');
     const k = el('span', 'lab-readout-key');
     k.innerHTML = formatMathHtml(keyText);
-    const v = el('span', 'lab-readout-val', valText);
+    const v = el('span', 'lab-readout-val');
+    if (mathVal) v.innerHTML = formatMathHtml(valText);
+    else v.textContent = valText;
     chip.appendChild(k);
     chip.appendChild(v);
     return { chip: chip, keyEl: k, valEl: v };
@@ -291,13 +513,13 @@
         short: 'Part II · Plasticity',
         title: 'Part II',
         sub: 'Plasticity',
-        sym: 'εᵖ, f = 0',
+        sym: 'ε^p, f = 0',
         colorKey: 'teal',
         softKey: 'tealSoft',
         targetId: 'elas-to-plas',
         jumpLabel: 'Jump to Part II →',
-        fields: 'εᵖ, J₂, α',
-        gate: 'Yield gate f > 0',
+        fields: 'ε^p, J_2, α',
+        gate: 'Trial yield f^{tr} > 0',
         methods: 'Mises/Tresca · Return Map'
       },
       {
@@ -305,13 +527,13 @@
         short: 'Part III · Fracture',
         title: 'Part III',
         sub: 'Fracture',
-        sym: 'KI, J',
+        sym: 'K_I, J',
         colorKey: 'amber',
         softKey: 'amberSoft',
         targetId: 'fracture-lefm',
         jumpLabel: 'Jump to Part III →',
-        fields: 'KI, G, J',
-        gate: 'Toughness KI = KIc',
+        fields: 'K_I, G, J',
+        gate: 'Toughness K_I = K_{Ic}',
         methods: 'LEFM · J-Integral'
       }
     ];
@@ -336,15 +558,16 @@
     toolbar.appendChild(jumpBtn);
 
     const stage = el('div', 'lab-stage');
+    stage.style.touchAction = 'pan-y';
     const canvas = el('canvas', 'lab-canvas');
-    canvas.style.touchAction = 'none';
+    canvas.style.touchAction = 'pan-y';
     canvas.style.cursor = 'pointer';
     stage.appendChild(canvas);
 
     const readouts = el('div', 'lab-readout-row');
-    const rFields = createReadoutChip('State Fields', parts[0].fields);
-    const rGate = createReadoutChip('Regime Gate', parts[0].gate);
-    const rMeth = createReadoutChip('Core Tools', parts[0].methods);
+    const rFields = createReadoutChip('State Fields', parts[0].fields, true);
+    const rGate = createReadoutChip('Regime Gate', parts[0].gate, true);
+    const rMeth = createReadoutChip('Core Tools', parts[0].methods, true);
     readouts.appendChild(rFields.chip);
     readouts.appendChild(rGate.chip);
     readouts.appendChild(rMeth.chip);
@@ -365,9 +588,9 @@
       });
       const p = parts[activeIdx];
       jumpBtn.textContent = p.jumpLabel;
-      rFields.valEl.textContent = p.fields;
-      rGate.valEl.textContent = p.gate;
-      rMeth.valEl.textContent = p.methods;
+      setMathText(rFields.valEl, p.fields);
+      setMathText(rGate.valEl, p.gate);
+      setMathText(rMeth.valEl, p.methods);
       draw();
     }
 
@@ -542,6 +765,11 @@
     }
 
     function draw() {
+      const stageW = getStageWidth(stage, canvas);
+      if (stageW < 10) return;
+      const isNarrow = stageW < 560;
+      syncStageHeight(stage, 368, isNarrow);
+
       const fit = fitCanvas(canvas);
       if (!fit.ready) return;
       const ctx = fit.ctx;
@@ -569,13 +797,143 @@
       }
       ctx.restore();
 
-      const padX = Math.max(14, w * 0.03);
-      const gap = w >= 680 ? Math.max(114, Math.min(132, w * 0.13)) : Math.max(48, Math.min(82, w * 0.11));
-      const cardW = Math.max(100, (w - padX * 2 - gap * 2) / 3);
+      const gateLabels = ['f^{tr} > 0', 'K_I = K_{Ic}'];
+
+      if (isNarrow) {
+        // Vertical 3-stage stacked pipeline for narrow mobile viewports (W < 560)
+        const padX = 12;
+        const padY = 12;
+        const gapY = 44;
+        const cardW = Math.max(180, w - padX * 2);
+        const cardH = Math.max(78, Math.floor((h - padY * 2 - gapY * 2) / 3));
+        const totalStackH = cardH * 3 + gapY * 2;
+        const startY = Math.max(8, Math.floor((h - totalStackH) * 0.5));
+
+        nodeRects = parts.map(function (_, i) {
+          return {
+            x: padX,
+            y: startY + i * (cardH + gapY),
+            w: cardW,
+            h: cardH
+          };
+        });
+
+        // Vertical conduits + non-overlapping right-side trigger badges
+        const arrowX = padX + clamp(cardW * 0.24, 56, 86);
+        for (let i = 0; i < 2; i++) {
+          const topR = nodeRects[i];
+          const botR = nodeRects[i + 1];
+          const y1 = topR.y + topR.h;
+          const y2 = botR.y;
+          const midY = (y1 + y2) * 0.5;
+          const cTop = pal[parts[i].colorKey];
+          const cBot = pal[parts[i + 1].colorKey];
+
+          const grad = ctx.createLinearGradient(arrowX, y1, arrowX, y2);
+          grad.addColorStop(0, cTop);
+          grad.addColorStop(1, cBot);
+          ctx.save();
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 2.6;
+          ctx.beginPath();
+          ctx.moveTo(arrowX, y1 + 2);
+          ctx.lineTo(arrowX, y2 - 8);
+          ctx.stroke();
+          drawArrow(ctx, arrowX, y2 - 14, arrowX, y2 - 2, cBot, 2.4, 8);
+
+          for (let k = 0; k < 2; k++) {
+            const u = (phase * 0.45 + k * 0.5) % 1;
+            const py = lerp(y1 + 5, y2 - 10, u);
+            ctx.fillStyle = u < 0.5 ? cTop : cBot;
+            ctx.beginPath();
+            ctx.arc(arrowX, py, 3.6, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.restore();
+
+          // Right-side trigger pill centered vertically in gap
+          const lbl = gateLabels[i];
+          const tw = measureMathRun(ctx, lbl, 16, true, 500);
+          const pillW = tw + 18;
+          const pillX = Math.min(w - padX - pillW, arrowX + 18);
+          drawMathRun(ctx, lbl, pillX + pillW * 0.5, midY, {
+            px: 16,
+            mono: true,
+            weight: 500,
+            align: 'center',
+            baseline: 'middle',
+            color: pal.text,
+            bg: pal.surface2,
+            border: pal.border,
+            padX: 9,
+            padY: 4,
+            radius: 2
+          });
+        }
+
+        // Draw 3 full-width stacked stage cards with crisp left typography & right mini signature
+        const miniW = clamp(cardW * 0.28, 72, 108);
+        for (let i = 0; i < 3; i++) {
+          const p = parts[i];
+          const r = nodeRects[i];
+          const col = pal[p.colorKey];
+          const soft = pal[p.softKey];
+          const isActive = i === activeIdx;
+          const isHover = i === hoverIdx;
+          const boost = isActive || isHover;
+
+          ctx.save();
+          roundRectPath(ctx, r.x, r.y, r.w, r.h, 2);
+          ctx.fillStyle = isActive ? soft : pal.surface2;
+          ctx.fill();
+          ctx.strokeStyle = boost ? col : pal.border;
+          ctx.lineWidth = isActive ? 2.4 : (isHover ? 1.8 : 1.2);
+          ctx.stroke();
+
+          // Stage title & mathematical signature on left (>= 15px)
+          const textX = r.x + 14;
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'middle';
+          setFont(ctx, cardW < 300 ? 15 : 16, false, 600);
+          ctx.fillStyle = boost ? col : pal.text;
+          ctx.fillText(p.title + ' · ' + p.sub, textX, r.y + r.h * 0.34);
+
+          drawMathRun(ctx, p.sym, textX, r.y + r.h * 0.70, {
+            px: 15,
+            mono: true,
+            weight: 500,
+            align: 'left',
+            baseline: 'middle',
+            color: pal.textMuted
+          });
+
+          // Mini physical signature on right side of card
+          const miniX = r.x + r.w - miniW - 10;
+          const miniY = r.y + 8;
+          const miniH = Math.max(44, r.h - 16);
+          if (i === 0) {
+            drawElasticMini(ctx, miniX, miniY, miniW, miniH, col, phase, boost);
+          } else if (i === 1) {
+            drawPlasticMini(ctx, miniX, miniY, miniW, miniH, col, pal, phase, boost);
+          } else {
+            drawFractureMini(ctx, miniX, miniY, miniW, miniH, col, pal, phase, boost);
+          }
+          ctx.restore();
+        }
+        return;
+      }
+
+      // Desktop / wide horizontal 3-pillar layout (W >= 560)
+      const gateW0 = measureMathRun(ctx, gateLabels[0], 16, true, 500) + 16;
+      const gateW1 = measureMathRun(ctx, gateLabels[1], 16, true, 500) + 16;
+      const minGap = Math.ceil(Math.max(gateW0, gateW1)) + 10;
+      const padX = w >= 680 ? Math.max(14, Math.min(32, w * 0.03)) : 10;
+      const gap = Math.max(minGap, Math.min(136, w * 0.13));
+      const cardW = Math.max(106, (w - padX * 2 - gap * 2) / 3);
       const topY = Math.max(10, h * 0.05);
       const appH = Math.max(36, Math.min(44, h * 0.18));
       const appY = h - appH - 8;
-      const cardH = Math.max(96, Math.min(appY - topY - 22, 185));
+      const cardH = Math.max(96, Math.min(appY - topY - 20, 185));
       const midY = topY + cardH * 0.5;
       const appX = padX;
       const appW = w - padX * 2;
@@ -590,7 +948,6 @@
       });
 
       // Draw conduits + animated stress/energy flow particles between nodes
-      const gateLabels = ['f > 0', 'KI = KIc'];
       const pendingGates = [];
       for (let i = 0; i < 2; i++) {
         const leftR = nodeRects[i];
@@ -600,7 +957,6 @@
         const cLeft = pal[parts[i].colorKey];
         const cRight = pal[parts[i + 1].colorKey];
 
-        // Track line
         const lineGrad = ctx.createLinearGradient(x1, midY, x2, midY);
         lineGrad.addColorStop(0, cLeft);
         lineGrad.addColorStop(1, cRight);
@@ -613,7 +969,6 @@
         ctx.stroke();
         drawArrow(ctx, x2 - 14, midY, x2 - 2, midY, cRight, 2.5, 9);
 
-        // Moving particles across conduit
         for (let k = 0; k < 3; k++) {
           const u = (phase * 0.45 + k / 3) % 1;
           const px = lerp(x1 + 4, x2 - 10, u);
@@ -624,7 +979,7 @@
         }
         ctx.restore();
 
-        pendingGates.push({ cx: (x1 + x2) * 0.5, cy: midY - 26, text: gateLabels[i] });
+        pendingGates.push({ cx: (x1 + x2) * 0.5, cy: midY - 28, text: gateLabels[i] });
       }
 
       // Vertical feeder conduits down into Applications foundation bar
@@ -646,7 +1001,6 @@
         ctx.stroke();
         ctx.setLineDash([]);
 
-        // Downward flowing particle
         const u = (phase * 0.55 + i * 0.31) % 1;
         const py = lerp(y1 + 5, y2 - 6, u);
         ctx.fillStyle = col;
@@ -667,7 +1021,7 @@
         const boost = isActive || isHover;
 
         ctx.save();
-        roundRectPath(ctx, r.x, r.y, r.w, r.h, 12);
+        roundRectPath(ctx, r.x, r.y, r.w, r.h, 2);
         ctx.fillStyle = isActive ? soft : pal.surface2;
         ctx.fill();
         ctx.strokeStyle = boost ? col : pal.border;
@@ -677,20 +1031,25 @@
         // Header text (>= 15px)
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
-        setFont(ctx, cardW < 165 ? 15 : 16, false, 600);
+        setFont(ctx, cardW < 172 ? 15 : 16, false, 600);
         ctx.fillStyle = boost ? col : pal.text;
-        const headText = cardW < 165 ? (p.title.replace('Part ', '') + ' · ' + p.sub) : (p.title + ' · ' + p.sub);
+        const headText = cardW < 172 ? (p.title.replace('Part ', '') + ' · ' + p.sub) : (p.title + ' · ' + p.sub);
         ctx.fillText(headText, r.x + r.w * 0.5, r.y + 10);
 
-        setFont(ctx, 15, true, 500);
-        ctx.fillStyle = pal.textMuted;
-        ctx.fillText(p.sym, r.x + r.w * 0.5, r.y + 32);
+        drawMathRun(ctx, p.sym, r.x + r.w * 0.5, r.y + 40, {
+          px: 15,
+          mono: true,
+          weight: 500,
+          align: 'center',
+          baseline: 'middle',
+          color: pal.textMuted
+        });
 
         // Mini physical signature area
         const miniX = r.x + 8;
-        const miniY = r.y + 54;
+        const miniY = r.y + 56;
         const miniW = r.w - 16;
-        const miniH = Math.max(40, r.h - 62);
+        const miniH = Math.max(38, r.h - 64);
         if (i === 0) {
           drawElasticMini(ctx, miniX, miniY, miniW, miniH, col, phase, boost);
         } else if (i === 1) {
@@ -701,28 +1060,27 @@
         ctx.restore();
       }
 
-      // Render threshold gate pills above cards so labels are never clipped
+      // Render threshold gate pills centered cleanly in conduit gaps
       for (let g = 0; g < pendingGates.length; g++) {
         const gt = pendingGates[g];
-        ctx.save();
-        setFont(ctx, 15, true, 500);
-        const tw = ctx.measureText(gt.text).width + 18;
-        roundRectPath(ctx, gt.cx - tw * 0.5, gt.cy - 14, tw, 28, 7);
-        ctx.fillStyle = pal.surface2;
-        ctx.fill();
-        ctx.strokeStyle = pal.border;
-        ctx.lineWidth = 1.3;
-        ctx.stroke();
-        ctx.fillStyle = pal.text;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(gt.text, gt.cx, gt.cy + 0.5);
-        ctx.restore();
+        drawMathRun(ctx, gt.text, gt.cx, gt.cy, {
+          px: 16,
+          mono: true,
+          weight: 500,
+          align: 'center',
+          baseline: 'middle',
+          color: pal.text,
+          bg: pal.surface2,
+          border: pal.border,
+          padX: 7,
+          padY: 4,
+          radius: 2
+        });
       }
 
       // Foundation Applications bar
       ctx.save();
-      roundRectPath(ctx, appX, appY, appW, appH, 10);
+      roundRectPath(ctx, appX, appY, appW, appH, 2);
       ctx.fillStyle = pal.surface2;
       ctx.fill();
       ctx.strokeStyle = pal.border;
@@ -793,14 +1151,15 @@
     toolbar.appendChild(statusBadge);
 
     const stage = el('div', 'lab-stage');
+    stage.style.touchAction = 'pan-y';
     const canvas = el('canvas', 'lab-canvas');
-    canvas.style.touchAction = 'none';
+    canvas.style.touchAction = 'pan-y';
     canvas.style.cursor = 'grab';
     stage.appendChild(canvas);
 
     const controls = el('div', 'lab-controls-grid');
     const tauCtrl = createSliderControl(
-      'Remote Shear Stress τ∞',
+      'Remote Shear Stress τ^∞',
       {
         min: -120,
         max: 160,
@@ -821,14 +1180,14 @@
     const readouts = el('div', 'lab-readout-row');
     const rPos = createReadoutChip('Core x_c / L', '0.45');
     const rBurgers = createReadoutChip('Burgers |b|', B_NM.toFixed(3) + ' nm');
-    const rPK = createReadoutChip('PK Force f_PK', '16.6 mN/m');
-    const rGamma = createReadoutChip('Plastic Shear γᵖ', '5.6%');
+    const rPK = createReadoutChip('PK Force f_{PK}', '16.6 mN/m');
+    const rGamma = createReadoutChip('Plastic Shear γ^p', '5.6%');
     readouts.appendChild(rPos.chip);
     readouts.appendChild(rBurgers.chip);
     readouts.appendChild(rPK.chip);
     readouts.appendChild(rGamma.chip);
 
-    const caption = el('p', 'lab-caption', 'Apply shear τ∞ and press Play Glide, or drag the ⊥ core across the slip plane to form a permanent step b.');
+    const caption = el('p', 'lab-caption', 'Apply shear τ^∞ and press Play Glide, or drag the ⊥ core across the slip plane to form a permanent step b.');
 
     shell.appendChild(toolbar);
     shell.appendChild(stage);
@@ -883,7 +1242,7 @@
     });
 
     // Lattice mapping helper stored per frame for pointer dragging
-    let geom = { ox: 60, oy: 40, sp: 32 };
+    let geom = { ox: 60, oy: 40, sp: 32, slipY: 140 };
 
     function latticePos(i, j, coreX) {
       const dx = i - coreX;
@@ -926,45 +1285,53 @@
       if (exited) {
         setStatusBadge(statusBadge, 'Slip Step Formed (+b)', 'warn');
       } else if (Math.abs(tau) > TAU_PEIERLS) {
-        setStatusBadge(statusBadge, playing ? 'Gliding via f_PK' : 'Ready to Glide', 'safe');
+        setStatusBadge(statusBadge, playing ? 'Gliding via f_{PK}' : 'Ready to Glide', 'safe');
       } else {
-        setStatusBadge(statusBadge, 'Pinned (|τ∞| < τ_P)', 'warn');
+        setStatusBadge(statusBadge, 'Pinned (|τ^∞| < τ_P)', 'warn');
       }
     }
 
-    bag.on(canvas, 'pointerdown', function (ev) {
-      dragging = true;
-      playing = false;
-      targetXc = null;
-      btnPlay.textContent = '▶ Play Glide';
-      btnPlay.classList.remove('is-active');
-      canvas.style.cursor = 'grabbing';
-      try { canvas.setPointerCapture(ev.pointerId); } catch (e) {}
-      const pt = getPointerPos(canvas, ev);
+    function setCoreFromPoint(pt) {
       xc = clamp((pt.x - geom.ox) / geom.sp, -0.5, L_SPAN + 1.5);
       updateReadouts();
       draw();
-    });
-
-    bag.on(canvas, 'pointermove', function (ev) {
-      if (!dragging) return;
-      const pt = getPointerPos(canvas, ev);
-      xc = clamp((pt.x - geom.ox) / geom.sp, -0.5, L_SPAN + 1.5);
-      updateReadouts();
-      draw();
-    });
-
-    function endDrag(ev) {
-      if (!dragging) return;
-      dragging = false;
-      canvas.style.cursor = 'grab';
-      try { canvas.releasePointerCapture(ev.pointerId); } catch (e) {}
     }
 
-    bag.on(canvas, 'pointerup', endDrag);
-    bag.on(canvas, 'pointercancel', endDrag);
+    bindHandleTouch(bag, stage, canvas, {
+      isNearHandle: function (pt) {
+        const coreC = toCanvas(clamp(xc, 0, L_SPAN), Y_SLIP);
+        return Math.hypot(pt.x - coreC.x, pt.y - coreC.y) <= 48 || Math.abs(pt.y - geom.slipY) <= Math.max(36, geom.sp * 1.3);
+      },
+      onStart: function (pt) {
+        dragging = true;
+        playing = false;
+        targetXc = null;
+        btnPlay.textContent = '▶ Play Glide';
+        btnPlay.classList.remove('is-active');
+        setCoreFromPoint(pt);
+      },
+      onMove: function (pt) {
+        if (!dragging) return;
+        setCoreFromPoint(pt);
+      },
+      onEnd: function () {
+        dragging = false;
+      },
+      onTap: function (pt) {
+        playing = false;
+        targetXc = null;
+        btnPlay.textContent = '▶ Play Glide';
+        btnPlay.classList.remove('is-active');
+        setCoreFromPoint(pt);
+      }
+    });
 
     function draw() {
+      const stageW = getStageWidth(stage, canvas);
+      if (stageW < 10) return;
+      const isNarrow = stageW < 480;
+      syncStageHeight(stage, 288, isNarrow && window.innerWidth <= 980);
+
       const fit = fitCanvas(canvas);
       if (!fit.ready) return;
       const ctx = fit.ctx;
@@ -975,12 +1342,12 @@
       fillStageBg(ctx, w, h, pal);
 
       // Compute clean lattice spacing centered in canvas
-      const marginX = 56;
+      const marginX = isNarrow ? 18 : 56;
       const marginTop = 44;
-      const marginBot = 42;
-      const spX = (w - marginX * 2) / (NX + 0.5);
+      const marginBot = 56;
+      const spX = (w - marginX * 2) / (NX + 0.25);
       const spY = (h - marginTop - marginBot) / (NY - 1);
-      const sp = Math.max(16, Math.min(spX, spY, 44));
+      const sp = Math.max(15, Math.min(spX, spY, 44));
       geom.sp = sp;
       geom.ox = (w - (NX - 1) * sp) * 0.5;
       geom.oy = marginTop + ((h - marginTop - marginBot) - (NY - 1) * sp) * 0.5;
@@ -999,42 +1366,67 @@
 
       // Draw slip plane dashed horizontal line
       const slipY = toCanvas(0, Y_SLIP).y;
+      geom.slipY = slipY;
       ctx.save();
-      ctx.strokeStyle = withAlpha(pal.teal, 0.45);
+      ctx.strokeStyle = withAlpha(pal.teal, 0.5);
       ctx.lineWidth = 1.6;
       ctx.setLineDash([7, 5]);
       ctx.beginPath();
-      ctx.moveTo(geom.ox - sp * 1.1, slipY);
-      ctx.lineTo(geom.ox + (NX - 0.1) * sp, slipY);
+      ctx.moveTo(Math.max(8, geom.ox - sp * 0.9), slipY);
+      ctx.lineTo(Math.min(w - 8, geom.ox + (NX - 0.1) * sp), slipY);
       ctx.stroke();
       ctx.setLineDash([]);
 
       setFont(ctx, 15, false, 500);
-      const slipLblX = 10;
-      const slipLblW = ctx.measureText('Slip plane').width + 10;
-      roundRectPath(ctx, slipLblX - 4, slipY - 24, slipLblW, 20, 4);
-      ctx.fillStyle = withAlpha(pal.surface, 0.85);
-      ctx.fill();
-      ctx.fillStyle = pal.textMuted;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('Slip plane', slipLblX, slipY - 5);
+      const slipLblW = ctx.measureText('Slip plane').width;
+      if (!isNarrow && geom.ox > slipLblW + 24) {
+        const slipLblX = 10;
+        roundRectPath(ctx, slipLblX - 4, slipY - 24, slipLblW + 10, 21, 2);
+        ctx.fillStyle = withAlpha(pal.bg, 0.9);
+        ctx.fill();
+        ctx.fillStyle = pal.textMuted;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('Slip plane', slipLblX, slipY - 5);
+      } else {
+        // Compact header legend pill top-left so it never touches left-column atoms
+        ctx.strokeStyle = pal.teal;
+        ctx.lineWidth = 1.8;
+        ctx.setLineDash([5, 3]);
+        ctx.beginPath();
+        ctx.moveTo(10, 19);
+        ctx.lineTo(26, 19);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = pal.textMuted;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('Slip plane', 32, 19);
+      }
       ctx.restore();
 
       // Remote shear stress arrows top and bottom
       if (Math.abs(tau) > 2) {
         const dir = tau >= 0 ? 1 : -1;
-        const len = 34 + (Math.abs(tau) / 160) * 52;
-        const topArrowY = Math.max(18, geom.oy - 22);
-        const botArrowY = Math.min(h - 18, geom.oy + (NY - 1) * sp + 22);
-        const midX = w * 0.5;
-        drawArrow(ctx, midX - dir * len * 0.5, topArrowY, midX + dir * len * 0.5, topArrowY, pal.amber, 2.4, 9);
-        drawArrow(ctx, midX + dir * len * 0.5, botArrowY, midX - dir * len * 0.5, botArrowY, pal.amber, 2.4, 9);
-        setFont(ctx, 15, true, 500);
-        ctx.fillStyle = pal.amber;
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('τ∞', midX + len * 0.5 + 10, topArrowY);
+        const len = isNarrow
+          ? (26 + (Math.abs(tau) / 160) * 32)
+          : (34 + (Math.abs(tau) / 160) * 52);
+        const topArrowY = Math.max(19, geom.oy - 22);
+        const botArrowY = h - 14;
+        const topMidX = isNarrow ? Math.max(w * 0.64, 174) : w * 0.5;
+        const botMidX = w * 0.5;
+        drawArrow(ctx, topMidX - dir * len * 0.5, topArrowY, topMidX + dir * len * 0.5, topArrowY, pal.amber, 2.4, 9);
+        drawArrow(ctx, botMidX + dir * len * 0.5, botArrowY, botMidX - dir * len * 0.5, botArrowY, pal.amber, 2.4, 9);
+        const tauW = measureMathRun(ctx, 'τ^∞', 16, true, 500);
+        const tauX = Math.min(w - tauW - 8, topMidX + len * 0.5 + 8);
+        drawMathRun(ctx, 'τ^∞', tauX, topArrowY, {
+          px: 16,
+          mono: true,
+          weight: 500,
+          align: 'left',
+          baseline: 'middle',
+          color: pal.amber
+        });
       }
 
       // Identify extra half-plane column while core is inside lattice
@@ -1096,11 +1488,12 @@
       }
       ctx.restore();
 
-      // Draw Burgers circuit around core when inside interior
+      // Draw Burgers circuit around core (bottom leg on j=0 so closure vector b sits cleanly below lattice)
       if (showCircuit && xc >= 2.0 && xc <= 9.6) {
         const iR = clamp(Math.round(xc) + 2, 4, NX - 2);
         const iL = iR - 4;
         const circuitNodes = [
+          pts[0][iR],
           pts[1][iR],
           pts[2][iR],
           pts[3][iR],
@@ -1114,10 +1507,11 @@
           pts[3][iL + 1],
           pts[2][iL + 1],
           pts[1][iL + 1],
-          pts[1][iL + 2],
-          pts[1][iL + 3],
-          pts[1][iR],
-          pts[1][iR + 1]
+          pts[0][iL + 1],
+          pts[0][iL + 2],
+          pts[0][iL + 3],
+          pts[0][iR],
+          pts[0][iR + 1]
         ];
         ctx.save();
         ctx.strokeStyle = pal.teal;
@@ -1131,20 +1525,21 @@
         }
         ctx.stroke();
 
-        // Highlight Burgers closure vector b from Start (iR, 1) to Finish (iR+1, 1)
-        const sPt = pts[1][iR];
-        const fPt = pts[1][iR + 1];
-        drawArrow(ctx, sPt.x, sPt.y + 8, fPt.x, fPt.y + 8, pal.cardinal, 3.2, 10);
+        // Highlight Burgers closure vector b from Start (iR, 0) to Finish (iR+1, 0) cleanly below row j=0
+        const sPt = pts[0][iR];
+        const fPt = pts[0][iR + 1];
+        const bArrowY = Math.min(h - 32, Math.max(sPt.y, fPt.y) + 11);
+        drawArrow(ctx, sPt.x, bArrowY, fPt.x, bArrowY, pal.cardinal, 3.0, 9);
         setFont(ctx, 15, true, 600);
         ctx.fillStyle = pal.cardinal;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
-        ctx.fillText('b', (sPt.x + fPt.x) * 0.5, sPt.y + 13);
+        ctx.fillText('b', (sPt.x + fPt.x) * 0.5, bArrowY + 4);
         ctx.restore();
       }
 
       // Draw atoms
-      const atomR = Math.max(4.5, Math.min(7.5, sp * 0.21));
+      const atomR = Math.max(4.2, Math.min(7.5, sp * 0.21));
       for (let j = 0; j < NY; j++) {
         for (let i = 0; i < NX; i++) {
           const p = pts[j][i];
@@ -1164,37 +1559,51 @@
       // Draw dislocation core symbol (⊥) and Peach-Kohler force arrow
       if (coreInside) {
         const coreCanvas = toCanvas(xc, Y_SLIP);
-        const glowR = sp * (0.62 + 0.08 * Math.sin(animT * 3.5));
-        const glow = ctx.createRadialGradient(coreCanvas.x, coreCanvas.y, 2, coreCanvas.x, coreCanvas.y, glowR);
-        glow.addColorStop(0, withAlpha(pal.cardinal, 0.42));
-        glow.addColorStop(1, withAlpha(pal.cardinal, 0));
-        ctx.fillStyle = glow;
+        // Crisp Swiss archival target circle (zero neon glow)
+        ctx.save();
+        const ringR = sp * 0.56;
+        ctx.strokeStyle = withAlpha(pal.cardinal, 0.45);
+        ctx.lineWidth = 1.4;
+        ctx.setLineDash([4, 3]);
         ctx.beginPath();
-        ctx.arc(coreCanvas.x, coreCanvas.y, glowR, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.arc(coreCanvas.x, coreCanvas.y, ringR, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.setLineDash([]);
 
         // Crisp ⊥ symbol
-        ctx.save();
         ctx.strokeStyle = pal.cardinal;
         ctx.lineWidth = 3;
         ctx.lineCap = 'round';
         ctx.beginPath();
-        ctx.moveTo(coreCanvas.x, coreCanvas.y - 12);
+        ctx.moveTo(coreCanvas.x, coreCanvas.y - 11);
         ctx.lineTo(coreCanvas.x, coreCanvas.y + 4);
-        ctx.moveTo(coreCanvas.x - 10, coreCanvas.y + 4);
-        ctx.lineTo(coreCanvas.x + 10, coreCanvas.y + 4);
+        ctx.moveTo(coreCanvas.x - 9, coreCanvas.y + 4);
+        ctx.lineTo(coreCanvas.x + 9, coreCanvas.y + 4);
         ctx.stroke();
 
-        // Peach-Kohler force vector
+        // Peach-Kohler force vector with clamped pill-backed f_{PK} label
         if (Math.abs(tau) > 4) {
           const fDir = tau >= 0 ? 1 : -1;
-          const fLen = 20 + (Math.abs(tau) / 160) * 34;
+          const maxLen = fDir > 0
+            ? Math.max(16, w - coreCanvas.x - 24)
+            : Math.max(16, coreCanvas.x - 24);
+          const fLen = Math.min(maxLen, (isNarrow ? 18 : 20) + (Math.abs(tau) / 160) * (isNarrow ? 26 : 34));
           drawArrow(ctx, coreCanvas.x + fDir * 12, coreCanvas.y, coreCanvas.x + fDir * (12 + fLen), coreCanvas.y, pal.amber, 2.5, 9);
-          setFont(ctx, 15, true, 600);
-          ctx.fillStyle = pal.amber;
-          ctx.textAlign = fDir > 0 ? 'left' : 'right';
-          ctx.textBaseline = 'bottom';
-          ctx.fillText('f_PK', coreCanvas.x + fDir * (16 + fLen * 0.4), coreCanvas.y - 6);
+          const pkW = measureMathRun(ctx, 'f_{PK}', 16, true, 600);
+          const rawX = coreCanvas.x + fDir * (14 + fLen * 0.55);
+          const pkX = clamp(rawX, 10 + pkW * 0.5, w - 10 - pkW * 0.5);
+          drawMathRun(ctx, 'f_{PK}', pkX, coreCanvas.y - 16, {
+            px: 16,
+            mono: true,
+            weight: 600,
+            align: 'center',
+            baseline: 'middle',
+            color: pal.amber,
+            bg: withAlpha(pal.bg, 0.90),
+            padX: 4,
+            padY: 2,
+            radius: 2
+          });
         }
         ctx.restore();
       } else if (xc >= L_SPAN + 0.6) {
@@ -1211,11 +1620,19 @@
         ctx.lineTo(topEdge.x, slipY + 12);
         ctx.stroke();
         drawArrow(ctx, botEdge.x, slipY, topEdge.x, slipY, pal.teal, 2.6, 8);
-        setFont(ctx, 15, true, 600);
-        ctx.fillStyle = pal.teal;
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText('Slip step = b', Math.min(w - 10, topEdge.x + 12), slipY - 15);
+        drawMathRun(ctx, 'Slip step = b', Math.min(w - 12, topEdge.x + 10), slipY - 22, {
+          px: 15,
+          mono: true,
+          weight: 600,
+          align: 'right',
+          baseline: 'middle',
+          color: pal.teal,
+          bg: withAlpha(pal.bg, 0.92),
+          border: withAlpha(pal.teal, 0.45),
+          padX: 6,
+          padY: 3,
+          radius: 2
+        });
         ctx.restore();
       }
     }
@@ -1399,7 +1816,10 @@
     toolbar.appendChild(statusBadge);
 
     const stage = el('div', 'lab-stage');
+    stage.style.touchAction = 'pan-y';
     const canvas = el('canvas', 'lab-canvas');
+    canvas.style.touchAction = 'pan-y';
+    canvas.style.cursor = 'default';
     stage.appendChild(canvas);
 
     const controls = el('div', 'lab-controls-grid');
@@ -1426,14 +1846,14 @@
     const readouts = el('div', 'lab-readout-row');
     const rSig = createReadoutChip('σ / σ_Y', '0.00');
     const rEps = createReadoutChip('Total ε', '0.000%');
-    const rEpsE = createReadoutChip('Elastic εᵉ', '0.000%');
-    const rEpsP = createReadoutChip('Plastic εᵖ', '0.000%');
+    const rEpsE = createReadoutChip('Elastic ε^e', '0.000%');
+    const rEpsP = createReadoutChip('Plastic ε^p', '0.000%');
     readouts.appendChild(rSig.chip);
     readouts.appendChild(rEps.chip);
     readouts.appendChild(rEpsE.chip);
     readouts.appendChild(rEpsP.chip);
 
-    const caption = el('p', 'lab-caption', 'Drag Applied Strain past 0.125% to yield, then pull back to see parallel elastic unloading and permanent εᵖ.');
+    const caption = el('p', 'lab-caption', 'Drag Applied Strain past 0.125% to yield, then pull back to see parallel elastic unloading and permanent ε^p.');
 
     shell.appendChild(toolbar);
     shell.appendChild(stage);
@@ -1488,6 +1908,11 @@
     }
 
     function draw() {
+      const stageW = getStageWidth(stage, canvas);
+      if (stageW < 10) return;
+      const isNarrow = stageW < 480;
+      syncStageHeight(stage, 280, isNarrow && window.innerWidth <= 980);
+
       const fit = fitCanvas(canvas);
       if (!fit.ready) return;
       const ctx = fit.ctx;
@@ -1497,9 +1922,9 @@
 
       fillStageBg(ctx, w, h, pal);
 
-      const padL = 62;
-      const padR = 24;
-      const padT = 26;
+      const padL = isNarrow ? 54 : 64;
+      const padR = isNarrow ? 16 : 24;
+      const padT = 24;
       const padB = 56;
       const pw = Math.max(80, w - padL - padR);
       const ph = Math.max(80, h - padT - padB);
@@ -1561,14 +1986,14 @@
       ctx.lineTo(x0, padT + ph);
       ctx.stroke();
 
-      // Axis labels (>= 15px)
+      // Axis labels (>= 15px, true subscripts via drawMathRun)
+      drawMathRun(ctx, '+σ_Y', padL - 7, yOf(1), { px: 16, mono: false, weight: 500, align: 'right', baseline: 'middle', color: pal.text });
       setFont(ctx, 15, false, 500);
       ctx.fillStyle = pal.text;
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
-      ctx.fillText('+σ_Y', padL - 8, yOf(1));
-      ctx.fillText('0', padL - 8, y0);
-      ctx.fillText('-σ_Y', padL - 8, yOf(-1));
+      ctx.fillText('0', padL - 7, y0);
+      drawMathRun(ctx, '−σ_Y', padL - 7, yOf(-1), { px: 16, mono: false, weight: 500, align: 'right', baseline: 'middle', color: pal.text });
 
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -1637,13 +2062,34 @@
         ctx.lineTo(xPk, brY + 5);
         ctx.stroke();
 
-        setFont(ctx, 15, true, 600);
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillStyle = pal.teal;
-        if (xEp - xp0 > 24) ctx.fillText('εᵖ', (xp0 + xEp) * 0.5, brY + 7);
-        ctx.fillStyle = pal.amber;
-        if (xPk - xEp > 24) ctx.fillText('εᵉ', (xEp + xPk) * 0.5, brY + 7);
+        if (xEp - xp0 > 24) {
+          drawMathRun(ctx, 'ε^p', (xp0 + xEp) * 0.5, brY + 18, {
+            px: 16,
+            mono: true,
+            weight: 600,
+            align: 'center',
+            baseline: 'middle',
+            color: pal.teal,
+            bg: withAlpha(pal.bg, 0.88),
+            padX: 3,
+            padY: 1,
+            radius: 2
+          });
+        }
+        if (xPk - xEp > 24) {
+          drawMathRun(ctx, 'ε^e', (xEp + xPk) * 0.5, brY + 18, {
+            px: 16,
+            mono: true,
+            weight: 600,
+            align: 'center',
+            baseline: 'middle',
+            color: pal.amber,
+            bg: withAlpha(pal.bg, 0.88),
+            padX: 3,
+            padY: 1,
+            radius: 2
+          });
+        }
         ctx.restore();
       }
 
@@ -1665,34 +2111,46 @@
       }
       ctx.restore();
 
-      // Slope labels E and H
+      // Slope labels E and H (clamped safely inside plot bounds)
       ctx.save();
       setFont(ctx, 15, true, 500);
       ctx.fillStyle = pal.cardinal;
       ctx.textAlign = 'right';
       ctx.textBaseline = 'bottom';
-      ctx.fillText('E', xOf(EPS_Y * 0.55) - 6, yOf(0.55));
+      ctx.fillText('E', Math.max(x0 + 14, xOf(EPS_Y * 0.55) - 6), yOf(0.55));
 
-      ctx.fillStyle = pal.teal;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'bottom';
-      const hLblY = yOf(1 + (hardeningRatio * (0.0030 - EPS_Y) * E_MOD) / SIGMA_Y) - 8;
-      ctx.fillText(hardeningRatio > 0 ? 'H = 0.15E' : 'H = 0', xOf(0.0028), hLblY);
+      const hText = hardeningRatio > 0 ? 'H = 0.15E' : 'H = 0';
+      const hW = ctx.measureText(hText).width;
+      const hLblX = clamp(xOf(0.0026), padL + 8, w - padR - hW - 6);
+      const hLblY = Math.max(padT + 14, yOf(1 + (hardeningRatio * (0.0030 - EPS_Y) * E_MOD) / SIGMA_Y) - 14);
+      drawMathRun(ctx, hText, hLblX, hLblY, {
+        px: 15,
+        mono: true,
+        weight: 500,
+        align: 'left',
+        baseline: 'middle',
+        color: pal.teal,
+        bg: withAlpha(pal.bg, 0.88),
+        padX: 4,
+        padY: 2,
+        radius: 2
+      });
       ctx.restore();
 
-      // Current state glowing dot
+      // Current state precision drafting target ring (zero neon glow)
       const cx = xOf(state.eps);
       const cy = yOf(state.sigma / SIGMA_Y);
       const dotColor =
         state.regime === 'Yielding' ? pal.teal : (state.regime === 'Unloading' ? pal.amber : pal.cardinal);
       ctx.save();
-      ctx.fillStyle = withAlpha(dotColor, 0.28);
+      ctx.strokeStyle = dotColor;
+      ctx.lineWidth = 1.5;
       ctx.beginPath();
-      ctx.arc(cx, cy, 11, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.arc(cx, cy, 10, 0, Math.PI * 2);
+      ctx.stroke();
       ctx.fillStyle = dotColor;
       ctx.beginPath();
-      ctx.arc(cx, cy, 5.5, 0, Math.PI * 2);
+      ctx.arc(cx, cy, 5.2, 0, Math.PI * 2);
       ctx.fill();
       ctx.strokeStyle = pal.bg;
       ctx.lineWidth = 1.6;
@@ -1753,13 +2211,14 @@
     let viewMode = 'plane'; // 'plane' | 'pi'
     let dragging = false;
     let mapInfo = { cx: 200, cy: 150, scale: 90 };
+    let handlePos = { x: 200, y: 150 };
 
     const shell = el('div', 'lab-shell');
     const toolbar = el('div', 'lab-toolbar');
 
     const viewGroup = el('div', 'lab-pill-group');
-    const btnPlane = el('button', 'lab-pill is-active', 'Plane Stress (σ₁, σ₂)');
-    const btnPi = el('button', 'lab-pill', 'π-Plane (σ₃ = const)');
+    const btnPlane = el('button', 'lab-pill is-active', 'Plane Stress (σ_1, σ_2)');
+    const btnPi = el('button', 'lab-pill', 'π-Plane (σ_3 = const)');
     btnPlane.type = 'button';
     btnPi.type = 'button';
     viewGroup.appendChild(btnPlane);
@@ -1781,22 +2240,23 @@
     toolbar.appendChild(statusBadge);
 
     const stage = el('div', 'lab-stage');
+    stage.style.touchAction = 'pan-y';
     const canvas = el('canvas', 'lab-canvas');
-    canvas.style.touchAction = 'none';
+    canvas.style.touchAction = 'pan-y';
     canvas.style.cursor = 'grab';
     stage.appendChild(canvas);
 
     const readouts = el('div', 'lab-readout-row');
-    const rS1 = createReadoutChip('σ₁ / σ_Y', '0.54');
-    const rS2 = createReadoutChip('σ₂ / σ_Y', '-0.54');
-    const rVM = createReadoutChip('Mises σ_eq / σ_Y', '0.94');
-    const rTr = createReadoutChip('Tresca / σ_Y', '1.08');
+    const rS1 = createReadoutChip('σ_1 / σ_Y', '0.54');
+    const rS2 = createReadoutChip('σ_2 / σ_Y', '−0.54');
+    const rVM = createReadoutChip('Mises σ_{eq} / σ_Y', '0.94');
+    const rTr = createReadoutChip('Tresca max|σ_i−σ_j| / σ_Y', '1.08');
     readouts.appendChild(rS1.chip);
     readouts.appendChild(rS2.chip);
     readouts.appendChild(rVM.chip);
     readouts.appendChild(rTr.chip);
 
-    const caption = el('p', 'lab-caption', 'Drag the stress point anywhere in stress space to compare Tresca and von Mises boundaries.');
+    const caption = el('p', 'lab-caption', 'Drag the stress point to compare von Mises (σ_{eq} ≤ σ_Y) and inscribed Tresca (max|σ_i−σ_j| ≤ σ_Y, k_{Tresca} = σ_Y/2).');
 
     shell.appendChild(toolbar);
     shell.appendChild(stage);
@@ -1822,6 +2282,7 @@
 
     function computeMetrics() {
       const vm = Math.sqrt(s1 * s1 - s1 * s2 + s2 * s2);
+      // Tresca: max|sigma_i - sigma_j| <= sigma_Y (with k_Tresca = sigma_Y / 2)
       const tr = Math.max(Math.abs(s1 - s2), Math.abs(s1), Math.abs(s2));
       return { vm: vm, tr: tr };
     }
@@ -1842,15 +2303,13 @@
       }
     }
 
-    function applyPointer(ev) {
-      const pt = getPointerPos(canvas, ev);
+    function applyPoint(pt) {
       const ux = (pt.x - mapInfo.cx) / mapInfo.scale;
       const uy = -(pt.y - mapInfo.cy) / mapInfo.scale;
       if (viewMode === 'plane') {
         s1 = clamp(ux, -1.55, 1.55);
         s2 = clamp(uy, -1.55, 1.55);
       } else {
-        // Clamp radius cleanly in pi-plane
         const r = Math.hypot(ux, uy);
         const maxR = R_VM_PI * 1.58;
         const k = r > maxR ? maxR / r : 1;
@@ -1862,27 +2321,26 @@
       draw();
     }
 
-    bag.on(canvas, 'pointerdown', function (ev) {
-      dragging = true;
-      canvas.style.cursor = 'grabbing';
-      try { canvas.setPointerCapture(ev.pointerId); } catch (e) {}
-      applyPointer(ev);
+    bindHandleTouch(bag, stage, canvas, {
+      isNearHandle: function (pt) {
+        return Math.hypot(pt.x - handlePos.x, pt.y - handlePos.y) <= 48;
+      },
+      onStart: function (pt) {
+        dragging = true;
+        applyPoint(pt);
+      },
+      onMove: function (pt) {
+        if (!dragging) return;
+        applyPoint(pt);
+      },
+      onEnd: function () {
+        dragging = false;
+        draw();
+      },
+      onTap: function (pt) {
+        applyPoint(pt);
+      }
     });
-
-    bag.on(canvas, 'pointermove', function (ev) {
-      if (!dragging) return;
-      applyPointer(ev);
-    });
-
-    function endDrag(ev) {
-      if (!dragging) return;
-      dragging = false;
-      canvas.style.cursor = 'grab';
-      try { canvas.releasePointerCapture(ev.pointerId); } catch (e) {}
-    }
-
-    bag.on(canvas, 'pointerup', endDrag);
-    bag.on(canvas, 'pointercancel', endDrag);
 
     bag.on(btnPlane, 'click', function () {
       viewMode = 'plane';
@@ -1912,6 +2370,11 @@
     });
 
     function draw() {
+      const stageW = getStageWidth(stage, canvas);
+      if (stageW < 10) return;
+      const isNarrow = stageW < 480;
+      syncStageHeight(stage, 336, isNarrow && window.innerWidth <= 980);
+
       const fit = fitCanvas(canvas);
       if (!fit.ready) return;
       const ctx = fit.ctx;
@@ -1921,9 +2384,12 @@
 
       fillStageBg(ctx, w, h, pal);
 
+      const topBand = isNarrow ? 34 : 10;
+      const botBand = 30;
+      const plotH = Math.max(120, h - topBand - botBand);
       const cx = w * 0.5;
-      const cy = h * 0.52;
-      const halfSpan = Math.min(w, h) * 0.43;
+      const cy = topBand + plotH * 0.5;
+      const halfSpan = Math.min(w - 32, plotH - 18) * 0.44;
       const scale = viewMode === 'plane' ? halfSpan / 1.48 : halfSpan / (R_VM_PI * 1.45);
       mapInfo = { cx: cx, cy: cy, scale: scale };
 
@@ -1937,34 +2403,56 @@
       const step = viewMode === 'plane' ? 0.5 : R_VM_PI * 0.5;
       for (let k = -4; k <= 4; k++) {
         const g = k * step;
-        ctx.beginPath();
-        ctx.moveTo(sx(g), 10);
-        ctx.lineTo(sx(g), h - 10);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(10, sy(g));
-        ctx.lineTo(w - 10, sy(g));
-        ctx.stroke();
+        const gx = sx(g);
+        if (gx > 8 && gx < w - 8) {
+          ctx.beginPath();
+          ctx.moveTo(gx, topBand + 2);
+          ctx.lineTo(gx, h - botBand - 2);
+          ctx.stroke();
+        }
+        const gy = sy(g);
+        if (gy > topBand + 2 && gy < h - botBand - 2) {
+          ctx.beginPath();
+          ctx.moveTo(10, gy);
+          ctx.lineTo(w - 10, gy);
+          ctx.stroke();
+        }
       }
       ctx.restore();
 
       if (viewMode === 'plane') {
         // Plane-stress axes
         ctx.save();
-        ctx.strokeStyle = pal.axis;
-        ctx.lineWidth = 1.6;
-        const axReach = Math.min(w * 0.44, halfSpan * 1.18);
-        drawArrow(ctx, cx - axReach, cy, cx + axReach, cy, pal.axis, 1.5, 8);
-        drawArrow(ctx, cx, cy + halfSpan, cx, cy - halfSpan, pal.axis, 1.5, 8);
-        setFont(ctx, 15, true, 500);
-        ctx.fillStyle = pal.text;
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'middle';
-        const s1LabelX = Math.min(w - 72, cx + axReach + 8);
-        ctx.fillText('σ₁/σY', s1LabelX, cy);
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        ctx.fillText('σ₂/σY', cx + 10, Math.max(8, cy - halfSpan - 4));
+        const axReachX = Math.min(w * 0.45, halfSpan * 1.15);
+        const axReachY = Math.min(plotH * 0.47, halfSpan * 1.06);
+        drawArrow(ctx, cx - axReachX, cy, cx + axReachX, cy, pal.axis, 1.5, 8);
+        drawArrow(ctx, cx, cy + axReachY, cx, cy - axReachY, pal.axis, 1.5, 8);
+
+        // Open-quadrant axis labels (Q4 below +x tip & Q2 left of +y tip: strictly clear of tilted ellipse!)
+        drawMathRun(ctx, 'σ_1/σ_Y', Math.min(w - 8, cx + axReachX), cy + 12, {
+          px: 16,
+          mono: true,
+          weight: 500,
+          align: 'right',
+          baseline: 'top',
+          color: pal.text,
+          bg: withAlpha(pal.bg, 0.85),
+          padX: 3,
+          padY: 1,
+          radius: 2
+        });
+        drawMathRun(ctx, 'σ_2/σ_Y', cx - 10, Math.max(topBand + 4, cy - axReachY + 2), {
+          px: 16,
+          mono: true,
+          weight: 500,
+          align: 'right',
+          baseline: 'top',
+          color: pal.text,
+          bg: withAlpha(pal.bg, 0.85),
+          padX: 3,
+          padY: 1,
+          radius: 2
+        });
         ctx.restore();
 
         // von Mises tilted ellipse: s1 = cos(t) + sin(t)/sqrt(3), s2 = cos(t) - sin(t)/sqrt(3)
@@ -1980,14 +2468,13 @@
           else ctx.lineTo(px, py);
         }
         ctx.closePath();
-        // Fill sliver in amberSoft first, then fill Tresca interior over it cleanly
         ctx.fillStyle = pal.amberSoft;
         ctx.fill();
         ctx.strokeStyle = pal.teal;
         ctx.lineWidth = 2.8;
         ctx.stroke();
 
-        // Tresca hexagon in plane stress
+        // Inscribed Tresca hexagon: max|sigma_i - sigma_j| <= sigma_Y (k_Tresca = sigma_Y/2)
         const hex = [
           [1, 0], [1, 1], [0, 1], [-1, 0], [-1, -1], [0, -1]
         ];
@@ -2010,11 +2497,11 @@
       } else {
         // pi-plane projected principal stress axes at 90 deg (s1), -30 deg (s2), -150 deg (s3)
         const axes = [
-          { ang: Math.PI / 2, lbl: 'σ₁' },
-          { ang: -Math.PI / 6, lbl: 'σ₂' },
-          { ang: -5 * Math.PI / 6, lbl: 'σ₃' }
+          { ang: Math.PI / 2, lbl: 'σ_1' },
+          { ang: -Math.PI / 6, lbl: 'σ_2' },
+          { ang: -5 * Math.PI / 6, lbl: 'σ_3' }
         ];
-        const axLen = R_VM_PI * 1.32;
+        const axLen = R_VM_PI * 1.28;
         ctx.save();
         axes.forEach(function (ax) {
           const ex = sx(axLen * Math.cos(ax.ang));
@@ -2030,11 +2517,20 @@
           ctx.stroke();
           ctx.setLineDash([]);
           drawArrow(ctx, cx, cy, ex, ey, pal.axis, 1.6, 8);
-          setFont(ctx, 15, true, 600);
-          ctx.fillStyle = pal.text;
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText(ax.lbl, sx((axLen + 0.14) * Math.cos(ax.ang)), sy((axLen + 0.14) * Math.sin(ax.ang)));
+          const lx = clamp(sx((axLen + 0.16) * Math.cos(ax.ang)), 18, w - 18);
+          const ly = clamp(sy((axLen + 0.16) * Math.sin(ax.ang)), topBand + 12, h - botBand - 12);
+          drawMathRun(ctx, ax.lbl, lx, ly, {
+            px: 16,
+            mono: true,
+            weight: 600,
+            align: 'center',
+            baseline: 'middle',
+            color: pal.text,
+            bg: withAlpha(pal.bg, 0.82),
+            padX: 3,
+            padY: 1,
+            radius: 2
+          });
         });
 
         // von Mises circle of radius R_VM_PI
@@ -2067,7 +2563,7 @@
         ctx.restore();
       }
 
-      // Draw stress state vector and glowing draggable handle
+      // Draw stress state vector and precision drafting handle
       let hx, hy;
       if (viewMode === 'plane') {
         hx = sx(s1);
@@ -2077,6 +2573,8 @@
         hx = sx(pi.px);
         hy = sy(pi.py);
       }
+      handlePos = { x: hx, y: hy };
+
       const m = computeMetrics();
       const handleCol = m.vm >= 1.0 ? pal.cardinal : (m.tr >= 1.0 ? pal.amber : pal.teal);
 
@@ -2105,31 +2603,97 @@
       ctx.lineWidth = 1.8;
       ctx.stroke();
 
-      // Compact legend in top-left corner (>= 15px)
-      const lx = 14;
-      const ly = 14;
-      setFont(ctx, 15, false, 500);
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
+      // Responsive Legend & Tresca Criterion Footnote (>= 15px)
+      if (isNarrow) {
+        // Single-row centered top legend strictly above plot area
+        setFont(ctx, 15, false, 500);
+        const wVM = ctx.measureText('von Mises').width;
+        const wTR = ctx.measureText('Tresca').width;
+        const totalW = 20 + 6 + wVM + 18 + 20 + 6 + wTR;
+        let lx = Math.max(10, (w - totalW) * 0.5);
+        const ly = 17;
 
-      ctx.strokeStyle = pal.teal;
-      ctx.lineWidth = 2.8;
-      ctx.beginPath();
-      ctx.moveTo(lx, ly + 8);
-      ctx.lineTo(lx + 20, ly + 8);
-      ctx.stroke();
-      ctx.fillStyle = pal.text;
-      ctx.fillText('von Mises', lx + 26, ly + 8);
+        ctx.strokeStyle = pal.teal;
+        ctx.lineWidth = 2.8;
+        ctx.beginPath();
+        ctx.moveTo(lx, ly);
+        ctx.lineTo(lx + 20, ly);
+        ctx.stroke();
+        ctx.fillStyle = pal.text;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('von Mises', lx + 26, ly);
 
-      ctx.strokeStyle = pal.cardinal;
-      ctx.lineWidth = 2.4;
-      ctx.setLineDash([6, 3]);
-      ctx.beginPath();
-      ctx.moveTo(lx, ly + 30);
-      ctx.lineTo(lx + 20, ly + 30);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.fillText('Tresca', lx + 26, ly + 30);
+        lx += 26 + wVM + 18;
+        ctx.strokeStyle = pal.cardinal;
+        ctx.lineWidth = 2.4;
+        ctx.setLineDash([6, 3]);
+        ctx.beginPath();
+        ctx.moveTo(lx, ly);
+        ctx.lineTo(lx + 20, ly);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillText('Tresca', lx + 26, ly);
+
+        // Verified Tresca criterion footer centered cleanly below plot
+        drawMathRun(ctx, 'Tresca: max|σ_i−σ_j| ≤ σ_Y', w * 0.5, h - 14, {
+          px: 15,
+          mono: true,
+          weight: 500,
+          align: 'center',
+          baseline: 'middle',
+          color: pal.textMuted
+        });
+      } else {
+        // Desktop top-left compact archival legend (strictly clear of σ_2/σ_Y axis) + bottom criterion bar
+        const lx = 14;
+        const ly = 12;
+        const legW = Math.max(
+          measureMathRun(ctx, 'von Mises', 15, false, 500),
+          measureMathRun(ctx, 'Tresca', 15, false, 500)
+        ) + 36;
+        roundRectPath(ctx, lx - 6, ly - 4, legW, 50, 2);
+        ctx.fillStyle = withAlpha(pal.bg, 0.9);
+        ctx.fill();
+        ctx.strokeStyle = pal.border;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        ctx.strokeStyle = pal.teal;
+        ctx.lineWidth = 2.8;
+        ctx.beginPath();
+        ctx.moveTo(lx, ly + 9);
+        ctx.lineTo(lx + 20, ly + 9);
+        ctx.stroke();
+        setFont(ctx, 15, false, 500);
+        ctx.fillStyle = pal.text;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('von Mises', lx + 26, ly + 9);
+
+        ctx.strokeStyle = pal.cardinal;
+        ctx.lineWidth = 2.4;
+        ctx.setLineDash([6, 3]);
+        ctx.beginPath();
+        ctx.moveTo(lx, ly + 32);
+        ctx.lineTo(lx + 20, ly + 32);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillText('Tresca', lx + 26, ly + 32);
+
+        // Verified Mises & Tresca criteria in dedicated bottom footer band
+        const critFooter = w >= 560
+          ? 'Mises: σ_{eq} ≤ σ_Y  ·  Tresca: max|σ_i−σ_j| ≤ σ_Y'
+          : 'Tresca: max|σ_i−σ_j| ≤ σ_Y';
+        drawMathRun(ctx, critFooter, w * 0.5, h - 14, {
+          px: 15,
+          mono: true,
+          weight: 500,
+          align: 'center',
+          baseline: 'middle',
+          color: pal.textMuted
+        });
+      }
       ctx.restore();
     }
 
@@ -2159,43 +2723,47 @@
 
     // Previous stress state s^n (anchor inside yield circle) and draggable trial stress s^tr (in units of k)
     const sn = { x: -0.52, y: -0.34 };
-    let str = { x: 1.48, y: 1.12 }; // starts outside circle (f_tr > 0)
+    let str = { x: 1.62, y: 1.22 }; // starts outside circle (f_tr > 0)
     let dragging = false;
     let snapAnim = 1.0; // 0 -> 1 return snap animation
     let pulseT = 0;
     let map = { cx: 200, cy: 150, scale: 80 };
+    let handlePos = { x: 260, y: 100 };
 
     const shell = el('div', 'lab-shell');
     const toolbar = el('div', 'lab-toolbar');
 
     const pillGroup = el('div', 'lab-pill-group');
-    const btnPlastic = el('button', 'lab-pill is-active', 'Plastic Trial (f > 0)');
-    const btnElastic = el('button', 'lab-pill', 'Elastic Trial (f < 0)');
+    const btnPlastic = el('button', 'lab-pill is-active', 'Plastic Trial (f^{tr} > 0)');
+    const btnElastic = el('button', 'lab-pill', 'Elastic Trial (f^{tr} ≤ 0)');
     const btnReplay = el('button', 'lab-pill', '↺ Replay Return');
     [btnPlastic, btnElastic, btnReplay].forEach(function (b) {
       b.type = 'button';
       pillGroup.appendChild(b);
     });
 
-    const statusBadge = el('span', 'lab-badge-status is-danger', 'Radial Return Active');
+    const statusBadge = el('span', 'lab-badge-status is-danger', 'f^{tr} > 0 → Return to f = 0');
     toolbar.appendChild(pillGroup);
     toolbar.appendChild(statusBadge);
 
     const stage = el('div', 'lab-stage');
+    stage.style.touchAction = 'pan-y';
     const canvas = el('canvas', 'lab-canvas');
-    canvas.style.touchAction = 'none';
+    canvas.style.touchAction = 'pan-y';
     canvas.style.cursor = 'grab';
     stage.appendChild(canvas);
 
     const readouts = el('div', 'lab-readout-row');
-    const rFtr = createReadoutChip('f_tr / k²', '+0.72');
-    const rDlam = createReadoutChip('2G·Δλ', '0.31');
-    const rDepsP = createReadoutChip('|Δεᵖ|', '0.41‰');
+    const rFtr = createReadoutChip('Trial f^{tr} / k^2', '+1.06');
+    const rFret = createReadoutChip('Returned f / k^2', '0.00');
+    const rDlam = createReadoutChip('2G·Δλ', '0.434');
+    const rDepsP = createReadoutChip('|Δε^p|', '0.58‰');
     readouts.appendChild(rFtr.chip);
+    readouts.appendChild(rFret.chip);
     readouts.appendChild(rDlam.chip);
     readouts.appendChild(rDepsP.chip);
 
-    const caption = el('p', 'lab-caption', 'Drag the trial stress σᵗʳ across the yield circle f = J₂ - k² = 0 to trigger orthogonal J₂ radial return.');
+    const caption = el('p', 'lab-caption', 'Drag the trial stress σ^{tr} across f = J_2 − k^2 = 0: f^{tr} > 0 triggers orthogonal J_2 radial return back onto f = 0.');
 
     shell.appendChild(toolbar);
     shell.appendChild(stage);
@@ -2222,12 +2790,14 @@
         sNext = { x: nx * RY, y: ny * RY };
       }
 
+      const fRet = isPlastic ? 0.0 : fTr;
       // |Delta eps^p| = (dGamma * K_MPA) / (2 * G_MPA) -> in per-mille (x 1000)
       const dEpsPPerMille = ((dGamma * K_MPA) / (2 * G_MPA)) * 1000;
 
       return {
         rTr: rTr,
         fTr: fTr,
+        fRet: fRet,
         isPlastic: isPlastic,
         nx: nx,
         ny: ny,
@@ -2241,6 +2811,7 @@
     function updateReadouts() {
       const c = computeReturn();
       rFtr.valEl.textContent = (c.fTr >= 0 ? '+' : '') + c.fTr.toFixed(2);
+      rFret.valEl.textContent = c.isPlastic ? '0.00' : c.fRet.toFixed(2);
       rDlam.valEl.textContent = c.twoGDlam.toFixed(3);
       rDepsP.valEl.textContent = c.dEpsPPerMille.toFixed(2) + '‰';
 
@@ -2248,18 +2819,17 @@
       btnElastic.classList.toggle('is-active', !c.isPlastic);
 
       if (c.isPlastic) {
-        setStatusBadge(statusBadge, 'Radial Return Active', 'danger');
+        setStatusBadge(statusBadge, 'f^{tr} > 0 → Return to f = 0', 'danger');
       } else {
-        setStatusBadge(statusBadge, 'Elastic Step Accepted', 'safe');
+        setStatusBadge(statusBadge, 'f^{tr} ≤ 0 · Elastic Accepted', 'safe');
       }
     }
 
-    function applyPointer(ev) {
-      const pt = getPointerPos(canvas, ev);
+    function applyPoint(pt) {
       const ux = (pt.x - map.cx) / map.scale;
       const uy = -(pt.y - map.cy) / map.scale;
       const r = Math.hypot(ux, uy);
-      const maxR = RY * 1.72;
+      const maxR = RY * 1.62;
       const fac = r > maxR ? maxR / r : 1;
       str.x = ux * fac;
       str.y = uy * fac;
@@ -2268,27 +2838,29 @@
       draw();
     }
 
-    bag.on(canvas, 'pointerdown', function (ev) {
-      dragging = true;
-      canvas.style.cursor = 'grabbing';
-      try { canvas.setPointerCapture(ev.pointerId); } catch (e) {}
-      applyPointer(ev);
+    bindHandleTouch(bag, stage, canvas, {
+      isNearHandle: function (pt) {
+        return Math.hypot(pt.x - handlePos.x, pt.y - handlePos.y) <= 48;
+      },
+      onStart: function (pt) {
+        dragging = true;
+        applyPoint(pt);
+      },
+      onMove: function (pt) {
+        if (!dragging) return;
+        applyPoint(pt);
+      },
+      onEnd: function () {
+        dragging = false;
+        draw();
+      },
+      onTap: function (pt) {
+        applyPoint(pt);
+      }
     });
-    bag.on(canvas, 'pointermove', function (ev) {
-      if (!dragging) return;
-      applyPointer(ev);
-    });
-    function endDrag(ev) {
-      if (!dragging) return;
-      dragging = false;
-      canvas.style.cursor = 'grab';
-      try { canvas.releasePointerCapture(ev.pointerId); } catch (e) {}
-    }
-    bag.on(canvas, 'pointerup', endDrag);
-    bag.on(canvas, 'pointercancel', endDrag);
 
     bag.on(btnPlastic, 'click', function () {
-      str = { x: 1.48, y: 1.12 };
+      str = { x: 1.62, y: 1.22 };
       snapAnim = 0.0;
       updateReadouts();
       draw();
@@ -2304,7 +2876,7 @@
     bag.on(btnReplay, 'click', function () {
       const c = computeReturn();
       if (!c.isPlastic) {
-        str = { x: 1.48, y: 1.12 };
+        str = { x: 1.62, y: 1.22 };
       }
       snapAnim = 0.0;
       updateReadouts();
@@ -2312,6 +2884,11 @@
     });
 
     function draw() {
+      const stageW = getStageWidth(stage, canvas);
+      if (stageW < 10) return;
+      const isNarrow = stageW < 480;
+      syncStageHeight(stage, 314, isNarrow && window.innerWidth <= 980);
+
       const fit = fitCanvas(canvas);
       if (!fit.ready) return;
       const ctx = fit.ctx;
@@ -2321,9 +2898,14 @@
 
       fillStageBg(ctx, w, h, pal);
 
-      const cx = w * 0.48;
-      const cy = h * 0.54;
-      const scale = Math.min(w, h) * 0.42 / (RY * 1.42);
+      // Dedicated header and footer bands keep axes & labels strictly separated
+      const topPad = 38;
+      const botPad = 32;
+      const plotH = Math.max(120, h - topPad - botPad);
+      const cx = w * 0.50;
+      const cy = topPad + plotH * 0.50;
+      const plotR = Math.min((w - 34) * 0.5, (plotH - 14) * 0.5);
+      const scale = plotR / (RY * 1.58);
       map = { cx: cx, cy: cy, scale: scale };
 
       function sx(u) { return cx + u * scale; }
@@ -2333,7 +2915,7 @@
 
       // Concentric deviatoric reference circles
       ctx.save();
-      [0.5, 1.5].forEach(function (mult) {
+      [0.5, 1.45].forEach(function (mult) {
         ctx.strokeStyle = pal.grid;
         ctx.lineWidth = 1;
         ctx.setLineDash([4, 4]);
@@ -2343,15 +2925,16 @@
       });
       ctx.setLineDash([]);
 
-      // Deviatoric axes
-      const axSpan = RY * 1.62 * scale;
+      // Deviatoric axes constrained strictly inside [topPad + 6, h - botPad - 6]
+      const axSpanX = Math.min(w * 0.46, RY * 1.56 * scale);
+      const axSpanY = Math.min(plotH * 0.47, RY * 1.52 * scale);
       ctx.strokeStyle = pal.axis;
       ctx.lineWidth = 1.4;
       ctx.beginPath();
-      ctx.moveTo(cx - axSpan, cy);
-      ctx.lineTo(cx + axSpan, cy);
-      ctx.moveTo(cx, cy - axSpan);
-      ctx.lineTo(cx, cy + axSpan);
+      ctx.moveTo(cx - axSpanX, cy);
+      ctx.lineTo(cx + axSpanX, cy);
+      ctx.moveTo(cx, cy - axSpanY);
+      ctx.lineTo(cx, cy + axSpanY);
       ctx.stroke();
 
       // Yield circle f = J_2 - k^2 = 0 (radius sqrt(2)k)
@@ -2364,18 +2947,28 @@
       ctx.lineWidth = 2.8;
       ctx.stroke();
 
-      // Circle radius annotation
-      setFont(ctx, 15, true, 500);
-      ctx.fillStyle = pal.teal;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('f = J₂ - k² = 0  (R = √2 k)', 14, 14);
+      // Header plate strictly above vertical y-axis (never crosses y-axis!)
+      const hdrText = w < 460 ? 'f = J_2 − k^2 = 0' : 'f = J_2 − k^2 = 0  (R = √2 k)';
+      drawMathRun(ctx, hdrText, 12, 19, {
+        px: 15,
+        mono: true,
+        weight: 500,
+        align: 'left',
+        baseline: 'middle',
+        color: pal.teal,
+        bg: pal.surface2,
+        border: pal.border,
+        padX: 7,
+        padY: 3,
+        radius: 2
+      });
       ctx.restore();
 
       const pO = { x: cx, y: cy };
       const pN = { x: sx(sn.x), y: sy(sn.y) };
       const pTr = { x: sx(str.x), y: sy(str.y) };
       const pNext = { x: sx(c.sNext.x), y: sy(c.sNext.y) };
+      handlePos = { x: pTr.x, y: pTr.y };
 
       // Elastic predictor path s^n -> s^tr
       ctx.save();
@@ -2393,11 +2986,6 @@
       ctx.beginPath();
       ctx.arc(pN.x, pN.y, 4.8, 0, Math.PI * 2);
       ctx.fill();
-      setFont(ctx, 15, true, 500);
-      ctx.fillStyle = pal.blue;
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'top';
-      ctx.fillText('σⁿ', pN.x - 8, pN.y + 4);
 
       // Radial line from origin to s^tr
       ctx.strokeStyle = withAlpha(pal.textMuted, 0.35);
@@ -2408,46 +2996,79 @@
       ctx.stroke();
       ctx.restore();
 
+      // Prepare smart non-overlapping label layout boxes
+      const labelBoxes = [];
+      const predDx = pTr.x - pN.x;
+      const predDy = pTr.y - pN.y;
+      const predLen = Math.hypot(predDx, predDy) || 1;
+      const snW = measureMathRun(ctx, 'σ^n', 16, true, 500) + 10;
+      labelBoxes.push({
+        text: 'σ^n',
+        x: pN.x - (predDx / predLen) * 18,
+        y: pN.y - (predDy / predLen) * 16 + 4,
+        w: snW,
+        h: 22,
+        color: pal.blue,
+        weight: 500,
+        fixed: false
+      });
+
+      // Fixed dot obstacles so labels never sit on markers
+      labelBoxes.push({ x: pTr.x, y: pTr.y, w: 20, h: 20, fixed: true, obstacle: true });
+      labelBoxes.push({ x: pN.x, y: pN.y, w: 14, h: 14, fixed: true, obstacle: true });
+
+      const urx = c.nx;
+      const ury = -c.ny;
+      const utx = c.ny;
+      const uty = c.nx;
+
       if (c.isPlastic) {
-        // Tangent line at s^{n+1} + right-angle orthogonality square
-        const tx = -c.ny;
-        const ty = c.nx;
-        const tanLen = 44;
+        labelBoxes.push({ x: pNext.x, y: pNext.y, w: 18, h: 18, fixed: true, obstacle: true });
+
+        // Choose normal-vector offset side opposite anchor pN for cleanest geometry
+        const dotN = (pN.x - pNext.x) * utx + (pN.y - pNext.y) * uty;
+        const nSide = dotN >= 0 ? -1 : 1;
+
+        // Tangent line at s^{n+1} + 90-degree orthogonality corner mark
+        const tanLen = isNarrow ? 34 : 44;
         ctx.save();
         ctx.strokeStyle = withAlpha(pal.textMuted, 0.55);
         ctx.lineWidth = 1.5;
         ctx.setLineDash([4, 4]);
         ctx.beginPath();
-        ctx.moveTo(pNext.x - tx * tanLen, pNext.y + ty * tanLen);
-        ctx.lineTo(pNext.x + tx * tanLen, pNext.y - ty * tanLen);
+        ctx.moveTo(pNext.x - utx * tanLen, pNext.y - uty * tanLen);
+        ctx.lineTo(pNext.x + utx * tanLen, pNext.y + uty * tanLen);
         ctx.stroke();
         ctx.setLineDash([]);
 
-        // Small 90-degree orthogonality corner mark
-        const sq = 10;
-        const rx = c.nx * sq;
-        const ry = -c.ny * sq;
-        const txs = tx * sq;
-        const tys = -ty * sq;
+        const sq = 9;
+        const rx = urx * sq;
+        const ry = ury * sq;
+        const txs = -nSide * utx * sq;
+        const tys = -nSide * uty * sq;
         ctx.strokeStyle = pal.textMuted;
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = 1.4;
         ctx.beginPath();
         ctx.moveTo(pNext.x + rx, pNext.y + ry);
         ctx.lineTo(pNext.x + rx + txs, pNext.y + ry + tys);
         ctx.lineTo(pNext.x + txs, pNext.y + tys);
         ctx.stroke();
 
-        // Outward normal flow direction ∂f/∂σ = s
-        const normLen = 42;
-        const normEndX = pNext.x + c.nx * normLen;
-        const normEndY = pNext.y - c.ny * normLen;
-        drawArrow(ctx, pNext.x, pNext.y, normEndX, normEndY, pal.amber, 2.4, 9);
+        // Outward normal flow vector n = ∂f/∂σ / ||∂f/∂σ|| offset slightly parallel to radial line
+        // so it never overlaps the inward red return correction vector -Δλ s
+        const normOff = 8 * nSide;
+        const normLen = isNarrow ? 26 : 34;
+        const nStartX = pNext.x + utx * normOff;
+        const nStartY = pNext.y + uty * normOff;
+        const nEndX = nStartX + urx * normLen;
+        const nEndY = nStartY + ury * normLen;
+        drawArrow(ctx, nStartX, nStartY, nEndX, nEndY, pal.amber, 2.2, 8);
 
-        // Smooth animated return correction vector -Δγ n from s^tr -> s^{n+1}
+        // Smooth animated return correction vector -Δλ s from s^tr -> s^{n+1}
         const animFrac = clamp(snapAnim, 0, 1);
         const curX = lerp(pTr.x, pNext.x, animFrac);
         const curY = lerp(pTr.y, pNext.y, animFrac);
-        drawArrow(ctx, pTr.x, pTr.y, curX, curY, pal.cardinal, 3.2, 11);
+        drawArrow(ctx, pTr.x, pTr.y, curX, curY, pal.cardinal, 3.0, 10);
 
         // Animated traveling pulse along return vector
         const pu = (pulseT * 0.75) % 1;
@@ -2455,73 +3076,199 @@
         const py = lerp(pTr.y, pNext.y, pu);
         ctx.fillStyle = pal.cardinal;
         ctx.beginPath();
-        ctx.arc(px, py, 3.8, 0, Math.PI * 2);
+        ctx.arc(px, py, 3.5, 0, Math.PI * 2);
         ctx.fill();
 
-        // Corrected state dot s^{n+1} on circle
-        ctx.fillStyle = withAlpha(pal.teal, 0.3);
+        // Corrected state marker s^{n+1} on yield circle (precision ring, no glow)
+        ctx.strokeStyle = pal.teal;
+        ctx.lineWidth = 1.5;
         ctx.beginPath();
-        ctx.arc(pNext.x, pNext.y, 12, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.arc(pNext.x, pNext.y, 10, 0, Math.PI * 2);
+        ctx.stroke();
         ctx.fillStyle = pal.teal;
         ctx.beginPath();
-        ctx.arc(pNext.x, pNext.y, 6, 0, Math.PI * 2);
+        ctx.arc(pNext.x, pNext.y, 5.5, 0, Math.PI * 2);
         ctx.fill();
-        ctx.strokeStyle = pal.white;
-        ctx.lineWidth = 1.8;
+        ctx.strokeStyle = pal.bg;
+        ctx.lineWidth = 1.6;
         ctx.stroke();
 
-        // Crisp labels (>= 15px)
-        setFont(ctx, 15, true, 600);
-        ctx.fillStyle = pal.teal;
-        ctx.textAlign = c.nx >= 0 ? 'right' : 'left';
-        ctx.textBaseline = c.ny >= 0 ? 'top' : 'bottom';
-        ctx.fillText('σⁿ⁺¹', pNext.x - c.nx * 14, pNext.y + c.ny * 14);
+        // Add smartly positioned label boxes for σ^{n+1}, -Δλ s, n, and σ^{tr}
+        const wNext = measureMathRun(ctx, 'σ^{n+1}', 16, true, 600) + 10;
+        const wRet = measureMathRun(ctx, '−Δλ s', 16, true, 600) + 10;
+        const wNorm = measureMathRun(ctx, 'n', 16, true, 600) + 10;
+        const wTr = measureMathRun(ctx, 'σ^{tr}', 16, true, 600) + 10;
 
-        ctx.fillStyle = pal.cardinal;
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'middle';
-        const midRx = (pTr.x + pNext.x) * 0.5 + (-c.ny) * 14;
-        const midRy = (pTr.y + pNext.y) * 0.5 + (-c.nx) * 14;
-        ctx.fillText('-Δγ n', clamp(midRx, 14, w - 66), clamp(midRy, 22, h - 22));
+        // σ^{n+1} placed neatly inside circle away from tangent & return vector
+        labelBoxes.push({
+          text: 'σ^{n+1}',
+          x: pNext.x - urx * 28 - nSide * utx * 12,
+          y: pNext.y - ury * 28 - nSide * uty * 12,
+          w: wNext,
+          h: 22,
+          color: pal.teal,
+          weight: 600,
+          fixed: false
+        });
 
-        ctx.fillStyle = pal.amber;
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText('∂f/∂σ = s', 14, h - 14);
+        // −Δλ s placed on the opposite tangent side (-nSide) of return midpoint
+        const midRx = (pTr.x + pNext.x) * 0.5;
+        const midRy = (pTr.y + pNext.y) * 0.5;
+        labelBoxes.push({
+          text: '−Δλ s',
+          x: midRx - nSide * utx * 26,
+          y: midRy - nSide * uty * 26,
+          w: wRet,
+          h: 22,
+          color: pal.cardinal,
+          weight: 600,
+          fixed: false
+        });
+
+        // n placed beside outward normal arrow tip on the +nSide side
+        labelBoxes.push({
+          text: 'n',
+          x: nEndX + nSide * utx * 15 + urx * 4,
+          y: nEndY + nSide * uty * 15 + ury * 4,
+          w: wNorm,
+          h: 22,
+          color: pal.amber,
+          weight: 600,
+          fixed: false
+        });
+
+        // σ^{tr} placed outward beyond pTr
+        labelBoxes.push({
+          text: 'σ^{tr}',
+          x: pTr.x + urx * 24,
+          y: pTr.y + ury * 24,
+          w: wTr,
+          h: 22,
+          color: pal.text,
+          weight: 600,
+          fixed: false
+        });
+
+        // Bottom footer: cleanly distinguish trial f^{tr} > 0 vs returned admissible f = 0
+        drawMathRun(ctx, 'f^{tr} > 0 → f = 0', 12, h - 14, {
+          px: 15,
+          mono: true,
+          weight: 600,
+          align: 'left',
+          baseline: 'middle',
+          color: pal.cardinal
+        });
+        drawMathRun(ctx, '∂f/∂σ = s', w - 12, h - 14, {
+          px: 15,
+          mono: true,
+          weight: 600,
+          align: 'right',
+          baseline: 'middle',
+          color: pal.amber
+        });
         ctx.restore();
       } else {
-        // Elastic step accepted notice on canvas
-        ctx.save();
-        setFont(ctx, 15, false, 600);
-        ctx.fillStyle = pal.teal;
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText('Elastic step accepted (Δλ = 0)', 14, h - 14);
-        ctx.restore();
+        // Elastic step: place σ^{tr} cleanly away from pTr
+        const wTr = measureMathRun(ctx, 'σ^{tr}', 16, true, 600) + 10;
+        labelBoxes.push({
+          text: 'σ^{tr}',
+          x: pTr.x + urx * 22,
+          y: pTr.y + ury * 22,
+          w: wTr,
+          h: 22,
+          color: pal.text,
+          weight: 600,
+          fixed: false
+        });
+
+        drawMathRun(ctx, 'f^{tr} ≤ 0 · Elastic (Δλ = 0)', 12, h - 14, {
+          px: 15,
+          mono: false,
+          weight: 600,
+          align: 'left',
+          baseline: 'middle',
+          color: pal.teal
+        });
       }
 
-      // Draggable trial stress handle s^tr
+      // Draggable trial stress handle s^tr (precision drafting ring, zero neon glow)
       const trCol = c.isPlastic ? pal.cardinal : pal.teal;
       ctx.save();
-      ctx.fillStyle = withAlpha(trCol, 0.25);
+      ctx.strokeStyle = trCol;
+      ctx.lineWidth = 1.6;
       ctx.beginPath();
-      ctx.arc(pTr.x, pTr.y, dragging ? 16 : 13, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.arc(pTr.x, pTr.y, dragging ? 13 : 11, 0, Math.PI * 2);
+      ctx.stroke();
       ctx.fillStyle = trCol;
       ctx.beginPath();
-      ctx.arc(pTr.x, pTr.y, 6.8, 0, Math.PI * 2);
+      ctx.arc(pTr.x, pTr.y, 6, 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = pal.white;
-      ctx.lineWidth = 2;
+      ctx.strokeStyle = pal.bg;
+      ctx.lineWidth = 1.8;
       ctx.stroke();
-
-      setFont(ctx, 15, true, 600);
-      ctx.fillStyle = pal.text;
-      ctx.textAlign = c.nx >= 0 ? 'left' : 'right';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('σᵗʳ', clamp(pTr.x + (c.nx >= 0 ? 12 : -12), 20, w - 30), Math.max(24, pTr.y - 8));
       ctx.restore();
+
+      // 4-pass AABB separation & canvas-bounds clamping so ZERO labels ever overlap or clip
+      const minX = 8;
+      const maxX = w - 8;
+      const minY = topPad + 6;
+      const maxY = h - botPad - 6;
+      function clampBox(b) {
+        if (b.fixed) return;
+        b.x = clamp(b.x, minX + b.w * 0.5, maxX - b.w * 0.5);
+        b.y = clamp(b.y, minY + b.h * 0.5, maxY - b.h * 0.5);
+      }
+      for (let pass = 0; pass < 4; pass++) {
+        for (let i = 0; i < labelBoxes.length; i++) clampBox(labelBoxes[i]);
+        for (let i = 0; i < labelBoxes.length; i++) {
+          for (let j = i + 1; j < labelBoxes.length; j++) {
+            const a = labelBoxes[i];
+            const b = labelBoxes[j];
+            if (a.fixed && b.fixed) continue;
+            const pad = 6;
+            const ox = (a.w + b.w) * 0.5 + pad - Math.abs(b.x - a.x);
+            const oy = (a.h + b.h) * 0.5 + pad - Math.abs(b.y - a.y);
+            if (ox > 0 && oy > 0) {
+              if (ox < oy) {
+                const dirX = b.x >= a.x ? 1 : -1;
+                if (a.fixed) b.x += dirX * ox;
+                else if (b.fixed) a.x -= dirX * ox;
+                else {
+                  a.x -= dirX * ox * 0.5;
+                  b.x += dirX * ox * 0.5;
+                }
+              } else {
+                const dirY = b.y >= a.y ? 1 : -1;
+                if (a.fixed) b.y += dirY * oy;
+                else if (b.fixed) a.y -= dirY * oy;
+                else {
+                  a.y -= dirY * oy * 0.5;
+                  b.y += dirY * oy * 0.5;
+                }
+              }
+            }
+          }
+        }
+      }
+      for (let i = 0; i < labelBoxes.length; i++) clampBox(labelBoxes[i]);
+
+      // Render all separated labels with subtle drafting-plate pills (>= 15px)
+      for (let i = 0; i < labelBoxes.length; i++) {
+        const b = labelBoxes[i];
+        if (b.obstacle) continue;
+        drawMathRun(ctx, b.text, b.x, b.y, {
+          px: 16,
+          mono: true,
+          weight: b.weight || 600,
+          align: 'center',
+          baseline: 'middle',
+          color: b.color,
+          bg: withAlpha(pal.bg, 0.90),
+          padX: 4,
+          padY: 2,
+          radius: 2
+        });
+      }
     }
 
     bag.loop(api, function (dt) {
@@ -2580,12 +3327,15 @@
     toolbar.appendChild(statusBadge);
 
     const stage = el('div', 'lab-stage');
+    stage.style.touchAction = 'pan-y';
     const canvas = el('canvas', 'lab-canvas');
+    canvas.style.touchAction = 'pan-y';
+    canvas.style.cursor = 'default';
     stage.appendChild(canvas);
 
     const controls = el('div', 'lab-controls-grid');
     const sigCtrl = createSliderControl(
-      'Remote Stress σ∞',
+      'Remote Stress σ^∞',
       { min: 50, max: 400, step: 5, value: sigmaInf, format: function (v) { return Math.round(v) + ' MPa'; } },
       function (v) { sigmaInf = v; updateReadouts(); draw(); }
     );
@@ -2595,7 +3345,7 @@
       function (v) { crackA_mm = v; updateReadouts(); draw(); }
     );
     const kicCtrl = createSliderControl(
-      'Toughness K_Ic',
+      'Toughness K_{Ic}',
       { min: 25, max: 80, step: 1, value: kIc, format: function (v) { return Math.round(v) + ' MPa√m'; } },
       function (v) { kIc = v; updateReadouts(); draw(); }
     );
@@ -2605,13 +3355,13 @@
 
     const readouts = el('div', 'lab-readout-row');
     const rKI = createReadoutChip('K_I', '31.9 MPa√m');
-    const rRatio = createReadoutChip('K_I / K_Ic', '0.71');
-    const rG = createReadoutChip('Release G', '4.63 kJ/m²');
+    const rRatio = createReadoutChip('K_I / K_{Ic}', '0.71');
+    const rG = createReadoutChip('G = −∂Π/∂A', '4.63 kJ/m²');
     readouts.appendChild(rKI.chip);
     readouts.appendChild(rRatio.chip);
     readouts.appendChild(rG.chip);
 
-    const caption = el('p', 'lab-caption', 'Increase σ∞ or crack half-length a to grow the r⁻¹/² near-tip stress lobes and approach K_Ic.');
+    const caption = el('p', 'lab-caption', 'Increase σ^∞ or crack half-length a to grow the r^{-1/2} near-tip stress lobes and approach K_{Ic} (G = −∂Π/∂A = K_I^2/E′).');
 
     shell.appendChild(toolbar);
     shell.appendChild(stage);
@@ -2640,7 +3390,7 @@
       const aM = crackA_mm * 1e-3;
       const kI = sigmaInf * Math.sqrt(Math.PI * aM); // MPa sqrt(m)
       const ratio = kI / kIc;
-      // G = K_I^2 / E' -> (MPa^2 * m) / GPa = 10^12 / 10^9 J/m^2 = 10^3 J/m^2 = kJ/m^2
+      // G = -dPi/dA = K_I^2 / E' -> (MPa^2 * m) / GPa = 10^12 / 10^9 J/m^2 = 10^3 J/m^2 = kJ/m^2
       const gKJ = (kI * kI) / E_PRIME_GPA;
       return { kI: kI, ratio: ratio, gKJ: gKJ };
     }
@@ -2652,15 +3402,20 @@
       rG.valEl.textContent = m.gKJ.toFixed(2) + ' kJ/m²';
 
       if (m.ratio >= 1.0) {
-        setStatusBadge(statusBadge, 'CRITICAL FRACTURE · K_I >= K_Ic', 'danger');
+        setStatusBadge(statusBadge, 'CRITICAL FRACTURE · K_I ≥ K_{Ic}', 'danger');
       } else if (m.ratio >= 0.75) {
-        setStatusBadge(statusBadge, 'Warning · Approaching K_Ic', 'warn');
+        setStatusBadge(statusBadge, 'Warning · Approaching K_{Ic}', 'warn');
       } else {
         setStatusBadge(statusBadge, 'Safe · Subcritical', 'safe');
       }
     }
 
     function draw() {
+      const stageW = getStageWidth(stage, canvas);
+      if (stageW < 10) return;
+      const isNarrow = stageW < 480;
+      syncStageHeight(stage, 326, isNarrow && window.innerWidth <= 980);
+
       const fit = fitCanvas(canvas);
       if (!fit.ready) return;
       const ctx = fit.ctx;
@@ -2671,50 +3426,60 @@
 
       fillStageBg(ctx, w, h, pal);
 
-      // Reserve right margin for K_I / K_Ic vertical toughness bar
-      const gaugeW = 94;
-      const plateAreaW = Math.max(160, w - gaugeW - 10);
-      const padX = Math.max(16, plateAreaW * 0.07);
-      const padY = 44;
-      const plateX = padX;
-      const plateY = padY;
-      const plateW = plateAreaW - padX * 2;
-      const plateH = Math.max(100, h - padY * 2);
+      // Compute specimen plate region (stacked full-width on narrow mobile, side-by-side on desktop)
+      let plateX, plateY, plateW, plateH, plateAreaW;
+      if (isNarrow) {
+        plateAreaW = w;
+        plateX = 14;
+        plateW = Math.max(160, w - 28);
+        plateY = 36;
+        plateH = Math.max(110, h - 172);
+      } else {
+        const gaugeW = 102;
+        plateAreaW = Math.max(200, w - gaugeW - 10);
+        const padX = Math.max(16, plateAreaW * 0.06);
+        plateX = padX;
+        plateW = plateAreaW - padX * 2;
+        plateY = 40;
+        plateH = Math.max(100, h - 104);
+      }
       const cx = plateX + plateW * 0.5;
       const cy = plateY + plateH * 0.5;
 
-      // Remote tension arrows above and below plate
-      const nArrows = 5;
-      const arrLen = 16 + ((sigmaInf - 50) / 350) * 16;
+      // Remote tension arrows above and below plate (shifted right of σ^∞ label so zero overlap)
+      const nArrows = isNarrow ? 4 : 5;
+      const arrLen = (isNarrow ? 12 : 14) + ((sigmaInf - 50) / 350) * (isNarrow ? 12 : 14);
       for (let i = 0; i < nArrows; i++) {
-        const ax = plateX + plateW * (0.14 + (i / (nArrows - 1)) * 0.72);
+        const u = nArrows === 1 ? 0.5 : i / (nArrows - 1);
+        const ax = plateX + plateW * (0.22 + u * 0.64);
         drawArrow(ctx, ax, plateY - 4, ax, plateY - 4 - arrLen, pal.blue, 2.0, 7);
         drawArrow(ctx, ax, plateY + plateH + 4, ax, plateY + plateH + 4 + arrLen, pal.blue, 2.0, 7);
       }
-      setFont(ctx, 15, true, 600);
-      ctx.fillStyle = pal.blue;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('σ∞', plateX + 2, plateY - 18);
+      drawMathRun(ctx, 'σ^∞', plateX + 2, plateY - 17, {
+        px: 16,
+        mono: true,
+        weight: 600,
+        align: 'left',
+        baseline: 'middle',
+        color: pal.blue
+      });
 
       // Plate rectangle with clip so near-tip contours stay cleanly inside specimen
       ctx.save();
-      roundRectPath(ctx, plateX, plateY, plateW, plateH, 6);
+      roundRectPath(ctx, plateX, plateY, plateW, plateH, 2);
       ctx.fillStyle = pal.surface2;
       ctx.fill();
       ctx.clip();
 
       // Crack half-length in pixels proportional to a (2..25 mm)
-      const pxPerMm = (plateW * 0.30) / 25;
+      const pxPerMm = (plateW * 0.28) / 25;
       const halfA = Math.max(12, crackA_mm * pxPerMm);
       const tipL = cx - halfA;
       const tipR = cx + halfA;
 
       // Analytical Mode-I iso-stress butterfly contours:
       // sigma_yy(r, theta) = (K_I / sqrt(2*pi*r)) * cos(th/2) * [1 + sin(th/2)*sin(3*th/2)]
-      // => r(theta) = (1 / 2pi) * (K_I / sigma_level)^2 * (f(theta))^2
-      // Scale visual mm -> px cleanly so contours react dramatically to K_I
-      const pxPerMeter = plateW * 3.8;
+      const pxPerMeter = plateW * 3.6;
       const levels = [
         { sig: 260, col: pal.blue, alpha: 0.16 },
         { sig: 380, col: pal.teal, alpha: 0.22 },
@@ -2775,33 +3540,42 @@
         }
       });
 
-      // Optional J-Integral path-independent contour Gamma around right crack tip
+      // Optional J-Integral path-independent contour Gamma clamped safely inside specimen bounds
       if (showJContour) {
-        const jR = Math.min(plateH * 0.34, Math.max(26, halfA * 0.55 + 18));
+        const availR = Math.max(18, (plateX + plateW) - tipR - 24);
+        const jR = Math.min(plateH * 0.34, availR, Math.max(24, halfA * 0.55 + 16));
         ctx.save();
         ctx.strokeStyle = pal.teal;
         ctx.lineWidth = 2.2;
         ctx.beginPath();
         ctx.arc(tipR, cy, jR, -Math.PI * 0.88, Math.PI * 0.88);
         ctx.stroke();
-        // Counterclockwise tangent arrow at top of Gamma
         drawArrow(ctx, tipR + 8, cy - jR, tipR - 8, cy - jR, pal.teal, 2.2, 8);
-        setFont(ctx, 15, true, 600);
-        ctx.fillStyle = pal.teal;
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText('Γ', tipR + jR * 0.65, cy - jR * 0.68);
+        const gLblX = Math.min(plateX + plateW - 14, tipR + jR * 0.72 + 4);
+        const gLblY = Math.max(plateY + 14, cy - jR * 0.72);
+        drawMathRun(ctx, 'Γ', gLblX, gLblY, {
+          px: 15,
+          mono: true,
+          weight: 600,
+          align: 'center',
+          baseline: 'middle',
+          color: pal.teal,
+          bg: withAlpha(pal.surface2, 0.88),
+          padX: 3,
+          padY: 1,
+          radius: 2
+        });
         ctx.restore();
       }
 
       // Critical fracture animated pulse ring at both crack tips
       if (m.ratio >= 1.0) {
         const wave = (pulseT * 1.4) % 1;
-        const pR = 6 + wave * 34;
+        const pR = 6 + wave * 32;
         [-1, 1].forEach(function (side) {
           const tx = side > 0 ? tipR : tipL;
-          ctx.strokeStyle = withAlpha(pal.cardinal, (1 - wave) * 0.9);
-          ctx.lineWidth = 2.8;
+          ctx.strokeStyle = withAlpha(pal.cardinal, (1 - wave) * 0.85);
+          ctx.lineWidth = 2.4;
           ctx.beginPath();
           ctx.arc(tx, cy, pR, 0, Math.PI * 2);
           ctx.stroke();
@@ -2821,63 +3595,144 @@
       ctx.lineWidth = 2.0;
       ctx.stroke();
 
-      // Dimension label 2a
-      setFont(ctx, 15, true, 600);
-      ctx.fillStyle = pal.text;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText('2a = ' + (2 * crackA_mm).toFixed(0) + ' mm', cx, cy + openHalfH + 8);
+      // Dimension label 2a backed by subtle plate pill
+      drawMathRun(ctx, '2a = ' + (2 * crackA_mm).toFixed(0) + ' mm', cx, cy + openHalfH + 18, {
+        px: 15,
+        mono: true,
+        weight: 600,
+        align: 'center',
+        baseline: 'middle',
+        color: pal.text,
+        bg: withAlpha(pal.bg, 0.88),
+        padX: 5,
+        padY: 2,
+        radius: 2
+      });
       ctx.restore();
 
       // Plate border stroke
-      roundRectPath(ctx, plateX, plateY, plateW, plateH, 6);
+      roundRectPath(ctx, plateX, plateY, plateW, plateH, 2);
       ctx.strokeStyle = m.ratio >= 1.0 ? pal.cardinal : pal.border;
       ctx.lineWidth = m.ratio >= 1.0 ? 2.2 : 1.5;
       ctx.stroke();
 
-      // Vertical K_I vs K_Ic gauge bar on right
-      const gx = plateAreaW + 12;
-      const gw = 26;
-      const gy = plateY;
-      const gh = plateH;
+      // Toughness gauge + exact energy release rate G = -dPi/dA = K_I^2/E'
       const maxK = Math.max(95, kIc * 1.35);
       const fillFrac = clamp(m.kI / maxK, 0, 1);
       const critFrac = clamp(kIc / maxK, 0, 1);
-
-      ctx.save();
-      roundRectPath(ctx, gx, gy, gw, gh, 6);
-      ctx.fillStyle = pal.surface2;
-      ctx.fill();
-      ctx.strokeStyle = pal.border;
-      ctx.lineWidth = 1.3;
-      ctx.stroke();
-
-      const fillH = gh * fillFrac;
       const barCol = m.ratio >= 1.0 ? pal.cardinal : (m.ratio >= 0.75 ? pal.amber : pal.teal);
-      roundRectPath(ctx, gx + 2, gy + gh - fillH + 2, gw - 4, Math.max(0, fillH - 4), 4);
-      ctx.fillStyle = barCol;
-      ctx.fill();
 
-      // K_Ic threshold line
-      const critY = gy + gh * (1 - critFrac);
-      ctx.strokeStyle = pal.cardinal;
-      ctx.lineWidth = 2.4;
-      ctx.beginPath();
-      ctx.moveTo(gx - 6, critY);
-      ctx.lineTo(gx + gw + 6, critY);
-      ctx.stroke();
+      if (isNarrow) {
+        // Horizontal K_I vs K_{Ic} gauge bar stacked cleanly beneath specimen plate
+        const gx = plateX;
+        const gw = plateW;
+        const barH = 22;
+        const barY = h - 62;
 
-      setFont(ctx, 15, true, 600);
-      ctx.fillStyle = pal.cardinal;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('KIc', gx + gw + 8, critY);
+        ctx.save();
+        drawMathRun(ctx, 'K_I = ' + m.kI.toFixed(1), gx, barY - 14, {
+          px: 15,
+          mono: true,
+          weight: 600,
+          align: 'left',
+          baseline: 'middle',
+          color: pal.text
+        });
+        drawMathRun(ctx, 'K_{Ic} = ' + Math.round(kIc), gx + gw, barY - 14, {
+          px: 15,
+          mono: true,
+          weight: 600,
+          align: 'right',
+          baseline: 'middle',
+          color: pal.cardinal
+        });
 
-      ctx.fillStyle = pal.text;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('KI', gx + gw * 0.5, gy - 6);
-      ctx.restore();
+        roundRectPath(ctx, gx, barY, gw, barH, 2);
+        ctx.fillStyle = pal.surface2;
+        ctx.fill();
+        ctx.strokeStyle = pal.border;
+        ctx.lineWidth = 1.3;
+        ctx.stroke();
+
+        const fillW = Math.max(0, (gw - 4) * fillFrac);
+        roundRectPath(ctx, gx + 2, barY + 2, fillW, barH - 4, 2);
+        ctx.fillStyle = barCol;
+        ctx.fill();
+
+        const critX = gx + gw * critFrac;
+        ctx.strokeStyle = pal.cardinal;
+        ctx.lineWidth = 2.4;
+        ctx.beginPath();
+        ctx.moveTo(critX, barY - 4);
+        ctx.lineTo(critX, barY + barH + 4);
+        ctx.stroke();
+
+        // Exact energy release rate identity footer
+        drawMathRun(ctx, 'G = −∂Π/∂A = K_I^2 / E′', w * 0.5, h - 16, {
+          px: 15,
+          mono: true,
+          weight: 500,
+          align: 'center',
+          baseline: 'middle',
+          color: pal.textMuted
+        });
+        ctx.restore();
+      } else {
+        // Desktop vertical K_I vs K_{Ic} gauge bar on right + bottom energy release rate identity
+        const gx = plateAreaW + 12;
+        const gw = 26;
+        const gy = plateY;
+        const gh = plateH;
+
+        ctx.save();
+        roundRectPath(ctx, gx, gy, gw, gh, 2);
+        ctx.fillStyle = pal.surface2;
+        ctx.fill();
+        ctx.strokeStyle = pal.border;
+        ctx.lineWidth = 1.3;
+        ctx.stroke();
+
+        const fillH = gh * fillFrac;
+        roundRectPath(ctx, gx + 2, gy + gh - fillH + 2, gw - 4, Math.max(0, fillH - 4), 2);
+        ctx.fillStyle = barCol;
+        ctx.fill();
+
+        const critY = gy + gh * (1 - critFrac);
+        ctx.strokeStyle = pal.cardinal;
+        ctx.lineWidth = 2.4;
+        ctx.beginPath();
+        ctx.moveTo(gx - 6, critY);
+        ctx.lineTo(gx + gw + 6, critY);
+        ctx.stroke();
+
+        drawMathRun(ctx, 'K_{Ic}', gx + gw + 10, critY, {
+          px: 16,
+          mono: true,
+          weight: 600,
+          align: 'left',
+          baseline: 'middle',
+          color: pal.cardinal
+        });
+
+        drawMathRun(ctx, 'K_I', gx + gw * 0.5, gy - 14, {
+          px: 16,
+          mono: true,
+          weight: 600,
+          align: 'center',
+          baseline: 'middle',
+          color: pal.text
+        });
+
+        drawMathRun(ctx, 'G = −∂Π/∂A = K_I^2 / E′', plateX + plateW * 0.5, h - 14, {
+          px: 15,
+          mono: true,
+          weight: 500,
+          align: 'center',
+          baseline: 'middle',
+          color: pal.textMuted
+        });
+        ctx.restore();
+      }
     }
 
     bag.loop(api, function (dt) {
@@ -2910,18 +3765,20 @@
         label: '2D Airy φ',
         colorKey: 'cardinal',
         softKey: 'cardinalSoft',
-        methodTag: '∇⁴φ = 0',
+        methodTag: '∇^4 φ = 0',
         solveTag: 'σ from φ, BCs',
-        methodCheck: 'Airy ∇⁴φ = 0',
+        solveShort: 'σ from φ',
+        methodCheck: 'Airy ∇^4 φ = 0',
         solveCheck: 'Match edge BCs'
       },
       green: {
         label: '3D Green G',
         colorKey: 'teal',
         softKey: 'tealSoft',
-        methodTag: 'Kelvin G_ij',
+        methodTag: 'Kelvin G_{ij}',
         solveTag: '∫ G·f dV',
-        methodCheck: 'Kelvin G_ij',
+        solveShort: '∫ G·f dV',
+        methodCheck: 'Kelvin G_{ij}',
         solveCheck: '∫ G·f superposition'
       },
       fem: {
@@ -2930,6 +3787,7 @@
         softKey: 'amberSoft',
         methodTag: 'Weak Form',
         solveTag: 'Mesh + Solver',
+        solveShort: 'Mesh Solver',
         methodCheck: 'Analytic + FEM',
         solveCheck: 'Converge h → 0'
       }
@@ -2964,7 +3822,7 @@
         num: 5,
         title: '5. Extract',
         sub: 'Design Metrics',
-        checks: ['Peak σ_eq, K_I', 'Margin vs σ_Y', 'Analytic vs FEM']
+        checks: ['Peak σ_{eq}, K_I', 'Margin vs σ_Y', 'Analytic vs FEM']
       }
     ];
 
@@ -2997,15 +3855,16 @@
     toolbar.appendChild(routeGroup);
 
     const stage = el('div', 'lab-stage');
+    stage.style.touchAction = 'pan-y';
     const canvas = el('canvas', 'lab-canvas');
-    canvas.style.touchAction = 'none';
+    canvas.style.touchAction = 'pan-y';
     canvas.style.cursor = 'pointer';
     stage.appendChild(canvas);
 
     const readouts = el('div', 'lab-readout-row');
-    const rC1 = createReadoutChip('Check 1', '');
-    const rC2 = createReadoutChip('Check 2', '');
-    const rC3 = createReadoutChip('Check 3', '');
+    const rC1 = createReadoutChip('Check 1', '', true);
+    const rC2 = createReadoutChip('Check 2', '', true);
+    const rC3 = createReadoutChip('Check 3', '', true);
     readouts.appendChild(rC1.chip);
     readouts.appendChild(rC2.chip);
     readouts.appendChild(rC3.chip);
@@ -3039,11 +3898,11 @@
       });
       const checks = getChecks(activeStep);
       rC1.keyEl.textContent = steps[activeStep].title + ' · A';
-      rC1.valEl.textContent = checks[0] || '';
+      setMathText(rC1.valEl, checks[0] || '');
       rC2.keyEl.textContent = steps[activeStep].title + ' · B';
-      rC2.valEl.textContent = checks[1] || '';
+      setMathText(rC2.valEl, checks[1] || '');
       rC3.keyEl.textContent = steps[activeStep].title + ' · C';
-      rC3.valEl.textContent = checks[2] || '';
+      setMathText(rC3.valEl, checks[2] || '');
       draw();
     }
 
@@ -3137,6 +3996,11 @@
     }
 
     function draw() {
+      const stageW = getStageWidth(stage, canvas);
+      if (stageW < 10) return;
+      const isNarrow = stageW < 520;
+      syncStageHeight(stage, 388, isNarrow && window.innerWidth <= 980);
+
       const fit = fitCanvas(canvas);
       if (!fit.ready) return;
       const ctx = fit.ctx;
@@ -3146,101 +4010,139 @@
       const rt = routes[routeKey];
       const rtCol = pal[rt.colorKey];
       const rtSoft = pal[rt.softKey];
+      const femActive = routeKey === 'fem';
 
       fillStageBg(ctx, w, h, pal);
 
-      // 2-tier clean branched layout:
-      // Top row:    [1. Model]   -> [2. Method] -> [3. Solve]
-      // Bottom row: [FEM if needed] -> [4. Check] -> [5. Extract]
-      const padX = Math.max(16, w * 0.045);
-      const gapX = Math.max(26, w * 0.065);
-      const boxW = Math.max(108, (w - padX * 2 - gapX * 2) / 3);
-      const boxH = Math.max(58, Math.min(76, h * 0.27));
-      const row1Y = Math.max(20, h * 0.14);
-      const row2Y = Math.min(h - boxH - 22, Math.max(row1Y + boxH + 46, h * 0.60));
+      if (isNarrow) {
+        // Crisp 5-row vertical stacked workflow DAG with parallel Step 3 / FEM verification split
+        const padX = 12;
+        const padY = 10;
+        const gapY = clamp(Math.floor((h - padY * 2) * 0.062), 12, 24);
+        const boxH = Math.max(38, Math.floor((h - padY * 2 - gapY * 4) / 5));
+        const totalH = boxH * 5 + gapY * 4;
+        const startY = Math.max(8, Math.floor((h - totalH) * 0.5));
+        const fullW = Math.max(180, w - padX * 2);
+        const splitGap = 12;
+        const halfW = Math.floor((fullW - splitGap) * 0.5);
+        const rightW = fullW - splitGap - halfW;
 
-      const c0 = padX;
-      const c1 = padX + boxW + gapX;
-      const c2 = padX + (boxW + gapX) * 2;
+        const y0 = startY;
+        const y1 = startY + (boxH + gapY);
+        const y2 = startY + (boxH + gapY) * 2;
+        const y3 = startY + (boxH + gapY) * 3;
+        const y4 = startY + (boxH + gapY) * 4;
 
-      const bModel = { kind: 'step', stepIdx: 0, x: c0, y: row1Y, w: boxW, h: boxH, title: '1. Model', sub: 'Geometry & BCs' };
-      const bMethod = { kind: 'step', stepIdx: 1, x: c1, y: row1Y, w: boxW, h: boxH, title: '2. Method', sub: rt.methodTag };
-      const bSolve = { kind: 'step', stepIdx: 2, x: c2, y: row1Y, w: boxW, h: boxH, title: '3. Solve', sub: rt.solveTag };
-      const bFem = { kind: 'fem', stepIdx: -1, x: c0, y: row2Y, w: boxW, h: boxH, title: 'FEM if needed', sub: 'Numerical check' };
-      const bCheck = { kind: 'step', stepIdx: 3, x: c1, y: row2Y, w: boxW, h: boxH, title: '4. Check', sub: '∇·σ = 0 · BCs' };
-      const bExtract = { kind: 'step', stepIdx: 4, x: c2, y: row2Y, w: boxW, h: boxH, title: '5. Extract', sub: 'Peak σ, K_I' };
-      boxRects = [bModel, bMethod, bSolve, bFem, bCheck, bExtract];
+        const bModel = { kind: 'step', stepIdx: 0, x: padX, y: y0, w: fullW, h: boxH, title: '1. Model', sub: 'Geometry & BCs' };
+        const bMethod = { kind: 'step', stepIdx: 1, x: padX, y: y1, w: fullW, h: boxH, title: '2. Method', sub: rt.methodTag };
+        const bSolve = { kind: 'step', stepIdx: 2, x: padX, y: y2, w: halfW, h: boxH, title: '3. Solve', sub: halfW < 146 ? rt.solveShort : rt.solveTag };
+        const bFem = { kind: 'fem', stepIdx: -1, x: padX + halfW + splitGap, y: y2, w: rightW, h: boxH, title: 'FEM check', sub: 'Numerical' };
+        const bCheck = { kind: 'step', stepIdx: 3, x: padX, y: y3, w: fullW, h: boxH, title: '4. Check', sub: '∇·σ = 0 · BCs' };
+        const bExtract = { kind: 'step', stepIdx: 4, x: padX, y: y4, w: fullW, h: boxH, title: '5. Extract', sub: 'Peak σ, K_I' };
+        boxRects = [bModel, bMethod, bSolve, bFem, bCheck, bExtract];
 
-      const midRowY = (row1Y + boxH + row2Y) * 0.5;
-      const femActive = routeKey === 'fem';
+        const midX = padX + fullW * 0.5;
+        const solveCx = bSolve.x + bSolve.w * 0.5;
+        const femCx = bFem.x + bFem.w * 0.5;
 
-      // Edges
-      // 1 -> 2
-      drawEdgeWithPulse(
-        ctx,
-        [[bModel.x + boxW, row1Y + boxH * 0.5], [bMethod.x - 2, row1Y + boxH * 0.5]],
-        rtCol,
-        activeStep >= 0,
-        false,
-        0.0
-      );
-      // 2 -> 3
-      drawEdgeWithPulse(
-        ctx,
-        [[bMethod.x + boxW, row1Y + boxH * 0.5], [bSolve.x - 2, row1Y + boxH * 0.5]],
-        rtCol,
-        activeStep >= 1,
-        false,
-        0.25
-      );
-      // 3 -> 4 (step down cleanly through center corridor)
-      drawEdgeWithPulse(
-        ctx,
-        [
-          [bSolve.x + boxW * 0.5, row1Y + boxH],
-          [bSolve.x + boxW * 0.5, midRowY],
-          [bCheck.x + boxW * 0.5, midRowY],
-          [bCheck.x + boxW * 0.5, row2Y - 2]
-        ],
-        rtCol,
-        activeStep >= 2,
-        false,
-        0.5
-      );
-      // 4 -> 5
-      drawEdgeWithPulse(
-        ctx,
-        [[bCheck.x + boxW, row2Y + boxH * 0.5], [bExtract.x - 2, row2Y + boxH * 0.5]],
-        rtCol,
-        activeStep >= 3,
-        false,
-        0.75
-      );
+        // Vertical edges with animated pulses
+        drawEdgeWithPulse(ctx, [[midX, y0 + boxH], [midX, y1 - 2]], rtCol, activeStep >= 0, false, 0.0);
+        drawEdgeWithPulse(ctx, [[solveCx, y1 + boxH], [solveCx, y2 - 2]], rtCol, activeStep >= 1, false, 0.25);
+        drawEdgeWithPulse(ctx, [[femCx, y1 + boxH], [femCx, y2 - 2]], pal.amber, femActive || activeStep === 3, true, 0.15);
+        drawEdgeWithPulse(ctx, [[solveCx, y2 + boxH], [solveCx, y3 - 2]], rtCol, activeStep >= 2, false, 0.5);
+        drawEdgeWithPulse(ctx, [[femCx, y2 + boxH], [femCx, y3 - 2]], pal.amber, femActive || activeStep === 3, true, 0.6);
+        drawEdgeWithPulse(ctx, [[midX, y3 + boxH], [midX, y4 - 2]], rtCol, activeStep >= 3, false, 0.75);
+      } else {
+        // Desktop 2-tier clean branched layout (W >= 520):
+        // Top row:    [1. Model]   -> [2. Method] -> [3. Solve]
+        // Bottom row: [FEM if needed] -> [4. Check] -> [5. Extract]
+        const padX = Math.max(14, w * 0.035);
+        const gapX = clamp(w * 0.055, 22, 46);
+        const boxW = Math.max(120, (w - padX * 2 - gapX * 2) / 3);
+        const boxH = Math.max(58, Math.min(76, h * 0.27));
+        const row1Y = Math.max(18, h * 0.14);
+        const row2Y = Math.min(h - boxH - 18, Math.max(row1Y + boxH + 44, h * 0.60));
 
-      // Dashed FEM branch: 2. Method -> FEM if needed -> 4. Check
-      drawEdgeWithPulse(
-        ctx,
-        [
-          [bMethod.x + boxW * 0.35, row1Y + boxH],
-          [bMethod.x + boxW * 0.35, midRowY],
-          [bFem.x + boxW * 0.5, midRowY],
-          [bFem.x + boxW * 0.5, row2Y - 2]
-        ],
-        pal.amber,
-        femActive || activeStep === 3,
-        true,
-        0.15
-      );
-      drawEdgeWithPulse(
-        ctx,
-        [[bFem.x + boxW, row2Y + boxH * 0.5], [bCheck.x - 2, row2Y + boxH * 0.5]],
-        pal.amber,
-        femActive || activeStep === 3,
-        true,
-        0.6
-      );
+        const c0 = padX;
+        const c1 = padX + boxW + gapX;
+        const c2 = padX + (boxW + gapX) * 2;
 
-      // Draw all boxes (clean uniform rounded borders, zero AI-style left bars!)
+        const bModel = { kind: 'step', stepIdx: 0, x: c0, y: row1Y, w: boxW, h: boxH, title: '1. Model', sub: 'Geometry & BCs' };
+        const bMethod = { kind: 'step', stepIdx: 1, x: c1, y: row1Y, w: boxW, h: boxH, title: '2. Method', sub: rt.methodTag };
+        const bSolve = { kind: 'step', stepIdx: 2, x: c2, y: row1Y, w: boxW, h: boxH, title: '3. Solve', sub: boxW < 152 ? rt.solveShort : rt.solveTag };
+        const bFem = { kind: 'fem', stepIdx: -1, x: c0, y: row2Y, w: boxW, h: boxH, title: 'FEM if needed', sub: 'Numerical check' };
+        const bCheck = { kind: 'step', stepIdx: 3, x: c1, y: row2Y, w: boxW, h: boxH, title: '4. Check', sub: '∇·σ = 0 · BCs' };
+        const bExtract = { kind: 'step', stepIdx: 4, x: c2, y: row2Y, w: boxW, h: boxH, title: '5. Extract', sub: 'Peak σ, K_I' };
+        boxRects = [bModel, bMethod, bSolve, bFem, bCheck, bExtract];
+
+        const midRowY = (row1Y + boxH + row2Y) * 0.5;
+
+        // 1 -> 2
+        drawEdgeWithPulse(
+          ctx,
+          [[bModel.x + boxW, row1Y + boxH * 0.5], [bMethod.x - 2, row1Y + boxH * 0.5]],
+          rtCol,
+          activeStep >= 0,
+          false,
+          0.0
+        );
+        // 2 -> 3
+        drawEdgeWithPulse(
+          ctx,
+          [[bMethod.x + boxW, row1Y + boxH * 0.5], [bSolve.x - 2, row1Y + boxH * 0.5]],
+          rtCol,
+          activeStep >= 1,
+          false,
+          0.25
+        );
+        // 3 -> 4
+        drawEdgeWithPulse(
+          ctx,
+          [
+            [bSolve.x + boxW * 0.5, row1Y + boxH],
+            [bSolve.x + boxW * 0.5, midRowY],
+            [bCheck.x + boxW * 0.5, midRowY],
+            [bCheck.x + boxW * 0.5, row2Y - 2]
+          ],
+          rtCol,
+          activeStep >= 2,
+          false,
+          0.5
+        );
+        // 4 -> 5
+        drawEdgeWithPulse(
+          ctx,
+          [[bCheck.x + boxW, row2Y + boxH * 0.5], [bExtract.x - 2, row2Y + boxH * 0.5]],
+          rtCol,
+          activeStep >= 3,
+          false,
+          0.75
+        );
+        // Dashed FEM branch: 2. Method -> FEM if needed -> 4. Check
+        drawEdgeWithPulse(
+          ctx,
+          [
+            [bMethod.x + boxW * 0.35, row1Y + boxH],
+            [bMethod.x + boxW * 0.35, midRowY],
+            [bFem.x + boxW * 0.5, midRowY],
+            [bFem.x + boxW * 0.5, row2Y - 2]
+          ],
+          pal.amber,
+          femActive || activeStep === 3,
+          true,
+          0.15
+        );
+        drawEdgeWithPulse(
+          ctx,
+          [[bFem.x + boxW, row2Y + boxH * 0.5], [bCheck.x - 2, row2Y + boxH * 0.5]],
+          pal.amber,
+          femActive || activeStep === 3,
+          true,
+          0.6
+        );
+      }
+
+      // Draw all boxes (clean uniform Swiss drafting borders, zero AI-style left bars)
       boxRects.forEach(function (b) {
         const isFemBox = b.kind === 'fem';
         const isSelected = !isFemBox && b.stepIdx === activeStep;
@@ -3249,26 +4151,31 @@
         const soft = isFemBox ? pal.amberSoft : rtSoft;
 
         ctx.save();
-        roundRectPath(ctx, b.x, b.y, b.w, b.h, 10);
+        roundRectPath(ctx, b.x, b.y, b.w, b.h, 2);
         ctx.fillStyle = isSelected || (isFemBox && femActive) ? soft : pal.surface2;
         ctx.fill();
         if (isFemBox) ctx.setLineDash([6, 4]);
         ctx.strokeStyle = isSelected || (isFemBox && femActive)
           ? accent
           : (isPassed ? withAlpha(accent, 0.55) : pal.border);
-        ctx.lineWidth = isSelected || (isFemBox && femActive) ? 2.5 : 1.4;
+        ctx.lineWidth = isSelected || (isFemBox && femActive) ? 2.4 : 1.4;
         ctx.stroke();
         ctx.setLineDash([]);
 
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        setFont(ctx, b.w < 142 ? 15 : 16, false, 600);
+        setFont(ctx, b.w < 156 ? 15 : 16, false, 600);
         ctx.fillStyle = isSelected || (isFemBox && femActive) ? accent : pal.text;
-        ctx.fillText(b.title, b.x + b.w * 0.5, b.y + b.h * 0.34);
+        ctx.fillText(b.title, b.x + b.w * 0.5, b.y + b.h * 0.33);
 
-        setFont(ctx, 15, true, 400);
-        ctx.fillStyle = pal.textMuted;
-        ctx.fillText(b.sub, b.x + b.w * 0.5, b.y + b.h * 0.72);
+        drawMathRun(ctx, b.sub, b.x + b.w * 0.5, b.y + b.h * 0.72, {
+          px: 15,
+          mono: false,
+          weight: 500,
+          align: 'center',
+          baseline: 'middle',
+          color: pal.textMuted
+        });
         ctx.restore();
       });
     }
@@ -3303,8 +4210,8 @@
         label: 'Notched Plate',
         elasticName: 'Kirsch / Airy φ',
         elasticSub: 'K_t ≈ 3 at notch root',
-        plasticSub: 'Local J₂ root yield',
-        fractureSub: 'Root flaw K_I vs K_Ic',
+        plasticSub: 'Local J_2 root yield',
+        fractureSub: 'Root flaw K_I vs K_{Ic}',
         ktFactor: 1.45,
         kFactor: 0.92,
         errPct: '0.8%'
@@ -3313,7 +4220,7 @@
         label: 'Pressure Vessel',
         elasticName: 'Lamé Thick Cylinder',
         elasticSub: 'Hoop σ_θ peak at r = a',
-        plasticSub: 'Autofrettage J₂ ring',
+        plasticSub: 'Autofrettage J_2 ring',
         fractureSub: 'Axial crack K_I, J',
         ktFactor: 1.32,
         kFactor: 0.88,
@@ -3321,9 +4228,9 @@
       },
       roller: {
         label: 'Contact Roller',
-        elasticName: 'Hertz Contact G_ij',
+        elasticName: 'Hertz Contact G_{ij}',
         elasticSub: 'Max shear at z = 0.78a',
-        plasticSub: 'Subsurface J₂ pocket',
+        plasticSub: 'Subsurface J_2 pocket',
         fractureSub: 'Spalling crack K_I, J',
         ktFactor: 1.52,
         kFactor: 0.95,
@@ -3354,8 +4261,9 @@
     toolbar.appendChild(statusBadge);
 
     const stage = el('div', 'lab-stage');
+    stage.style.touchAction = 'pan-y';
     const canvas = el('canvas', 'lab-canvas');
-    canvas.style.touchAction = 'none';
+    canvas.style.touchAction = 'pan-y';
     canvas.style.cursor = 'pointer';
     stage.appendChild(canvas);
 
@@ -3378,16 +4286,16 @@
     controls.appendChild(loadCtrl.wrap);
 
     const readouts = el('div', 'lab-readout-row');
-    const rModel = createReadoutChip('Elastic Model', components[compKey].elasticName);
-    const rMises = createReadoutChip('Hotspot σ_eq / σ_Y', '1.13');
-    const rFract = createReadoutChip('Crack K_I / K_Ic', '0.72');
+    const rModel = createReadoutChip('Elastic Model', components[compKey].elasticName, true);
+    const rMises = createReadoutChip('Hotspot σ_{eq} / σ_Y', '1.13');
+    const rFract = createReadoutChip('Crack K_I / K_{Ic}', '0.72');
     const rBench = createReadoutChip('Matlab Benchmark', '< 0.8% diff');
     readouts.appendChild(rModel.chip);
     readouts.appendChild(rMises.chip);
     readouts.appendChild(rFract.chip);
     readouts.appendChild(rBench.chip);
 
-    const caption = el('p', 'lab-caption', 'Ramp the load or switch components to trace one structure from elastic field to J₂ yield, fracture K_I, and Matlab validation.');
+    const caption = el('p', 'lab-caption', 'Ramp the load or switch components to trace one structure from elastic field to J_2 yield, fracture K_I, and Matlab validation.');
 
     shell.appendChild(toolbar);
     shell.appendChild(stage);
@@ -3433,7 +4341,7 @@
 
     function updateReadouts() {
       const st = computeState();
-      rModel.valEl.textContent = st.c.elasticName;
+      setMathText(rModel.valEl, st.c.elasticName);
       rMises.valEl.textContent = st.misesRatio.toFixed(2);
       rFract.valEl.textContent = st.kRatio.toFixed(2);
       rBench.valEl.textContent = '< ' + st.c.errPct + ' diff';
@@ -3450,17 +4358,18 @@
     function drawNotchedPlate(ctx, x, y, w, h, st, pal) {
       const cx = x + w * 0.5;
       const cy = y + h * 0.5;
-      const pw = Math.min(w * 0.72, 136);
-      const ph = Math.min(h * 0.70, 170);
+      const pw = Math.min(w * 0.68, 136);
+      const ph = Math.min(h * 0.62, 166);
       const nr = pw * 0.21;
       const px = cx - pw * 0.5;
       const py = cy - ph * 0.5;
+      const arrH = Math.min(18, Math.max(10, (h - ph) * 0.36));
 
       // Tension arrows
-      drawArrow(ctx, cx - pw * 0.25, py - 4, cx - pw * 0.25, py - 20, pal.cardinal, 2, 7);
-      drawArrow(ctx, cx + pw * 0.25, py - 4, cx + pw * 0.25, py - 20, pal.cardinal, 2, 7);
-      drawArrow(ctx, cx - pw * 0.25, py + ph + 4, cx - pw * 0.25, py + ph + 20, pal.cardinal, 2, 7);
-      drawArrow(ctx, cx + pw * 0.25, py + ph + 4, cx + pw * 0.25, py + ph + 20, pal.cardinal, 2, 7);
+      drawArrow(ctx, cx - pw * 0.25, py - 3, cx - pw * 0.25, py - 3 - arrH, pal.cardinal, 2, 7);
+      drawArrow(ctx, cx + pw * 0.25, py - 3, cx + pw * 0.25, py - 3 - arrH, pal.cardinal, 2, 7);
+      drawArrow(ctx, cx - pw * 0.25, py + ph + 3, cx - pw * 0.25, py + ph + 3 + arrH, pal.cardinal, 2, 7);
+      drawArrow(ctx, cx + pw * 0.25, py + ph + 3, cx + pw * 0.25, py + ph + 3 + arrH, pal.cardinal, 2, 7);
 
       // Notched plate contour
       ctx.save();
@@ -3534,7 +4443,7 @@
     function drawPressureVessel(ctx, x, y, w, h, st, pal) {
       const cx = x + w * 0.5;
       const cy = y + h * 0.5;
-      const rOut = Math.min(w, h) * 0.36;
+      const rOut = Math.min(w, h) * 0.39;
       const rIn = rOut * 0.48;
 
       ctx.save();
@@ -3545,7 +4454,7 @@
       ctx.fillStyle = pal.surface2;
       ctx.fill('evenodd');
 
-      // Elastic hoop stress gradient glow near inner wall
+      // Elastic hoop stress gradient near inner wall
       const elG = ctx.createRadialGradient(cx, cy, rIn, cx, cy, rOut);
       elG.addColorStop(0, withAlpha(pal.cardinal, focusStage === -1 || focusStage === 0 ? 0.42 : 0.14));
       elG.addColorStop(1, withAlpha(pal.cardinal, 0.03));
@@ -3575,8 +4484,8 @@
       // Inner pressure arrows p_i
       for (let k = 0; k < 6; k++) {
         const ang = (k / 6) * Math.PI * 2;
-        const x1 = cx + (rIn * 0.32) * Math.cos(ang);
-        const y1 = cy + (rIn * 0.32) * Math.sin(ang);
+        const x1 = cx + (rIn * 0.30) * Math.cos(ang);
+        const y1 = cy + (rIn * 0.30) * Math.sin(ang);
         const x2 = cx + (rIn * 0.86) * Math.cos(ang);
         const y2 = cy + (rIn * 0.86) * Math.sin(ang);
         drawArrow(ctx, x1, y1, x2, y2, pal.blue, 1.7, 6);
@@ -3608,13 +4517,13 @@
     function drawContactRoller(ctx, x, y, w, h, st, pal) {
       const cx = x + w * 0.5;
       const surfY = y + h * 0.56;
-      const cylR = Math.min(w * 0.21, h * 0.20);
+      const cylR = Math.min(w * 0.20, h * 0.18);
       const halfW = Math.min(w * 0.42, 92);
-      const subH = Math.min(h * 0.34, 86);
+      const subH = Math.min(h * 0.36, 86);
 
       ctx.save();
       // Elastic half-space block
-      roundRectPath(ctx, cx - halfW, surfY, halfW * 2, subH, 6);
+      roundRectPath(ctx, cx - halfW, surfY, halfW * 2, subH, 2);
       ctx.fillStyle = pal.surface2;
       ctx.fill();
       ctx.save();
@@ -3657,7 +4566,7 @@
       ctx.restore();
 
       // Half-space border
-      roundRectPath(ctx, cx - halfW, surfY, halfW * 2, subH, 6);
+      roundRectPath(ctx, cx - halfW, surfY, halfW * 2, subH, 2);
       ctx.strokeStyle = pal.border;
       ctx.lineWidth = 1.6;
       ctx.stroke();
@@ -3672,13 +4581,78 @@
       ctx.stroke();
 
       // Downward contact force arrow P
-      drawArrow(ctx, cx, surfY - cylR * 2 - 14, cx, surfY - cylR * 2 + 4, pal.blue, 2.4, 8);
+      drawArrow(ctx, cx, Math.max(y + 2, surfY - cylR * 2 - 14), cx, surfY - cylR * 2 + 2, pal.blue, 2.4, 8);
       ctx.restore();
 
       return { hx: cx + 10, hy: peakZ };
     }
 
+    function drawSynthCard(ctx, card, idx, x, y, w, h, pal) {
+      const isFocused = focusStage === idx;
+      const dimmed = focusStage >= 0 && !isFocused;
+
+      ctx.save();
+      roundRectPath(ctx, x, y, w, h, 2);
+      ctx.fillStyle = isFocused ? card.soft : pal.surface2;
+      ctx.fill();
+      ctx.strokeStyle = isFocused || card.active ? withAlpha(card.col, dimmed ? 0.3 : 0.9) : pal.border;
+      ctx.lineWidth = isFocused ? 2.2 : 1.3;
+      ctx.stroke();
+
+      // Card title & math subtitle (>= 15px)
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      setFont(ctx, 15, false, 600);
+      ctx.fillStyle = dimmed ? pal.textMuted : card.col;
+      ctx.fillText(card.title, x + 10, y + h * 0.31);
+
+      drawMathRun(ctx, card.sub, x + 10, y + h * 0.72, {
+        px: 15,
+        mono: false,
+        weight: 400,
+        align: 'left',
+        baseline: 'middle',
+        color: pal.text
+      });
+
+      // Live mini parity plot inside Card 4 (Analytic vs Matlab)
+      if (idx === 3 && w >= 225 && h >= 44) {
+        const mx = x + w - 70;
+        const my = y + 6;
+        const mw = 60;
+        const mh = h - 12;
+        ctx.strokeStyle = pal.border;
+        ctx.lineWidth = 1;
+        ctx.strokeRect(mx, my, mw, mh);
+        ctx.strokeStyle = pal.blue;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let k = 0; k <= 16; k++) {
+          const u = k / 16;
+          const px = mx + 4 + u * (mw - 8);
+          const py = my + mh - 4 - Math.pow(u, 0.65) * (mh - 8);
+          if (k === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        }
+        ctx.stroke();
+        ctx.fillStyle = pal.amber;
+        [0.18, 0.42, 0.68, 0.90].forEach(function (u) {
+          const px = mx + 4 + u * (mw - 8);
+          const py = my + mh - 4 - Math.pow(u, 0.65) * (mh - 8);
+          ctx.beginPath();
+          ctx.arc(px, py, 2.8, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+      ctx.restore();
+    }
+
     function draw() {
+      const stageW = getStageWidth(stage, canvas);
+      if (stageW < 10) return;
+      const isNarrow = stageW < 450;
+      syncStageHeight(stage, 426, isNarrow && window.innerWidth <= 980);
+
       const fit = fitCanvas(canvas);
       if (!fit.ready) return;
       const ctx = fit.ctx;
@@ -3689,11 +4663,110 @@
 
       fillStageBg(ctx, w, h, pal);
 
-      const leftW = Math.max(150, w * 0.41);
-      const rightX = leftW + 24;
-      const rightW = Math.max(180, w - rightX - 16);
+      const cards = [
+        { title: 'I · Elasticity', sub: st.c.elasticSub, col: pal.cardinal, soft: pal.cardinalSoft, active: true },
+        { title: 'II · Plasticity', sub: st.c.plasticSub, col: pal.teal, soft: pal.tealSoft, active: st.misesRatio >= 0.85 },
+        { title: 'III · Fracture', sub: st.c.fractureSub, col: pal.amber, soft: pal.amberSoft, active: st.kRatio >= 0.5 },
+        { title: 'Analytic vs Matlab', sub: 'Diff < ' + st.c.errPct, col: pal.blue, soft: pal.blueSoft, active: true }
+      ];
 
-      // Left zone: live engineering component schematic
+      stageRects = [];
+
+      if (isNarrow) {
+        // Vertical stacked layout for narrow mobile (W < 450):
+        // Top zone: engineering component schematic; Bottom zone: left collector bus -> 4 full-width synthesis cards
+        const schemY = 28;
+        const schemH = Math.max(86, Math.min(132, Math.floor(h * 0.29)));
+        let hotspot;
+        if (compKey === 'notch') {
+          hotspot = drawNotchedPlate(ctx, 12, schemY, w - 24, schemH, st, pal);
+        } else if (compKey === 'vessel') {
+          hotspot = drawPressureVessel(ctx, 12, schemY, w - 24, schemH, st, pal);
+        } else {
+          hotspot = drawContactRoller(ctx, 12, schemY, w - 24, schemH, st, pal);
+        }
+
+        // Component label top-left (>= 15px)
+        setFont(ctx, 15, false, 600);
+        ctx.fillStyle = pal.text;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText(st.c.label, 12, 8);
+
+        const corrY = schemY + schemH + 8;
+        const cardsTop = corrY + 10;
+        const padB = 10;
+        const gapY = 7;
+        const cardH = Math.max(38, Math.floor((h - cardsTop - padB - gapY * 3) / 4));
+        const busX = 18;
+        const cardX = 34;
+        const cardW = Math.max(180, w - cardX - 12);
+
+        // Clean orthogonal bridge from component hotspot into left collector spine -> each card
+        cards.forEach(function (card, idx) {
+          const cy = cardsTop + idx * (cardH + gapY);
+          const midY = cy + cardH * 0.5;
+          stageRects.push({ x: cardX, y: cy, w: cardW, h: cardH });
+
+          const isFocused = focusStage === idx;
+          const dimmed = focusStage >= 0 && !isFocused;
+          const pts = [
+            [hotspot.hx, hotspot.hy],
+            [hotspot.hx, corrY],
+            [busX, corrY],
+            [busX, midY],
+            [cardX - 2, midY]
+          ];
+
+          ctx.save();
+          ctx.strokeStyle = withAlpha(card.col, dimmed ? 0.16 : (card.active ? 0.72 : 0.28));
+          ctx.lineWidth = isFocused ? 2.4 : 1.6;
+          ctx.lineJoin = 'round';
+          ctx.beginPath();
+          for (let k = 0; k < pts.length; k++) {
+            if (k === 0) ctx.moveTo(pts[k][0], pts[k][1]);
+            else ctx.lineTo(pts[k][0], pts[k][1]);
+          }
+          ctx.stroke();
+
+          if (!dimmed && card.active) {
+            let totalLen = 0;
+            const segs = [];
+            for (let k = 1; k < pts.length; k++) {
+              const d = Math.hypot(pts[k][0] - pts[k - 1][0], pts[k][1] - pts[k - 1][1]);
+              segs.push(d);
+              totalLen += d;
+            }
+            if (totalLen > 1) {
+              let td = ((animT * 0.42 + idx * 0.24) % 1) * totalLen;
+              for (let k = 0; k < segs.length; k++) {
+                if (td <= segs[k] || k === segs.length - 1) {
+                  const f = segs[k] > 0 ? td / segs[k] : 0;
+                  const bx = lerp(pts[k][0], pts[k + 1][0], f);
+                  const by = lerp(pts[k][1], pts[k + 1][1], f);
+                  ctx.fillStyle = card.col;
+                  ctx.beginPath();
+                  ctx.arc(bx, by, 3.2, 0, Math.PI * 2);
+                  ctx.fill();
+                  break;
+                }
+                td -= segs[k];
+              }
+            }
+          }
+          ctx.restore();
+
+          drawSynthCard(ctx, card, idx, cardX, cy, cardW, cardH, pal);
+        });
+        return;
+      }
+
+      // Desktop side-by-side layout (W >= 450)
+      const leftW = Math.floor(w * 0.39);
+      const bridgeGap = clamp(w * 0.05, 22, 34);
+      const rightX = leftW + bridgeGap;
+      const rightW = Math.max(160, w - rightX - 14);
+
       let hotspot;
       if (compKey === 'notch') {
         hotspot = drawNotchedPlate(ctx, 10, 26, leftW - 14, h - 42, st, pal);
@@ -3703,28 +4776,18 @@
         hotspot = drawContactRoller(ctx, 10, 26, leftW - 14, h - 42, st, pal);
       }
 
-      // Component label at top-left (>= 15px)
+      // Component label top-left (>= 15px)
       setFont(ctx, 15, false, 600);
       ctx.fillStyle = pal.text;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText(st.c.label, 14, 10);
 
-      // Right zone: 4 stacked synthesis cards
-      const cards = [
-        { title: 'I · Elasticity', sub: st.c.elasticSub, col: pal.cardinal, soft: pal.cardinalSoft, active: true },
-        { title: 'II · Plasticity', sub: st.c.plasticSub, col: pal.teal, soft: pal.tealSoft, active: st.misesRatio >= 0.85 },
-        { title: 'III · Fracture', sub: st.c.fractureSub, col: pal.amber, soft: pal.amberSoft, active: st.kRatio >= 0.5 },
-        { title: 'Analytic vs Matlab', sub: 'Diff < ' + st.c.errPct, col: pal.blue, soft: pal.blueSoft, active: true }
-      ];
-
       const padT = 8;
       const padB = 8;
       const gapY = clamp(h * 0.03, 5, 10);
       const cardH = Math.max(40, (h - padT - padB - gapY * 3) / 4);
-      stageRects = [];
 
-      // Curved feeder streams from component hotspot -> each synthesis card
       cards.forEach(function (card, idx) {
         const cy = padT + idx * (cardH + gapY);
         const midY = cy + cardH * 0.5;
@@ -3733,7 +4796,6 @@
         const isFocused = focusStage === idx;
         const dimmed = focusStage >= 0 && !isFocused;
 
-        // Smooth Bezier bridge from hotspot to card left edge
         const cpx1 = lerp(hotspot.hx, rightX, 0.45);
         const cpx2 = lerp(hotspot.hx, rightX, 0.55);
         ctx.save();
@@ -3744,7 +4806,6 @@
         ctx.bezierCurveTo(cpx1, hotspot.hy, cpx2, midY, rightX - 2, midY);
         ctx.stroke();
 
-        // Flowing particle along Bezier bridge
         if (!dimmed && card.active) {
           const t = (animT * 0.45 + idx * 0.24) % 1;
           const mt = 1 - t;
@@ -3755,58 +4816,9 @@
           ctx.arc(bx, by, 3.6, 0, Math.PI * 2);
           ctx.fill();
         }
-
-        // Card container
-        roundRectPath(ctx, rightX, cy, rightW, cardH, 9);
-        ctx.fillStyle = isFocused ? card.soft : pal.surface2;
-        ctx.fill();
-        ctx.strokeStyle = isFocused || card.active ? withAlpha(card.col, dimmed ? 0.3 : 0.9) : pal.border;
-        ctx.lineWidth = isFocused ? 2.2 : 1.3;
-        ctx.stroke();
-
-        // Text on left side of card (>= 15px)
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'middle';
-        setFont(ctx, 15, false, 600);
-        ctx.fillStyle = dimmed ? pal.textMuted : card.col;
-        ctx.fillText(card.title, rightX + 10, cy + cardH * 0.30);
-
-        setFont(ctx, 15, false, 400);
-        ctx.fillStyle = pal.text;
-        ctx.fillText(card.sub, rightX + 10, cy + cardH * 0.72);
-
-        // Live mini parity plot inside Card 4 (Analytic vs Matlab)
-        if (idx === 3 && rightW > 240 && cardH >= 44) {
-          const mx = rightX + rightW - 72;
-          const my = cy + 6;
-          const mw = 62;
-          const mh = cardH - 12;
-          ctx.strokeStyle = pal.border;
-          ctx.lineWidth = 1;
-          ctx.strokeRect(mx, my, mw, mh);
-          // Analytic curve
-          ctx.strokeStyle = pal.blue;
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          for (let k = 0; k <= 16; k++) {
-            const u = k / 16;
-            const px = mx + 4 + u * (mw - 8);
-            const py = my + mh - 4 - Math.pow(u, 0.65) * (mh - 8);
-            if (k === 0) ctx.moveTo(px, py);
-            else ctx.lineTo(px, py);
-          }
-          ctx.stroke();
-          // Discrete Matlab benchmark dots right on the curve
-          ctx.fillStyle = pal.amber;
-          [0.18, 0.42, 0.68, 0.90].forEach(function (u) {
-            const px = mx + 4 + u * (mw - 8);
-            const py = my + mh - 4 - Math.pow(u, 0.65) * (mh - 8);
-            ctx.beginPath();
-            ctx.arc(px, py, 2.8, 0, Math.PI * 2);
-            ctx.fill();
-          });
-        }
         ctx.restore();
+
+        drawSynthCard(ctx, card, idx, rightX, cy, rightW, cardH, pal);
       });
     }
 

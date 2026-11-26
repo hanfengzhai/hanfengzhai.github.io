@@ -149,6 +149,24 @@
     linear-gradient(180deg, rgba(246, 244, 238, 0.48) 0%, rgba(246, 244, 238, 0.10) 40%, rgba(246, 244, 238, 0.60) 100%);
 }
 
+/* Mobile Hero Readability Scrim & Comfortable Touch Chrome Heights */
+@media (max-width: 640px) {
+  :root,
+  [data-theme="dark"] {
+    --topbar-h: 48px;
+    --bottombar-h: 48px;
+    --hero-scrim:
+      linear-gradient(180deg, rgba(20, 20, 19, 0.95) 0%, rgba(20, 20, 19, 0.91) 56%, rgba(20, 20, 19, 0.74) 78%, rgba(20, 20, 19, 0.34) 100%),
+      radial-gradient(ellipse 95% 65% at 15% 32%, rgba(20, 20, 19, 0.88) 0%, rgba(20, 20, 19, 0.50) 65%, rgba(20, 20, 19, 0.10) 100%);
+  }
+
+  [data-theme="light"] {
+    --hero-scrim:
+      linear-gradient(180deg, rgba(246, 244, 238, 0.96) 0%, rgba(246, 244, 238, 0.92) 56%, rgba(246, 244, 238, 0.76) 78%, rgba(246, 244, 238, 0.34) 100%),
+      radial-gradient(ellipse 95% 65% at 15% 32%, rgba(246, 244, 238, 0.90) 0%, rgba(246, 244, 238, 0.52) 65%, rgba(246, 244, 238, 0.12) 100%);
+  }
+}
+
 /* ==========================================================================
    Part Accent Semantic Mapping
    ========================================================================== */
@@ -191,6 +209,7 @@
 html {
   font-size: 16px;
   height: 100%;
+  overscroll-behavior: none;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -198,6 +217,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
+  overscroll-behavior: none;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-sans);
@@ -229,6 +249,10 @@ a {
 a:hover {
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
 }
 
 :focus-visible {
@@ -270,6 +294,10 @@ a:hover {
   margin: 0.3em 0;
   overflow-x: auto;
   overflow-y: hidden;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  touch-action: pan-x pan-y;
   padding: 2px 0;
 }
 

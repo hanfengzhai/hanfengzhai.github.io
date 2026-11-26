@@ -115,13 +115,30 @@
     return 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',' + alpha.toFixed(3) + ')';
   }
 
-  function fitCanvas(canvas, fallbackMinH) {
+  function fitCanvas(canvas, fallbackMinH, responsiveOpts) {
     if (!canvas) return null;
     const parent = canvas.parentElement || canvas;
     let rect = parent.getBoundingClientRect();
-    if (rect.width >= 30 && rect.height < 90 && fallbackMinH) {
-      parent.style.minHeight = fallbackMinH + 'px';
-      rect = parent.getBoundingClientRect();
+    const rawW = Math.floor(rect.width);
+    if (rawW >= 24) {
+      if (responsiveOpts && responsiveOpts.breakpoint && responsiveOpts.minH) {
+        if (rawW < responsiveOpts.breakpoint) {
+          const targetH = Math.round(responsiveOpts.minH) + 'px';
+          if (parent.style.minHeight !== targetH) {
+            parent.style.minHeight = targetH;
+            parent.dataset.responsiveMinH = '1';
+            rect = parent.getBoundingClientRect();
+          }
+        } else if (parent.dataset.responsiveMinH === '1') {
+          parent.style.minHeight = '';
+          delete parent.dataset.responsiveMinH;
+          rect = parent.getBoundingClientRect();
+        }
+      }
+      if (rect.height < 90 && fallbackMinH) {
+        parent.style.minHeight = fallbackMinH + 'px';
+        rect = parent.getBoundingClientRect();
+      }
     }
     const w = Math.floor(rect.width);
     const h = Math.floor(rect.height);
@@ -137,6 +154,23 @@
     if (!ctx) return null;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     return { ctx: ctx, w: w, h: h, dpr: dpr };
+  }
+
+  function attachSelectiveTouchLock(canvas, shouldLockFn) {
+    function onTouchStart(ev) {
+      if (ev.touches && ev.touches.length === 1) {
+        const t = ev.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        const pos = { x: t.clientX - rect.left, y: t.clientY - rect.top };
+        if (shouldLockFn(pos)) {
+          ev.preventDefault();
+        }
+      }
+    }
+    canvas.addEventListener('touchstart', onTouchStart, { passive: false });
+    return function detach() {
+      canvas.removeEventListener('touchstart', onTouchStart);
+    };
   }
 
   function getPointerPos(canvas, ev) {
@@ -227,7 +261,17 @@
     let rx = x - boxW * 0.5;
     if (align === 'left') rx = x;
     if (align === 'right') rx = x - boxW;
-    const ry = y - boxH * 0.5;
+    let ry = y - boxH * 0.5;
+
+    if (o.clampTo) {
+      const pad = typeof o.clampPad === 'number' ? o.clampPad : 4;
+      const minX = o.clampTo.x + pad;
+      const maxX = Math.max(minX, o.clampTo.x + o.clampTo.w - boxW - pad);
+      const minY = o.clampTo.y + pad;
+      const maxY = Math.max(minY, o.clampTo.y + o.clampTo.h - boxH - pad);
+      rx = clamp(rx, minX, maxX);
+      ry = clamp(ry, minY, maxY);
+    }
 
     drawRoundRect(ctx, rx, ry, boxW, boxH, 2);
     ctx.fillStyle = o.bg || pal.surface;
@@ -321,9 +365,11 @@
       shell.appendChild(toolbar);
     }
 
+    const touchAction = o.touchAction || 'pan-y';
     const stage = document.createElement('div');
     stage.className = 'lab-stage';
     stage.style.position = 'relative';
+    stage.style.touchAction = touchAction;
     if (o.cursor) stage.style.cursor = o.cursor;
 
     const canvas = document.createElement('canvas');
@@ -333,7 +379,7 @@
     canvas.style.width = '100%';
     canvas.style.height = '100%';
     canvas.style.display = 'block';
-    canvas.style.touchAction = 'none';
+    canvas.style.touchAction = touchAction;
     canvas.style.cursor = o.cursor || 'default';
     stage.appendChild(canvas);
     shell.appendChild(stage);
@@ -452,6 +498,7 @@
    * ========================================================================= */
   registerLab('hero-mesh', function (mountEl, api) {
     mountEl.innerHTML = '';
+    mountEl.style.touchAction = 'pan-y';
     const canvas = document.createElement('canvas');
     canvas.className = 'lab-canvas';
     canvas.style.position = 'absolute';
@@ -459,6 +506,7 @@
     canvas.style.width = '100%';
     canvas.style.height = '100%';
     canvas.style.display = 'block';
+    canvas.style.touchAction = 'pan-y';
     mountEl.appendChild(canvas);
 
     const pointer = {
@@ -476,8 +524,16 @@
     function onPointerMove(ev) {
       const rect = canvas.getBoundingClientRect();
       if (rect.width < 10 || rect.height < 10) return;
-      pointer.tx = clamp((ev.clientX - rect.left) / rect.width, -0.05, 1.05);
-      pointer.ty = clamp((ev.clientY - rect.top) / rect.height, -0.05, 1.05);
+      const nx = clamp((ev.clientX - rect.left) / rect.width, -0.05, 1.05);
+      const ny = clamp((ev.clientY - rect.top) / rect.height, -0.05, 1.05);
+      if (ev.pointerType === 'touch') {
+        // Gentle passive follow on touch so vertical page scrolling stays calm and uninterrupted
+        pointer.tx = lerp(pointer.tx, nx, 0.35);
+        pointer.ty = lerp(pointer.ty, ny, 0.35);
+      } else {
+        pointer.tx = nx;
+        pointer.ty = ny;
+      }
       pointer.active = true;
       pointer.lastMoveMs = performance.now();
     }
@@ -539,14 +595,19 @@
       ctx.fillRect(0, 0, w, h);
 
       // Build finite-element grid spanning viewport + margin
-      const spacing = clamp(Math.round(Math.min(w, h) / 14), 44, 62);
+      const isNarrow = w < 480;
+      const spacing = isNarrow
+        ? clamp(Math.round(Math.min(w, h) / 10), 38, 52)
+        : clamp(Math.round(Math.min(w, h) / 14), 44, 62);
       const cols = Math.ceil(w / spacing) + 3;
       const rows = Math.ceil(h / spacing) + 3;
       const ox = -spacing;
       const oy = -spacing;
 
       const nu = 0.30;
-      const sigmaEnv = Math.max(135, Math.min(w, h) * 0.26);
+      const sigmaEnv = isNarrow
+        ? Math.max(105, Math.min(w, h) * 0.28)
+        : Math.max(135, Math.min(w, h) * 0.26);
       const inv2Sig2 = 1 / (2 * sigmaEnv * sigmaEnv);
       const rCore2 = 34 * 34;
 
@@ -788,7 +849,7 @@
 
     const badge = document.createElement('span');
     badge.className = 'lab-badge-status';
-    badge.textContent = 'X -> x';
+    badge.textContent = 'X → x';
     dom.toolbar.appendChild(badge);
 
     dom.sliders.load.input.addEventListener('input', function () {
@@ -820,12 +881,13 @@
     }
 
     function render() {
-      const fit = fitCanvas(dom.canvas, 210);
+      const fit = fitCanvas(dom.canvas, 210, { breakpoint: 480, minH: 245 });
       if (!fit) return;
       const ctx = fit.ctx;
       const w = fit.w;
       const h = fit.h;
       const pal = api.getPalette();
+      const isNarrow = w < 480;
 
       ctx.clearRect(0, 0, w, h);
 
@@ -842,9 +904,9 @@
       }
       ctx.stroke();
 
-      const scale = Math.min(w * 0.26, h * 0.34);
-      const cx0 = w * 0.36;
-      const cy0 = h * 0.54;
+      const scale = Math.min(w * (isNarrow ? 0.24 : 0.26), h * 0.30);
+      const cx0 = w * (isNarrow ? 0.35 : 0.36);
+      const cy0 = h * 0.53;
 
       function toPx(mx, my) {
         return { x: cx0 + mx * scale, y: cy0 - my * scale };
@@ -952,14 +1014,12 @@
         ctx.fill();
       }
 
-      // Labels (>= 15px)
-      const refTop = toPx(-0.45, 0.96);
-      const defTop = deformMap(0.35, 0.96, loadVal);
-      const defTopPx = toPx(defTop.x, defTop.y);
-      drawLabelPill(ctx, 'Ω₀ Reference', clamp(refTop.x, 66, w - 70), clamp(refTop.y, 20, h - 22), pal, { color: pal.teal });
-      drawLabelPill(ctx, 'Ω Deformed', clamp(defTopPx.x, 70, w - 66), clamp(defTopPx.y, 20, h - 22), pal, { color: pal.cardinal });
+      // Labels (>= 15px, anchored cleanly to avoid collision at any loadVal or narrow width)
+      const bounds = { x: 0, y: 0, w: w, h: h };
+      drawLabelPill(ctx, 'Ω₀ Reference', 10, 20, pal, { color: pal.teal, align: 'left', clampTo: bounds });
+      drawLabelPill(ctx, 'Ω Deformed', w - 10, 20, pal, { color: pal.cardinal, align: 'right', clampTo: bounds });
       if (loadVal > 0.15) {
-        drawLabelPill(ctx, 'u(X) = x - X', w * 0.52, h - 20, pal, { color: pal.amber });
+        drawLabelPill(ctx, 'u(X) = x − X', w * 0.5, h - 18, pal, { color: pal.amber, clampTo: bounds });
       }
 
       // Exact Jacobian det(F) at origin
@@ -1009,7 +1069,8 @@
         dummy: ['i'],
         rank: 'Rank 0 (Scalar)',
         terms: '3 terms',
-        expanded: 'a₁b₁ + a₂b₂ + a₃b₃ = (2)(4) + (-1)(2) + (3)(1) = 9',
+        expanded: 'a₁b₁ + a₂b₂ + a₃b₃ = (2)(4) + (−1)(2) + (3)(1) = 9',
+        expandedNarrow: ['a₁b₁ + a₂b₂ + a₃b₃', '= 2·4 + (−1)·2 + 3·1 = 9'],
         summary: 'Repeated index i contracts two vectors into one scalar.'
       },
       trace: {
@@ -1022,7 +1083,8 @@
         dummy: ['i'],
         rank: 'Rank 0 (Scalar)',
         terms: '3 diagonal terms',
-        expanded: 'σ₁₁ + σ₂₂ + σ₃₃ = 120 + 40 + (-30) = 130 MPa',
+        expanded: 'σ₁₁ + σ₂₂ + σ₃₃ = 120 + 40 + (−30) = 130 MPa',
+        expandedNarrow: ['σ₁₁ + σ₂₂ + σ₃₃', '= 120 + 40 − 30 = 130 MPa'],
         summary: 'Repeated index i sums the diagonal entries of σ.'
       },
       div: {
@@ -1035,8 +1097,9 @@
         free: ['i'],
         dummy: ['j'],
         rank: 'Rank 1 (Vector)',
-        terms: '3 eqns x 3 terms',
+        terms: '3 eqns × 3 terms',
         expanded: 'i = 1: σ₁₁,₁ + σ₁₂,₂ + σ₁₃,₃   (same for i = 2, 3)',
+        expandedNarrow: ['i = 1: σ₁₁,₁ + σ₁₂,₂ + σ₁₃,₃', '(same sum for i = 2, 3)'],
         summary: 'Dummy j sums across columns; free i labels 3 balance rows.'
       },
       hooke: {
@@ -1049,8 +1112,9 @@
         free: ['i', 'j'],
         dummy: ['k', 'l'],
         rank: 'Rank 2 (Tensor)',
-        terms: '9 comps x 9 sums',
-        expanded: 'σ_ij = Σ_k Σ_l C_ijkl ε_kl = λ ε_kk δ_ij + 2μ ε_ij',
+        terms: '9 comps × 9 sums',
+        expanded: 'σᵢⱼ = Σₖ Σₗ Cᵢⱼₖₗ εₖₗ = λ εₖₖ δᵢⱼ + 2μ εᵢⱼ',
+        expandedNarrow: ['σᵢⱼ = Σₖ Σₗ Cᵢⱼₖₗ εₖₗ', '= λ εₖₖ δᵢⱼ + 2μ εᵢⱼ'],
         summary: 'Double contraction over (k, l) maps strain ε to stress σ_ij.'
       }
     };
@@ -1132,22 +1196,25 @@
 
     function drawIndexHeader(ctx, expr, w, topY, pal) {
       // Measure total width of visual tensor symbol + index chips
-      const chipW = 28;
+      const isNarrow = w < 460;
+      const chipW = isNarrow ? 25 : 28;
       const chipH = 26;
-      const symW = 46;
-      const gap = 22;
+      const symW = isNarrow ? 40 : 46;
+      const wideSymW = isNarrow ? 58 : 64;
+      const gap = isNarrow ? 12 : 22;
+      const chipGap = isNarrow ? 3 : 4;
 
       const slots = [];
       let totalW = 0;
       expr.tokens.forEach(function (tok, ti) {
-        const tw = (tok.sym.length > 2 ? 64 : symW) + tok.indices.length * (chipW + 4);
+        const tw = (tok.sym.length > 2 ? wideSymW : symW) + tok.indices.length * (chipW + chipGap);
         totalW += tw + (ti > 0 ? gap : 0);
       });
 
       let curX = (w - totalW) * 0.5;
       expr.tokens.forEach(function (tok, ti) {
         if (ti > 0) curX += gap;
-        const baseW = tok.sym.length > 2 ? 64 : symW;
+        const baseW = tok.sym.length > 2 ? wideSymW : symW;
         drawRoundRect(ctx, curX, topY, baseW, 38, 8);
         ctx.fillStyle = pal.surface2;
         ctx.fill();
@@ -1160,7 +1227,7 @@
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(tok.sym, curX + baseW * 0.5, topY + 19);
-        curX += baseW + 4;
+        curX += baseW + chipGap;
 
         tok.indices.forEach(function (ch) {
           const isDummy = expr.dummy.indexOf(ch) !== -1;
@@ -1183,7 +1250,7 @@
           ctx.fillText(ch, cx, cy);
 
           slots.push({ ch: ch, x: cx, yTop: topY + 11, yBot: topY + 37, isDummy: isDummy, isFocus: isFocus });
-          curX += chipW + 4;
+          curX += chipW + chipGap;
         });
       });
 
@@ -1255,13 +1322,17 @@
     }
 
     function render() {
-      const fit = fitCanvas(dom.canvas, 270);
+      const fit = fitCanvas(dom.canvas, 270, {
+        breakpoint: 460,
+        minH: currentId === 'hooke' ? 405 : 300
+      });
       if (!fit) return;
       const ctx = fit.ctx;
       const w = fit.w;
       const h = fit.h;
       const pal = api.getPalette();
       const expr = EXPRESSIONS[currentId];
+      const isNarrow = w < 460;
 
       ctx.clearRect(0, 0, w, h);
 
@@ -1274,63 +1345,71 @@
       const activeStep = Math.floor(animTick) % 3;
 
       // 1. Top visual index blocks & contraction arcs
-      drawIndexHeader(ctx, expr, w, 28, pal);
+      drawIndexHeader(ctx, expr, w, isNarrow ? 24 : 28, pal);
 
       // 2. Middle visual contraction diagram
-      const midY = 98;
-      const midH = Math.max(106, h - 156);
+      const midY = isNarrow ? 94 : 98;
+      const midH = Math.max(104, h - (isNarrow ? 168 : 156));
       const cellH = clamp(Math.floor(midH / 3.4), 28, 36);
 
       if (currentId === 'dot') {
-        const cw = clamp(Math.floor(w * 0.14), 48, 72);
-        const totalW = cw * 3 + 120;
+        const cw = isNarrow ? clamp(Math.floor(w * 0.16), 48, 60) : clamp(Math.floor(w * 0.14), 48, 72);
+        const gap1 = isNarrow ? 34 : 46;
+        const gap2 = isNarrow ? 38 : 50;
+        const resW = cw + 14;
+        const totalW = cw + gap1 + cw + gap2 + resW;
         const sx = (w - totalW) * 0.5;
-        const aVals = [[2], [-1], [3]];
-        const bVals = [[4], [2], [1]];
+        const aVals = [['2'], ['−1'], ['3']];
+        const bVals = [['4'], ['2'], ['1']];
 
         drawMatrixBox(ctx, sx, midY + 14, cw, cellH, 3, 1, aVals, function (r) {
           return r === activeStep ? pal.teal : null;
-        }, 'a_i', pal);
+        }, 'aᵢ', pal);
 
-        drawMatrixBox(ctx, sx + cw + 46, midY + 14, cw, cellH, 3, 1, bVals, function (r) {
+        const bx = sx + cw + gap1;
+        drawMatrixBox(ctx, bx, midY + 14, cw, cellH, 3, 1, bVals, function (r) {
           return r === activeStep ? pal.teal : null;
-        }, 'b_i', pal);
+        }, 'bᵢ', pal);
 
         // Connection line for active summation term
         const ay = midY + 14 + (activeStep + 0.5) * cellH;
-        drawArrow(ctx, sx + cw + 4, ay, sx + cw + 42, ay, pal.teal, 2.2, 8);
+        drawArrow(ctx, sx + cw + 4, ay, bx - 4, ay, pal.teal, 2.2, 8);
 
         // Result scalar box
-        const rx = sx + 2 * cw + 96;
+        const rx = bx + cw + gap2;
         const ry = midY + 14 + cellH;
-        drawArrow(ctx, sx + 2 * cw + 52, ay, rx - 6, ry + cellH * 0.5, pal.amber, 2.0, 8);
-        drawMatrixBox(ctx, rx, ry, cw + 14, cellH, 1, 1, [['9']], function () {
+        drawArrow(ctx, bx + cw + 5, ay, rx - 5, ry + cellH * 0.5, pal.amber, 2.0, 8);
+        drawMatrixBox(ctx, rx, ry, resW, cellH, 1, 1, [['9']], function () {
           return pal.amber;
         }, 'Scalar', pal);
       } else if (currentId === 'trace') {
-        const cw = clamp(Math.floor(w * 0.12), 50, 68);
+        const gapT = isNarrow ? 30 : 46;
+        const resW = isNarrow ? 72 : 84;
+        const cw = isNarrow ? clamp(Math.floor((w - gapT - resW - 24) / 3), 50, 62) : clamp(Math.floor(w * 0.12), 50, 68);
         const matW = cw * 3;
-        const sx = (w - (matW + 130)) * 0.5;
+        const sx = (w - (matW + gapT + resW)) * 0.5;
         const sig = [
-          [120, 35, 0],
-          [35, 40, -15],
-          [0, -15, -30]
+          ['120', '35', '0'],
+          ['35', '40', '−15'],
+          ['0', '−15', '−30']
         ];
         drawMatrixBox(ctx, sx, midY + 14, cw, cellH, 3, 3, sig, function (r, c) {
           if (r === c) return r === activeStep ? pal.amber : pal.teal;
           return null;
-        }, 'Stress σ_ij (MPa)', pal);
+        }, 'Stress σᵢⱼ (MPa)', pal);
 
-        const rx = sx + matW + 46;
+        const rx = sx + matW + gapT;
         const ry = midY + 14 + cellH;
-        drawArrow(ctx, sx + matW + 8, ry + cellH * 0.5, rx - 6, ry + cellH * 0.5, pal.teal, 2.2, 9);
-        drawMatrixBox(ctx, rx, ry, 84, cellH, 1, 1, [['130']], function () {
+        drawArrow(ctx, sx + matW + 6, ry + cellH * 0.5, rx - 6, ry + cellH * 0.5, pal.teal, 2.2, 9);
+        drawMatrixBox(ctx, rx, ry, resW, cellH, 1, 1, [['130']], function () {
           return pal.teal;
         }, 'tr(σ)', pal);
       } else if (currentId === 'div') {
-        const cw = clamp(Math.floor(w * 0.13), 56, 76);
+        const gapD = isNarrow ? 26 : 48;
+        const resW = isNarrow ? 64 : 82;
+        const cw = isNarrow ? clamp(Math.floor((w - gapD - resW - 22) / 3), 60, 72) : clamp(Math.floor(w * 0.13), 56, 76);
         const matW = cw * 3;
-        const sx = (w - (matW + 130)) * 0.5;
+        const sx = (w - (matW + gapD + resW)) * 0.5;
         const divs = [
           ['σ₁₁,₁', 'σ₁₂,₂', 'σ₁₃,₃'],
           ['σ₂₁,₁', 'σ₂₂,₂', 'σ₂₃,₃'],
@@ -1340,25 +1419,21 @@
         drawMatrixBox(ctx, sx, midY + 14, cw, cellH, 3, 3, divs, function (r) {
           if (r === freeRow) return focusIndex === 'i' ? pal.cardinal : pal.teal;
           return null;
-        }, 'Derivatives σ_ij,j', pal);
+        }, 'Derivatives σᵢⱼ,ⱼ', pal);
 
-        const rx = sx + matW + 48;
+        const rx = sx + matW + gapD;
         const rowY = midY + 14 + (freeRow + 0.5) * cellH;
-        drawArrow(ctx, sx + matW + 6, rowY, rx - 6, rowY, focusIndex === 'i' ? pal.cardinal : pal.teal, 2.2, 9);
+        drawArrow(ctx, sx + matW + 5, rowY, rx - 5, rowY, focusIndex === 'i' ? pal.cardinal : pal.teal, 2.2, 9);
 
-        drawMatrixBox(ctx, rx, midY + 14, 82, cellH, 3, 1, [['-f₁'], ['-f₂'], ['-f₃']], function (r) {
+        drawMatrixBox(ctx, rx, midY + 14, resW, cellH, 3, 1, [['−f₁'], ['−f₂'], ['−f₃']], function (r) {
           return r === freeRow ? pal.cardinal : null;
-        }, 'Vector (i)', pal);
+        }, isNarrow ? 'Vec (i)' : 'Vector (i)', pal);
       } else {
         // Hooke: C_ijkl eps_kl = sigma_ij
-        const gapM = clamp(Math.floor(w * 0.11), 42, 58);
-        const cw = clamp(Math.floor((w - gapM - 28) / 6), 44, 62);
-        const matW = cw * 3;
-        const sx = (w - (matW * 2 + gapM)) * 0.5;
         const eps = [
           ['0.20', '0.05', '0.00'],
-          ['0.05', '-0.06', '0.00'],
-          ['0.00', '0.00', '-0.06']
+          ['0.05', '−0.06', '0.00'],
+          ['0.00', '0.00', '−0.06']
         ];
         const sig = [
           ['400', '77', '0'],
@@ -1368,42 +1443,78 @@
         const freeR = activeStep % 2;
         const freeC = (activeStep === 2) ? 1 : freeR;
 
-        drawMatrixBox(ctx, sx, midY + 14, cw, cellH, 3, 3, eps, function () {
-          return (focusIndex === 'k' || focusIndex === 'l') ? pal.teal : null;
-        }, 'Strain ε_kl (%)', pal);
+        if (isNarrow) {
+          // Stack Strain 3x3 above Stress 3x3 vertically so 5-char numbers never overflow cells
+          const cw = clamp(Math.floor((w - 56) / 3), 62, 82);
+          const chStack = 29;
+          const matW = cw * 3;
+          const sx = (w - matW) * 0.5;
+          const topMatY = 102;
+          drawMatrixBox(ctx, sx, topMatY, cw, chStack, 3, 3, eps, function () {
+            return (focusIndex === 'k' || focusIndex === 'l') ? pal.teal : null;
+          }, 'Strain εₖₗ (%)', pal);
 
-        const ax1 = sx + matW + 6;
-        const ax2 = sx + matW + gapM - 6;
-        const ay = midY + 14 + 1.5 * cellH;
-        drawArrow(ctx, ax1, ay, ax2, ay, pal.teal, 2.4, 9);
-        ctx.font = FONT_SANS_BOLD;
-        ctx.fillStyle = pal.text;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText('C_ijkl', 0.5 * (ax1 + ax2), ay - 7);
+          const arrTop = topMatY + chStack * 3 + 5;
+          const arrBot = arrTop + 30;
+          drawArrow(ctx, w * 0.5, arrTop, w * 0.5, arrBot, pal.teal, 2.4, 9);
+          ctx.font = FONT_SANS_BOLD;
+          ctx.fillStyle = pal.text;
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('Cᵢⱼₖₗ', w * 0.5 + 12, 0.5 * (arrTop + arrBot));
 
-        drawMatrixBox(ctx, sx + matW + gapM, midY + 14, cw, cellH, 3, 3, sig, function (r, c) {
-          if (r === freeR && c === freeC) return pal.cardinal;
-          return null;
-        }, 'Stress σ_ij (MPa)', pal);
+          const botMatY = arrBot + 24;
+          drawMatrixBox(ctx, sx, botMatY, cw, chStack, 3, 3, sig, function (r, c) {
+            if (r === freeR && c === freeC) return pal.cardinal;
+            return null;
+          }, 'Stress σᵢⱼ (MPa)', pal);
+        } else {
+          const gapM = clamp(Math.floor(w * 0.11), 46, 62);
+          const cw = clamp(Math.floor((w - gapM - 28) / 6), 54, 66);
+          const matW = cw * 3;
+          const sx = (w - (matW * 2 + gapM)) * 0.5;
+
+          drawMatrixBox(ctx, sx, midY + 14, cw, cellH, 3, 3, eps, function () {
+            return (focusIndex === 'k' || focusIndex === 'l') ? pal.teal : null;
+          }, 'Strain εₖₗ (%)', pal);
+
+          const ax1 = sx + matW + 6;
+          const ax2 = sx + matW + gapM - 6;
+          const ay = midY + 14 + 1.5 * cellH;
+          drawArrow(ctx, ax1, ay, ax2, ay, pal.teal, 2.4, 9);
+          ctx.font = FONT_SANS_BOLD;
+          ctx.fillStyle = pal.text;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'bottom';
+          ctx.fillText('Cᵢⱼₖₗ', 0.5 * (ax1 + ax2), ay - 7);
+
+          drawMatrixBox(ctx, sx + matW + gapM, midY + 14, cw, cellH, 3, 3, sig, function (r, c) {
+            if (r === freeR && c === freeC) return pal.cardinal;
+            return null;
+          }, 'Stress σᵢⱼ (MPa)', pal);
+        }
       }
 
-      // 3. Bottom Expanded Sum Strip (>= 15px monospace, auto-wraps if narrow)
+      // 3. Bottom Expanded Sum Strip (>= 15px monospace, auto-wraps cleanly on narrow screens)
       ctx.font = FONT_MONO;
-      const maxTxtW = w - 44;
+      const maxTxtW = w - 36;
       let lines = [expr.expanded];
       if (ctx.measureText(expr.expanded).width > maxTxtW) {
-        const splitIdx = expr.expanded.indexOf('=');
-        if (splitIdx > 6 && splitIdx < expr.expanded.length - 6) {
-          lines = [
-            expr.expanded.slice(0, splitIdx).trim(),
-            '= ' + expr.expanded.slice(splitIdx + 1).trim()
-          ];
+        if (expr.expandedNarrow && expr.expandedNarrow.length) {
+          lines = expr.expandedNarrow;
+        } else {
+          const splitIdx = expr.expanded.indexOf('=');
+          if (splitIdx > 6 && splitIdx < expr.expanded.length - 6) {
+            lines = [
+              expr.expanded.slice(0, splitIdx).trim(),
+              '= ' + expr.expanded.slice(splitIdx + 1).trim()
+            ];
+          }
         }
       }
       const boxH = lines.length > 1 ? 50 : 32;
       const boxY = h - boxH - 8;
-      drawRoundRect(ctx, 14, boxY, w - 28, boxH, 8);
+      drawRoundRect(ctx, 10, boxY, w - 20, boxH, 8);
       ctx.fillStyle = withAlpha(pal.surface2, 0.85);
       ctx.fill();
       ctx.strokeStyle = pal.border;
@@ -1448,7 +1559,7 @@
       readouts: [
         { id: 'X', label: 'X (Ref)', value: '(0.45, 0.30)' },
         { id: 'x', label: 'x (Def)', value: '(0.58, 0.34)' },
-        { id: 'u', label: 'u = x - X', value: '(+0.13, +0.04)' },
+        { id: 'u', label: 'u = x − X', value: '(+0.13, +0.04)' },
         { id: 'eps', label: 'ε₁₁, ε₂₂, ε₁₂', value: '0.22, -0.07, 0.09' }
       ],
       sliders: [
@@ -1578,7 +1689,11 @@
       };
     }
 
-    let lastLayout = { cx0: 140, cy0: 140, scale: 80 };
+    let lastLayout = { cx0: 140, cy0: 140, scale: 80, handleX: 175, handleY: 118, isStacked: false, splitPos: 220 };
+
+    function isTouchOnHandle(pos) {
+      return Math.hypot(pos.x - lastLayout.handleX, pos.y - lastLayout.handleY) <= 44;
+    }
 
     function updatePointFromPointer(ev) {
       const p = getPointerPos(dom.canvas, ev);
@@ -1597,6 +1712,13 @@
     }
 
     function onDown(ev) {
+      const p = getPointerPos(dom.canvas, ev);
+      if (ev.pointerType === 'touch') {
+        if (!isTouchOnHandle(p)) return;
+      } else if (!st.overlay) {
+        const inRef = lastLayout.isStacked ? (p.y <= lastLayout.splitPos + 14) : (p.x <= lastLayout.splitPos + 14);
+        if (!inRef) return;
+      }
       st.dragging = true;
       dom.stage.style.cursor = 'grabbing';
       if (dom.canvas.setPointerCapture) {
@@ -1613,12 +1735,16 @@
       dom.stage.style.cursor = 'grab';
     }
 
+    const detachTouchLock = attachSelectiveTouchLock(dom.canvas, isTouchOnHandle);
     dom.canvas.addEventListener('pointerdown', onDown);
     dom.canvas.addEventListener('pointermove', onMove);
     window.addEventListener('pointerup', onUp);
 
     function render() {
-      const fit = fitCanvas(dom.canvas, 260);
+      const fit = fitCanvas(dom.canvas, 260, {
+        breakpoint: 460,
+        minH: st.overlay ? 275 : 405
+      });
       if (!fit) return;
       const ctx = fit.ctx;
       const w = fit.w;
@@ -1627,21 +1753,35 @@
 
       ctx.clearRect(0, 0, w, h);
 
-      const scale = st.overlay
-        ? Math.min(w * 0.30, h * 0.34)
-        : Math.min(w * 0.175, h * 0.33);
-      const cx0 = st.overlay ? w * 0.50 : w * 0.27;
-      const cy0 = h * 0.54;
-      const cx1 = st.overlay ? w * 0.50 : w * 0.73;
-      const cy1 = h * 0.54;
-      lastLayout = { cx0: cx0, cy0: cy0, scale: scale };
+      const isStacked = !st.overlay && w < 460;
+      const splitY = Math.floor(h * 0.48);
+      const splitX = Math.floor(w * 0.50);
+
+      let scale, cx0, cy0, cx1, cy1;
+      if (st.overlay) {
+        scale = Math.min(w * 0.30, h * 0.34);
+        cx0 = w * 0.50; cy0 = h * 0.54;
+        cx1 = w * 0.50; cy1 = h * 0.54;
+      } else if (isStacked) {
+        scale = clamp(Math.min(w * 0.23, (splitY - 52) * 0.44), 46, 62);
+        cx0 = w * 0.50; cy0 = 36 + (splitY - 40) * 0.50;
+        cx1 = w * 0.50; cy1 = splitY + 34 + (h - splitY - 64) * 0.50;
+      } else {
+        scale = Math.min(w * 0.175, h * 0.33);
+        cx0 = w * 0.27; cy0 = h * 0.54;
+        cx1 = w * 0.73; cy1 = h * 0.54;
+      }
 
       function toRef(X1, X2) { return { x: cx0 + X1 * scale, y: cy0 - X2 * scale }; }
       function toDef(x1, x2) { return { x: cx1 + x1 * scale, y: cy1 - x2 * scale }; }
 
-      // Background subtle divider in side-by-side mode
+      // Background subtle divider in side-by-side / stacked mode
       if (!st.overlay) {
-        drawDashed(ctx, w * 0.5, 16, w * 0.5, h - 16, pal.border, [5, 5], 1.2);
+        if (isStacked) {
+          drawDashed(ctx, 16, splitY, w - 16, splitY, pal.border, [5, 5], 1.2);
+        } else {
+          drawDashed(ctx, splitX, 16, splitX, h - 16, pal.border, [5, 5], 1.2);
+        }
       }
 
       // Coordinate axes at centers
@@ -1720,14 +1860,28 @@
       const pRef = toRef(st.px, st.py);
       const pDef = toDef(def.x1, def.x2);
 
+      lastLayout = {
+        cx0: cx0,
+        cy0: cy0,
+        scale: scale,
+        handleX: pRef.x,
+        handleY: pRef.y,
+        isStacked: isStacked,
+        splitPos: isStacked ? splitY : splitX
+      };
+
       // Draw mapping / displacement arrow
       if (st.overlay) {
         drawArrow(ctx, pRef.x, pRef.y, pDef.x, pDef.y, pal.amber, 2.8, 11);
       } else {
         // Curved transfer arrow from X in Omega_0 to x in Omega
         ctx.save();
-        const midX = 0.5 * (pRef.x + pDef.x);
-        const midY = Math.min(pRef.y, pDef.y) - 34;
+        const midX = isStacked
+          ? clamp(0.5 * (pRef.x + pDef.x) + (st.px >= 0 ? 54 : -54), 18, w - 18)
+          : 0.5 * (pRef.x + pDef.x);
+        const midY = isStacked
+          ? 0.5 * (pRef.y + pDef.y)
+          : Math.min(pRef.y, pDef.y) - 34;
         ctx.strokeStyle = pal.amber;
         ctx.lineWidth = 2.2;
         ctx.setLineDash([6, 4]);
@@ -1763,23 +1917,28 @@
       ctx.fillStyle = pal.cardinal;
       ctx.beginPath(); ctx.arc(pDef.x, pDef.y, 5.8, 0, Math.PI * 2); ctx.fill();
 
-      // Labels (>= 15px)
+      // Labels (>= 15px, clamped safely inside canvas)
+      const bounds = { x: 0, y: 0, w: w, h: h };
       if (st.overlay) {
-        drawLabelPill(ctx, 'Ω₀ (dashed) -> Ω (solid)', w * 0.5, 22, pal, { color: pal.text });
+        drawLabelPill(ctx, 'Ω₀ (dashed) → Ω (solid)', w * 0.5, 22, pal, { color: pal.text, clampTo: bounds });
+      } else if (isStacked) {
+        drawLabelPill(ctx, 'Reference Ω₀', cx0, 20, pal, { color: pal.teal, clampTo: bounds });
+        drawLabelPill(ctx, 'Deformed Ω', cx1, splitY + 20, pal, { color: pal.cardinal, clampTo: bounds });
+        drawLabelPill(ctx, 'x = X + u(X)', w * 0.5, h - 18, pal, { color: pal.amber, clampTo: bounds });
       } else {
-        drawLabelPill(ctx, 'Reference Ω₀', cx0, 22, pal, { color: pal.teal });
-        drawLabelPill(ctx, 'Deformed Ω', cx1, 22, pal, { color: pal.cardinal });
-        drawLabelPill(ctx, 'x = X + u(X)', w * 0.5, h - 22, pal, { color: pal.amber });
+        drawLabelPill(ctx, 'Reference Ω₀', cx0, 22, pal, { color: pal.teal, clampTo: bounds });
+        drawLabelPill(ctx, 'Deformed Ω', cx1, 22, pal, { color: pal.cardinal, clampTo: bounds });
+        drawLabelPill(ctx, 'x = X + u(X)', w * 0.5, h - 22, pal, { color: pal.amber, clampTo: bounds });
       }
 
       ctx.font = FONT_SANS_BOLD;
       ctx.fillStyle = pal.teal;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'bottom';
-      ctx.fillText('X', pRef.x + 12, pRef.y - 8);
+      ctx.fillText('X', clamp(pRef.x + 12, 10, w - 20), clamp(pRef.y - 8, 36, h - 12));
 
       ctx.fillStyle = pal.cardinal;
-      ctx.fillText('x', pDef.x + 12, pDef.y - 8);
+      ctx.fillText('x', clamp(pDef.x + 12, 10, w - 20), clamp(pDef.y - 8, 36, h - 34));
 
       // Update readouts
       dom.readouts.X.val.textContent = '(' + fmt(st.px, 2) + ', ' + fmt(st.py, 2) + ')';
@@ -1795,6 +1954,7 @@
       onThemeChange: render,
       onSlideEnter: render,
       destroy: function () {
+        detachTouchLock();
         dom.canvas.removeEventListener('pointerdown', onDown);
         dom.canvas.removeEventListener('pointermove', onMove);
         window.removeEventListener('pointerup', onUp);
@@ -1867,7 +2027,11 @@
       });
     });
 
-    let elemCenter = { x: 140, y: 140, radius: 70 };
+    let elemCenter = { x: 140, y: 140, radius: 60, hitBox: { x0: 0, y0: 0, x1: 260, y1: 260 } };
+
+    function isTouchOnElement(pos) {
+      return Math.hypot(pos.x - elemCenter.x, pos.y - elemCenter.y) <= elemCenter.radius * 1.55;
+    }
 
     function updateAngleFromPointer(ev) {
       const p = getPointerPos(dom.canvas, ev);
@@ -1884,7 +2048,11 @@
 
     function onDown(ev) {
       const p = getPointerPos(dom.canvas, ev);
-      if (p.x < dom.canvas.getBoundingClientRect().width * 0.55) {
+      const hb = elemCenter.hitBox;
+      const inside = ev.pointerType === 'touch'
+        ? isTouchOnElement(p)
+        : (p.x >= hb.x0 && p.x <= hb.x1 && p.y >= hb.y0 && p.y <= hb.y1);
+      if (inside) {
         st.dragging = true;
         if (dom.canvas.setPointerCapture) {
           try { dom.canvas.setPointerCapture(ev.pointerId); } catch (e) {}
@@ -1898,12 +2066,13 @@
     }
     function onUp() { st.dragging = false; }
 
+    const detachTouchLock = attachSelectiveTouchLock(dom.canvas, isTouchOnElement);
     dom.canvas.addEventListener('pointerdown', onDown);
     dom.canvas.addEventListener('pointermove', onMove);
     window.addEventListener('pointerup', onUp);
 
     function render() {
-      const fit = fitCanvas(dom.canvas, 280);
+      const fit = fitCanvas(dom.canvas, 280, { breakpoint: 500, minH: 430 });
       if (!fit) return;
       const ctx = fit.ctx;
       const w = fit.w;
@@ -1929,17 +2098,36 @@
       const s1 = C + R;
       const s2 = C - R;
 
-      // Split panels
+      const isStacked = w < 500;
       const splitX = Math.floor(w * 0.48);
-      drawDashed(ctx, splitX, 14, splitX, h - 14, pal.border, [4, 5], 1.2);
+      const splitY = Math.floor(h * 0.47);
+      const bounds = { x: 0, y: 0, w: w, h: h };
 
-      /* --- LEFT PANEL: Material element & cut plane --- */
-      const ecx = splitX * 0.50;
-      const ecy = h * 0.55;
-      const half = clamp(Math.min(splitX * 0.24, h * 0.24), 40, 68);
-      elemCenter = { x: ecx, y: ecy, radius: half };
+      if (isStacked) {
+        drawDashed(ctx, 14, splitY, w - 14, splitY, pal.border, [4, 5], 1.2);
+      } else {
+        drawDashed(ctx, splitX, 14, splitX, h - 14, pal.border, [4, 5], 1.2);
+      }
 
-      drawLabelPill(ctx, 'Cut Plane: t = σ·n', ecx, 20, pal, { color: pal.text });
+      /* --- PANEL 1 (TOP on mobile, LEFT on desktop): Material element & cut plane --- */
+      const cutBounds = isStacked
+        ? { x: 0, y: 0, w: w, h: splitY }
+        : { x: 0, y: 0, w: splitX, h: h };
+      const ecx = isStacked ? w * 0.50 : splitX * 0.50;
+      const ecy = isStacked ? 34 + (splitY - 58) * 0.52 : h * 0.53;
+      const half = isStacked
+        ? clamp(Math.min(w * 0.155, (splitY - 68) * 0.37), 36, 52)
+        : clamp(Math.min(splitX * 0.23, h * 0.23), 40, 66);
+      elemCenter = {
+        x: ecx,
+        y: ecy,
+        radius: half,
+        hitBox: isStacked
+          ? { x0: 0, y0: 0, x1: w, y1: splitY }
+          : { x0: 0, y0: 0, x1: splitX + 12, y1: h }
+      };
+
+      drawLabelPill(ctx, 'Cut Plane: t = σ·n', ecx, 20, pal, { color: pal.text, clampTo: cutBounds });
 
       // Ghost full square element + subtle external stress arrows (sigma_xx, sigma_yy)
       ctx.save();
@@ -1951,7 +2139,7 @@
 
       const extScale = clamp(half * 0.36, 14, 24) / 150;
       if (Math.abs(st.sxx) > 8) {
-        const lxx = clamp(Math.abs(st.sxx) * extScale, 9, 26);
+        const lxx = clamp(Math.abs(st.sxx) * extScale, 9, 24);
         const cxx = withAlpha(st.sxx >= 0 ? pal.cardinal : pal.blue, 0.55);
         if (st.sxx > 0) {
           drawArrow(ctx, ecx + half + 3, ecy, ecx + half + 3 + lxx, ecy, cxx, 1.8, 7);
@@ -1962,7 +2150,7 @@
         }
       }
       if (Math.abs(st.syy) > 8) {
-        const lyy = clamp(Math.abs(st.syy) * extScale, 9, 26);
+        const lyy = clamp(Math.abs(st.syy) * extScale, 9, 22);
         const cyy = withAlpha(st.syy >= 0 ? pal.cardinal : pal.blue, 0.55);
         if (st.syy > 0) {
           drawArrow(ctx, ecx, ecy - half - 3, ecx, ecy - half - 3 - lyy, cyy, 1.8, 7);
@@ -1974,7 +2162,6 @@
       }
 
       // Retained half-body behind cut plane (dot((p-c), n) <= 0 in y-up)
-      // Clip square to half-plane on retained side
       ctx.save();
       ctx.beginPath();
       ctx.rect(ecx - half, ecy - half, half * 2, half * 2);
@@ -1995,7 +2182,7 @@
       ctx.restore();
 
       // Cut plane line
-      const cutL = half * 1.32;
+      const cutL = half * 1.28;
       ctx.save();
       ctx.strokeStyle = pal.text;
       ctx.lineWidth = 2.6;
@@ -2006,7 +2193,7 @@
       ctx.restore();
 
       // Unit normal n (draggable)
-      const nLen = half * 0.82;
+      const nLen = half * 0.80;
       const nTipX = ecx + nx * nLen;
       const nTipY = ecy - ny * nLen;
       drawArrow(ctx, ecx, ecy, nTipX, nTipY, pal.textMuted, 2.0, 9);
@@ -2020,7 +2207,7 @@
 
       // Stress vector scale
       const maxVec = Math.max(150, Math.abs(s1), Math.abs(s2));
-      const vScale = (half * 1.28) / maxVec;
+      const vScale = (half * 1.22) / maxVec;
 
       // Normal component sigma_n * n (cardinal)
       const snX = ecx + sn * nx * vScale;
@@ -2039,36 +2226,75 @@
       drawDashed(ctx, tauX, tauY, tX, tY, withAlpha(pal.amber, 0.55), [4, 4], 1.2);
       drawArrow(ctx, ecx, ecy, tX, tY, pal.amber, 3.0, 11);
 
-      // Vector legend labels on left panel (>= 15px)
+      // Vector labels n & t with explicit non-overlap separation (>= 15px)
+      const nLblX = clamp(nTipX + nx * 16, cutBounds.x + 14, cutBounds.x + cutBounds.w - 14);
+      const nLblY = clamp(nTipY - ny * 16, cutBounds.y + 38, cutBounds.y + cutBounds.h - 28);
       ctx.font = FONT_SANS_BOLD;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillStyle = pal.blue;
-      ctx.fillText('n', nTipX + nx * 15, nTipY - ny * 15);
-      if (Math.hypot(tX - ecx, tY - ecy) > 16) {
+      ctx.fillText('n', nLblX, nLblY);
+
+      const tDist = Math.hypot(tX - ecx, tY - ecy);
+      if (tDist > 16) {
+        const tux = (tX - ecx) / tDist;
+        const tuy = (tY - ecy) / tDist;
+        let tLblX = tX + tux * 16;
+        let tLblY = tY + tuy * 16;
+        if (Math.hypot(tLblX - nLblX, tLblY - nLblY) < 22) {
+          // Offset cleanly perpendicular to t (away from n) when t aligns with n
+          const perpX = -tuy;
+          const perpY = tux;
+          const sign = ((tLblX + perpX * 18 - nLblX) * (tLblX + perpX * 18 - nLblX) +
+                        (tLblY + perpY * 18 - nLblY) * (tLblY + perpY * 18 - nLblY)) >=
+                       ((tLblX - perpX * 18 - nLblX) * (tLblX - perpX * 18 - nLblX) +
+                        (tLblY - perpY * 18 - nLblY) * (tLblY - perpY * 18 - nLblY)) ? 1 : -1;
+          tLblX += sign * perpX * 18;
+          tLblY += sign * perpY * 18;
+        }
+        tLblX = clamp(tLblX, cutBounds.x + 14, cutBounds.x + cutBounds.w - 14);
+        tLblY = clamp(tLblY, cutBounds.y + 38, cutBounds.y + cutBounds.h - 28);
         ctx.fillStyle = pal.amber;
-        ctx.fillText('t', tX + (tx >= 0 ? 14 : -14), tY + (ty >= 0 ? -12 : 12));
+        ctx.fillText('t', tLblX, tLblY);
       }
+
+      // Centered non-overflowing vector legend row inside cut-plane panel
       ctx.font = FONT_SANS;
+      ctx.textBaseline = 'middle';
+      const legY = cutBounds.y + cutBounds.h - 14;
+      const s1Txt = 'σₙ';
+      const s2Txt = 'τ';
+      const s3Txt = 't = σₙn + τs';
+      const w1 = ctx.measureText(s1Txt).width;
+      const w2 = ctx.measureText(s2Txt).width;
+      const w3 = ctx.measureText(s3Txt).width;
+      const legGap = 14;
+      const legTotal = w1 + w2 + w3 + legGap * 2;
+      const legX = clamp(ecx - legTotal * 0.5, cutBounds.x + 10, cutBounds.x + cutBounds.w - legTotal - 10);
       ctx.textAlign = 'left';
       ctx.fillStyle = pal.cardinal;
-      ctx.fillText('σₙ', 12, h - 18);
+      ctx.fillText(s1Txt, legX, legY);
       ctx.fillStyle = pal.teal;
-      ctx.fillText('τ', 46, h - 18);
+      ctx.fillText(s2Txt, legX + w1 + legGap, legY);
       ctx.fillStyle = pal.amber;
-      ctx.fillText('t = σₙ n + τ s', 68, h - 18);
+      ctx.fillText(s3Txt, legX + w1 + w2 + legGap * 2, legY);
 
-      /* --- RIGHT PANEL: Live Mohr's Circle --- */
-      const mPad = 24;
-      const mBox = { x: splitX + 16, y: 40, w: w - splitX - 30, h: h - 54 };
+      /* --- PANEL 2 (BOTTOM on mobile, RIGHT on desktop): Live Mohr's Circle --- */
+      const mBox = isStacked
+        ? { x: 10, y: splitY + 34, w: w - 20, h: h - splitY - 44 }
+        : { x: splitX + 16, y: 40, w: w - splitX - 30, h: h - 54 };
+      const mPad = isStacked ? 26 : 24;
       drawPlotFrame(ctx, mBox, pal, '', 'σₙ (MPa)', 'τ (MPa)');
-      drawLabelPill(ctx, "Mohr's Circle (2θ)", mBox.x + mBox.w * 0.5, 20, pal, { color: pal.text });
+      drawLabelPill(ctx, "Mohr's Circle (2θ)", mBox.x + mBox.w * 0.5, isStacked ? splitY + 18 : 20, pal, {
+        color: pal.text,
+        clampTo: bounds
+      });
 
       // Coordinate bounds centered comfortably around circle & origin
       const maxAbs = Math.max(120, Math.abs(s1) + 25, Math.abs(s2) + 25, R + 30);
       const mCx = mBox.x + mBox.w * 0.5;
       const mCy = mBox.y + mBox.h * 0.52;
-      const mScale = Math.min((mBox.w - mPad * 2) / (2.35 * maxAbs), (mBox.h - mPad * 2) / (2.35 * maxAbs));
+      const mScale = Math.min((mBox.w - mPad * 2) / (2.45 * maxAbs), (mBox.h - mPad * 2) / (2.45 * maxAbs));
 
       function toMohr(sigV, tauV) {
         return { x: mCx + sigV * mScale, y: mCy - tauV * mScale };
@@ -2124,20 +2350,33 @@
         ctx.restore();
       }
 
-      // Principal stress markers sigma_1, sigma_2 (placed clear of moving point)
+      // Principal stress markers sigma_1, sigma_2 (collision-safe against pCur, each other, and axis labels)
       const p1 = toMohr(s1, 0);
       const p2 = toMohr(s2, 0);
+      const tightCircle = rPx < 20;
       [
-        { p: p1, txt: 'σ₁', dx: 12, align: 'left' },
-        { p: p2, txt: 'σ₂', dx: -12, align: 'right' }
+        { p: p1, txt: 'σ₁', dx: 8, align: 'left', preferAbove: tightCircle },
+        { p: p2, txt: 'σ₂', dx: -8, align: 'right', preferAbove: false }
       ].forEach(function (item) {
         ctx.fillStyle = pal.teal;
         ctx.beginPath(); ctx.arc(item.p.x, item.p.y, 4.5, 0, Math.PI * 2); ctx.fill();
+        let lx = item.p.x + item.dx;
+        if (item.align === 'left') lx = clamp(lx, mBox.x + 12, mBox.x + mBox.w - 28);
+        else lx = clamp(lx, mBox.x + 28, mBox.x + mBox.w - 12);
+
+        let placeAbove = item.preferAbove;
+        // Avoid colliding with moving point pCur or bottom-right axis label
+        if (!placeAbove && Math.hypot(lx - pCur.x, (item.p.y + 14) - pCur.y) < 24) {
+          placeAbove = true;
+        }
+        if (!placeAbove && item.p.y + 24 > mBox.y + mBox.h - 24 && lx > mBox.x + mBox.w - 94) {
+          placeAbove = true;
+        }
         ctx.font = FONT_SANS_BOLD;
         ctx.fillStyle = pal.teal;
         ctx.textAlign = item.align;
-        ctx.textBaseline = 'top';
-        ctx.fillText(item.txt, item.p.x + item.dx, item.p.y + 10);
+        ctx.textBaseline = placeAbove ? 'bottom' : 'top';
+        ctx.fillText(item.txt, lx, placeAbove ? item.p.y - 10 : item.p.y + 10);
       });
 
       // Live rotating point (sigma_n, tau)
@@ -2167,6 +2406,7 @@
       onThemeChange: render,
       onSlideEnter: render,
       destroy: function () {
+        detachTouchLock();
         dom.canvas.removeEventListener('pointerdown', onDown);
         dom.canvas.removeEventListener('pointermove', onMove);
         window.removeEventListener('pointerup', onUp);
@@ -2183,8 +2423,8 @@
       cursor: 'ew-resize',
       readouts: [
         { id: 'sig', label: 'Stress σ*', value: '600 MPa' },
-        { id: 'u', label: 'Energy u', value: '0.90 MJ/m³' },
-        { id: 'lat', label: 'Lateral ε_lat', value: '-0.090%' },
+        { id: 'w', label: 'Energy w', value: '0.90 MJ/m³' },
+        { id: 'lat', label: 'Lateral ε_lat', value: '−0.090%' },
         { id: 'vol', label: 'ΔV / V', value: '+0.120%' }
       ],
       sliders: [
@@ -2192,7 +2432,7 @@
         { id: 'nu', label: "Poisson's Ratio ν", min: 0.00, max: 0.48, step: 0.01, value: 0.30, format: function (v) { return fmt(v, 2); } },
         { id: 'eps', label: 'Axial Strain ε*', min: 0.00, max: 0.50, step: 0.01, value: 0.30, format: function (v) { return fmt(v, 2) + '%'; } }
       ],
-      caption: 'Area under σ(ε) equals stored strain energy density u = ½σ*ε*. Scrub the plot to vary ε*.'
+      caption: 'Area under σ(ε) equals stored strain energy density w = ½σ*ε*. Scrub the plot to vary ε*.'
     });
 
     const st = { E: 200, nu: 0.30, epsPct: 0.30, dragging: false };
@@ -2236,7 +2476,7 @@
       render();
     });
 
-    let plotGeom = { x0: 40, x1: 240 };
+    let plotGeom = { x0: 40, x1: 240, y0: 10, y1: 240 };
 
     function scrubStrain(ev) {
       const p = getPointerPos(dom.canvas, ev);
@@ -2248,6 +2488,10 @@
       }
     }
     function onDown(ev) {
+      const p = getPointerPos(dom.canvas, ev);
+      if (p.y < plotGeom.y0 - 8 || p.y > plotGeom.y1 + 8 || p.x < plotGeom.x0 - 24 || p.x > plotGeom.x1 + 24) {
+        return;
+      }
       st.dragging = true;
       if (dom.canvas.setPointerCapture) {
         try { dom.canvas.setPointerCapture(ev.pointerId); } catch (e) {}
@@ -2262,7 +2506,7 @@
     window.addEventListener('pointerup', onUp);
 
     function render() {
-      const fit = fitCanvas(dom.canvas, 260);
+      const fit = fitCanvas(dom.canvas, 260, { breakpoint: 520, minH: 430 });
       if (!fit) return;
       const ctx = fit.ctx;
       const w = fit.w;
@@ -2273,21 +2517,26 @@
 
       const eps = st.epsPct * 0.01;
       const sigMPa = st.E * 1000 * eps; // GPa * strain * 1000 = MPa
-      const uMJ = 0.5 * sigMPa * eps;   // MPa * 1 = MJ/m^3
+      const wMJ = 0.5 * sigMPa * eps;   // MPa * 1 = MJ/m^3
       const epsLatPct = -st.nu * st.epsPct;
       const dVolPct = (1 - 2 * st.nu) * st.epsPct;
 
+      const isStacked = w < 520;
       const splitX = Math.floor(w * 0.54);
+      const bounds = { x: 0, y: 0, w: w, h: h };
 
-      /* --- LEFT PANEL: Stress-Strain Curve & Shaded Energy Triangle --- */
-      const pBox = { x: 10, y: 12, w: splitX - 20, h: h - 24 };
-      drawPlotFrame(ctx, pBox, pal, 'Linear Hooke Law σ = Eε', 'ε (%)', 'σ (MPa)');
+      /* --- PANEL 1 (TOP on mobile, LEFT on desktop): Stress-Strain Curve & Shaded Energy Triangle --- */
+      const pBox = isStacked
+        ? { x: 10, y: 10, w: w - 20, h: Math.floor(h * 0.51) }
+        : { x: 10, y: 12, w: splitX - 20, h: h - 24 };
+      const plotTitle = pBox.w < 250 ? 'Hooke Law σ = Eε' : 'Linear Hooke Law σ = Eε';
+      drawPlotFrame(ctx, pBox, pal, plotTitle, 'ε (%)', 'σ (MPa)');
 
       const axL = pBox.x + 54;
       const axR = pBox.x + pBox.w - 20;
       const axT = pBox.y + 46;
       const axB = pBox.y + pBox.h - 36;
-      plotGeom = { x0: axL, x1: axR };
+      plotGeom = { x0: axL, x1: axR, y0: pBox.y, y1: pBox.y + pBox.h };
 
       const epsMax = 0.50;
       const sigMax = 1500;
@@ -2371,32 +2620,47 @@
       ctx.lineTo(pStar.x, pStar.y);
       ctx.stroke();
 
-      // Glowing live point (eps*, sig*)
+      // Live point (eps*, sig*)
       ctx.fillStyle = withAlpha(pal.cardinal, 0.25);
       ctx.beginPath(); ctx.arc(pStar.x, pStar.y, 11, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = pal.cardinal;
       ctx.beginPath(); ctx.arc(pStar.x, pStar.y, 5.5, 0, Math.PI * 2); ctx.fill();
 
-      // Energy label inside triangle if large enough
-      if (st.epsPct > 0.14 && sigMPa > 120) {
+      // Strain-energy density label w = ½σ*ε* inside triangle if large enough
+      const triW = pBase.x - p0.x;
+      const triH = p0.y - pStar.y;
+      if (triW > 84 && triH > 36) {
         ctx.font = FONT_SANS_BOLD;
         ctx.fillStyle = pal.teal;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('u = ½σ*ε*', p0.x + (pBase.x - p0.x) * 0.64, p0.y - (p0.y - pStar.y) * 0.28);
+        const wx = clamp(p0.x + triW * 0.64, axL + 44, axR - 44);
+        const wy = clamp(p0.y - triH * 0.28, axT + 14, axB - 14);
+        ctx.fillText('w = ½σ*ε*', wx, wy);
       }
 
-      /* --- RIGHT PANEL: Deforming 2D Elastic Coupon --- */
-      const rCx = splitX + (w - splitX) * 0.50;
-      const rCy = h * 0.53;
-      drawLabelPill(ctx, 'Poisson Coupon Response', rCx, 22, pal, { color: pal.text });
+      /* --- PANEL 2 (BOTTOM on mobile, RIGHT on desktop): Deforming 2D Elastic Coupon --- */
+      const botTop = pBox.y + pBox.h + 10;
+      const availW = isStacked ? w : (w - splitX);
+      const availH = isStacked ? (h - botTop) : h;
+      const rCx = isStacked ? w * 0.50 : (splitX + availW * 0.50);
+      const rCy = isStacked ? (botTop + 34 + (availH - 42) * 0.50) : (h * 0.53);
+      drawLabelPill(ctx, 'Poisson Coupon Response', rCx, isStacked ? botTop + 14 : 22, pal, {
+        color: pal.text,
+        clampTo: bounds
+      });
 
-      const baseW = clamp((w - splitX) * 0.44, 78, 138);
-      const baseH = clamp(h * 0.34, 62, 108);
+      const baseW = isStacked
+        ? clamp(availW * 0.33, 86, 126)
+        : clamp(availW * 0.42, 74, 134);
+      const baseH = isStacked
+        ? clamp(availH * 0.26, 44, 62)
+        : clamp(h * 0.34, 60, 104);
 
       // Exaggerate strain cleanly for visual intuition
       const visScale = 68;
-      const defW = baseW * (1 + eps * visScale);
+      const maxDefW = Math.max(baseW, availW - 96);
+      const defW = Math.min(maxDefW, baseW * (1 + eps * visScale));
       const defH = baseH * Math.max(0.35, 1 - st.nu * eps * visScale);
 
       // Reference dashed outline
@@ -2431,32 +2695,36 @@
       }
       ctx.restore();
 
-      // Applied tensile load arrows
-      const arrowLen = clamp(16 + (sigMPa / 1500) * 28, 12, 44);
+      // Applied tensile load arrows (clamped to never exit canvas)
+      const maxArrRoom = Math.max(12, (availW - defW) * 0.5 - 12);
+      const arrowLen = clamp(16 + (sigMPa / 1500) * 26, 12, Math.min(40, maxArrRoom));
       if (sigMPa > 1) {
-        drawArrow(ctx, dx0 + defW + 4, rCy, dx0 + defW + 4 + arrowLen, rCy, pal.cardinal, 2.6, 10);
-        drawArrow(ctx, dx0 - 4, rCy, dx0 - 4 - arrowLen, rCy, pal.cardinal, 2.6, 10);
+        drawArrow(ctx, dx0 + defW + 4, rCy, dx0 + defW + 4 + arrowLen, rCy, pal.cardinal, 2.6, 9);
+        drawArrow(ctx, dx0 - 4, rCy, dx0 - 4 - arrowLen, rCy, pal.cardinal, 2.6, 9);
       }
 
       // Lateral contraction arrows
       if (st.nu > 0.02 && st.epsPct > 0.03) {
-        drawArrow(ctx, rCx, rCy - baseH * 0.5 - 16, rCx, dy0 - 3, pal.teal, 2.2, 8);
-        drawArrow(ctx, rCx, rCy + baseH * 0.5 + 16, rCx, dy0 + defH + 3, pal.teal, 2.2, 8);
+        drawArrow(ctx, rCx, rCy - baseH * 0.5 - 14, rCx, dy0 - 3, pal.teal, 2.2, 8);
+        drawArrow(ctx, rCx, rCy + baseH * 0.5 + 14, rCx, dy0 + defH + 3, pal.teal, 2.2, 8);
       }
 
-      // Dimension callouts (>= 15px)
+      // Dimension callouts (>= 15px, non-colliding)
       ctx.font = FONT_SANS_BOLD;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       ctx.fillStyle = pal.cardinal;
-      ctx.fillText('Axial: +' + fmt(st.epsPct, 2) + '%', rCx, rCy + baseH * 0.5 + 24);
+      ctx.fillText('Axial: +' + fmt(st.epsPct, 2) + '%', rCx, Math.min(h - 20, rCy + baseH * 0.5 + 18));
       ctx.textBaseline = 'bottom';
       ctx.fillStyle = pal.teal;
-      ctx.fillText('Lateral: ' + fmtSigned(epsLatPct, 3) + '%', rCx, rCy - baseH * 0.5 - 22);
+      const latY = isStacked
+        ? Math.max(botTop + 44, rCy - baseH * 0.5 - 18)
+        : (rCy - baseH * 0.5 - 20);
+      ctx.fillText('Lateral: ' + fmtSigned(epsLatPct, 3) + '%', rCx, latY);
 
       // Update readouts
       dom.readouts.sig.val.textContent = fmt(sigMPa, 0) + ' MPa';
-      dom.readouts.u.val.textContent = fmt(uMJ, 2) + ' MJ/m³';
+      dom.readouts.w.val.textContent = fmt(wMJ, 2) + ' MJ/m³';
       dom.readouts.lat.val.textContent = fmtSigned(epsLatPct, 3) + '%';
       dom.readouts.vol.val.textContent = fmtSigned(dVolPct, 3) + '%';
     }
@@ -2536,18 +2804,21 @@
     }
 
     function render() {
-      const fit = fitCanvas(dom.canvas, 265);
+      const fit = fitCanvas(dom.canvas, 265, { breakpoint: 460, minH: 280 });
       if (!fit) return;
       const ctx = fit.ctx;
       const w = fit.w;
       const h = fit.h;
       const pal = api.getPalette();
+      const isNarrow = w < 460;
 
       ctx.clearRect(0, 0, w, h);
 
-      const Lpx = Math.min(w * 0.58, h * 1.15);
-      const ox = w * 0.20;
-      const oy = h * 0.44;
+      const Lpx = isNarrow
+        ? Math.min(w * 0.56, h * 0.88)
+        : Math.min(w * 0.58, h * 1.15);
+      const ox = w * (isNarrow ? 0.17 : 0.20);
+      const oy = h * (isNarrow ? 0.41 : 0.44);
       const f = st.focus;
 
       function toPx(mx, my) {
@@ -2677,10 +2948,19 @@
       });
       ctx.restore();
 
-      // 6. Focus callout pills (>= 15px)
-      drawLabelPill(ctx, 'S_u: u = 0', clamp(ox + 6, 58, w - 58), clamp(topSu.y - 20, 22, h - 22), pal, { color: pal.teal });
+      // 6. Focus callout pills (>= 15px, clamped cleanly inside canvas)
+      const bounds = { x: 0, y: 0, w: w, h: h };
+      drawLabelPill(ctx, 'Sᵤ: u = 0', isNarrow ? 10 : clamp(ox + 6, 58, w - 58), clamp(topSu.y - 20, 20, h - 22), pal, {
+        color: pal.teal,
+        align: isNarrow ? 'left' : 'center',
+        clampTo: bounds
+      });
       const stPt = toPx(deformBody(0.84, 1, st.load).x, deformBody(0.84, 1, st.load).y);
-      drawLabelPill(ctx, 'S_t: σ·n = t̄', clamp(stPt.x + 18, 90, w - 76), clamp(stPt.y - tLen - 16, 20, h - 22), pal, { color: pal.cardinal });
+      drawLabelPill(ctx, 'Sₜ: σ·n = t̄', isNarrow ? w - 10 : clamp(stPt.x + 18, 90, w - 76), clamp(stPt.y - tLen - 16, 20, h - 22), pal, {
+        color: pal.cardinal,
+        align: isNarrow ? 'right' : 'center',
+        clampTo: bounds
+      });
 
       const vCenter = toPx(deformBody(0.48, -0.78, st.load).x, deformBody(0.48, -0.78, st.load).y);
       const focusText = f === 'kin'
@@ -2688,8 +2968,9 @@
         : f === 'body'
           ? 'Body Force f in V'
           : 'Body V: ∇·σ + f = 0';
-      drawLabelPill(ctx, focusText, clamp(vCenter.x, 100, w - 100), clamp(vCenter.y + 34, 24, h - 20), pal, {
-        color: f === 'body' ? pal.amber : pal.text
+      drawLabelPill(ctx, focusText, isNarrow ? w * 0.5 : clamp(vCenter.x, 100, w - 100), isNarrow ? h - 18 : clamp(vCenter.y + 34, 24, h - 20), pal, {
+        color: f === 'body' ? pal.amber : pal.text,
+        clampTo: bounds
       });
 
       dom.readouts.load.val.textContent = Math.round(st.load * 100) + '%';
@@ -2724,16 +3005,16 @@
         { id: 'len', label: 'Length L', value: '2.006 m' }
       ],
       sliders: [
-        { id: 'N0', label: 'End Force N₀', min: -50, max: 100, step: 5, value: 40, format: function (v) { return fmtSigned(v, 0) + ' kN'; } },
-        { id: 'f', label: 'Body Load f', min: 0, max: 80, step: 5, value: 30, format: function (v) { return v + ' kN/m'; } },
+        { id: 'P', label: 'End Force P', min: -50, max: 100, step: 5, value: 40, format: function (v) { return fmtSigned(v, 0) + ' kN'; } },
+        { id: 'f', label: 'Body Load f₀', min: 0, max: 80, step: 5, value: 30, format: function (v) { return v + ' kN/m'; } },
         { id: 'EA', label: 'Stiffness EA', min: 10, max: 60, step: 2, value: 25, format: function (v) { return v + ' MN'; } }
       ],
-      caption: 'Exact 1D elasticity: N(x) = N₀ + f(L₀ - x) and u(x) = [(N₀ + fL₀)x - ½fx²] / EA (L₀ = 2 m).'
+      caption: 'Exact 1D elasticity: N(x) = P + f₀(L₀ − x), N(0) = P + f₀L₀, and u(x) = [(P + f₀L₀)x − ½f₀x²] / EA (L₀ = 2 m).'
     });
 
-    const st = { N0: 40, f: 30, EA: 25 };
+    const st = { P: 40, f: 30, EA: 25 };
 
-    ['N0', 'f', 'EA'].forEach(function (k) {
+    ['P', 'f', 'EA'].forEach(function (k) {
       dom.sliders[k].input.addEventListener('input', function () {
         st[k] = parseFloat(dom.sliders[k].input.value);
         dom.sliders[k].valEl.textContent = dom.sliders[k].spec.format(st[k]);
@@ -2742,20 +3023,21 @@
     });
 
     function solveRod(x) {
-      // N0 in kN, f in kN/m, EA in MN = 1000 kN -> u in meters, multiply by 1000 for mm
+      // P in kN, f0 in kN/m, EA in MN = 1000 kN -> u in meters, multiply by 1000 for mm
       const EA_kN = st.EA * 1000;
-      const N = st.N0 + st.f * (L0 - x);
-      const u_m = ((st.N0 + st.f * L0) * x - 0.5 * st.f * x * x) / EA_kN;
+      const N = st.P + st.f * (L0 - x);
+      const u_m = ((st.P + st.f * L0) * x - 0.5 * st.f * x * x) / EA_kN;
       return { N: N, u_mm: u_m * 1000, eps: N / EA_kN };
     }
 
     function render() {
-      const fit = fitCanvas(dom.canvas, 290);
+      const fit = fitCanvas(dom.canvas, 290, { breakpoint: 520, minH: 435 });
       if (!fit) return;
       const ctx = fit.ctx;
       const w = fit.w;
       const h = fit.h;
       const pal = api.getPalette();
+      const isNarrow = w < 520;
 
       ctx.clearRect(0, 0, w, h);
 
@@ -2764,12 +3046,14 @@
       const maxEps = Math.max(Math.abs(wall.eps), Math.abs(tip.eps));
 
       /* --- TOP SECTION: Animated Physical Rod --- */
-      const rodY = Math.max(46, h * 0.21);
-      const rodH = clamp(h * 0.11, 24, 34);
-      const rodX0 = 46;
-      const baseLenPx = Math.min(w * 0.62, w - 165);
+      const rodY = isNarrow ? 66 : Math.max(46, h * 0.21);
+      const rodH = isNarrow ? 26 : clamp(h * 0.11, 24, 34);
+      const rodX0 = isNarrow ? 30 : 46;
+      const baseLenPx = isNarrow
+        ? Math.min(w * 0.54, w - 122)
+        : Math.min(w * 0.62, w - 165);
       // Uniform smooth visual displacement scale so large stretches never distort interior strain gradient
-      const maxStretchPos = Math.max(24, w - rodX0 - baseLenPx - 68);
+      const maxStretchPos = Math.max(20, w - rodX0 - baseLenPx - (isNarrow ? 60 : 68));
       const maxStretchNeg = baseLenPx * 0.24;
       let maxPosU = 0;
       let maxNegU = 0;
@@ -2827,33 +3111,35 @@
         ctx.stroke();
       }
 
-      // Distributed body force arrows f
+      // Distributed body force arrows f0
       if (st.f > 0) {
-        const fArrowL = clamp(12 + st.f * 0.28, 12, 34);
-        for (let k = 1; k <= 5; k++) {
-          const px = rodX0 + (k / 6) * defLenPx;
+        const nFArr = isNarrow ? 4 : 5;
+        const fArrowL = clamp(12 + st.f * (isNarrow ? 0.22 : 0.28), 12, isNarrow ? 26 : 34);
+        for (let k = 1; k <= nFArr; k++) {
+          const px = rodX0 + (k / (nFArr + 1)) * defLenPx;
           drawArrow(ctx, px - fArrowL * 0.5, rodY - rodH * 0.5 - 12, px + fArrowL * 0.5, rodY - rodH * 0.5 - 12, pal.amber, 2.1, 8);
         }
         ctx.font = FONT_SANS_BOLD;
         ctx.fillStyle = pal.amber;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
-        ctx.fillText('f = ' + st.f + ' kN/m', rodX0 + defLenPx * 0.5, rodY - rodH * 0.5 - 20);
+        ctx.fillText('f₀ = ' + st.f + ' kN/m', clamp(rodX0 + defLenPx * 0.5, 76, w - 76), rodY - rodH * 0.5 - 20);
       }
 
-      // End force arrow N0
+      // End force arrow P (right end x = L0)
       const endX = rodX0 + defLenPx;
-      if (Math.abs(st.N0) >= 1) {
-        const nLen = clamp(Math.abs(st.N0) * 0.52, 18, 52);
-        const dir = st.N0 >= 0 ? 1 : -1;
+      if (Math.abs(st.P) >= 1) {
+        const maxArrow = Math.max(18, w - endX - 10);
+        const nLen = clamp(Math.abs(st.P) * 0.50, 18, Math.min(50, maxArrow));
+        const dir = st.P >= 0 ? 1 : -1;
         const ax1 = dir > 0 ? endX + 4 : endX + 4 + nLen;
         const ax2 = dir > 0 ? endX + 4 + nLen : endX + 4;
-        drawArrow(ctx, ax1, rodY, ax2, rodY, st.N0 >= 0 ? pal.cardinal : pal.blue, 2.8, 10);
+        drawArrow(ctx, ax1, rodY, ax2, rodY, st.P >= 0 ? pal.cardinal : pal.blue, 2.8, 10);
         ctx.font = FONT_SANS_BOLD;
-        ctx.fillStyle = st.N0 >= 0 ? pal.cardinal : pal.blue;
+        ctx.fillStyle = st.P >= 0 ? pal.cardinal : pal.blue;
         ctx.textAlign = 'left';
         ctx.textBaseline = 'bottom';
-        ctx.fillText('N₀', endX + 10, rodY - 12);
+        ctx.fillText('P', clamp(endX + 8, 12, w - 18), rodY - 12);
       }
 
       // L0 vs L markers
@@ -2861,16 +3147,24 @@
       ctx.fillStyle = pal.textMuted;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
-      ctx.fillText('x = 0', rodX0, rodY + rodH * 0.5 + 8);
+      ctx.fillText('x = 0', Math.max(26, rodX0), rodY + rodH * 0.5 + 8);
       ctx.fillText('L₀', rodX0 + baseLenPx, rodY + rodH * 0.5 + 8);
 
-      /* --- BOTTOM SECTION: Synced Plots u(x) and N(x) --- */
-      const plotY = Math.max(rodY + rodH * 0.5 + 34, h * 0.42);
-      const plotH = Math.max(100, h - plotY - 10);
-      const halfW = Math.floor((w - 30) * 0.5);
-
-      const uBox = { x: 10, y: plotY, w: halfW, h: plotH };
-      const nBox = { x: 20 + halfW, y: plotY, w: w - halfW - 30, h: plotH };
+      /* --- BOTTOM SECTION: Synced Plots u(x) and N(x) (stacked on narrow screens) --- */
+      let uBox, nBox;
+      if (isNarrow) {
+        const topStart = Math.max(rodY + rodH * 0.5 + 34, 134);
+        const gapV = 10;
+        const eachH = Math.max(120, Math.floor((h - topStart - gapV - 10) * 0.5));
+        uBox = { x: 10, y: topStart, w: w - 20, h: eachH };
+        nBox = { x: 10, y: topStart + eachH + gapV, w: w - 20, h: h - (topStart + eachH + gapV) - 10 };
+      } else {
+        const plotY = Math.max(rodY + rodH * 0.5 + 34, h * 0.42);
+        const plotH = Math.max(100, h - plotY - 10);
+        const halfW = Math.floor((w - 30) * 0.5);
+        uBox = { x: 10, y: plotY, w: halfW, h: plotH };
+        nBox = { x: 20 + halfW, y: plotY, w: w - halfW - 30, h: plotH };
+      }
 
       function draw1DPlot(box, title, yUnit, color, sampleFn, yMin, yMax) {
         drawPlotFrame(ctx, box, pal, title, 'x / L₀', '');
@@ -2937,11 +3231,13 @@
 
       const uMinBound = Math.min(-2.5, maxNegU * 1.22);
       const uMaxBound = Math.max(2.5, maxPosU * 1.22);
-      draw1DPlot(uBox, 'Displacement u(x) [mm]', 'mm', pal.teal, function (x) { return solveRod(x).u_mm; }, uMinBound, uMaxBound);
+      const uTitle = uBox.w < 230 ? 'u(x) [mm]' : 'Displacement u(x) [mm]';
+      draw1DPlot(uBox, uTitle, 'mm', pal.teal, function (x) { return solveRod(x).u_mm; }, uMinBound, uMaxBound);
 
       const nMinBound = Math.min(-30, wall.N * 1.18, tip.N * 1.18);
       const nMaxBound = Math.max(30, wall.N * 1.18, tip.N * 1.18);
-      draw1DPlot(nBox, 'Axial Force N(x) [kN]', 'kN', pal.cardinal, function (x) { return solveRod(x).N; }, nMinBound, nMaxBound);
+      const nTitle = nBox.w < 230 ? 'N(x) [kN]' : 'Axial Force N(x) [kN]';
+      draw1DPlot(nBox, nTitle, 'kN', pal.cardinal, function (x) { return solveRod(x).N; }, nMinBound, nMaxBound);
 
       // Update readouts
       dom.readouts.uTip.val.textContent = fmtSigned(tip.u_mm, 2) + ' mm';
@@ -3001,7 +3297,7 @@
     });
 
     function render() {
-      const fit = fitCanvas(dom.canvas, 265);
+      const fit = fitCanvas(dom.canvas, 240, { breakpoint: 480, minH: 260 });
       if (!fit) return;
       const ctx = fit.ctx;
       const w = fit.w;
@@ -3014,6 +3310,8 @@
       const nu = st.nu;
       const exx = st.exxPct * 0.01;
       const isPStress = st.mode === 'pstress';
+      const isWide = w >= 660;
+      const isNarrow = w < 480;
 
       // Exact linear elasticity with sigma_yy = 0
       let sxxMPa, s33MPa, eyy, e33;
@@ -3031,11 +3329,15 @@
 
       const lamOverE = nu / ((1 + nu) * (1 - 2 * nu));
       const muOverE = 1 / (2 * (1 + nu));
+      const accent = isPStress ? pal.teal : pal.cardinal;
 
-      // Isometric 3D projector: x1 right-down, x2 up, x3 out-of-plane left-down
-      const scale = Math.min(w * 0.24, h * 0.78);
-      const ox = w * 0.50;
-      const oy = h * 0.56;
+      // Left slab viewport (full width on narrow/medium, left half on wide desktop)
+      const slabW = isWide ? Math.floor(w * 0.46) : w;
+      const scale = isWide
+        ? Math.min(slabW * 0.28, h * 0.72)
+        : Math.min(slabW * (isNarrow ? 0.24 : 0.24), h * (isNarrow ? 0.60 : 0.74));
+      const ox = isWide ? slabW * 0.52 : slabW * (isNarrow ? 0.52 : 0.50);
+      const oy = h * (isNarrow ? 0.57 : 0.56);
 
       function proj(x1, x2, x3) {
         const sx = ox + (0.86 * x1 - 0.68 * x3) * scale;
@@ -3045,7 +3347,6 @@
 
       function drawIsoBox(Lx, Ly, Lz, opts) {
         const hx = Lx * 0.5, hy = Ly * 0.5, hz = Lz * 0.5;
-        // 8 corners
         const c = {
           nnn: proj(-hx, -hy, -hz), pnn: proj(hx, -hy, -hz),
           npn: proj(-hx, hy, -hz),  ppn: proj(hx, hy, -hz),
@@ -3070,7 +3371,6 @@
           return c;
         }
 
-        // Visible faces: Top (+y), Right (+x), Front (+z)
         const faces = [
           { pts: [c.npn, c.ppn, c.ppp, c.npp], fill: opts.fillTop },
           { pts: [c.pnn, c.ppn, c.ppp, c.pnp], fill: opts.fillRight },
@@ -3101,7 +3401,7 @@
       const defLy = baseLy * Math.max(0.45, 1 + eyy * vis);
       const defLz = baseLz * Math.max(0.32, 1 + e33 * vis * 1.45);
 
-      // In Plane Strain mode: draw back rigid clamping plate at x3 = -baseLz/2
+      // In Plane Strain mode: back rigid clamping plate at x3 = -baseLz/2
       if (!isPStress) {
         const wPad = 0.16;
         const bz = -baseLz * 0.5 - 0.02;
@@ -3123,7 +3423,6 @@
       drawIsoBox(baseLx, baseLy, baseLz, { dashed: true, stroke: pal.textMuted, lw: 1.4 });
 
       // Deformed solid slab
-      const accent = isPStress ? pal.teal : pal.cardinal;
       drawIsoBox(defLx, defLy, defLz, {
         dashed: false,
         stroke: accent,
@@ -3132,7 +3431,7 @@
         fillFront: withAlpha(accent, pal.theme === 'dark' ? 0.13 : 0.10)
       });
 
-      // In Plane Strain mode: translucent front rigid wall at x3 = +baseLz/2 + glowing sigma_33 arrows!
+      // Front rigid clamping wall & sigma_33 arrows (Plane Strain) vs thinning arrow (Plane Stress)
       if (!isPStress) {
         const wPad = 0.16;
         const fz = baseLz * 0.5 + 0.02;
@@ -3149,7 +3448,6 @@
         ctx.lineWidth = 1.6;
         ctx.stroke();
 
-        // Reaction stress sigma_33 arrows glowing in cardinal on the front wall
         if (Math.abs(s33MPa) > 2) {
           const sign = s33MPa >= 0 ? 1 : -1;
           const aLen = clamp(Math.abs(s33MPa) / 550, 0.14, 0.42);
@@ -3164,14 +3462,11 @@
             else drawArrow(ctx, pB.x, pB.y, pA.x, pA.y, pal.blue, 2.8, 10);
           });
         }
-      } else {
-        // Plane Stress mode: thickness change arrows along x3 (teal)
-        if (Math.abs(e33) > 0.0001) {
-          const pOut = proj(0, 0, baseLz * 0.5 + 0.30);
-          const pFace = proj(0, 0, defLz * 0.5 + 0.03);
-          if (e33 < 0) drawArrow(ctx, pOut.x, pOut.y, pFace.x, pFace.y, pal.teal, 2.6, 10);
-          else drawArrow(ctx, pFace.x, pFace.y, pOut.x, pOut.y, pal.teal, 2.6, 10);
-        }
+      } else if (Math.abs(e33) > 0.0001) {
+        const pOut = proj(0, 0, baseLz * 0.5 + 0.30);
+        const pFace = proj(0, 0, defLz * 0.5 + 0.03);
+        if (e33 < 0) drawArrow(ctx, pOut.x, pOut.y, pFace.x, pFace.y, pal.teal, 2.6, 10);
+        else drawArrow(ctx, pFace.x, pFace.y, pOut.x, pOut.y, pal.teal, 2.6, 10);
       }
 
       // Applied in-plane stretch arrows along +x1 and -x1
@@ -3191,30 +3486,168 @@
       }
 
       // 3D Coordinate Triad in bottom-left corner
-      const trX = 48;
-      const trY = h - 42;
-      drawArrow(ctx, trX, trY, trX + 34, trY + 11, pal.axis, 1.8, 7);
-      drawArrow(ctx, trX, trY, trX, trY - 34, pal.axis, 1.8, 7);
-      drawArrow(ctx, trX, trY, trX - 24, trY + 15, pal.axis, 1.8, 7);
+      const trX = isNarrow ? 36 : 44;
+      const trY = h - (isNarrow ? 32 : 38);
+      const trL = isNarrow ? 24 : 32;
+      drawArrow(ctx, trX, trY, trX + trL, trY + Math.round(trL * 0.32), pal.axis, 1.8, 7);
+      drawArrow(ctx, trX, trY, trX, trY - trL, pal.axis, 1.8, 7);
+      drawArrow(ctx, trX, trY, trX - Math.round(trL * 0.70), trY + Math.round(trL * 0.44), pal.axis, 1.8, 7);
       ctx.font = FONT_SANS_BOLD;
       ctx.fillStyle = pal.textMuted;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
-      ctx.fillText('x₁', trX + 38, trY + 12);
+      ctx.fillText('x₁', trX + trL + 4, trY + Math.round(trL * 0.34));
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
-      ctx.fillText('x₂', trX, trY - 38);
+      ctx.fillText('x₂', trX, trY - trL - 4);
       ctx.textAlign = 'right';
       ctx.textBaseline = 'top';
-      ctx.fillText('x₃', trX - 26, trY + 14);
+      ctx.fillText('x₃', Math.max(16, trX - Math.round(trL * 0.74) - 2), trY + Math.round(trL * 0.42));
 
-      // Minimal borderless mode annotation (>= 15px)
-      const statusTxt = isPStress ? 'Free out-of-plane faces (σ₃₃ = 0)' : 'Clamped out-of-plane ends (ε₃₃ = 0)';
+      // Mode annotation (>= 15px)
       ctx.font = FONT_SANS_BOLD;
       ctx.fillStyle = accent;
-      ctx.textAlign = 'right';
       ctx.textBaseline = 'top';
-      ctx.fillText(statusTxt, w - 16, 12);
+      if (isWide) {
+        const statusTxt = isPStress ? 'Free faces (σ₃₃ = 0)' : 'Clamped ends (ε₃₃ = 0)';
+        ctx.textAlign = 'left';
+        ctx.fillText(statusTxt, 14, 12);
+      } else {
+        const statusTxt = isPStress
+          ? (isNarrow ? 'Plane Stress: σ₃₃ = 0' : 'Free out-of-plane faces (σ₃₃ = 0)')
+          : (isNarrow ? 'Plane Strain: ε₃₃ = 0' : 'Clamped out-of-plane ends (ε₃₃ = 0)');
+        ctx.textAlign = isNarrow ? 'center' : 'right';
+        ctx.fillText(statusTxt, isNarrow ? w * 0.5 : w - 14, 10);
+      }
+
+      if (isWide) {
+        /* --- DESKTOP RIGHT PANEL: Live 3D Stress & Strain Component Bars (fills widescreen cleanly) --- */
+        const pBox = { x: slabW + 10, y: 10, w: w - slabW - 22, h: h - 20 };
+        const pTitle = pBox.w >= 430 ? '3D Normal Stress & Strain Components' : '3D State Components';
+        drawPlotFrame(ctx, pBox, pal, pTitle, '', '');
+
+        const twoCol = pBox.w >= 400;
+        const topY = pBox.y + 38;
+        const footY = pBox.y + pBox.h - 14;
+        const bodyBot = footY - 18;
+
+        function drawBarGroup(gx, gy, gw, gh, heading, items, maxAbs, unitSuffix) {
+          ctx.font = FONT_SANS_BOLD;
+          ctx.fillStyle = pal.textMuted;
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'top';
+          ctx.fillText(heading, gx, gy);
+
+          const listTop = gy + 24;
+          const rowStep = Math.max(24, (gh - 24) / items.length);
+          const lblW = 34;
+          const valW = unitSuffix === '%' ? 74 : 68;
+          const trackX = gx + lblW + 6;
+          const trackW = Math.max(52, gw - lblW - valW - 14);
+          const zeroX = trackX + trackW * 0.5;
+          const barH = clamp(Math.floor(rowStep * 0.42), 10, 16);
+
+          // Shared vertical zero axis through all 3 bars
+          ctx.strokeStyle = pal.axis;
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.moveTo(zeroX, listTop + 2);
+          ctx.lineTo(zeroX, listTop + rowStep * items.length - 4);
+          ctx.stroke();
+
+          items.forEach(function (it, idx) {
+            const ry = listTop + (idx + 0.5) * rowStep;
+            // Component symbol
+            ctx.font = FONT_MONO_BOLD;
+            ctx.fillStyle = it.highlight ? accent : pal.text;
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(it.sym, gx, ry);
+
+            // Track background
+            drawRoundRect(ctx, trackX, ry - barH * 0.5, trackW, barH, 2);
+            ctx.fillStyle = withAlpha(pal.surface, pal.theme === 'dark' ? 0.72 : 0.90);
+            ctx.fill();
+            ctx.strokeStyle = it.highlight ? withAlpha(accent, 0.55) : pal.border;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            // Signed bar fill from zeroX
+            const norm = clamp(it.val / maxAbs, -1, 1);
+            const bw = Math.abs(norm) * (trackW * 0.48);
+            if (bw > 1.2) {
+              const bx = norm >= 0 ? zeroX : zeroX - bw;
+              ctx.fillStyle = it.highlight ? accent : (norm >= 0 ? pal.cardinal : pal.blue);
+              ctx.fillRect(bx, ry - barH * 0.5 + 1, bw, barH - 2);
+            }
+
+            // Right-aligned numeric readout (>= 15px mono)
+            ctx.font = FONT_MONO;
+            ctx.fillStyle = it.highlight ? accent : pal.text;
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            const cleanV = Math.abs(it.val) < (unitSuffix === '%' ? 0.0005 : 0.05) ? 0 : it.val;
+            const txt = unitSuffix === '%'
+              ? (cleanV === 0 ? '0.00%' : fmtSigned(cleanV, 2) + '%')
+              : (cleanV === 0 ? '0' : fmtSigned(cleanV, 0));
+            ctx.fillText(txt, gx + gw, ry);
+          });
+        }
+
+        const stressItems = [
+          { sym: 'σ₁₁', val: sxxMPa, highlight: false },
+          { sym: 'σ₂₂', val: 0, highlight: false },
+          { sym: 'σ₃₃', val: s33MPa, highlight: true }
+        ];
+        const strainItems = [
+          { sym: 'ε₁₁', val: exx * 100, highlight: false },
+          { sym: 'ε₂₂', val: eyy * 100, highlight: false },
+          { sym: 'ε₃₃', val: e33 * 100, highlight: true }
+        ];
+
+        const innerX = pBox.x + 14;
+        const innerW = pBox.w - 28;
+        const innerH = Math.max(96, bodyBot - topY);
+
+        if (twoCol) {
+          const colGap = 24;
+          const colW = Math.floor((innerW - colGap) * 0.5);
+          drawBarGroup(innerX, topY, colW, innerH, 'Stress (MPa)', stressItems, 1300, 'MPa');
+          drawDashed(ctx, innerX + colW + colGap * 0.5, topY + 2, innerX + colW + colGap * 0.5, bodyBot - 4, pal.border, [4, 4], 1.1);
+          drawBarGroup(innerX + colW + colGap, topY, innerW - colW - colGap, innerH, 'Strain (%)', strainItems, 0.55, '%');
+        } else {
+          const compactItems = [
+            { sym: 'σ₁₁', val: sxxMPa, highlight: false },
+            { sym: 'σ₃₃', val: s33MPa, highlight: true }
+          ];
+          const halfH = Math.floor((innerH - 8) * 0.5);
+          drawBarGroup(innerX, topY, innerW, halfH, 'Stress (MPa)', compactItems, 1300, 'MPa');
+          drawBarGroup(innerX, topY + halfH + 8, innerW, innerH - halfH - 8, 'Strain (%)', [
+            { sym: 'ε₁₁', val: exx * 100, highlight: false },
+            { sym: 'ε₃₃', val: e33 * 100, highlight: true }
+          ], 0.55, '%');
+        }
+
+        // Constitutive relation footer inside desktop right panel (>= 15px mono)
+        const lawTxt = isPStress
+          ? (pBox.w >= 490 ? 'σ₃₃ = 0   ·   ε₃₃ = −[ν/(1−ν)](ε₁₁ + ε₂₂)' : 'σ₃₃ = 0  ·  ε₃₃ = −νε₁₁')
+          : 'ε₃₃ = 0   ·   σ₃₃ = ν(σ₁₁ + σ₂₂)';
+        ctx.font = FONT_MONO;
+        ctx.fillStyle = pal.textMuted;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(lawTxt, pBox.x + pBox.w * 0.5, footY);
+      } else {
+        // Mobile / compact bottom-right out-of-plane badge
+        const badgeTxt = isPStress
+          ? 'ε₃₃ = ' + fmtSigned(e33 * 100, 2) + '%'
+          : 'σ₃₃ = ' + fmtSigned(s33MPa, 0) + ' MPa';
+        ctx.font = FONT_MONO_BOLD;
+        ctx.fillStyle = accent;
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(badgeTxt, w - 12, h - 10);
+      }
 
       // Update readouts
       dom.readouts.s33.val.textContent = fmtSigned(s33MPa, 1) + ' MPa';
@@ -3249,7 +3682,7 @@
         { id: 'p1', label: 'Load q₀', min: 10, max: 100, step: 2, value: 55, format: function (v) { return v + ' kN/m'; } },
         { id: 'p2', label: 'Section x/L', min: 0.10, max: 0.90, step: 0.02, value: 0.50, format: function (v) { return fmt(v, 2); } }
       ],
-      caption: 'Select a classical 2D biharmonic Airy stress solution (∇⁴Φ = 0) from Lectures 7 to 10.'
+      caption: 'Select a classical 2D biharmonic Airy stress solution (∇⁴φ = 0) from Lectures 6 to 10.'
     });
 
     const st = {
@@ -3304,8 +3737,8 @@
     }
 
     createPillGroup(dom.toolbar, [
-      { id: 'beam', label: 'Beam (Lec. 7)' },
-      { id: 'fourier', label: 'Fourier (Lec. 8)' },
+      { id: 'beam', label: 'Beam (Lec. 6)' },
+      { id: 'fourier', label: 'Fourier (Lec. 7–8)' },
       { id: 'halfspace', label: 'Half Space (Lec. 9)' },
       { id: 'contact', label: 'Contact (Lec. 10)' }
     ], 'beam', function (id) {
@@ -3335,7 +3768,9 @@
     }
 
     function drawBeam(ctx, w, h, pal) {
-      const splitX = Math.floor(w * 0.66);
+      const isStacked = w < 540;
+      const splitX = Math.floor(w * 0.65);
+      const splitY = Math.floor(h * 0.50);
       const q = st.beamQ; // kN/m
       const L = 4.0;      // m
       const halfH = 0.25; // m (depth 2h = 0.5m)
@@ -3356,11 +3791,25 @@
         return xi * (1 - 2 * xi * xi + xi * xi * xi) / (5 / 16); // normalized to 1 at midspan
       }
 
-      const maxDeflPx = (q / 100) * Math.min(48, h * 0.16);
-      const bx0 = 36;
-      const bLen = splitX - 66;
-      const bCy = h * 0.48;
-      const bHalfPx = clamp(h * 0.16, 28, 46);
+      const maxDeflPx = isStacked
+        ? (q / 100) * Math.min(26, splitY * 0.13)
+        : (q / 100) * Math.min(48, h * 0.16);
+      const bx0 = isStacked ? 24 : 36;
+      const bLen = isStacked ? (w - 48) : (splitX - 66);
+      const bCy = isStacked ? Math.round(splitY * 0.56) : h * 0.48;
+      const bHalfPx = isStacked ? clamp(splitY * 0.14, 22, 28) : clamp(h * 0.16, 28, 46);
+
+      // Compact non-colliding inline legend at top on narrow screens
+      if (isStacked) {
+        ctx.font = FONT_SANS_BOLD;
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'left';
+        ctx.fillStyle = pal.blue;
+        ctx.fillText('Top: Comp. (−)', 12, 8);
+        ctx.textAlign = 'right';
+        ctx.fillStyle = pal.cardinal;
+        ctx.fillText('Bottom: Tens. (+)', w - 12, 8);
+      }
 
       // Draw deformed colored beam strips
       const nx = 44;
@@ -3438,16 +3887,19 @@
         ctx.fillStyle = pal.teal;
         ctx.beginPath();
         ctx.moveTo(sx, sy);
-        ctx.lineTo(sx - 12, sy + 18);
-        ctx.lineTo(sx + 12, sy + 18);
+        ctx.lineTo(sx - 10, sy + 16);
+        ctx.lineTo(sx + 10, sy + 16);
         ctx.closePath();
         ctx.fill();
       });
 
       // Distributed downward load arrows q(x)
-      const qLen = clamp(16 + q * 0.34, 18, 48);
-      for (let k = 1; k <= 7; k++) {
-        const s = k / 8;
+      const qLen = isStacked
+        ? clamp(14 + q * 0.22, 16, 36)
+        : clamp(16 + q * 0.34, 18, 48);
+      const nQArr = isStacked ? 6 : 7;
+      for (let k = 1; k <= nQArr; k++) {
+        const s = k / (nQArr + 1);
         const px = bx0 + s * bLen;
         const topY = bCy + maxDeflPx * deflNorm(s * L) - bHalfPx;
         drawArrow(ctx, px, topY - qLen - 4, px, topY - 3, pal.amber, 2.2, 8);
@@ -3456,26 +3908,40 @@
       // Section cut vertical line at x/L
       const cutPx = bx0 + st.beamX * bLen;
       const cutD = maxDeflPx * deflNorm(xCut);
-      drawDashed(ctx, cutPx, bCy + cutD - bHalfPx - 14, cutPx, bCy + cutD + bHalfPx + 14, pal.amber, [4, 4], 2.2);
+      const cutPad = isStacked ? 10 : 14;
+      drawDashed(ctx, cutPx, bCy + cutD - bHalfPx - cutPad, cutPx, bCy + cutD + bHalfPx + cutPad, pal.amber, [4, 4], 2.2);
 
-      drawLabelPill(ctx, 'Top: Compression (-)  |  Bottom: Tension (+)', bx0 + bLen * 0.5, h - 20, pal, { color: pal.text });
+      if (!isStacked) {
+        const legText = bLen < 360
+          ? 'Top: Comp. (−)  |  Bottom: Tens. (+)'
+          : 'Top: Compression (−)  |  Bottom: Tension (+)';
+        drawLabelPill(ctx, legText, bx0 + bLen * 0.5, h - 20, pal, {
+          color: pal.text,
+          clampTo: { x: 0, y: 0, w: splitX, h: h }
+        });
+      }
 
-      // Right profile box: sigma_xx(xCut, y) vs y
-      const pBox = { x: splitX + 10, y: 12, w: w - splitX - 20, h: h - 24 };
-      drawPlotFrame(ctx, pBox, pal, 'Profile σ_xx(y) at x/L=' + fmt(st.beamX, 2), 'σ_xx (MPa)', '');
+      // Profile box: sigma_xx(xCut, y) vs y (bottom on mobile, right on desktop)
+      const pBox = isStacked
+        ? { x: 10, y: splitY + 4, w: w - 20, h: h - splitY - 14 }
+        : { x: splitX + 10, y: 12, w: w - splitX - 20, h: h - 24 };
+      const pTitle = (isStacked || pBox.w < 300)
+        ? 'σₓₓ(y) at x/L=' + fmt(st.beamX, 2)
+        : 'Profile σₓₓ(y) at x/L=' + fmt(st.beamX, 2);
+      drawPlotFrame(ctx, pBox, pal, pTitle, 'σₓₓ (MPa)', '');
 
-      const midX = pBox.x + pBox.w * 0.52;
-      const topY = pBox.y + 48;
-      const botY = pBox.y + pBox.h - 36;
+      const midX = pBox.x + pBox.w * 0.50;
+      const topY = pBox.y + 42;
+      const botY = pBox.y + pBox.h - 32;
       const maxPlotSig = 5.4; // MPa fixed visual scale matching max q=100 kN/m (4.8 MPa)
-      const sScale = (pBox.w * 0.38) / maxPlotSig;
+      const sScale = (pBox.w * 0.40) / maxPlotSig;
 
       // Vertical zero line & horizontal neutral axis
       ctx.strokeStyle = pal.axis;
       ctx.lineWidth = 1.4;
       ctx.beginPath();
       ctx.moveTo(midX, topY); ctx.lineTo(midX, botY);
-      ctx.moveTo(pBox.x + 16, 0.5 * (topY + botY)); ctx.lineTo(pBox.x + pBox.w - 16, 0.5 * (topY + botY));
+      ctx.moveTo(pBox.x + 14, 0.5 * (topY + botY)); ctx.lineTo(pBox.x + pBox.w - 14, 0.5 * (topY + botY));
       ctx.stroke();
 
       // Profile curve & horizontal arrows
@@ -3502,31 +3968,37 @@
         drawArrow(ctx, midX, py, px, py, sVal >= 0 ? pal.cardinal : pal.blue, 2.0, 8);
       }
 
-      ctx.font = FONT_SANS;
+      // Place y = +h (-) on the empty RIGHT side of top compression arrows,
+      // and y = -h (+) on the empty LEFT side of bottom tension arrows -> mathematically zero overlap!
+      const compactY = pBox.w < 210;
+      ctx.font = FONT_SANS_BOLD;
+      ctx.textBaseline = 'middle';
       ctx.fillStyle = pal.blue;
       ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText('y = +h (-)', pBox.x + 12, topY - 4);
+      ctx.fillText(compactY ? 'y=+h (−)' : 'y = +h (−)', midX + (compactY ? 6 : 10), topY + 2);
       ctx.fillStyle = pal.cardinal;
       ctx.textAlign = 'right';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('y = -h (+)', pBox.x + pBox.w - 12, botY + 4);
+      ctx.fillText(compactY ? 'y=−h (+)' : 'y = −h (+)', midX - (compactY ? 6 : 10), botY - 2);
 
       const sigBot = sigXX(xCut, -halfH);
       const midDeflMm = (5 * q * Math.pow(L, 4)) / (384 * 200e6 * I) * 1000;
       setReadout('r1', 'σ_xx(x, -h)', fmtSigned(sigBot, 1) + ' MPa');
       setReadout('r2', 'Moment M(x)', fmt(moment(xCut), 1) + ' kN·m');
       setReadout('r3', 'Midspan δ', fmt(midDeflMm, 2) + ' mm');
-      setReadout('r4', 'Airy Φ(x,y)', 'Polynomial');
+      setReadout('r4', 'Airy φ(x,y)', 'Polynomial');
     }
 
     function drawFourier(ctx, w, h, pal) {
+      const isStacked = w < 540;
       const splitX = Math.floor(w * 0.65);
+      const splitY = Math.floor(h * 0.50);
       const n = st.fourierN;
       const p0 = st.fourierP;
       const k = 2 * Math.PI * n; // L = 1 normalized
 
-      const fBox = { x: 16, y: 62, w: splitX - 30, h: h - 78 };
+      const fBox = isStacked
+        ? { x: 14, y: 50, w: w - 28, h: splitY - 58 }
+        : { x: 16, y: 62, w: splitX - 30, h: h - 78 };
       const depthMax = 0.65; // y/L from 0 to 0.65
 
       // 2D field heatmap of sigma_yy(x, y) = -p0 (1 + k y) e^(-ky) cos(kx)
@@ -3551,20 +4023,23 @@
       ctx.strokeRect(fBox.x, fBox.y, fBox.w, fBox.h);
 
       // Surface cosine pressure wave p(x) = p0 cos(2*pi*n*x/L)
-      const ampPx = 12 + (p0 / 100) * 16;
+      const ampPx = isStacked
+        ? (8 + (p0 / 100) * 10)
+        : (12 + (p0 / 100) * 16);
+      const waveBaseY = fBox.y - (isStacked ? 22 : 18);
       ctx.strokeStyle = pal.amber;
       ctx.lineWidth = 2.4;
       ctx.beginPath();
       for (let i = 0; i <= 120; i++) {
         const xn = i / 120;
         const px = fBox.x + xn * fBox.w;
-        const py = fBox.y - ampPx * Math.cos(k * xn) - 18;
+        const py = waveBaseY - ampPx * Math.cos(k * xn);
         if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
       }
       ctx.stroke();
 
       // Surface arrows showing alternating compression / tension
-      const nArrows = Math.min(24, n * 6);
+      const nArrows = Math.min(isStacked ? 18 : 24, n * 6);
       for (let j = 0; j <= nArrows; j++) {
         const xn = j / nArrows;
         const val = Math.cos(k * xn);
@@ -3579,14 +4054,22 @@
       const decayY = Math.min(depthMax, 1 / (2 * n));
       const decayPx = fBox.y + (decayY / depthMax) * fBox.h;
       drawDashed(ctx, fBox.x, decayPx, fBox.x + fBox.w, decayPx, pal.teal, [6, 5], 2.0);
-      drawLabelPill(ctx, 'Decay depth y ≈ λ/2 = L/' + (2 * n), fBox.x + fBox.w * 0.5, clamp(decayPx, fBox.y + 20, fBox.y + fBox.h - 20), pal, { color: pal.teal });
+      const decayLabel = isStacked
+        ? 'Decay y ≈ λ/2 = L/' + (2 * n)
+        : 'Decay depth y ≈ λ/2 = L/' + (2 * n);
+      drawLabelPill(ctx, decayLabel, fBox.x + fBox.w * 0.5, clamp(decayPx, fBox.y + 18, fBox.y + fBox.h - 18), pal, {
+        color: pal.teal,
+        clampTo: fBox
+      });
 
-      // Right plot: Exponential decay envelope (1 + ky) e^(-ky) vs y/L
-      const pBox = { x: splitX + 10, y: 12, w: w - splitX - 20, h: h - 24 };
-      drawPlotFrame(ctx, pBox, pal, '|σyy| / p₀ vs. y/L', '', '');
-      const axL = pBox.x + 48;
+      // Decay envelope plot: (1 + ky) e^(-ky) vs y/L (bottom on mobile, right on desktop)
+      const pBox = isStacked
+        ? { x: 10, y: splitY + 4, w: w - 20, h: h - splitY - 14 }
+        : { x: splitX + 10, y: 12, w: w - splitX - 20, h: h - 24 };
+      drawPlotFrame(ctx, pBox, pal, '|σᵧᵧ| / p₀ vs. y/L', '', '');
+      const axL = pBox.x + 52;
       const axR = pBox.x + pBox.w - 18;
-      const axT = pBox.y + 44;
+      const axT = pBox.y + 42;
       const axB = pBox.y + pBox.h - 32;
 
       ctx.strokeStyle = pal.axis;
@@ -3647,15 +4130,19 @@
       setReadout('r1', 'Mode n', String(n));
       setReadout('r2', 'Wavelength λ', 'L / ' + n);
       setReadout('r3', 'At y = 0.3L', fmt(envAt03 * 100, 1) + '%');
-      setReadout('r4', 'Airy Φ(x,y)', 'e^(-ky) cos(kx)');
+      setReadout('r4', 'Airy φ(x,y)', 'e^(−ky) cos(kx)');
     }
 
     function drawHalfSpace(ctx, w, h, pal) {
+      const isStacked = w < 540;
       const splitX = Math.floor(w * 0.65);
+      const splitY = Math.floor(h * 0.50);
       const P = st.flamantP; // kN/m
       const rProbe = st.flamantR;
 
-      const hsBox = { x: 14, y: 54, w: splitX - 28, h: h - 68 };
+      const hsBox = isStacked
+        ? { x: 14, y: 46, w: w - 28, h: splitY - 54 }
+        : { x: 14, y: 54, w: splitX - 28, h: h - 68 };
       const ox = hsBox.x + hsBox.w * 0.5;
       const oy = hsBox.y;
       const scale = Math.min(hsBox.w * 0.46, hsBox.h * 0.88);
@@ -3719,22 +4206,30 @@
         const sinT = Math.sin(th);
         const sx = ox + sinT * rPx;
         const sy = oy + cosT * rPx;
-        const mag = clamp((P / 120) * (0.45 / rProbe) * cosT * 42, 8, 52);
+        const mag = clamp((P / 120) * (0.45 / rProbe) * cosT * (isStacked ? 32 : 42), 8, isStacked ? 40 : 52);
         drawArrow(ctx, sx, sy, sx + sinT * mag, sy + cosT * mag, pal.amber, 2.2, 8);
       }
       ctx.restore();
 
       // Downward concentrated line load arrow P
-      const pLen = clamp(24 + P * 0.16, 24, 46);
+      const pLen = isStacked
+        ? clamp(22 + P * 0.10, 22, 36)
+        : clamp(24 + P * 0.16, 24, 46);
       drawArrow(ctx, ox, oy - pLen, ox, oy - 3, pal.cardinal, 3.2, 11);
-      drawLabelPill(ctx, 'P = ' + P + ' kN/m', ox + 78, oy - pLen * 0.65, pal, { color: pal.cardinal });
+      drawLabelPill(ctx, 'P = ' + P + ' kN/m', ox + 14, oy - pLen * 0.58, pal, {
+        color: pal.cardinal,
+        align: 'left',
+        clampTo: { x: 0, y: 0, w: isStacked ? w : splitX, h: oy }
+      });
 
-      // Right plot: 1/r radial decay curve along theta = 0
-      const pBox = { x: splitX + 10, y: 12, w: w - splitX - 20, h: h - 24 };
-      drawPlotFrame(ctx, pBox, pal, '|σrr| ∝ 1/r vs. r (m)', '', '');
-      const axL = pBox.x + 50;
+      // Radial decay curve along theta = 0 (bottom on mobile, right on desktop)
+      const pBox = isStacked
+        ? { x: 10, y: splitY + 4, w: w - 20, h: h - splitY - 14 }
+        : { x: splitX + 10, y: 12, w: w - splitX - 20, h: h - 24 };
+      drawPlotFrame(ctx, pBox, pal, '|σᵣᵣ| ∝ 1/r vs. r (m)', '', '');
+      const axL = pBox.x + 54;
       const axR = pBox.x + pBox.w - 18;
-      const axT = pBox.y + 44;
+      const axT = pBox.y + 42;
       const axB = pBox.y + pBox.h - 32;
 
       ctx.strokeStyle = pal.axis;
@@ -3743,7 +4238,7 @@
       ctx.moveTo(axL, axT); ctx.lineTo(axL, axB); ctx.lineTo(axR, axB);
       ctx.stroke();
 
-      // Numeric ticks along Depth r axis (0.14 .. 1.0 m)
+      // Numeric ticks along Depth r axis (0.14 .. 1.0 m) & vertical stress scale
       ctx.font = FONT_MONO;
       ctx.fillStyle = pal.textMuted;
       ctx.textAlign = 'center';
@@ -3755,6 +4250,10 @@
         ctx.stroke();
         ctx.fillText(rv.toFixed(1), tx, axB + 5);
       });
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('450', axL - 6, axT);
+      ctx.fillText('0', axL - 6, axB);
 
       const maxSigPlot = 450;
       ctx.strokeStyle = pal.blue;
@@ -3776,13 +4275,15 @@
       ctx.beginPath(); ctx.arc(prX, prY, 5.5, 0, Math.PI * 2); ctx.fill();
 
       setReadout('r1', 'Load P', P + ' kN/m');
-      setReadout('r2', 'σ_rr(r, 0)', '-' + fmt(sigAtProbe, 1) + ' kPa');
+      setReadout('r2', 'σ_rr(r, 0)', '−' + fmt(sigAtProbe, 1) + ' kPa');
       setReadout('r3', 'σ_θθ, τ_rθ', '0, 0');
-      setReadout('r4', 'Airy Φ(r,θ)', '-(P/π) rθ sinθ');
+      setReadout('r4', 'Airy φ(r,θ)', '−(P/π) rθ sinθ');
     }
 
     function drawContact(ctx, w, h, pal) {
+      const isStacked = w < 540;
       const splitX = Math.floor(w * 0.65);
+      const splitY = Math.floor(h * 0.51);
       const P = st.contactP; // kN/m
       const R = st.contactR; // m
       const Estar = 2.5e5;   // kPa effective modulus (0.25 GPa compliant contact)
@@ -3794,7 +4295,9 @@
       const tauPeakMPa = 0.30028 * p0MPa;
       const zPeak = 0.78615 * a;
 
-      const cBox = { x: 14, y: 66, w: splitX - 28, h: h - 80 };
+      const cBox = isStacked
+        ? { x: 14, y: 66, w: w - 28, h: splitY - 72 }
+        : { x: 14, y: 66, w: splitX - 28, h: h - 80 };
       const ox = cBox.x + cBox.w * 0.5;
       const oy = cBox.y;
       const pxPerUnit = Math.min(cBox.w * 0.145, cBox.h * 0.28);
@@ -3839,7 +4342,9 @@
       ctx.stroke();
 
       // Semi-elliptical Hertzian contact pressure p(x) = p0 sqrt(1 - (x/a)^2)
-      const pHeight = clamp(14 + (p0MPa / 5.0) * 34, 14, 48);
+      const pHeight = isStacked
+        ? clamp(12 + (p0MPa / 5.0) * 20, 12, 30)
+        : clamp(14 + (p0MPa / 5.0) * 34, 14, 48);
       ctx.save();
       ctx.beginPath();
       ctx.moveTo(ox - aPx, oy);
@@ -3878,18 +4383,26 @@
         ctx.strokeStyle = pal.cardinal;
         ctx.lineWidth = 2.2;
         ctx.stroke();
-        drawLabelPill(ctx, 'Max τ at z = 0.786a', ox, clamp(zPeakPx + 24, oy + 28, cBox.y + cBox.h - 18), pal, { color: pal.cardinal });
+        drawLabelPill(ctx, 'Max τ at z = 0.786a', ox, clamp(zPeakPx + 24, oy + 26, cBox.y + cBox.h - 16), pal, {
+          color: pal.cardinal,
+          clampTo: cBox
+        });
       }
 
-      drawLabelPill(ctx, 'Contact Patch [-a, +a]', ox, 22, pal, { color: pal.text });
+      drawLabelPill(ctx, 'Contact Patch [−a, +a]', ox, 18, pal, {
+        color: pal.text,
+        clampTo: { x: 0, y: 0, w: isStacked ? w : splitX, h: 42 }
+      });
 
-      // Right plot: Centerline stress ratios vs z/a
-      const pBox = { x: splitX + 10, y: 12, w: w - splitX - 20, h: h - 24 };
+      // Centerline stress ratios vs z/a (bottom on mobile, right on desktop)
+      const pBox = isStacked
+        ? { x: 10, y: splitY + 4, w: w - 20, h: h - splitY - 14 }
+        : { x: splitX + 10, y: 12, w: w - splitX - 20, h: h - 24 };
       drawPlotFrame(ctx, pBox, pal, 'Stress / p₀ vs. z/a', '', '');
       const axL = pBox.x + 48;
       const axR = pBox.x + pBox.w - 16;
-      const axT = pBox.y + 44;
-      const axB = pBox.y + pBox.h - 32;
+      const axT = pBox.y + 42;
+      const axB = pBox.y + pBox.h - 30;
       const zMaxRatio = 2.5;
 
       ctx.strokeStyle = pal.axis;
@@ -3898,7 +4411,7 @@
       ctx.moveTo(axL, axT); ctx.lineTo(axL, axB); ctx.lineTo(axR, axB);
       ctx.stroke();
 
-      // Numeric ticks along Stress / p0 axis (0, 0.5, 1.0)
+      // Numeric ticks along Stress / p0 axis (0, 0.5, 1.0) & depth z/a (0, 2.5)
       ctx.font = FONT_MONO;
       ctx.fillStyle = pal.textMuted;
       ctx.textAlign = 'center';
@@ -3910,6 +4423,10 @@
         ctx.stroke();
         ctx.fillText(tv === 0 ? '0' : tv.toFixed(1), tx, axB + 5);
       });
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('0', axL - 6, axT);
+      ctx.fillText('2.5', axL - 6, axB);
 
       function plotCenterline(fn, col, lw) {
         ctx.strokeStyle = col;
@@ -3952,7 +4469,7 @@
     }
 
     function render() {
-      const fit = fitCanvas(dom.canvas, 310);
+      const fit = fitCanvas(dom.canvas, 310, { breakpoint: 540, minH: 410 });
       if (!fit) return;
       const ctx = fit.ctx;
       const w = fit.w;
@@ -4008,7 +4525,7 @@
     };
 
     function setReadout(id, k, v) {
-      dom.readouts[id].key.textContent = k;
+      dom.readouts[id].key.innerHTML = formatMathHtml(k);
       dom.readouts[id].val.textContent = v;
     }
 
@@ -4024,7 +4541,7 @@
         dom.sliders.s2.input.min = '1.00'; dom.sliders.s2.input.max = '3.00'; dom.sliders.s2.input.step = '0.05';
         dom.sliders.s2.input.value = String(st.probeR);
         dom.sliders.s2.valEl.textContent = fmt(st.probeR, 2);
-        dom.captionEl.textContent = 'Hover or drag on the plate to inspect Kirsch hoop stress σ_θθ(r, θ) around the hole.';
+        dom.captionEl.innerHTML = formatMathHtml('Hover or drag on the plate to inspect Kirsch hoop stress σ_θθ(r, θ) around the hole.');
       } else {
         dom.sliders.s1.labelEl.textContent = 'Solid Wedge Angle 2α';
         dom.sliders.s1.input.min = '60'; dom.sliders.s1.input.max = '360'; dom.sliders.s1.input.step = '2';
@@ -4032,13 +4549,13 @@
         dom.sliders.s1.valEl.textContent = st.wedgeDeg + '°';
 
         dom.sliders.s2.wrap.style.display = 'none';
-        dom.captionEl.textContent = 'Drag the wedge flank or slide 2α from 60° to 360° (slit crack r^(-1/2) singularity).';
+        dom.captionEl.innerHTML = formatMathHtml('Drag the wedge flank or slide Solid Wedge Angle 2α from 60° to 360° (slit crack r^(-1/2) singularity).');
       }
     }
 
     createPillGroup(dom.toolbar, [
-      { id: 'kirsch', label: 'Kirsch Hole (Lec. 11-12)' },
-      { id: 'wedge', label: 'Wedge / Notch (Lec. 13)' }
+      { id: 'kirsch', label: 'Kirsch Hole (Lec. 11)' },
+      { id: 'wedge', label: 'Wedge / Notch (Lec. 12)' }
     ], 'kirsch', function (id) {
       st.mode = id;
       applyModeUI();
@@ -4104,11 +4621,28 @@
       return { srr: srr, stt: stt, srt: srt };
     }
 
-    let geom = { cx: 140, cy: 140, aPx: 36, splitX: 280 };
+    let geom = {
+      cx: 140,
+      cy: 140,
+      aPx: 36,
+      hitBox: { x0: 0, y0: 0, x1: 280, y1: 280 },
+      plateBox: { x0: 30, y0: 30, x1: 250, y1: 250 },
+      handleX: 140,
+      handleY: 80
+    };
+
+    function isTouchInteractive(pos) {
+      if (st.mode === 'kirsch') {
+        const pb = geom.plateBox;
+        return pos.x >= pb.x0 && pos.x <= pb.x1 && pos.y >= pb.y0 && pos.y <= pb.y1;
+      }
+      return Math.hypot(pos.x - geom.handleX, pos.y - geom.handleY) <= 44;
+    }
 
     function handlePointer(ev, isClickOrDrag) {
       const p = getPointerPos(dom.canvas, ev);
-      if (p.x > geom.splitX) return;
+      const hb = geom.hitBox;
+      if (p.x < hb.x0 || p.x > hb.x1 || p.y < hb.y0 || p.y > hb.y1) return;
       const dx = p.x - geom.cx;
       const dy = geom.cy - p.y; // y-up
       const dist = Math.hypot(dx, dy);
@@ -4134,31 +4668,58 @@
     }
 
     function onDown(ev) {
+      const p = getPointerPos(dom.canvas, ev);
+      if (ev.pointerType === 'touch' && !isTouchInteractive(p)) return;
       st.dragging = true;
+      if (dom.canvas.setPointerCapture) {
+        try { dom.canvas.setPointerCapture(ev.pointerId); } catch (e) {}
+      }
       handlePointer(ev, true);
     }
     function onMove(ev) {
+      if (ev.pointerType === 'touch' && !st.dragging) return;
       if (st.mode === 'kirsch' || st.dragging) {
         handlePointer(ev, st.dragging);
       }
     }
     function onUp() { st.dragging = false; }
 
+    const detachTouchLock = attachSelectiveTouchLock(dom.canvas, isTouchInteractive);
     dom.canvas.addEventListener('pointerdown', onDown);
     dom.canvas.addEventListener('pointermove', onMove);
     window.addEventListener('pointerup', onUp);
 
     function drawKirsch(ctx, w, h, pal) {
+      const isStacked = w < 520;
       const splitX = Math.floor(w * 0.56);
-      const cx = splitX * 0.50;
-      const cy = h * 0.53;
-      const aPx = clamp(Math.min(splitX * 0.145, h * 0.165), 24, 42);
-      geom = { cx: cx, cy: cy, aPx: aPx, splitX: splitX };
+      const splitY = Math.floor(h * 0.51);
+      const cx = isStacked ? w * 0.50 : splitX * 0.50;
+      const cy = isStacked ? splitY * 0.50 : h * 0.53;
+      const aPx = isStacked
+        ? clamp(Math.min(w * 0.105, splitY * 0.155), 22, 34)
+        : clamp(Math.min(splitX * 0.145, h * 0.165), 24, 42);
 
-      const plateW = Math.min(splitX - 36, aPx * 6.4);
-      const plateH = Math.min(h - 46, aPx * 5.0);
+      const plateW = isStacked
+        ? Math.min(w - 56, aPx * 5.8)
+        : Math.min(splitX - 36, aPx * 6.4);
+      const plateH = isStacked
+        ? Math.min(splitY - 24, aPx * 4.7)
+        : Math.min(h - 46, aPx * 5.0);
       const px0 = cx - plateW * 0.5;
       const py0 = cy - plateH * 0.5;
+
+      const panelBounds = isStacked
+        ? { x: 0, y: 0, w: w, h: splitY }
+        : { x: 0, y: 0, w: splitX, h: h };
+      geom = {
+        cx: cx,
+        cy: cy,
+        aPx: aPx,
+        hitBox: isStacked ? { x0: 0, y0: 0, x1: w, y1: splitY } : { x0: 0, y0: 0, x1: splitX, y1: h },
+        plateBox: { x0: px0, y0: py0, x1: px0 + plateW, y1: py0 + plateH },
+        handleX: cx,
+        handleY: cy
+      };
 
       // 2D hoop stress heatmap outside the circular hole
       const cols = 54;
@@ -4209,7 +4770,7 @@
       ctx.restore();
 
       // Remote tension arrows on left and right edges
-      const arrL = 18;
+      const arrL = isStacked ? 16 : 18;
       [-0.32, 0, 0.32].forEach(function (frac) {
         const ay = cy + frac * plateH;
         drawArrow(ctx, px0 + plateW + 2, ay, px0 + plateW + arrL, ay, pal.cardinal, 2.2, 8);
@@ -4227,16 +4788,24 @@
       ctx.lineWidth = 1.5;
       ctx.stroke();
 
-      // Rim annotations (>= 15px)
-      drawLabelPill(ctx, '3σ∞', cx, clamp(cy - aPx * 2.08, 18, cy - aPx - 14), pal, { color: pal.cardinal });
-      drawLabelPill(ctx, '-σ∞', clamp(cx + aPx * 1.48, cx + aPx + 20, splitX - 36), cy, pal, { color: pal.blue });
+      // Rim annotations (>= 15px, placed clear of the hoop-stress petal curve and clamped cleanly)
+      drawLabelPill(ctx, '3σ∞', cx, isStacked ? 16 : clamp(cy - aPx * 2.15 - 8, 18, cy - aPx - 16), pal, {
+        color: pal.cardinal,
+        clampTo: panelBounds
+      });
+      drawLabelPill(ctx, '−σ∞', clamp(cx + aPx + 30, cx + aPx + 24, panelBounds.w - 30), cy, pal, {
+        color: pal.blue,
+        clampTo: panelBounds
+      });
 
-      /* --- RIGHT PANEL: Hoop Stress vs. Theta (0 to 180 deg) --- */
-      const pBox = { x: splitX + 12, y: 12, w: w - splitX - 24, h: h - 24 };
-      drawPlotFrame(ctx, pBox, pal, 'Hoop Stress σ_θθ / σ∞', 'Angle θ (°)', '');
+      /* --- SUBPLOT (BOTTOM on mobile, RIGHT on desktop): Hoop Stress vs. Theta (0 to 180 deg) --- */
+      const pBox = isStacked
+        ? { x: 10, y: splitY + 4, w: w - 20, h: h - splitY - 14 }
+        : { x: splitX + 12, y: 12, w: w - splitX - 24, h: h - 24 };
+      drawPlotFrame(ctx, pBox, pal, 'Hoop Stress σθθ / σ∞', 'Angle θ (°)', '');
       const axL = pBox.x + 48;
       const axR = pBox.x + pBox.w - 18;
-      const axT = pBox.y + 44;
+      const axT = pBox.y + 42;
       const axB = pBox.y + pBox.h - 32;
 
       function toP(deg, val) {
@@ -4294,7 +4863,7 @@
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
       [-1, 0, 1, 3].forEach(function (v) {
-        ctx.fillText(String(v), axL - 6, toP(0, v).y);
+        ctx.fillText(v < 0 ? '−' + Math.abs(v) : String(v), axL - 6, toP(0, v).y);
       });
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
@@ -4309,17 +4878,35 @@
     }
 
     function drawWedge(ctx, w, h, pal) {
+      const isStacked = w < 520;
       const splitX = Math.floor(w * 0.55);
-      const cx = splitX * 0.50;
-      const cy = h * 0.53;
-      const R = clamp(Math.min(splitX * 0.38, h * 0.38), 64, 118);
-      geom = { cx: cx, cy: cy, aPx: R * 0.35, splitX: splitX };
+      const splitY = Math.floor(h * 0.50);
+      const cx = isStacked ? w * 0.50 : splitX * 0.50;
+      const cy = isStacked ? splitY * 0.50 : h * 0.53;
+      const R = isStacked
+        ? clamp(Math.min(w * 0.24, splitY * 0.31), 48, 66)
+        : clamp(Math.min(splitX * 0.38, h * 0.38), 64, 118);
 
       const twoAlpha = st.wedgeDeg;
       const halfRad = ((twoAlpha * 0.5) * Math.PI) / 180;
       const lam = solveWilliamsLambda(twoAlpha);
       const order = lam - 1;
       const isSingular = twoAlpha > 180.5;
+
+      const hx = cx + R * Math.cos(halfRad);
+      const hy = cy - R * Math.sin(halfRad);
+      const panelBounds = isStacked
+        ? { x: 0, y: 0, w: w, h: splitY }
+        : { x: 0, y: 0, w: splitX, h: h };
+      geom = {
+        cx: cx,
+        cy: cy,
+        aPx: R * 0.35,
+        hitBox: isStacked ? { x0: 0, y0: 0, x1: w, y1: splitY } : { x0: 0, y0: 0, x1: splitX, y1: h },
+        plateBox: { x0: cx - R, y0: cy - R, x1: cx + R, y1: cy + R },
+        handleX: hx,
+        handleY: hy
+      };
 
       // Draw solid elastic wedge sector spanning [-alpha, +alpha] around +x axis
       ctx.save();
@@ -4357,8 +4944,6 @@
       }
 
       // Draggable flank handle on top flank
-      const hx = cx + R * Math.cos(halfRad);
-      const hy = cy - R * Math.sin(halfRad);
       ctx.fillStyle = pal.amber;
       ctx.beginPath(); ctx.arc(hx, hy, 6.5, 0, Math.PI * 2); ctx.fill();
       ctx.strokeStyle = pal.white;
@@ -4375,17 +4960,23 @@
       ctx.stroke();
       ctx.restore();
 
-      drawLabelPill(ctx, 'Solid 2α = ' + twoAlpha + '°', cx, 22, pal, { color: isSingular ? pal.cardinal : pal.teal });
-      drawLabelPill(ctx, isSingular ? 'σ ~ r^(' + fmt(order, 2) + ')' : 'Regular (No Singularity)', cx, h - 22, pal, {
-        color: isSingular ? pal.cardinal : pal.teal
+      drawLabelPill(ctx, 'Solid Wedge Angle 2α = ' + twoAlpha + '°', cx, isStacked ? 18 : 22, pal, {
+        color: isSingular ? pal.cardinal : pal.teal,
+        clampTo: panelBounds
+      });
+      drawLabelPill(ctx, isSingular ? 'σ ~ r^(' + fmt(order, 2) + ')' : 'Regular (No Singularity)', cx, isStacked ? splitY - 16 : h - 22, pal, {
+        color: isSingular ? pal.cardinal : pal.teal,
+        clampTo: panelBounds
       });
 
-      /* --- RIGHT PANEL: Exact Williams Singularity Curve (lam - 1 vs 2*alpha) --- */
-      const pBox = { x: splitX + 12, y: 12, w: w - splitX - 24, h: h - 24 };
-      drawPlotFrame(ctx, pBox, pal, 'Singularity Order (λ - 1)', 'Solid Angle 2α (°)', '');
+      /* --- SUBPLOT (BOTTOM on mobile, RIGHT on desktop): Exact Williams Singularity Curve (lam - 1 vs 2*alpha) --- */
+      const pBox = isStacked
+        ? { x: 10, y: splitY + 4, w: w - 20, h: h - splitY - 14 }
+        : { x: splitX + 12, y: 12, w: w - splitX - 24, h: h - 24 };
+      drawPlotFrame(ctx, pBox, pal, 'Singularity Order (λ − 1)', 'Solid Wedge Angle 2α (°)', '');
       const axL = pBox.x + 54;
       const axR = pBox.x + pBox.w - 18;
-      const axT = pBox.y + 44;
+      const axT = pBox.y + 42;
       const axB = pBox.y + pBox.h - 32;
 
       function toP(deg, ordVal) {
@@ -4412,7 +5003,7 @@
       const yHalf = toP(360, -0.5).y;
       drawDashed(ctx, axL, yHalf, axR, yHalf, pal.cardinal, [5, 4], 1.3);
 
-      // Exact curve for 2alpha in [150, 360] (clamped at top of plot for convex wedges)
+      // Exact curve for 2alpha in [140, 360] (clamped at top of plot for convex wedges)
       ctx.strokeStyle = pal.cardinal;
       ctx.lineWidth = 2.8;
       ctx.beginPath();
@@ -4438,7 +5029,7 @@
       ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
       ctx.fillText('0.0', axL - 6, y0);
-      ctx.fillText('-0.5', axL - 6, yHalf);
+      ctx.fillText('−0.5', axL - 6, yHalf);
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       [60, 180, 270, 360].forEach(function (d) {
@@ -4446,21 +5037,21 @@
       });
 
       const regime = twoAlpha >= 356
-        ? 'LEFM Crack (r^-1/2)'
+        ? 'LEFM Crack (r⁻¹/²)'
         : twoAlpha > 180.5
           ? 'Singular Notch'
           : twoAlpha > 179.5
             ? 'Flat Half-Space'
             : 'Regular Corner';
 
-      setReadout('r1', 'Wedge Angle 2α', twoAlpha + '°');
+      setReadout('r1', 'Solid Wedge Angle 2α', twoAlpha + '°');
       setReadout('r2', 'Eigenvalue λ', fmt(lam, 3));
-      setReadout('r3', 'Order r^(λ-1)', isSingular ? 'r^(' + fmt(order, 3) + ')' : 'Finite (λ ≥ 1)');
+      setReadout('r3', 'Order r^(λ−1)', isSingular ? 'r^(' + fmt(order, 3) + ')' : 'Finite (λ ≥ 1)');
       setReadout('r4', 'Regime', regime);
     }
 
     function render() {
-      const fit = fitCanvas(dom.canvas, 285);
+      const fit = fitCanvas(dom.canvas, 285, { breakpoint: 520, minH: 430 });
       if (!fit) return;
       const ctx = fit.ctx;
       const w = fit.w;
@@ -4479,6 +5070,7 @@
       onThemeChange: render,
       onSlideEnter: render,
       destroy: function () {
+        detachTouchLock();
         dom.canvas.removeEventListener('pointerdown', onDown);
         dom.canvas.removeEventListener('pointermove', onMove);
         window.removeEventListener('pointerup', onUp);
@@ -4516,8 +5108,8 @@
     };
 
     createPillGroup(dom.toolbar, [
-      { id: 'kelvin', label: 'Kelvin (Infinite, Lec. 17)' },
-      { id: 'image', label: 'Half-Space Image (Lec. 16)' }
+      { id: 'kelvin', label: 'Kelvin (Infinite Space)' },
+      { id: 'image', label: 'Half-Space Image (Mindlin)' }
     ], 'image', function (id) {
       st.mode = id;
       render();
@@ -4593,7 +5185,12 @@
       return { ux: ux_y + ux_x, uy: uy_y + uy_x };
     }
 
-    let layout = { ox: 200, surfY: 90, scale: 95 };
+    let layout = { ox: 200, surfY: 90, scale: 95, realY: 160 };
+
+    function isTouchOnForce(pos) {
+      if (st.mode !== 'image') return false;
+      return Math.hypot(pos.x - layout.ox, pos.y - layout.realY) <= 44;
+    }
 
     function updateDepthFromPointer(ev) {
       const p = getPointerPos(dom.canvas, ev);
@@ -4605,12 +5202,15 @@
     }
 
     function onDown(ev) {
+      if (st.mode !== 'image') return;
+      const p = getPointerPos(dom.canvas, ev);
+      if (ev.pointerType === 'touch' && !isTouchOnForce(p)) return;
       st.dragging = true;
       dom.stage.style.cursor = 'grabbing';
       if (dom.canvas.setPointerCapture) {
         try { dom.canvas.setPointerCapture(ev.pointerId); } catch (e) {}
       }
-      if (st.mode === 'image') updateDepthFromPointer(ev);
+      updateDepthFromPointer(ev);
     }
     function onMove(ev) {
       if (st.dragging && st.mode === 'image') updateDepthFromPointer(ev);
@@ -4620,17 +5220,19 @@
       dom.stage.style.cursor = 'grab';
     }
 
+    const detachTouchLock = attachSelectiveTouchLock(dom.canvas, isTouchOnForce);
     dom.canvas.addEventListener('pointerdown', onDown);
     dom.canvas.addEventListener('pointermove', onMove);
     window.addEventListener('pointerup', onUp);
 
     function render() {
-      const fit = fitCanvas(dom.canvas, 290);
+      const fit = fitCanvas(dom.canvas, 290, { breakpoint: 480, minH: 310 });
       if (!fit) return;
       const ctx = fit.ctx;
       const w = fit.w;
       const h = fit.h;
       const pal = api.getPalette();
+      const isNarrow = w < 480;
 
       ctx.clearRect(0, 0, w, h);
 
@@ -4640,9 +5242,10 @@
       const isImage = st.mode === 'image';
 
       const ox = w * 0.50;
-      const surfY = isImage ? Math.round(h * 0.27) : Math.round(h * 0.50);
-      const scale = isImage ? Math.min(w * 0.25, (h - surfY) * 0.54) : Math.min(w * 0.24, h * 0.34);
-      layout = { ox: ox, surfY: surfY, scale: scale };
+      const surfY = isImage ? Math.round(h * (isNarrow ? 0.30 : 0.27)) : Math.round(h * 0.50);
+      const scale = isImage ? Math.min(w * 0.25, (h - surfY) * 0.52) : Math.min(w * 0.24, h * 0.34);
+      const realY = surfY + st.depth * scale;
+      layout = { ox: ox, surfY: surfY, scale: scale, realY: realY };
 
       // 1. Displacement magnitude contour heatmap
       const yStart = isImage ? surfY : 8;
@@ -4671,13 +5274,13 @@
       }
 
       // 2. Vector field arrows u(x)
-      const vCols = 13;
+      const vCols = isNarrow ? 9 : 13;
       const vRows = isImage ? 6 : 8;
       for (let r = 0; r < vRows; r++) {
         const py = lerp(yStart + 18, yEnd - 16, r / Math.max(1, vRows - 1));
         const ym = (py - surfY) / scale;
         for (let c = 0; c < vCols; c++) {
-          const px = lerp(xStart + 24, xEnd - 24, c / Math.max(1, vCols - 1));
+          const px = lerp(xStart + 22, xEnd - 22, c / Math.max(1, vCols - 1));
           const xm = (px - ox) / scale;
           const srcY = isImage ? st.depth : 0;
           if (Math.hypot(xm, ym - srcY) < 0.24) continue;
@@ -4686,7 +5289,7 @@
             : kelvinDisp(xm, ym, Px, Py, st.nu);
           const mag = Math.hypot(u.ux, u.uy);
           if (mag < 1e-4) continue;
-          const len = clamp(mag * 42, 7, 24);
+          const len = clamp(mag * 42, 7, isNarrow ? 20 : 24);
           const uxN = (u.ux / mag) * len;
           const uyN = (u.uy / mag) * len;
           drawArrow(ctx, px - uxN * 0.45, py - uyN * 0.45, px + uxN * 0.55, py + uyN * 0.55, withAlpha(pal.text, 0.78), 1.6, 6.5);
@@ -4695,6 +5298,7 @@
 
       // 3. Mode-specific geometry (Mirror image + Free surface vs. Infinite Space)
       let maxSurfU = 0;
+      const bounds = { x: 0, y: 0, w: w, h: h };
       if (isImage) {
         // Mirror domain backdrop (y < 0)
         ctx.fillStyle = withAlpha(pal.surface2, pal.theme === 'dark' ? 0.45 : 0.65);
@@ -4719,11 +5323,10 @@
         ctx.stroke();
 
         // Mirror axis connecting image (-d) and real source (+d)
-        const realY = surfY + st.depth * scale;
-        const imgY = Math.max(24, surfY - st.depth * scale);
+        const imgY = Math.max(22, surfY - st.depth * scale);
         drawDashed(ctx, ox, imgY, ox, realY, pal.amber, [5, 4], 1.8);
 
-        // Glowing mirror image force at y = -d
+        // Mirror image force at y = -d
         ctx.save();
         ctx.fillStyle = withAlpha(pal.teal, 0.22);
         ctx.beginPath(); ctx.arc(ox, imgY, 16, 0, Math.PI * 2); ctx.fill();
@@ -4735,8 +5338,20 @@
         drawArrow(ctx, ox, imgY, ox + Px * 28, imgY + Py * 28, pal.teal, 2.4, 9);
         ctx.restore();
 
-        drawLabelPill(ctx, 'Image Source (-d)', clamp(ox + 104, ox + 78, w - 88), clamp(imgY, 20, surfY - 18), pal, { color: pal.teal });
-        drawLabelPill(ctx, 'y = 0 (t = 0)', xStart + 68, surfY - 16, pal, { color: pal.text });
+        const topZone = { x: 0, y: 0, w: w, h: surfY };
+        drawLabelPill(ctx, 'y = 0 (t = 0)', xStart + 4, surfY - 16, pal, {
+          color: pal.text,
+          align: 'left',
+          clampTo: topZone
+        });
+        drawLabelPill(
+          ctx,
+          isNarrow ? 'Image (−d)' : 'Image Source (−d)',
+          w - 10,
+          clamp(imgY, 18, isNarrow ? Math.max(18, surfY - 42) : surfY - 18),
+          pal,
+          { color: pal.teal, align: 'right', clampTo: topZone }
+        );
 
         // Draggable Real Point Force P at y = +d
         ctx.fillStyle = withAlpha(pal.cardinal, 0.28);
@@ -4747,7 +5362,22 @@
         ctx.lineWidth = 1.6;
         ctx.stroke();
         drawArrow(ctx, ox, realY, ox + Px * 36, realY + Py * 36, pal.cardinal, 3.2, 11);
-        drawLabelPill(ctx, 'P at +d (drag)', ox + 98, clamp(realY, surfY + 24, h - 22), pal, { color: pal.cardinal });
+
+        // Place P pill on the side opposite the load arrow so it never collides with the vector
+        const pOnLeft = Px > 0.15;
+        const pZone = { x: 0, y: surfY + 6, w: w, h: h - surfY - 6 };
+        drawLabelPill(
+          ctx,
+          isNarrow ? 'P (+d, drag)' : 'P at +d (drag)',
+          pOnLeft ? ox - 24 : ox + 24,
+          clamp(realY, surfY + 24, h - 20),
+          pal,
+          {
+            color: pal.cardinal,
+            align: pOnLeft ? 'right' : 'left',
+            clampTo: pZone
+          }
+        );
       } else {
         // Infinite Kelvin Space: radial rings + central point force P
         [0.45, 0.90, 1.35].forEach(function (rr) {
@@ -4766,14 +5396,17 @@
         ctx.fillStyle = pal.cardinal;
         ctx.beginPath(); ctx.arc(ox, surfY, 6.4, 0, Math.PI * 2); ctx.fill();
         drawArrow(ctx, ox, surfY, ox + Px * 42, surfY + Py * 42, pal.cardinal, 3.2, 11);
-        drawLabelPill(ctx, 'Kelvin Point Force P: u ~ 1/r', ox, 22, pal, { color: pal.cardinal });
+        drawLabelPill(ctx, 'Kelvin Point Force P: u ~ 1/r', ox, 20, pal, {
+          color: pal.cardinal,
+          clampTo: bounds
+        });
       }
 
       // Update readouts
       dom.readouts.mode.val.textContent = isImage ? 'Half-Space (y ≥ 0)' : 'Infinite Space';
       dom.readouts.depth.val.textContent = isImage ? fmt(st.depth, 2) + ' L' : 'Origin (0, 0)';
-      dom.readouts.surf.val.textContent = isImage ? fmt(maxSurfU, 2) + ' P/μL' : 'u_i = G_ij P_j';
-      dom.readouts.bc.val.textContent = isImage ? 'σ_yy = τ_xy = 0' : 'Decays as 1/r';
+      dom.readouts.surf.val.textContent = isImage ? fmt(maxSurfU, 2) + ' P/μL' : 'uᵢ = Gᵢⱼ Pⱼ';
+      dom.readouts.bc.val.textContent = isImage ? 'σᵧᵧ = τₓᵧ = 0' : 'Decays as 1/r';
     }
 
     render();
@@ -4783,6 +5416,7 @@
       onThemeChange: render,
       onSlideEnter: render,
       destroy: function () {
+        detachTouchLock();
         dom.canvas.removeEventListener('pointerdown', onDown);
         dom.canvas.removeEventListener('pointermove', onMove);
         window.removeEventListener('pointerup', onUp);

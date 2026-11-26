@@ -57,6 +57,7 @@
     drawerMode: 'slide',
     overviewOpen: false,
     helpOpen: false,
+    lastInputWasPointer: false,
     slideEls: [],
     mountedLabs: new Map(),
     animLoops: new Map(),
@@ -235,7 +236,7 @@
       '<div class="hero-scrim" aria-hidden="true"></div>' +
       '<div class="hero-foreground">' +
         '<div class="hero-top-pill-row">' +
-          '<span class="hero-course-pill">Stanford University · Mechanical Engineering</span>' +
+          '<span class="hero-course-pill"><span class="hero-course-text">Stanford University · <span class="nowrap">Mechanical Engineering</span></span></span>' +
           '<span class="hero-term-pill">' + escapeHtml(meta.term || 'Winter 2025-26') + '</span>' +
         '</div>' +
         '<h1 class="hero-title">' + escapeHtml(slide.title) + '</h1>' +
@@ -720,8 +721,8 @@
           ? '<div class="overview-card-lec">' + escapeHtml(slide.lectureBadges[0]) + '</div>'
           : '<div class="overview-card-lec">' + escapeHtml(slide.overviewHint || 'Course Map') + '</div>');
 
-      card.addEventListener('click', function () {
-        toggleOverview(false);
+      card.addEventListener('click', function (e) {
+        toggleOverview(false, { viaPointer: isPointerClick(e) });
         ME340.goToSlide(i);
       });
       grid.appendChild(card);
@@ -798,7 +799,24 @@
     renderSymbolDrawerList(highlightIdx);
   }
 
-  function closeSymbolDrawer() {
+  function isPointerClick(ev) {
+    return Boolean((ev && ev.detail > 0) || state.lastInputWasPointer);
+  }
+
+  function hasHorizontalScrollAncestor(el, stopEl) {
+    let node = el;
+    while (node && node !== stopEl && node !== document.body) {
+      if (node.scrollWidth > node.clientWidth + 2) {
+        const style = window.getComputedStyle(node);
+        const ox = style && style.overflowX;
+        if (ox === 'auto' || ox === 'scroll') return true;
+      }
+      node = node.parentElement;
+    }
+    return false;
+  }
+
+  function closeSymbolDrawer(opts) {
     state.drawerOpen = false;
     const drawer = document.getElementById('symbol-drawer');
     const backdrop = document.getElementById('drawer-backdrop');
@@ -812,9 +830,15 @@
       backdrop.setAttribute('aria-hidden', 'true');
     }
     if (btn) btn.setAttribute('aria-expanded', 'false');
+    if (opts && opts.viaPointer) {
+      if (btn && document.activeElement === btn) btn.blur();
+      if (drawer && drawer.contains(document.activeElement) && typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
+      }
+    }
   }
 
-  function toggleOverview(force) {
+  function toggleOverview(force, opts) {
     const next = typeof force === 'boolean' ? force : !state.overviewOpen;
     state.overviewOpen = next;
     const modal = document.getElementById('overview-modal');
@@ -825,15 +849,28 @@
     }
     if (btn) btn.setAttribute('aria-expanded', next ? 'true' : 'false');
     if (next && state.autoplay) setAutoplay(false);
+    if (!next && opts && opts.viaPointer) {
+      if (btn && document.activeElement === btn) btn.blur();
+      if (modal && modal.contains(document.activeElement) && typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
+      }
+    }
   }
 
-  function toggleHelp(force) {
+  function toggleHelp(force, opts) {
     const next = typeof force === 'boolean' ? force : !state.helpOpen;
     state.helpOpen = next;
     const modal = document.getElementById('help-modal');
+    const btn = document.getElementById('btn-help');
     if (modal) {
       modal.classList.toggle('is-open', next);
       modal.setAttribute('aria-hidden', next ? 'false' : 'true');
+    }
+    if (!next && opts && opts.viaPointer) {
+      if (btn && document.activeElement === btn) btn.blur();
+      if (modal && modal.contains(document.activeElement) && typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
+      }
     }
   }
 
@@ -907,31 +944,61 @@
       if (el) el.addEventListener('click', fn);
     };
 
-    bind('btn-home', function () {
+    const blurIfPointer = function (e) {
+      if (isPointerClick(e) && e && e.currentTarget && document.activeElement === e.currentTarget) {
+        e.currentTarget.blur();
+      }
+    };
+
+    document.addEventListener('pointerdown', function () {
+      state.lastInputWasPointer = true;
+    }, { capture: true, passive: true });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Tab' || e.key === 'Enter' || e.key === ' ' || e.key === 'Escape' || e.key.indexOf('Arrow') === 0) {
+        state.lastInputWasPointer = false;
+      }
+    }, true);
+
+    bind('btn-home', function (e) {
       if (state.autoplay) setAutoplay(false);
       ME340.goToSlide(0);
+      blurIfPointer(e);
     });
-    bind('btn-prev', function () {
+    bind('btn-prev', function (e) {
       if (state.autoplay) setAutoplay(false);
       ME340.goToSlide(state.currentIndex - 1);
+      blurIfPointer(e);
     });
-    bind('btn-next', function () {
+    bind('btn-next', function (e) {
       if (state.autoplay) setAutoplay(false);
       ME340.goToSlide(state.currentIndex + 1);
+      blurIfPointer(e);
     });
-    bind('btn-symbols', function () {
-      if (state.drawerOpen) closeSymbolDrawer();
-      else openSymbolDrawer('slide');
+    bind('btn-symbols', function (e) {
+      const viaPointer = isPointerClick(e);
+      if (state.drawerOpen) {
+        closeSymbolDrawer({ viaPointer: viaPointer });
+      } else {
+        openSymbolDrawer('slide');
+        if (viaPointer) blurIfPointer(e);
+      }
     });
-    bind('btn-close-drawer', closeSymbolDrawer);
-    bind('drawer-backdrop', closeSymbolDrawer);
-    bind('tab-sym-slide', function () {
+    bind('btn-close-drawer', function (e) {
+      closeSymbolDrawer({ viaPointer: isPointerClick(e) });
+    });
+    bind('drawer-backdrop', function () {
+      closeSymbolDrawer({ viaPointer: true });
+    });
+    bind('tab-sym-slide', function (e) {
       state.drawerMode = 'slide';
       openSymbolDrawer('slide');
+      blurIfPointer(e);
     });
-    bind('tab-sym-all', function () {
+    bind('tab-sym-all', function (e) {
       state.drawerMode = 'all';
       openSymbolDrawer('all');
+      blurIfPointer(e);
     });
 
     const searchEl = document.getElementById('symbol-search');
@@ -941,31 +1008,48 @@
       });
     }
 
-    bind('btn-overview', function () { toggleOverview(); });
-    bind('btn-close-overview', function () { toggleOverview(false); });
+    bind('btn-overview', function (e) {
+      const viaPointer = isPointerClick(e);
+      toggleOverview(undefined, { viaPointer: viaPointer });
+      if (viaPointer) blurIfPointer(e);
+    });
+    bind('btn-close-overview', function (e) {
+      toggleOverview(false, { viaPointer: isPointerClick(e) });
+    });
     const overviewModal = document.getElementById('overview-modal');
     if (overviewModal) {
       overviewModal.addEventListener('click', function (e) {
-        if (e.target === overviewModal) toggleOverview(false);
+        if (e.target === overviewModal) toggleOverview(false, { viaPointer: true });
       });
     }
 
-    bind('btn-help', function () { toggleHelp(); });
-    bind('btn-close-help', function () { toggleHelp(false); });
+    bind('btn-help', function (e) {
+      const viaPointer = isPointerClick(e);
+      toggleHelp(undefined, { viaPointer: viaPointer });
+      if (viaPointer) blurIfPointer(e);
+    });
+    bind('btn-close-help', function (e) {
+      toggleHelp(false, { viaPointer: isPointerClick(e) });
+    });
     const helpModal = document.getElementById('help-modal');
     if (helpModal) {
       helpModal.addEventListener('click', function (e) {
-        if (e.target === helpModal) toggleHelp(false);
+        if (e.target === helpModal) toggleHelp(false, { viaPointer: true });
       });
     }
 
-    bind('btn-theme', function () {
+    bind('btn-theme', function (e) {
       applyTheme(state.theme === 'dark' ? 'light' : 'dark');
+      blurIfPointer(e);
     });
-    bind('btn-autoplay', function () {
+    bind('btn-autoplay', function (e) {
       setAutoplay(!state.autoplay);
+      blurIfPointer(e);
     });
-    bind('btn-fullscreen', toggleFullscreen);
+    bind('btn-fullscreen', function (e) {
+      toggleFullscreen();
+      blurIfPointer(e);
+    });
 
     // Keyboard shortcuts
     document.addEventListener('keydown', function (e) {
@@ -1060,24 +1144,39 @@
       }
     });
 
-    // Touch swipe (ignored inside interactive lab canvases or range inputs)
+    // Touch swipe (ignored inside interactive lab canvases, scrollable math, or form inputs)
     let touchStartX = 0;
     let touchStartY = 0;
     let touchIgnored = false;
     const stage = document.getElementById('stage');
     if (stage) {
       stage.addEventListener('touchstart', function (e) {
-        if (e.touches.length !== 1) return;
-        touchIgnored = Boolean(e.target.closest('.lab-stage, input, select, textarea, .symbol-list'));
+        if (e.touches.length !== 1 || state.drawerOpen || state.overviewOpen || state.helpOpen) {
+          touchIgnored = true;
+          return;
+        }
+        const rawTarget = e.target;
+        const target = rawTarget && rawTarget.nodeType === 1 ? rawTarget : (rawTarget && rawTarget.parentElement);
+        touchIgnored = Boolean(
+          target && (
+            target.closest('.lab-stage, input, select, textarea, .symbol-list, .katex-display, .eq-math, .airy-banner-math, .compare-footnote') ||
+            hasHorizontalScrollAncestor(target, stage)
+          )
+        );
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
       }, { passive: true });
 
+      stage.addEventListener('touchcancel', function () {
+        touchIgnored = true;
+      }, { passive: true });
+
       stage.addEventListener('touchend', function (e) {
         if (touchIgnored || e.changedTouches.length !== 1) return;
+        if (state.drawerOpen || state.overviewOpen || state.helpOpen) return;
         const dx = e.changedTouches[0].clientX - touchStartX;
         const dy = e.changedTouches[0].clientY - touchStartY;
-        if (Math.abs(dx) > 56 && Math.abs(dx) > Math.abs(dy) * 1.4) {
+        if (Math.abs(dx) > 64 && Math.abs(dx) > Math.abs(dy) * 1.8) {
           if (state.autoplay) setAutoplay(false);
           if (dx < 0) ME340.goToSlide(state.currentIndex + 1);
           else ME340.goToSlide(state.currentIndex - 1);
