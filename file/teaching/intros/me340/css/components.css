@@ -1767,10 +1767,6 @@ h1.hero-title {
   transform: translateX(-2px);
 }
 
-.home-label-short {
-  display: none;
-}
-
 .hint-item {
   display: inline-flex;
   align-items: center;
@@ -2414,14 +2410,6 @@ kbd {
     height: 36px;
     padding: 0 9px;
     gap: 5px;
-  }
-
-  .home-label-full {
-    display: none;
-  }
-
-  .home-label-short {
-    display: inline;
   }
 
   /* Slide 1 Hero Mobile Polish (clean eyebrow axis, scale, full-width 44px CTA) */
