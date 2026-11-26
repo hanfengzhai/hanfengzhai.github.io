@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>ME 335A Finite Element Mesh Emblem</title>
+  <rect x="2" y="2" width="60" height="60" rx="4" fill="#141413" stroke="#D14D41" stroke-width="3.2"/>
+  <path d="M 14 48 L 32 14 L 50 48 Z" fill="none" stroke="#F5F2EB" stroke-width="2.6" stroke-linejoin="round"/>
+  <path d="M 23 31 L 41 31 L 32 48 Z" fill="rgba(209,77,65,0.22)" stroke="#D14D41" stroke-width="2.2" stroke-linejoin="round"/>
+  <circle cx="32" cy="14" r="3.4" fill="#F5F2EB"/>
+  <circle cx="14" cy="48" r="3.4" fill="#F5F2EB"/>
+  <circle cx="50" cy="48" r="3.4" fill="#F5F2EB"/>
+  <circle cx="23" cy="31" r="2.8" fill="#D14D41"/>
+  <circle cx="41" cy="31" r="2.8" fill="#D14D41"/>
+  <circle cx="32" cy="48" r="2.8" fill="#D14D41"/>
+</svg>

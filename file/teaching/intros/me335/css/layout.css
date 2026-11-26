@@ -1,0 +1,853 @@
+/* ==========================================================================
+   Stanford ME 335A Design System: App Shell, Slide Stage, and Layout Archetypes
+   Swiss-Editorial Engineering Grid Architecture (Zero-Build CSS3)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   App Shell
+   -------------------------------------------------------------------------- */
+
+.deck-body {
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.deck-app {
+  height: 100vh;
+  height: 100dvh;
+  width: 100%;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow: hidden;
+  position: relative;
+  background: var(--bg);
+}
+
+/* --------------------------------------------------------------------------
+   Slide Stage & Transitions
+   -------------------------------------------------------------------------- */
+
+.deck-stage {
+  position: relative;
+  min-height: 0;
+  width: 100%;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--bg);
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+  transform: translateX(14px);
+  transition:
+    opacity 0.18s var(--ease-out),
+    transform 0.22s var(--ease-out),
+    visibility 0s linear 0.18s;
+}
+
+.slide.dir-prev {
+  transform: translateX(-14px);
+}
+
+.slide.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+  transform: translateX(0);
+  z-index: 3;
+  transition:
+    opacity 0.18s var(--ease-out),
+    transform 0.22s var(--ease-out),
+    visibility 0s linear 0s;
+}
+
+.slide.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  z-index: 1;
+}
+
+.slide.is-leaving.dir-next {
+  transform: translateX(-22px);
+}
+
+.slide.is-leaving.dir-prev {
+  transform: translateX(22px);
+}
+
+/* --------------------------------------------------------------------------
+   Standard Slide Interior Frame
+   -------------------------------------------------------------------------- */
+
+.slide-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 52px 18px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.slide-header {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-bottom: 0;
+  border-bottom: none;
+  flex-shrink: 0;
+}
+
+.slide-meta-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+
+.slide-index-tag {
+  display: none;
+}
+
+h2.slide-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-title);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: var(--ink-strong);
+}
+
+p.slide-lead {
+  font-size: var(--fs-md);
+  line-height: 1.46;
+  color: var(--ink-muted);
+  max-width: 82ch;
+}
+
+.slide-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.slide-footer-bar {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   Archetype 1: Full-Bleed Hero Slide (.layout-hero)
+   -------------------------------------------------------------------------- */
+
+.slide.layout-hero {
+  overflow: hidden;
+}
+
+.hero-bg-lab {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-bg-lab > .lab-shell,
+.hero-bg-lab > .lab-stage,
+.hero-bg-lab canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.hero-bg-lab .lab-shell {
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  gap: 0;
+}
+
+.hero-bg-lab .lab-stage {
+  border: none;
+  border-radius: 0;
+  min-height: 100%;
+  background: var(--bg);
+}
+
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: var(--hero-scrim);
+}
+
+.hero-foreground {
+  position: relative;
+  z-index: 2;
+  max-width: 1380px;
+  width: 100%;
+  min-height: 100%;
+  margin: 0 auto;
+  padding: 36px 48px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 18px;
+  pointer-events: none;
+}
+
+.hero-foreground a,
+.hero-foreground button,
+.hero-meta-links,
+.hero-author-card,
+.hero-cta-row {
+  pointer-events: auto;
+}
+
+/* --------------------------------------------------------------------------
+   Archetype 2: Split Theory + Live Lab (.split-grid)
+   -------------------------------------------------------------------------- */
+
+.split-grid {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.88fr) minmax(440px, 1.18fr);
+  gap: 44px;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  align-items: stretch;
+}
+
+.col-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 16px;
+  min-width: 0;
+}
+
+.col-lab {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.col-lab > .lab-mount {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 360px;
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   Archetype 3: Asymmetric Bento Ledger + Lab (.bento-grid)
+   -------------------------------------------------------------------------- */
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: minmax(340px, 1.04fr) minmax(360px, 0.96fr);
+  gap: 40px;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  align-items: stretch;
+}
+
+.bento-content {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 28px;
+  background: transparent;
+  border: none;
+  align-content: start;
+  align-self: start;
+  min-width: 0;
+}
+
+.bento-card-wide {
+  grid-column: 1 / -1;
+}
+
+.bento-lab {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.bento-lab > .lab-mount {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 360px;
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   Archetype 4: Dual Comparison Ledger + Lab (.compare-layout)
+   -------------------------------------------------------------------------- */
+
+.compare-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+}
+
+.compare-equations {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+.compare-cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 36px;
+  align-items: start;
+  background: transparent;
+  border: none;
+  min-width: 0;
+}
+
+.compare-lab {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+  min-width: 0;
+}
+
+.compare-lab > .lab-mount {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   Archetype 5: Pipeline Flow Diagram + Story (.flow-layout)
+   -------------------------------------------------------------------------- */
+
+.flow-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+}
+
+.flow-lab-wrap {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 260px;
+  min-width: 0;
+}
+
+.flow-lab-wrap > .lab-mount {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 260px;
+  width: 100%;
+}
+
+.flow-story {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+.flow-story .mini-stat-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+}
+
+/* --------------------------------------------------------------------------
+   Archetype 6: Widescreen Full-Width Lab (.lab-wide-layout)
+   -------------------------------------------------------------------------- */
+
+.lab-wide-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+}
+
+.wide-header-note {
+  flex-shrink: 0;
+}
+
+.lab-mount-wide {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 440px;
+  width: 100%;
+  min-width: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Archetype 7: 8-Card Shared-Hairline Course Outline (.outline-grid)
+   -------------------------------------------------------------------------- */
+
+.outline-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 28px 34px;
+  background: transparent;
+  border: none;
+  flex: 0 1 auto;
+  margin-top: 8px;
+  min-width: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Archetype 8: 14-Item Filterable Session & Resource Directory (.atlas-columns)
+   -------------------------------------------------------------------------- */
+
+.atlas-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.atlas-columns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+  background: transparent;
+  border: none;
+  flex: 0 1 auto;
+  min-height: 0;
+  align-items: start;
+  min-width: 0;
+}
+
+.atlas-col.is-hidden {
+  display: none;
+}
+
+/* Expand single filtered part into two clean columns on desktop */
+.atlas-columns:has(.atlas-col.is-hidden) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.atlas-columns:has(.atlas-col.is-hidden) .atlas-col:not(.is-hidden) .atlas-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 22px;
+}
+
+/* --------------------------------------------------------------------------
+   Archetype 9: Closing References + Sign-Off (.closing-grid)
+   -------------------------------------------------------------------------- */
+
+.closing-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.85fr);
+  gap: 28px;
+  flex: 1 1 auto;
+  align-items: start;
+  min-width: 0;
+}
+
+/* Fallback single-column layout */
+.single-col {
+  max-width: 920px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Generic two-column equation pair inside content columns */
+.two-col-eqs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  min-width: 0;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints (Desktop -> Laptop -> Tablet 768 -> Mobile 390)
+   ========================================================================== */
+
+/* Desktop micro-balance: center left column beside tall right-hand canvases */
+@media (min-width: 981px) {
+  .split-grid > .col-content {
+    justify-content: center;
+    justify-content: safe center;
+  }
+}
+
+/* Compact desktop viewport fit (e.g. 1280x800 laptops & projectors) */
+@media (min-width: 981px) and (max-height: 860px) {
+  .slide:not(.layout-hero) > .slide-inner {
+    height: 100%;
+    padding: 14px 48px 16px;
+    gap: 16px;
+  }
+
+  .slide-header {
+    gap: 4px;
+    padding-bottom: 0;
+  }
+
+  h2.slide-title {
+    font-size: clamp(1.85rem, 2.5vw, 2.25rem);
+  }
+
+  .col-content {
+    gap: 14px;
+  }
+
+  .col-content .eq-card {
+    padding: 4px 0 8px;
+    gap: 4px;
+  }
+
+  .col-content .point-list {
+    gap: 10px;
+  }
+
+  .col-content .point-list li {
+    line-height: 1.5;
+  }
+
+  .col-lab > .lab-mount,
+  .bento-lab > .lab-mount {
+    min-height: 0;
+    height: 100%;
+  }
+
+  .bento-content {
+    align-self: stretch;
+  }
+
+  .flow-layout {
+    gap: 8px;
+  }
+
+  .flow-lab-wrap,
+  .flow-lab-wrap > .lab-mount {
+    min-height: 210px;
+    flex: 1 1 280px;
+  }
+
+  .flow-story {
+    gap: 6px;
+  }
+
+  .compare-layout {
+    gap: 8px;
+  }
+
+  .compare-equations {
+    gap: 8px;
+  }
+
+  .compare-equations .katex-display {
+    margin: 0.2em 0;
+  }
+
+  .compare-lab,
+  .compare-lab > .lab-mount {
+    min-height: 0;
+    flex: 1 1 210px;
+  }
+
+  .lab-mount-wide {
+    min-height: 0;
+    height: 100%;
+  }
+}
+
+@media (max-width: 1120px) {
+  .slide-inner {
+    padding: 18px 26px 14px;
+  }
+
+  .atlas-columns {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+
+  .outline-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0;
+  }
+
+  .split-grid {
+    grid-template-columns: minmax(300px, 0.95fr) minmax(340px, 1.05fr);
+    gap: 18px;
+  }
+
+  .bento-grid {
+    grid-template-columns: minmax(300px, 1fr) minmax(320px, 1fr);
+    gap: 18px;
+  }
+
+  .closing-grid {
+    grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 980px) {
+  .split-grid,
+  .bento-grid,
+  .closing-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .col-content {
+    justify-content: flex-start;
+  }
+
+  .bento-content {
+    align-self: stretch;
+  }
+
+  .col-lab > .lab-mount,
+  .bento-lab > .lab-mount {
+    min-height: 340px;
+  }
+}
+
+@media (max-width: 900px) {
+  .slide.layout-hero {
+    overflow-y: auto;
+  }
+
+  .hero-foreground {
+    padding: 28px 28px 28px;
+    justify-content: flex-start;
+    gap: 16px;
+  }
+
+  .slide-inner {
+    padding: 16px 22px 18px;
+  }
+
+  .compare-cols,
+  .flow-story .mini-stat-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .atlas-columns:has(.atlas-col.is-hidden) .atlas-col:not(.is-hidden) .atlas-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-height: 700px) {
+  .slide.layout-hero {
+    overflow-y: auto;
+  }
+
+  .hero-foreground {
+    padding-top: 24px;
+    padding-bottom: 24px;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 640px) {
+  .slide-inner {
+    padding: 12px max(16px, env(safe-area-inset-right, 0px)) 24px max(16px, env(safe-area-inset-left, 0px));
+    gap: 12px;
+  }
+
+  .slide-header {
+    gap: 4px;
+  }
+
+  h2.slide-title {
+    font-size: clamp(1.55rem, 6.2vw, 1.95rem);
+    line-height: 1.12;
+  }
+
+  p.slide-lead {
+    font-size: var(--fs-base);
+    line-height: 1.44;
+  }
+
+  .slide-body {
+    gap: 12px;
+  }
+
+  .col-content {
+    gap: 10px;
+  }
+
+  .hero-foreground {
+    padding: 20px max(18px, env(safe-area-inset-right, 0px)) 28px max(18px, env(safe-area-inset-left, 0px));
+    gap: 14px;
+  }
+
+  .outline-grid,
+  .bento-content,
+  .two-col-eqs,
+  .atlas-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .outline-grid {
+    gap: 16px;
+  }
+
+  .bento-content,
+  .compare-cols {
+    gap: 14px;
+  }
+
+  .closing-grid {
+    gap: 18px;
+  }
+
+  .slide-footer-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .col-lab > .lab-mount,
+  .bento-lab > .lab-mount,
+  .compare-lab > .lab-mount,
+  .flow-lab-wrap > .lab-mount,
+  .lab-mount-wide {
+    min-height: 280px;
+  }
+}
+
+/* ==========================================================================
+   Print Styles (Archival Monochrome & Cardinal Engineering Paper)
+   ========================================================================== */
+
+@media print {
+  :root,
+  [data-theme="dark"],
+  [data-theme="light"] {
+    color-scheme: light;
+    --bg: #FFFFFF;
+    --bg-elevated: #F6F4EE;
+    --surface: #FFFFFF;
+    --surface-2: #EFECE4;
+    --surface-3: #DDD8CC;
+    --canvas-bg: #FCFBF8;
+    --ink: #1A1917;
+    --ink-strong: #0F0E0D;
+    --ink-muted: #5C5850;
+    --ink-subtle: #6E6A61;
+    --cardinal: #8C1515;
+    --cardinal-soft: rgba(140, 21, 21, 0.08);
+    --cardinal-border: rgba(140, 21, 21, 0.34);
+    --teal: #175E54;
+    --teal-soft: rgba(23, 94, 84, 0.08);
+    --teal-border: rgba(23, 94, 84, 0.34);
+    --amber: #9A5A12;
+    --amber-soft: rgba(154, 90, 18, 0.08);
+    --amber-border: rgba(154, 90, 18, 0.34);
+    --blue: #23538A;
+    --blue-soft: rgba(35, 83, 138, 0.08);
+    --blue-border: rgba(35, 83, 138, 0.34);
+    --border: rgba(26, 25, 23, 0.20);
+    --border-strong: rgba(26, 25, 23, 0.36);
+    --border-subtle: rgba(26, 25, 23, 0.10);
+    --stage-glow: none;
+    --shadow-sm: none;
+    --shadow-md: none;
+    --shadow-lg: none;
+  }
+
+  html,
+  body,
+  .deck-body,
+  .deck-app,
+  .deck-stage {
+    height: auto !important;
+    overflow: visible !important;
+    display: block !important;
+    background: #FFFFFF !important;
+    color: #1A1917 !important;
+  }
+
+  .deck-topbar,
+  .deck-bottombar,
+  .drawer,
+  .drawer-backdrop,
+  .modal-overlay,
+  .hero-cta-row,
+  .hero-canvas-hint {
+    display: none !important;
+  }
+
+  .slide {
+    position: static !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: none !important;
+    overflow: visible !important;
+    page-break-after: always;
+    break-after: page;
+    background: #FFFFFF !important;
+    padding-bottom: 16px;
+  }
+
+  .slide:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+
+  .slide.layout-hero {
+    min-height: 92vh;
+    position: relative !important;
+  }
+
+  .hero-scrim {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.90)) !important;
+  }
+
+  .slide-inner {
+    max-width: 100%;
+    padding: 16px 20px;
+  }
+}

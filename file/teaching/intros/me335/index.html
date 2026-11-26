@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ME 335A: Finite Element Analysis</title>
+  <meta name="description" content="Interactive course map and numerical lab studio for Stanford ME 335A: variational formulations, element assembly, constraints, and error theory.">
+  <meta name="theme-color" content="#141413">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+
+  <!-- Engineering & Technical Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- KaTeX 0.16.11 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+
+  <!-- Design System -->
+  <link rel="stylesheet" href="./css/tokens.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/components.css">
+</head>
+<body class="deck-body">
+  <div id="app" class="deck-app">
+    <!-- Top Chrome -->
+    <header class="deck-topbar" role="banner">
+      <div class="topbar-left">
+        <button id="btn-home" class="topbar-brand" type="button" title="Jump to title slide (Home)">
+          <span class="brand-crest" aria-hidden="true">
+            <svg viewBox="0 0 64 64" width="24" height="24" fill="none">
+              <rect x="2" y="2" width="60" height="60" rx="4" stroke="var(--cardinal)" stroke-width="3.6"/>
+              <path d="M 14 48 L 32 14 L 50 48 Z" stroke="var(--ink-strong)" stroke-width="3.2" stroke-linejoin="round"/>
+              <path d="M 23 31 L 41 31 L 32 48 Z" stroke="var(--cardinal)" stroke-width="2.6" stroke-linejoin="round"/>
+              <circle cx="32" cy="14" r="3.6" fill="var(--ink-strong)"/>
+              <circle cx="14" cy="48" r="3.6" fill="var(--ink-strong)"/>
+              <circle cx="50" cy="48" r="3.6" fill="var(--ink-strong)"/>
+              <circle cx="23" cy="31" r="3" fill="var(--cardinal)"/>
+              <circle cx="41" cy="31" r="3" fill="var(--cardinal)"/>
+              <circle cx="32" cy="48" r="3" fill="var(--cardinal)"/>
+            </svg>
+          </span>
+          <span class="brand-code">ME 335A</span>
+        </button>
+        <span class="topbar-sep" aria-hidden="true">/</span>
+        <span id="topbar-part" class="topbar-part-badge">Intro</span>
+        <span id="topbar-title" class="topbar-title">Finite Element Analysis</span>
+      </div>
+
+      <div class="topbar-actions" role="toolbar" aria-label="Presentation controls">
+        <button id="btn-symbols" class="chrome-btn" type="button" title="Symbol glossary (S)" aria-expanded="false" aria-controls="symbol-drawer">
+          <span class="chrome-icon" aria-hidden="true">Σ</span>
+          <span class="chrome-label">Symbols</span>
+          <span id="symbol-count" class="badge-count">0</span>
+        </button>
+        <button id="btn-autoplay" class="chrome-btn" type="button" title="Autoplay slides (A)" aria-pressed="false">
+          <svg class="autoplay-ring" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+            <circle class="ring-track" cx="10" cy="10" r="8" fill="none" stroke-width="2"/>
+            <circle id="autoplay-arc" class="ring-fill" cx="10" cy="10" r="8" fill="none" stroke-width="2" stroke-dasharray="50.265" stroke-dashoffset="50.265"/>
+            <polygon class="ring-play" points="8,6.5 14,10 8,13.5"/>
+          </svg>
+          <span class="chrome-label">Auto</span>
+        </button>
+        <button id="btn-overview" class="chrome-btn" type="button" title="Slide overview grid (G)" aria-expanded="false" aria-controls="overview-modal">
+          <span class="chrome-icon" aria-hidden="true">⊞</span>
+          <span class="chrome-label">Grid</span>
+        </button>
+        <button id="btn-theme" class="chrome-btn" type="button" title="Switch Dark Studio / Light Paper (T)">
+          <span id="theme-icon" class="chrome-icon" aria-hidden="true">☀</span>
+          <span id="theme-label" class="chrome-label">Paper</span>
+        </button>
+        <button id="btn-fullscreen" class="chrome-btn" type="button" title="Toggle fullscreen (F)">
+          <span class="chrome-icon" aria-hidden="true">⛶</span>
+          <span class="chrome-label">Full</span>
+        </button>
+        <button id="btn-help" class="chrome-btn chrome-btn-icon" type="button" title="Keyboard shortcuts (?)" aria-label="Keyboard shortcuts">?</button>
+      </div>
+    </header>
+
+    <!-- Main Slide Viewport -->
+    <main id="stage" class="deck-stage" aria-live="polite"></main>
+
+    <!-- Bottom Chrome -->
+    <footer class="deck-bottombar" role="contentinfo">
+      <div class="nav-cluster">
+        <button id="btn-prev" class="nav-btn" type="button" aria-label="Previous slide (Left arrow)" title="Previous (←)">
+          <span aria-hidden="true">←</span>
+        </button>
+        <span id="slide-counter" class="slide-counter">01 / 23</span>
+        <button id="btn-next" class="nav-btn" type="button" aria-label="Next slide (Right arrow)" title="Next (→)">
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
+
+      <div class="progress-wrap">
+        <div id="progress-track" class="progress-track" role="slider" aria-label="Slide progress" aria-valuemin="1" aria-valuemax="23" aria-valuenow="1" tabindex="0">
+          <div id="progress-fill" class="progress-fill"></div>
+          <div id="progress-ticks" class="progress-ticks"></div>
+        </div>
+        <div id="progress-tooltip" class="progress-tooltip" aria-hidden="true"></div>
+      </div>
+
+      <div class="key-hints" aria-hidden="true">
+        <span class="hint-item"><kbd>←</kbd><kbd>→</kbd> Slide</span>
+        <span class="hint-item"><kbd>S</kbd> Symbols</span>
+        <span class="hint-item"><kbd>A</kbd> Auto</span>
+        <span class="hint-item"><kbd>T</kbd> Theme</span>
+      </div>
+
+      <a id="btn-site-home" class="bottombar-home-link" href="https://hanfengzhai.com/" aria-label="Back to Hanfeng Zhai homepage" title="Back to homepage">
+        <span class="home-link-arrow" aria-hidden="true">←</span>
+        <span>Home</span>
+      </a>
+    </footer>
+  </div>
+
+  <!-- Symbol Glossary Drawer -->
+  <div id="drawer-backdrop" class="drawer-backdrop" aria-hidden="true"></div>
+  <aside id="symbol-drawer" class="drawer" role="dialog" aria-modal="true" aria-label="Symbol glossary" aria-hidden="true">
+    <div class="drawer-header">
+      <div>
+        <div class="drawer-kicker">Reference Glossary</div>
+        <h3 class="drawer-title">Notation &amp; Symbols</h3>
+      </div>
+      <button id="btn-close-drawer" class="icon-close-btn" type="button" aria-label="Close symbol drawer">✕</button>
+    </div>
+    <div class="drawer-controls">
+      <div class="drawer-tabs" role="tablist">
+        <button id="tab-sym-slide" class="drawer-tab is-active" type="button" role="tab" aria-selected="true">This Slide</button>
+        <button id="tab-sym-all" class="drawer-tab" type="button" role="tab" aria-selected="false">All Symbols</button>
+      </div>
+      <input id="symbol-search" class="drawer-search" type="search" placeholder="Filter symbol or meaning..." aria-label="Filter symbols">
+    </div>
+    <div id="symbol-list" class="symbol-list"></div>
+  </aside>
+
+  <!-- Overview Grid Modal -->
+  <div id="overview-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Slide overview grid" aria-hidden="true">
+    <div class="overview-shell">
+      <div class="modal-header">
+        <div>
+          <div class="drawer-kicker">Deck Navigator</div>
+          <h3 class="drawer-title">ME 335A Course Map (23 Slides)</h3>
+        </div>
+        <div class="overview-legend">
+          <span class="legend-dot part-intro">Intro</span>
+          <span class="legend-dot part-part-1">Part I: Variational</span>
+          <span class="legend-dot part-part-2">Part II: Elements &amp; Solvers</span>
+          <span class="legend-dot part-part-3">Part III: Math Theory</span>
+          <span class="legend-dot part-synthesis">Synthesis</span>
+        </div>
+        <button id="btn-close-overview" class="icon-close-btn" type="button" aria-label="Close overview">✕</button>
+      </div>
+      <div id="overview-grid" class="overview-grid"></div>
+    </div>
+  </div>
+
+  <!-- Keyboard Shortcuts & Lab Help Modal -->
+  <div id="help-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts" aria-hidden="true">
+    <div class="help-card">
+      <div class="modal-header">
+        <div>
+          <div class="drawer-kicker">Controls &amp; Studio Guide</div>
+          <h3 class="drawer-title">Keyboard Shortcuts</h3>
+        </div>
+        <button id="btn-close-help" class="icon-close-btn" type="button" aria-label="Close shortcuts">✕</button>
+      </div>
+      <div class="help-grid">
+        <div class="help-row"><span class="help-keys"><kbd>→</kbd> <kbd>Space</kbd> <kbd>PageDown</kbd></span><span>Next slide</span></div>
+        <div class="help-row"><span class="help-keys"><kbd>←</kbd> <kbd>PageUp</kbd></span><span>Previous slide</span></div>
+        <div class="help-row"><span class="help-keys"><kbd>Home</kbd> / <kbd>End</kbd></span><span>First / last slide</span></div>
+        <div class="help-row"><span class="help-keys"><kbd>A</kbd></span><span>Toggle autoplay mode</span></div>
+        <div class="help-row"><span class="help-keys"><kbd>F</kbd></span><span>Toggle fullscreen</span></div>
+        <div class="help-row"><span class="help-keys"><kbd>G</kbd> or <kbd>O</kbd></span><span>Open 23-slide overview grid</span></div>
+        <div class="help-row"><span class="help-keys"><kbd>S</kbd></span><span>Open symbol glossary drawer</span></div>
+        <div class="help-row"><span class="help-keys"><kbd>T</kbd></span><span>Switch Dark Studio / Light Paper</span></div>
+        <div class="help-row"><span class="help-keys"><kbd>?</kbd> or <kbd>H</kbd></span><span>Show this guide</span></div>
+        <div class="help-row"><span class="help-keys"><kbd>Esc</kbd></span><span>Close drawers and modals</span></div>
+      </div>
+      <p class="help-foot">Tip: Interact directly with the numerical labs (switch modes, adjust parameters, or drag isoparametric element vertices). Manual interaction pauses autoplay automatically.</p>
+    </div>
+  </div>
+
+  <!-- Scripts (Classic defer order so both file:// and HTTPS work with zero build step) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script defer src="./js/engine/deck-engine.js"></script>
+  <script defer src="./js/data/deck-data.js"></script>
+  <script defer src="./js/labs/foundations-labs.js"></script>
+  <script defer src="./js/labs/advanced-labs.js"></script>
+</body>
+</html>
