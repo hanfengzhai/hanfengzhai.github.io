@@ -886,6 +886,11 @@
     if (icon) icon.textContent = state.theme === 'dark' ? '☀' : '☾';
     if (label) label.textContent = state.theme === 'dark' ? 'Paper' : 'Studio';
 
+    const themeMeta = document.querySelector('meta[name="theme-color"]');
+    if (themeMeta) {
+      themeMeta.setAttribute('content', state.theme === 'light' ? '#F6F4EE' : '#141413');
+    }
+
     const palette = ME340.getThemePalette();
     state.mountedLabs.forEach(function (lab) {
       if (lab && typeof lab.onThemeChange === 'function') {
