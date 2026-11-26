@@ -81,6 +81,32 @@ tt,
   text-decoration: none;
 }
 
+.article-entry .bracket-link {
+  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.84em;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: rgba(140, 21, 21, 0.62);
+  white-space: nowrap;
+}
+
+.article-entry .bracket-link a {
+  font-family: inherit;
+  font-weight: 500;
+  color: #8C1515;
+  padding: 1px 2px;
+  border-radius: 3px;
+  text-decoration: none;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.article-entry .bracket-link a:hover,
+.article-entry .bracket-link a:focus-visible {
+  color: #660c0c;
+  background-color: rgba(140, 21, 21, 0.1);
+  text-decoration: none;
+}
+
 @media screen and (max-width: 767px) {
   .paper-list,
   .code-list {
