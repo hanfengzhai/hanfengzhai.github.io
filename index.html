@@ -1,540 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="home-html">
 <head>
 <meta charset="utf-8">
 <title>Hanfeng Zhai</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-<style>
-  #post-index.article {
-    margin: 0 0 8px;
-  }
-
-  #post-index .article-meta {
-    margin: 0;
-  }
-
-  #post-index .article-entry {
-    margin-top: 0;
-  }
-
-  .intro-name-block {
-    margin-top: 12px;
-  }
-
-  .intro-header {
-    display: flex;
-    align-items: stretch;
-    gap: 0.65rem;
-    margin: 0 0 1em;
-    padding: 0.35rem 0.75rem;
-    background: #fff;
-    border: 1px solid #e8e8e8;
-    border-radius: 4px;
-  }
-
-  .intro-header-text {
-    flex: 0 1 auto;
-    min-width: 0;
-    padding-left: 1.85rem;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    width: max-content;
-    max-width: 100%;
-  }
-
-  .intro-header-nameblock {
-    min-width: 0;
-    width: 100%;
-  }
-
-  .intro-header-details {
-    min-width: 0;
-  }
-
-  .intro-header-photo {
-    flex: 0 0 auto;
-    align-self: center;
-    margin-left: auto;
-    margin-right: 2.35rem;
-    height: 90%;
-    width: auto;
-    max-width: 207px;
-    aspect-ratio: 1;
-    overflow: hidden;
-    border: 5px solid #fff;
-    border-radius: 12px;
-    box-sizing: border-box;
-    isolation: isolate;
-  }
-
-  .article-entry .intro-header-name {
-    font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
-    font-variant: small-caps;
-    font-feature-settings: "smcp" 1;
-    letter-spacing: 0.04em;
-    font-size: 26px;
-    font-weight: normal;
-    margin: 0;
-    line-height: 1.05;
-    color: #000;
-  }
-
-  .intro-header-rule {
-    margin: 0.1em 0 0.68em;
-    border: 0;
-    border-top: 1px dashed #ccc;
-    width: calc(100% + 3rem);
-    max-width: none;
-  }
-
-  .intro-header-title {
-    display: inline;
-    font-size: inherit;
-    font-weight: normal;
-    color: #000;
-    margin-bottom: 0;
-    line-height: inherit;
-  }
-
-  .intro-header-sep {
-    margin: 0 0.32em;
-    color: #8C1515;
-    font-size: 1.35em;
-    font-weight: 700;
-    line-height: 1;
-    vertical-align: baseline;
-  }
-
-  .intro-header-contact {
-    font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
-    font-size: 15px;
-    line-height: 1.36;
-    color: #000;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    flex: 0 1 auto;
-    min-height: 0;
-    gap: 0.55em;
-    margin-bottom: 0.7em;
-  }
-
-  .article-entry .intro-header-contact .intro-header-line {
-    margin: 0;
-  }
-
-  .article-entry .intro-header-contact a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .article-entry .intro-header-contact a:hover {
-    color: inherit;
-    text-decoration: underline;
-  }
-
-  .intro-header-email {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-    font-size: inherit;
-    line-height: inherit;
-    background: #ececec;
-    padding: 0.1em 0.35em;
-    border-radius: 3px;
-    white-space: nowrap;
-  }
-
-  #post-index .intro-header-photo img {
-    width: 100%;
-    height: 100%;
-    max-width: none;
-    margin: 0;
-    object-fit: cover;
-    display: block;
-  }
-
-  .article-entry .intro-header-social {
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
-    margin: 0.12em 0 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .article-entry .intro-header-social li {
-    display: flex;
-    align-items: center;
-    margin: 0;
-    padding: 0;
-  }
-
-  .intro-header-social a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 22px;
-    height: 20px;
-    color: #333 !important;
-    opacity: 0.82;
-    text-decoration: none;
-    transition: opacity 0.15s ease, color 0.15s ease;
-  }
-
-  .intro-header-social a:hover {
-    opacity: 1;
-    color: #111 !important;
-  }
-
-  .intro-header-social .intro-header-icon {
-    width: 18px;
-    height: 18px;
-    display: block;
-    fill: currentColor;
-    flex: 0 0 18px;
-    object-fit: contain;
-  }
-
-  .intro-header-social .intro-header-icon-rg {
-    width: 26px;
-    height: 18px;
-    flex: 0 0 26px;
-  }
-
-  .intro-header-social .intro-header-icon-stanford {
-    width: 20px;
-    height: 20px;
-    flex: 0 0 20px;
-    object-fit: contain;
-  }
-
-  .intro-header-social a.intro-header-link-tree {
-    width: auto;
-    padding: 0 0.42em;
-    box-sizing: border-box;
-    font-family: 'Avenir Next Condensed', 'Helvetica Neue', 'Arial Narrow', ui-sans-serif, sans-serif;
-    font-weight: 400;
-    font-size: 0.62em;
-    letter-spacing: 0.04em;
-    line-height: 1;
-    white-space: nowrap;
-    color: #fff !important;
-    background: #333;
-    border-radius: 0.3em;
-  }
-
-  .intro-header-social a.intro-header-link-tree:hover {
-    color: #fff !important;
-    background: #111;
-  }
-
-  #post-index .intro-inline-nav {
-    margin: 1.35em auto 1.55em;
-  }
-
-  .paper-list {
-    display: flex;
-    flex-direction: column;
-    gap: 28px;
-    margin: 1.5em 0;
-  }
-
-  @media (min-width: 721px) {
-    .paper-list {
-      margin-left: -12px;
-    }
-
-    .intro-header-photo {
-      align-self: center;
-      width: 197px;
-      height: 197px;
-      max-width: 197px;
-      flex: 0 0 197px;
-      margin-left: auto;
-      margin-right: 2.35rem;
-    }
-
-    .intro-header-text {
-      flex: 1 1 auto;
-      align-self: stretch;
-      display: flex;
-      flex-direction: column;
-      min-height: 197px;
-    }
-
-    .intro-header-details {
-      display: flex;
-      flex-direction: column;
-      flex: 1 1 auto;
-      min-height: 0;
-    }
-
-    .article-entry .intro-header-social {
-      margin-top: auto;
-      margin-bottom: 0;
-      align-items: center;
-      gap: 0.52em;
-      padding-bottom: 0.45em;
-    }
-
-    .intro-header-social a {
-      width: 27px;
-      height: 26px;
-    }
-
-    .intro-header-social .intro-header-icon {
-      width: 22px;
-      height: 22px;
-      flex: 0 0 22px;
-    }
-
-    .intro-header-social .intro-header-icon-rg {
-      width: 30px;
-      height: 22px;
-      flex: 0 0 30px;
-    }
-
-    .intro-header-social .intro-header-icon-stanford {
-      width: 24px;
-      height: 24px;
-      flex: 0 0 24px;
-    }
-
-    .intro-header-social a:has(.intro-header-icon-stanford) {
-      width: 28px;
-      height: 26px;
-    }
-
-    .intro-header-social a.intro-header-link-tree {
-      width: auto;
-      font-size: 0.7em;
-    }
-  }
-
-  .paper-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    padding-bottom: 28px;
-    border-bottom: 1px solid #eef1f8;
-  }
-
-  .paper-item:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
-
-  .paper-schematic-frame {
-    flex: 0 0 240px;
-    width: 240px;
-    height: 180px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 5px solid lightgray;
-    border-radius: 7px;
-    box-sizing: border-box;
-    overflow: hidden;
-    background: #fff;
-  }
-
-  .paper-item .paper-schematic-frame img {
-    width: 100%;
-    height: 100%;
-    max-width: none;
-    margin: 0;
-    object-fit: contain;
-    display: block;
-  }
-
-  .paper-content {
-    flex: 1;
-    min-width: 0;
-    line-height: 1.55;
-  }
-
-  .article-entry .paper-content blockquote {
-    margin: 10px 0 0;
-    padding: 8px 12px;
-    font-size: 1em;
-    line-height: 1.55;
-    color: rgba(44, 44, 44, 0.62);
-  }
-
-  .article-entry .intro-bio {
-    display: flex;
-    flex-direction: column;
-    gap: 1.35em;
-  }
-
-  .article-entry .intro-bio-section {
-    margin: 0;
-    padding: 0;
-  }
-
-  .article-entry .intro-bio p {
-    margin: 0;
-    line-height: 1.55;
-  }
-
-  .article-entry .intro-bio strong {
-    font-weight: bold;
-    font-style: italic;
-    color: #8C1515;
-  }
-
-  .article-entry .intro-bio .intro-research-list {
-    margin: 0.2em 0 0;
-    padding: 0 0 0 1.15em;
-    list-style: none;
-  }
-
-  .article-entry .intro-bio .intro-research-list li {
-    position: relative;
-    margin: 0 0 0.35em;
-    padding-left: 0.15em;
-    line-height: 1.55;
-  }
-
-  .article-entry .intro-bio .intro-research-list li::before {
-    content: "";
-    position: absolute;
-    left: -0.95em;
-    top: 0.55em;
-    width: 0.42em;
-    height: 0.42em;
-    border-radius: 50%;
-    background: #8C1515;
-  }
-
-  .article-entry .intro-bio .intro-research-list li:last-child {
-    margin-bottom: 0;
-  }
-
-  .intro-header-hidden {
-    display: none;
-  }
-
-  @media (max-width: 720px) {
-    .intro-header {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0.75rem;
-      padding: 0.85rem 0.9rem 0.95rem;
-      margin-bottom: 0.5em;
-    }
-
-    .intro-header-text {
-      display: contents;
-    }
-
-    .intro-header-nameblock {
-      order: 1;
-      width: 100%;
-      padding: 0 0.15rem;
-      text-align: center;
-    }
-
-    .article-entry .intro-header-name {
-      font-size: 24px;
-    }
-
-    .intro-header-photo {
-      order: 2;
-      align-self: center;
-      margin-left: 0;
-      margin-right: 0;
-      width: min(176px, 52vw);
-      height: auto;
-      max-width: none;
-      flex: 0 0 auto;
-    }
-
-    .intro-header-details {
-      order: 3;
-      padding: 0 0.15rem;
-    }
-
-    .intro-header-rule {
-      width: 100%;
-      margin: 0.35em auto 0.55em;
-    }
-
-    .intro-header-title {
-      display: inline;
-    }
-
-    .intro-header-contact {
-      font-size: 14px;
-      line-height: 1.45;
-    }
-
-    .intro-header-email {
-      white-space: normal;
-      display: inline-block;
-      max-width: 100%;
-      word-break: break-word;
-    }
-
-    .article-entry .intro-header-social {
-      justify-content: center;
-      margin-top: 0.4em;
-      gap: 0.75em;
-    }
-
-    .intro-header-social a {
-      width: 38px;
-      height: 36px;
-    }
-
-    .intro-header-social .intro-header-icon {
-      width: 30px;
-      height: 30px;
-      flex: 0 0 30px;
-    }
-
-    .intro-header-social .intro-header-icon-rg {
-      width: 42px;
-      height: 30px;
-      flex: 0 0 42px;
-    }
-
-    .intro-header-social .intro-header-icon-stanford {
-      width: 32px;
-      height: 32px;
-      flex: 0 0 32px;
-    }
-
-    .intro-header-social a.intro-header-link-tree {
-      width: auto;
-      font-size: 0.78em;
-    }
-  }
-
-  @media (max-width: 720px) {
-    #post-index .article-entry {
-      padding-top: calc(14px + env(safe-area-inset-top, 0px));
-    }
-
-    .paper-item {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 16px;
-    }
-
-    .paper-schematic-frame {
-      flex: 0 0 auto;
-      width: 100%;
-      max-width: 100%;
-    }
-
-    .paper-content {
-      width: 100%;
-      max-width: 100%;
-      overflow-wrap: anywhere;
-    }
-  }
-</style>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Hanfeng Zhai">
 <meta property="og:site_name" content="Hanfeng Zhai">
@@ -554,31 +23,1162 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/styles/site-fonts.css?v=2" >
 <link rel="stylesheet" href="/css/styles/intro-nav.css?v=5" >
-<style type="text/css">
-  @media (max-width: 720px) {
-    #post-index .article-entry .legacy-size-3 {
-      padding: 0 0.9rem;
+<style>
+  /* Homepage scoped layout and visual design system (all explicit px for Bootstrap 3 safety) */
+  html.home-html,
+  body.home-page,
+  body.home-page #container {
+    height: auto;
+    min-height: 100%;
+  }
+
+  .intro-header-hidden {
+    display: none;
+  }
+
+  body.home-page #content.home-outer {
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 14px 32px 24px;
+    box-sizing: border-box;
+  }
+
+  body.home-page #main.home-main {
+    display: block;
+    float: none;
+    width: 100%;
+    margin: 0;
+  }
+
+  body.home-page #post-index.article {
+    margin: 0;
+    width: 100%;
+  }
+
+  body.home-page #post-index .article-meta {
+    margin: 0;
+    display: none;
+  }
+
+  body.home-page #post-index .article-entry {
+    margin: 0;
+    padding: 0;
+    color: #26221d;
+  }
+
+  /* Top sticky pill navigation */
+  body.home-page #content.home-outer .home-pill-nav {
+    position: sticky;
+    top: 10px;
+    z-index: 120;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto 16px;
+    padding: 0;
+  }
+
+  #content.home-outer .home-pill-nav .intro-nav-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 10px;
+    gap: 6px;
+    border: 1px solid #e2dbcc;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.56);
+    box-shadow: 0 1px 4px rgba(42, 34, 20, 0.05);
+    transition: background-color 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+
+  #content.home-outer .home-pill-nav.is-stuck .intro-nav-bar {
+    background: rgba(255, 255, 255, 0.94);
+    border-color: #d5cbb8;
+    backdrop-filter: saturate(160%) blur(12px);
+    -webkit-backdrop-filter: saturate(160%) blur(12px);
+    box-shadow: 0 4px 18px rgba(42, 34, 20, 0.09);
+  }
+
+  #content.home-outer .home-pill-nav .intro-nav-link {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    padding: 6px 15px;
+    border-radius: 999px;
+    color: #0645ad;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  #content.home-outer .home-pill-nav .intro-nav-link:hover,
+  #content.home-outer .home-pill-nav .intro-nav-link:focus-visible {
+    background: rgba(6, 69, 173, 0.09);
+    color: #003d82;
+    text-decoration: none;
+  }
+
+  #content.home-outer .home-pill-nav .intro-nav-link-active {
+    background: rgba(6, 69, 173, 0.14);
+    color: #003d82;
+    font-weight: 600;
+  }
+
+  /* Two-column editorial split */
+  #post-index .article-entry .home-split {
+    display: grid;
+    grid-template-columns: 452px minmax(0, 1fr);
+    column-gap: 36px;
+    align-items: start;
+  }
+
+  #post-index .article-entry .home-left-rail,
+  #post-index .article-entry .home-right-rail {
+    min-width: 0;
+  }
+
+  @media (min-width: 961px) and (min-height: 850px) {
+    body.home-page #post-index .article-entry .home-left-rail {
+      position: sticky;
+      top: 68px;
+      align-self: start;
+    }
+  }
+
+  /* Left rail: 2-tier translucent identity card */
+  #post-index .article-entry .intro-header {
+    display: block;
+    margin: 0;
+    padding: 13px 17px;
+    background: rgba(255, 255, 255, 0.58);
+    border: 1px solid #e6dfd1;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(42, 34, 20, 0.04);
+    box-sizing: border-box;
+  }
+
+  #post-index .article-entry .intro-header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  #post-index .article-entry .intro-header-identity {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  #post-index .article-entry .intro-header-nameblock {
+    min-width: 0;
+    width: 100%;
+  }
+
+  #post-index .article-entry .intro-header-name {
+    font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+    font-variant: small-caps;
+    font-feature-settings: "smcp" 1;
+    font-size: 23px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    line-height: 1.12;
+    color: #1a1815;
+    margin: 0;
+    padding: 0;
+  }
+
+  #post-index .article-entry .intro-header-rule {
+    border: 0;
+    border-top: 1px dashed #d5cbb8;
+    border-bottom: 0;
+    background: transparent;
+    width: 100%;
+    height: 0;
+    margin: 7px 0 8px;
+    padding: 0;
+  }
+
+  #post-index .article-entry .intro-header-affil {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.48;
+    color: #26221d;
+  }
+
+  #post-index .article-entry .intro-header-affil-role,
+  #post-index .article-entry .intro-header-affil-org {
+    display: block;
+  }
+
+  #post-index .article-entry .intro-header-affil a {
+    color: #26221d;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.15s ease, text-decoration-color 0.15s ease;
+  }
+
+  #post-index .article-entry .intro-header-affil a:hover {
+    color: #8C1515;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  #post-index .article-entry .intro-header-affil a.intro-header-title {
+    display: inline;
+    font-weight: 400;
+    color: #1a1815;
+    text-decoration: underline;
+    text-decoration-color: rgba(140, 21, 21, 0.36);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  #post-index .article-entry .intro-header-affil a.intro-header-title:hover {
+    color: #8C1515;
+    text-decoration-color: #8C1515;
+  }
+
+  #post-index .article-entry .intro-header-sep {
+    margin: 0 4px;
+    color: #8C1515;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+    vertical-align: baseline;
+  }
+
+  #post-index .article-entry .intro-header-photo {
+    flex: 0 0 98px;
+    width: 98px;
+    height: 98px;
+    padding: 3px;
+    background: #ffffff;
+    border: 1px solid #dfd7c6;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(42, 34, 20, 0.08);
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  #post-index .article-entry .intro-header-photo img {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    margin: 0;
+    border-radius: 7px;
+    object-fit: cover;
+    display: block;
+  }
+
+  #post-index .article-entry .intro-header-details {
+    margin-top: 9px;
+    padding-top: 8px;
+    border-top: 1px solid #ede7da;
+  }
+
+  #post-index .article-entry .intro-header-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 0;
+  }
+
+  #post-index .article-entry .intro-header-contact .intro-header-line {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.44;
+    color: #524b40;
+  }
+
+  #post-index .article-entry .intro-header-email {
+    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #26221d;
+    background: rgba(245, 240, 228, 0.92);
+    border: 1px solid #e2dbcc;
+    border-radius: 5px;
+    padding: 2px 8px;
+    white-space: nowrap;
+    display: inline-block;
+  }
+
+  #post-index .article-entry .intro-header-social {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  #post-index .article-entry .intro-header-social li {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  #post-index .article-entry .intro-header-social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    color: #4a443c;
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+
+  #post-index .article-entry .intro-header-social a:hover,
+  #post-index .article-entry .intro-header-social a:focus-visible {
+    background: rgba(140, 21, 21, 0.08);
+    color: #8C1515;
+    text-decoration: none;
+  }
+
+  #post-index .article-entry .intro-header-social .intro-header-icon {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+    display: block;
+    fill: currentColor;
+    margin: 0;
+  }
+
+  #post-index .article-entry .intro-header-social .intro-header-icon-rg {
+    width: 24px;
+    height: 18px;
+    flex: 0 0 24px;
+  }
+
+  #post-index .article-entry .intro-header-social .intro-header-icon-stanford {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+    object-fit: contain;
+  }
+
+  #post-index .article-entry .intro-header-social a.intro-header-link-tree {
+    width: auto;
+    height: 24px;
+    padding: 0 9px;
+    box-sizing: border-box;
+    gap: 4px;
+    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    white-space: nowrap;
+    color: #3a342c;
+    background: rgba(245, 240, 228, 0.9);
+    border: 1px solid #d5cbb8;
+    border-radius: 5px;
+  }
+
+  #post-index .article-entry .intro-header-social a.intro-header-link-tree::after {
+    content: "↗";
+    font-size: 10.5px;
+    opacity: 0.72;
+  }
+
+  #post-index .article-entry .intro-header-social a.intro-header-link-tree:hover,
+  #post-index .article-entry .intro-header-social a.intro-header-link-tree:focus-visible {
+    color: #8C1515;
+    background: rgba(140, 21, 21, 0.08);
+    border-color: rgba(140, 21, 21, 0.35);
+    text-decoration: none;
+  }
+
+  /* Left rail: open-paper bio */
+  #post-index .article-entry .intro-bio {
+    margin-top: 12px;
+    padding: 0 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  #post-index .article-entry .intro-bio-section {
+    margin: 0;
+    padding: 0;
+  }
+
+  #post-index .article-entry .intro-bio p {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: #26221d;
+  }
+
+  #post-index .article-entry .intro-bio .legacy-color-black {
+    color: inherit;
+  }
+
+  #post-index .article-entry .intro-bio a {
+    color: #0645ad;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  #post-index .article-entry .intro-bio a:hover {
+    color: #003d82;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  #post-index .article-entry .intro-bio strong {
+    font-weight: 700;
+    font-style: italic;
+    color: #8C1515;
+  }
+
+  #post-index .article-entry .intro-bio .intro-research-list {
+    margin: 6px 0 0;
+    padding: 0 0 0 16px;
+    list-style: none;
+  }
+
+  #post-index .article-entry .intro-bio .intro-research-list li {
+    position: relative;
+    margin: 0 0 4px;
+    padding-left: 2px;
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: #26221d;
+  }
+
+  #post-index .article-entry .intro-bio .intro-research-list li::before {
+    content: "";
+    position: absolute;
+    left: -14px;
+    top: 8px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #8C1515;
+  }
+
+  #post-index .article-entry .intro-bio .intro-research-list li:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Shared section header */
+  #post-index .article-entry .hp-section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    padding-bottom: 10px;
+    margin: 0 0 16px;
+    border-bottom: 1px solid #e2dbcc;
+  }
+
+  #post-index .article-entry .home-right-rail .hp-section-header {
+    padding-top: 2px;
+    margin-bottom: 14px;
+  }
+
+  #post-index .article-entry .hp-section-title {
+    font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    color: #1a1815;
+    margin: 0;
+    padding: 0;
+  }
+
+  #post-index .article-entry .hp-section-meta {
+    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    line-height: 1.3;
+    color: #7a7265;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  #post-index .article-entry .hp-meta-dot {
+    color: #8C1515;
+    font-weight: 700;
+    margin: 0 4px;
+  }
+
+  #post-index .article-entry .hp-section-meta a.hp-section-all {
+    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: #0645ad;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  #post-index .article-entry .hp-section-meta a.hp-section-all::after {
+    content: " ↗";
+  }
+
+  #post-index .article-entry .hp-section-meta a.hp-section-all:hover {
+    color: #003d82;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  /* Right rail: translucent publication plates */
+  #post-index .article-entry .paper-list {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    margin: 0;
+    padding: 0;
+  }
+
+  #post-index .article-entry .paper-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.58);
+    border: 1px solid #e6dfd1;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(42, 34, 20, 0.04);
+    box-sizing: border-box;
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  #post-index .article-entry .paper-item:hover {
+    background: rgba(255, 255, 255, 0.80);
+    border-color: #d5cbb8;
+    box-shadow: 0 6px 18px rgba(42, 34, 20, 0.075);
+    transform: translateY(-1px);
+  }
+
+  #post-index .article-entry .paper-schematic-frame {
+    flex: 0 0 196px;
+    width: 196px;
+    height: 147px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    background: #ffffff;
+    border: 1px solid #e2dbcc;
+    border-radius: 7px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  #post-index .article-entry .paper-schematic-frame img {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0;
+    object-fit: contain;
+    display: block;
+  }
+
+  #post-index .article-entry .paper-content {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  #post-index .article-entry .paper-title {
+    margin: 0 0 5px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.34;
+    color: #1a1815;
+    text-wrap: balance;
+  }
+
+  #post-index .article-entry .paper-title a {
+    color: #1a1815;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  #post-index .article-entry .paper-title a:hover {
+    color: #0645ad;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  #post-index .article-entry .paper-authors {
+    margin: 0 0 3px;
+    font-size: 13.5px;
+    line-height: 1.44;
+    color: #524b40;
+  }
+
+  #post-index .article-entry .paper-authors strong {
+    font-weight: 700;
+    color: #1a1815;
+  }
+
+  #post-index .article-entry .paper-venue {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.42;
+    color: #524b40;
+  }
+
+  #post-index .article-entry .paper-venue em {
+    font-style: italic;
+    color: #3a342c;
+  }
+
+  #post-index .article-entry .paper-venue .paper-year {
+    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: #7a7265;
+    letter-spacing: 0.02em;
+  }
+
+  #post-index .article-entry .paper-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin: 7px 0 0;
+  }
+
+  #post-index .article-entry .paper-links a.paper-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 9px;
+    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.35;
+    letter-spacing: 0.02em;
+    color: #0645ad;
+    background: rgba(6, 69, 173, 0.065);
+    border: 1px solid rgba(6, 69, 173, 0.22);
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+
+  #post-index .article-entry .paper-links a.paper-pill::after {
+    content: "↗";
+    font-size: 10px;
+    opacity: 0.78;
+  }
+
+  #post-index .article-entry .paper-links a.paper-pill:hover,
+  #post-index .article-entry .paper-links a.paper-pill:focus-visible {
+    color: #003d82;
+    background: rgba(6, 69, 173, 0.13);
+    border-color: rgba(6, 69, 173, 0.42);
+    text-decoration: none;
+  }
+
+  #post-index .article-entry .paper-content blockquote.paper-tldr {
+    margin: 8px 0 0;
+    padding: 6px 11px;
+    border-left: 2px solid #8C1515;
+    border-radius: 0 6px 6px 0;
+    background: rgba(245, 240, 228, 0.76);
+    font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+    font-size: 13px;
+    line-height: 1.46;
+    color: #524b40;
+  }
+
+  #post-index .article-entry .paper-content blockquote.paper-tldr .paper-tldr-label {
+    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #8C1515;
+    margin-right: 2px;
+  }
+
+  #post-index .article-entry .paper-content blockquote.paper-tldr .paper-tldr-label::after {
+    content: ":";
+  }
+
+  /* Full-width Recent Highlights band */
+  #post-index .article-entry .timeline-section {
+    margin: 40px 0 12px;
+  }
+
+  #post-index .article-entry .timeline-gallery {
+    position: relative;
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    #post-index .article-entry .timeline-gallery::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 18px;
+      width: 30px;
+      background: linear-gradient(to right, rgba(245, 240, 228, 0), rgba(245, 240, 228, 0.92));
+      pointer-events: none;
+      z-index: 2;
+    }
+  }
+
+  #post-index .article-entry .timeline-scroll {
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    padding: 4px 28px 18px 2px;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #cfc6b4 rgba(226, 219, 204, 0.45);
+  }
+
+  #post-index .article-entry .timeline-scroll::-webkit-scrollbar {
+    height: 7px;
+  }
+
+  #post-index .article-entry .timeline-scroll::-webkit-scrollbar-track {
+    background: rgba(226, 219, 204, 0.45);
+    border-radius: 999px;
+  }
+
+  #post-index .article-entry .timeline-scroll::-webkit-scrollbar-thumb {
+    background: #cfc6b4;
+    border-radius: 999px;
+  }
+
+  #post-index .article-entry .timeline-scroll::-webkit-scrollbar-thumb:hover {
+    background: #b5aa95;
+  }
+
+  #post-index .article-entry .timeline-card {
+    flex: 0 0 336px;
+    width: 336px;
+    background: rgba(255, 255, 255, 0.58);
+    border: 1px solid #e6dfd1;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(42, 34, 20, 0.04);
+    overflow: hidden;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  #post-index .article-entry .timeline-card:hover,
+  #post-index .article-entry .timeline-card:focus-within {
+    background: rgba(255, 255, 255, 0.84);
+    border-color: #d5cbb8;
+    box-shadow: 0 8px 22px rgba(42, 34, 20, 0.085);
+    transform: translateY(-2px);
+  }
+
+  #post-index .article-entry .timeline-image {
+    width: 100%;
+    height: 174px;
+    overflow: hidden;
+    background: #ede7da;
+    border-bottom: 1px solid #ede7da;
+  }
+
+  #post-index .article-entry .timeline-image img {
+    width: 100%;
+    height: 174px;
+    max-width: none;
+    margin: 0;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+  }
+
+  #post-index .article-entry .timeline-card:hover .timeline-image img {
+    transform: scale(1.02);
+  }
+
+  #post-index .article-entry .timeline-image img.timeline-image-from-top {
+    object-position: top center;
+  }
+
+  #post-index .article-entry .timeline-content {
+    padding: 12px 14px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13.5px;
+    line-height: 1.48;
+    color: #3a342c;
+  }
+
+  #post-index .article-entry .timeline-content p {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.48;
+    color: #3a342c;
+  }
+
+  #post-index .article-entry .timeline-content a {
+    color: #0645ad;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  #post-index .article-entry .timeline-content a:hover {
+    color: #003d82;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  #post-index .article-entry .timeline-content p.timeline-year {
+    display: inline-block;
+    margin: 0;
+    padding: 2px 8px;
+    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: 0.04em;
+    color: #8C1515;
+    background: rgba(140, 21, 21, 0.08);
+    border: 1px solid rgba(140, 21, 21, 0.16);
+    border-radius: 5px;
+  }
+
+  /* Homepage footer polish */
+  body.home-page #footer .wrapper > a img[alt="Flag Counter"] {
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+  }
+
+  /* Focus accessibility */
+  body.home-page a:focus-visible {
+    outline: 2px solid #0645ad;
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  /* Compact desktop: 961px to 1159px */
+  @media (max-width: 1159px) and (min-width: 961px) {
+    body.home-page #content.home-outer {
+      padding: 14px 24px 24px;
     }
 
-    #post-index .article-entry .intro-bio {
-      margin-top: 0.35em;
-      gap: 1.2em;
+    #post-index .article-entry .home-split {
+      grid-template-columns: 380px minmax(0, 1fr);
+      column-gap: 28px;
     }
 
-    #post-index .article-entry .intro-bio p,
-    #post-index .article-entry .intro-bio .intro-research-list {
-      font-size: 15px;
-      line-height: 1.58;
+    #post-index .article-entry .intro-header {
+      padding: 15px 16px;
     }
 
-    #post-index .article-entry .intro-bio .intro-research-list {
-      margin-top: 0.15em;
+    #post-index .article-entry .intro-header-photo {
+      flex: 0 0 96px;
+      width: 96px;
+      height: 96px;
+    }
+
+    #post-index .article-entry .intro-header-affil-org .intro-header-sep {
+      display: none;
+    }
+
+    #post-index .article-entry .intro-header-affil-org a {
+      display: block;
+    }
+
+    #post-index .article-entry .paper-item {
+      gap: 15px;
+      padding: 14px 16px;
+    }
+
+    #post-index .article-entry .paper-schematic-frame {
+      flex: 0 0 172px;
+      width: 172px;
+      height: 130px;
+    }
+  }
+
+  /* Tablet: 768px to 960px */
+  @media (max-width: 960px) {
+    body.home-page #content.home-outer {
+      max-width: 740px;
+      padding: 14px 24px 24px;
+    }
+
+    #post-index .article-entry .home-split {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    #post-index .article-entry .intro-header-photo {
+      flex: 0 0 132px;
+      width: 132px;
+      height: 132px;
+    }
+
+    #post-index .article-entry .paper-schematic-frame {
+      flex: 0 0 184px;
+      width: 184px;
+      height: 138px;
+    }
+  }
+
+  /* Mobile: up to 767px */
+  @media (max-width: 767px) {
+    body.home-page #content.home-outer {
+      max-width: 100%;
+      padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 20px;
+    }
+
+    body.home-page #content.home-outer .home-pill-nav {
+      top: calc(8px + env(safe-area-inset-top, 0px));
+      margin: 0 auto 18px;
+    }
+
+    #post-index .article-entry .home-split {
+      gap: 26px;
+    }
+
+    #post-index .article-entry .intro-header {
+      padding: 16px 16px;
+    }
+
+    #post-index .article-entry .intro-header-top {
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    #post-index .article-entry .intro-header-identity {
+      display: contents;
+    }
+
+    #post-index .article-entry .intro-header-nameblock {
+      order: 1;
+      width: 100%;
+      text-align: center;
+    }
+
+    #post-index .article-entry .intro-header-photo {
+      order: 2;
+      flex: 0 0 136px;
+      width: 136px;
+      height: 136px;
+      margin: 10px auto 12px;
+    }
+
+    #post-index .article-entry .intro-header-affil {
+      order: 3;
+      width: 100%;
+      text-align: center;
+    }
+
+    #post-index .article-entry .intro-header-contact {
+      text-align: center;
+    }
+
+    #post-index .article-entry .intro-header-social {
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    #post-index .article-entry .intro-header-social a {
+      width: 34px;
+      height: 34px;
+    }
+
+    #post-index .article-entry .intro-header-social .intro-header-icon {
+      width: 20px;
+      height: 20px;
+      flex: 0 0 20px;
+    }
+
+    #post-index .article-entry .intro-header-social .intro-header-icon-rg {
+      width: 26px;
+      height: 20px;
+      flex: 0 0 26px;
+    }
+
+    #post-index .article-entry .intro-header-social .intro-header-icon-stanford {
+      width: 22px;
+      height: 22px;
+      flex: 0 0 22px;
+    }
+
+    #post-index .article-entry .intro-header-social a.intro-header-link-tree {
+      width: auto;
+      height: 28px;
+      padding: 0 9px;
+      font-size: 11px;
+      margin-left: 2px;
+    }
+
+    #post-index .article-entry .paper-item {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 14px 15px;
+      gap: 14px;
+    }
+
+    #post-index .article-entry .paper-schematic-frame {
+      flex: 0 0 auto !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto;
+      aspect-ratio: 4 / 3;
+      max-height: 220px;
+    }
+
+    #post-index .article-entry .paper-content {
+      width: 100%;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }
+
+    #post-index .article-entry .timeline-section {
+      margin: 32px 0 8px;
+    }
+
+    #post-index .article-entry .hp-section-title {
+      font-size: 19px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    #post-index .article-entry .timeline-scroll {
+      gap: 14px;
+      padding: 4px 2px 16px;
+    }
+
+    #post-index .article-entry .timeline-card {
+      flex: 0 0 264px;
+      width: 264px;
+    }
+
+    #post-index .article-entry .timeline-image,
+    #post-index .article-entry .timeline-image img {
+      height: 148px;
+    }
+  }
+
+  @media (max-width: 540px) {
+    #content.home-outer .home-pill-nav .intro-nav-bar {
+      padding: 6px 8px;
+      gap: 4px;
+      border-radius: 999px;
+    }
+
+    #content.home-outer .home-pill-nav .intro-nav-link {
+      font-size: 13px;
+      line-height: 18px;
+      padding: 6px 10px;
+    }
+  }
+
+  @media (max-width: 440px) {
+    body.home-page #footer .social-icons {
+      gap: 6px 4px;
+    }
+
+    body.home-page #footer .social-icons a {
+      min-width: 38px;
+      min-height: 38px;
+    }
+
+    body.home-page #footer .social-icons .fa,
+    body.home-page #footer .social-icons .icon-scholar,
+    body.home-page #footer .social-icons .icon-orcid,
+    body.home-page #footer .social-icons .icon-researchgate {
+      width: 38px;
+      height: 38px;
+      line-height: 38px;
+      font-size: 1.15em;
+    }
+
+    body.home-page #footer .social-icons .icon-scholar::before,
+    body.home-page #footer .social-icons .icon-orcid::before {
+      width: 19px;
+      height: 19px;
+    }
+
+    body.home-page #footer .social-icons .icon-researchgate::before {
+      width: 24px;
+      height: 16px;
+    }
+  }
+
+  @media (max-width: 375px) {
+    #content.home-outer .home-pill-nav .intro-nav-bar {
+      padding: 5px 6px;
+      gap: 2px;
+    }
+
+    #content.home-outer .home-pill-nav .intro-nav-link {
+      font-size: 12.5px;
+      line-height: 18px;
+      padding: 6px 8px;
+    }
+
+    #post-index .article-entry .intro-header-email {
+      white-space: normal;
+      word-break: break-word;
+    }
+
+    #post-index .article-entry .intro-header-social {
+      gap: 4px;
+    }
+
+    #post-index .article-entry .intro-header-social a {
+      width: 32px;
+      height: 32px;
+    }
+
+    #post-index .article-entry .intro-header-social a.intro-header-link-tree {
+      padding: 0 7px;
+      font-size: 10.5px;
+      margin-left: 1px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #content.home-outer .home-pill-nav .intro-nav-bar,
+    #post-index .article-entry .paper-item,
+    #post-index .article-entry .timeline-card,
+    #post-index .article-entry .timeline-image img {
+      transition: none;
+    }
+
+    #post-index .article-entry .paper-item:hover,
+    #post-index .article-entry .timeline-card:hover,
+    #post-index .article-entry .timeline-card:focus-within,
+    #post-index .article-entry .timeline-card:hover .timeline-image img {
+      transform: none;
     }
   }
 </style>
 </head>
 
-<body>
+<body class="home-page">
 <header id="header" class="intro-header-hidden">
   <div class="intro-navigate">
       <p class="navigater-list">
@@ -592,33 +1192,47 @@
 </header>
 <div id="container">
 <div id="wrap"> 
-<div id="content" class="outer">
-<section id="main" class="main-full-width">  
+<div id="content" class="outer home-outer">
+<nav class="intro-inline-nav home-pill-nav" aria-label="Site sections">
+  <div class="intro-nav-bar">
+    <a class="intro-nav-link intro-nav-link-active" href="/" aria-current="page">Home</a>
+    <a class="intro-nav-link" href="/research">Research</a>
+    <a class="intro-nav-link" href="/talk">Talks</a>
+    <a class="intro-nav-link" href="/note">Note</a>
+    <a class="intro-nav-link" href="/code">Code</a>
+  </div>
+</nav>
+<section id="main" class="main-full-width home-main">  
 <article id="post-index"  class="article article-type-post" itemscope itemprop="blogPost" >
 <div id="articleInner" class="article-inner">
 <div class="article-meta">
 </div>
 <div class="article-entry" itemprop="articleBody">
 
+<div class="home-split">
+<aside class="home-left-rail">
 <div class="intro-header">
-  <div class="intro-header-text">
-    <div class="intro-header-nameblock">
-      <h1 class="intro-header-name">Han Feng Zhai</h1>
-      <hr class="intro-header-rule">
-    </div>
-    <div class="intro-header-details">
-      <div class="intro-header-contact">
-        <p class="intro-header-line">
-          <a class="intro-header-title" href="https://micronano.stanford.edu/people/hanfeng-zhai" target="_blank" rel="noopener">PhD Candidate</a>
-          <span class="intro-header-sep" aria-hidden="true">·</span>
-          <a href="https://me.stanford.edu/" target="_blank" rel="noopener">Mechanical Engineering</a>
-          <span class="intro-header-sep" aria-hidden="true">·</span>
-          <a href="https://www.stanford.edu/" target="_blank" rel="noopener">Stanford University</a>
-        </p>
-        <p class="intro-header-line">Room 256, 452 Escondido Mall, Stanford, CA 94305</p>
-        <p class="intro-header-line">Email: <span class="intro-header-email">hzhai AT stanford DOT edu</span></p>
+  <div class="intro-header-top">
+    <div class="intro-header-identity">
+      <div class="intro-header-nameblock">
+        <h1 class="intro-header-name">Han Feng Zhai</h1>
+        <hr class="intro-header-rule">
       </div>
-      <ul class="intro-header-social" aria-label="Contact links">
+      <p class="intro-header-affil">
+        <span class="intro-header-affil-role"><a class="intro-header-title" href="https://micronano.stanford.edu/people/hanfeng-zhai" target="_blank" rel="noopener">PhD Candidate</a></span>
+        <span class="intro-header-affil-org"><a href="https://me.stanford.edu/" target="_blank" rel="noopener">Mechanical Engineering</a><span class="intro-header-sep" aria-hidden="true">·</span><a href="https://www.stanford.edu/" target="_blank" rel="noopener">Stanford University</a></span>
+      </p>
+    </div>
+    <div class="intro-header-photo">
+      <img src="/assets/img/site/hanfeng-zoom.jpg" alt="Hanfeng Zhai" loading="eager">
+    </div>
+  </div>
+  <div class="intro-header-details">
+    <div class="intro-header-contact">
+      <p class="intro-header-line">Room 256, 452 Escondido Mall, Stanford, CA 94305</p>
+      <p class="intro-header-line">Email: <span class="intro-header-email">hzhai AT stanford DOT edu</span></p>
+    </div>
+    <ul class="intro-header-social" aria-label="Contact links">
         <li><a href="https://profiles.stanford.edu/hanfeng-zhai" target="_blank" rel="noopener" aria-label="Stanford Profile"><img class="intro-header-icon intro-header-icon-stanford" src="/css/images/site/stanford_block_s_gray.png?v=7" width="24" height="24" alt=""></a></li>
         <li><a href="https://www.linkedin.com/in/hanfengzhai/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="intro-header-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.065 2.065 0 1 1 0-4.13 2.065 2.065 0 0 1 0 4.13zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a></li>
         <li><a href="https://scholar.google.com/citations?hl=en&amp;user=S5jCDXcAAAAJ&amp;view_op=list_works&amp;sortby=pubdate" target="_blank" rel="noopener" aria-label="Google Scholar"><svg class="intro-header-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.978 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg></a></li>
@@ -626,14 +1240,8 @@
         <li><a href="https://orcid.org/0000-0003-1511-7597" target="_blank" rel="noopener" aria-label="ORCID"><svg class="intro-header-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.525.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.025-5.325 5.025h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722 0-2.016-1.284-3.722-4.097-3.722h-2.222z"/></svg></a></li>
         <li><a class="intro-header-link-tree" href="/file/academic-tree/" aria-label="Academic Tree">AcademicTree</a></li>
       </ul>
-    </div>
-  </div>
-  <div class="intro-header-photo">
-    <img src="/assets/img/site/hanfeng-zoom.jpg" alt="Hanfeng Zhai" loading="eager">
   </div>
 </div>
-
-<div class="legacy-size-3 legacy-color-black">
 
 <div class="intro-bio">
 <section class="intro-bio-section">
@@ -653,61 +1261,90 @@
 <p><span class="legacy-color-black">I enjoyed serving the community and teaching applied mathematics and solid mechanics. I will be co-organizing <a target="_blank" rel="noopener" href="https://compfest.stanford.edu/">CompFest 2027</a> (<a target="_blank" rel="noopener" href="/file/posters/CompFest2027.pdf">flyer</a>) and currently a TA for <a target="_blank" rel="noopener" href="https://explorecourses.stanford.edu/search?q=ME123&amp;view=timeschedule&amp;filter-coursestatus-Active=on&amp;academicYear=20262027">ME123: Computational Engineering</a>. Previously, I TA'd <a target="_blank" rel="noopener" href="https://explorecourses.stanford.edu/search?q=ME340&amp;view=catalog&amp;filter-coursestatus-Active=on&amp;academicYear=20252026">Mechanics: Elasticity and Inelasticity</a> (see <a target="_blank" rel="noopener" href="/file/teaching/intros/me340/">short intro</a>, <a target="_blank" rel="noopener" href="/file/teaching/elasticity/ME340_TeachEval.pdf">evaluations</a>) and <a target="_blank" rel="noopener" href="https://explorecourses.stanford.edu/search?q=ME335A&amp;view=catalog&amp;filter-coursestatus-Active=on&amp;academicYear=20242025">Finite Element Analysis</a> (see <a target="_blank" rel="noopener" href="/file/teaching/intros/me335/">short intro</a>, <a target="_blank" rel="noopener" href="/file/teaching/fea/FEA_W25_TeachEval.pdf">evaluations</a>). See <a href="/note">teaching notes</a> for problem sessions and course reviews.</span></p>
 </section>
 </div>
+</aside>
 
-<nav class="intro-inline-nav" aria-label="Site sections">
-  <div class="intro-nav-bar">
-    <a class="intro-nav-link intro-nav-link-active" href="/">Home</a>
-    <a class="intro-nav-link" href="/research">Research</a>
-    <a class="intro-nav-link" href="/talk">Talks</a>
-    <a class="intro-nav-link" href="/note">Note</a>
-    <a class="intro-nav-link" href="/code">Code</a>
+<section class="home-right-rail" aria-labelledby="selected-publications-heading">
+  <div class="hp-section-header">
+    <h2 id="selected-publications-heading" class="hp-section-title">Selected Publications</h2>
+    <span class="hp-section-meta">05 SELECTED <span class="hp-meta-dot" aria-hidden="true">·</span> <a class="hp-section-all" href="/research">ALL RESEARCH</a></span>
   </div>
-</nav>
 <div class="paper-list">
   <article class="paper-item">
     <div class="paper-schematic-frame"><img src="/assets/img/publications/linklen_schematic.png" alt=""></div>
     <div class="paper-content">
-      Akhondzadeh$^1$, <strong>Zhai</strong>$^1$, Jian, Sills, Bertin, Cai$^\star$.
-      <a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.jmps.2026.106533">Link Statistics of Dislocation Network during Strain Hardening</a>. <em>Journal of the Mechanics and Physics of Solids</em> (2026). [<a target="_blank" rel="noopener" href="/file/publications/AkhondzadehZhai_2026_JMPS.pdf">PDF</a>] [<a target="_blank" rel="noopener" href="/file/ref/akhondzadeh2026.html">Cite</a>] [<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=rkU7lEMtu0s">Video</a>] [<a target="_blank" rel="noopener" href="/file/posters/dislocation2025.pdf">Poster</a>]
-      <blockquote><strong>$\texttt{TL;DR}$:</strong> Over 100 DDD simulations reveal that inactive slip systems follow single-exponential link length distributions, while active ones evolve into stress-driven double exponentials—explained by a generalized Poisson process.</blockquote>
+      <p class="paper-title"><a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.jmps.2026.106533">Link Statistics of Dislocation Network during Strain Hardening</a></p>
+      <p class="paper-authors">Akhondzadeh$^1$, <strong>Zhai</strong>$^1$, Jian, Sills, Bertin, Cai$^\star$</p>
+      <p class="paper-venue"><em>Journal of the Mechanics and Physics of Solids</em> <span class="hp-meta-dot" aria-hidden="true">·</span> <span class="paper-year">2026</span></p>
+      <div class="paper-links">
+        <a class="paper-pill" target="_blank" rel="noopener" href="/file/publications/AkhondzadehZhai_2026_JMPS.pdf">PDF</a>
+        <a class="paper-pill" target="_blank" rel="noopener" href="/file/ref/akhondzadeh2026.html">Cite</a>
+        <a class="paper-pill" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=rkU7lEMtu0s">Video</a>
+        <a class="paper-pill" target="_blank" rel="noopener" href="/file/posters/dislocation2025.pdf">Poster</a>
+      </div>
+      <blockquote class="paper-tldr"><span class="paper-tldr-label">TL;DR</span> Over 100 DDD simulations reveal that inactive slip systems follow single-exponential link length distributions, while active ones evolve into stress-driven double exponentials—explained by a generalized Poisson process.</blockquote>
     </div>
   </article>
   <article class="paper-item">
     <div class="paper-schematic-frame"><img src="/assets/img/publications/gnn_fem_compmech.jpeg" alt=""></div>
     <div class="paper-content">
-      <strong>Zhai</strong>.
-      <a target="_blank" rel="noopener" href="https://link.springer.com/article/10.1007/s00466-025-02604-6">Stress predictions in polycrystal plasticity using graph neural networks with subgraph training</a>. <em>Computational Mechanics</em> (2025). [<a target="_blank" rel="noopener" href="/file/publications/zhai_compmech_2025.pdf">PDF</a>] [<a target="_blank" rel="noopener" href="/file/ref/zhai2025.html">Cite</a>]
-      <blockquote><strong>$\texttt{TL;DR}$:</strong> GNNs are used to efficiently predict stress in polycrystal plasticity, achieving over 150x speedup compared to FEM with high accuracy.</blockquote>
+      <p class="paper-title"><a target="_blank" rel="noopener" href="https://link.springer.com/article/10.1007/s00466-025-02604-6">Stress predictions in polycrystal plasticity using graph neural networks with subgraph training</a></p>
+      <p class="paper-authors"><strong>Zhai</strong></p>
+      <p class="paper-venue"><em>Computational Mechanics</em> <span class="hp-meta-dot" aria-hidden="true">·</span> <span class="paper-year">2025</span></p>
+      <div class="paper-links">
+        <a class="paper-pill" target="_blank" rel="noopener" href="/file/publications/zhai_compmech_2025.pdf">PDF</a>
+        <a class="paper-pill" target="_blank" rel="noopener" href="/file/ref/zhai2025.html">Cite</a>
+      </div>
+      <blockquote class="paper-tldr"><span class="paper-tldr-label">TL;DR</span> GNNs are used to efficiently predict stress in polycrystal plasticity, achieving over 150x speedup compared to FEM with high accuracy.</blockquote>
     </div>
   </article>
   <article class="paper-item">
     <div class="paper-schematic-frame"><img src="/assets/img/publications/FIGURE_MatOpt.png" alt=""></div>
     <div class="paper-content">
-      <strong>Zhai</strong>, Hao, Yeo$^\star$.
-      <a target="_blank" rel="noopener" href="https://doi.org/10.1063/5.0177266">Benchmarking inverse optimization algorithms for materials design</a>. <em>APL Materials</em> (2024). [<a target="_blank" rel="noopener" href="/file/publications/zhai_aplmat_2024.pdf">PDF</a>] [<a target="_blank" rel="noopener" href="/file/ref/zhai2024.html">Cite</a>]
-      <blockquote><strong>$\texttt{TL;DR}$:</strong> We benchmarked different heuristic and machine learning optimization algorithms for designing elemental crystals for targeted properties.</blockquote>
+      <p class="paper-title"><a target="_blank" rel="noopener" href="https://doi.org/10.1063/5.0177266">Benchmarking inverse optimization algorithms for materials design</a></p>
+      <p class="paper-authors"><strong>Zhai</strong>, Hao, Yeo$^\star$</p>
+      <p class="paper-venue"><em>APL Materials</em> <span class="hp-meta-dot" aria-hidden="true">·</span> <span class="paper-year">2024</span></p>
+      <div class="paper-links">
+        <a class="paper-pill" target="_blank" rel="noopener" href="/file/publications/zhai_aplmat_2024.pdf">PDF</a>
+        <a class="paper-pill" target="_blank" rel="noopener" href="/file/ref/zhai2024.html">Cite</a>
+      </div>
+      <blockquote class="paper-tldr"><span class="paper-tldr-label">TL;DR</span> We benchmarked different heuristic and machine learning optimization algorithms for designing elemental crystals for targeted properties.</blockquote>
     </div>
   </article>
   <article class="paper-item">
     <div class="paper-schematic-frame"><img src="/assets/img/publications/bo_1d_sampling.gif" alt=""></div>
     <div class="paper-content">
-      <strong>Zhai</strong> & Yeo$^\star$.
-      <a target="_blank" rel="noopener" href="https://doi.org/10.1021/acsbiomaterials.2c01079">Computational design of antimicrobial active surfaces via automated Bayesian optimization</a>. <em>ACS Biomat. Sci. & Eng.</em> (2023). [<a target="_blank" rel="noopener" href="/file/publications/zhai_acsbio_2023.pdf">PDF</a>] [<a target="_blank" rel="noopener" href="/file/ref/zhaiyeo2022.html">Cite</a>]
-      <blockquote><strong>$\texttt{TL;DR}$:</strong> A new workflow to digitally design antimicrobial surfaces in the mesoscale using Bayesian optimization and discrete element methods.</blockquote>
+      <p class="paper-title"><a target="_blank" rel="noopener" href="https://doi.org/10.1021/acsbiomaterials.2c01079">Computational design of antimicrobial active surfaces via automated Bayesian optimization</a></p>
+      <p class="paper-authors"><strong>Zhai</strong> &amp; Yeo$^\star$</p>
+      <p class="paper-venue"><em>ACS Biomat. Sci. &amp; Eng.</em> <span class="hp-meta-dot" aria-hidden="true">·</span> <span class="paper-year">2023</span></p>
+      <div class="paper-links">
+        <a class="paper-pill" target="_blank" rel="noopener" href="/file/publications/zhai_acsbio_2023.pdf">PDF</a>
+        <a class="paper-pill" target="_blank" rel="noopener" href="/file/ref/zhaiyeo2022.html">Cite</a>
+      </div>
+      <blockquote class="paper-tldr"><span class="paper-tldr-label">TL;DR</span> A new workflow to digitally design antimicrobial surfaces in the mesoscale using Bayesian optimization and discrete element methods.</blockquote>
     </div>
   </article>
   <article class="paper-item">
     <div class="paper-schematic-frame"><img src="/assets/img/publications/‎schematic_bioporous.png" alt=""></div>
     <div class="paper-content">
-      <strong>Zhai</strong> & Yeo$^\star$.
-      <a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.jmbbm.2023.106127">Controlling biofilm transport with porous metamaterials designed with Bayesian learning</a>. <em>J. Mech. Behav. Biomed. Mat.</em> (2023). [<a target="_blank" rel="noopener" href="/file/publications/zhai_2023_jmbbm.pdf">PDF</a>] [<a target="_blank" rel="noopener" href="/file/ref/zhaiyeo2023.html">Cite</a>]
-      <blockquote><strong>$\texttt{TL;DR}$:</strong> We use Bayesian optimization to design porous materials with enhanced biomass transport and insights into growth mechanisms.</blockquote>
+      <p class="paper-title"><a target="_blank" rel="noopener" href="https://doi.org/10.1016/j.jmbbm.2023.106127">Controlling biofilm transport with porous metamaterials designed with Bayesian learning</a></p>
+      <p class="paper-authors"><strong>Zhai</strong> &amp; Yeo$^\star$</p>
+      <p class="paper-venue"><em>J. Mech. Behav. Biomed. Mat.</em> <span class="hp-meta-dot" aria-hidden="true">·</span> <span class="paper-year">2023</span></p>
+      <div class="paper-links">
+        <a class="paper-pill" target="_blank" rel="noopener" href="/file/publications/zhai_2023_jmbbm.pdf">PDF</a>
+        <a class="paper-pill" target="_blank" rel="noopener" href="/file/ref/zhaiyeo2023.html">Cite</a>
+      </div>
+      <blockquote class="paper-tldr"><span class="paper-tldr-label">TL;DR</span> We use Bayesian optimization to design porous materials with enhanced biomass transport and insights into growth mechanisms.</blockquote>
     </div>
   </article>
 </div>
+</section>
+</div>
 
-<hr>
-
+<section class="timeline-section" aria-labelledby="recent-highlights-heading">
+  <div class="hp-section-header">
+    <h2 id="recent-highlights-heading" class="hp-section-title">Recent Highlights</h2>
+    <span class="hp-section-meta">11 HIGHLIGHTS <span class="hp-meta-dot" aria-hidden="true">·</span> SCROLL ⇄</span>
+  </div>
 <div class="timeline-gallery" role="region" aria-label="Recent highlights">
   <div class="timeline-scroll">
     <article class="timeline-card">
@@ -811,10 +1448,10 @@
     </article>
   </div>
 </div>
+</section>
 
 </div>
-
-<hr>
+</div>
 </article>
 </section>
 </div>
