@@ -46,19 +46,22 @@ body,
 .article-entry h3,
 .article-title,
 .article-header,
-.navigater-list,
-.navigater-list > a,
 #header,
 #header a,
 #allheader,
 #footer,
 #footer p,
+.beautifont {
+  font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+}
+
+.navigater-list,
+.navigater-list > a,
 .hnav,
 .hnav a,
 .navbar-nav,
-.navbar-nav > li > a,
-.beautifont {
-  font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+.navbar-nav > li > a {
+  font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 code,
