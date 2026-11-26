@@ -1,0 +1,290 @@
+/* ==========================================================================
+   Stanford ME 340 Design System: Tokens and Base Reset
+   Swiss-Editorial Engineering Monograph Aesthetic
+   Dual Theme: Matte Charcoal Drafting Table (dark) & Archival Vellum (light)
+   Strict minimum font size floor: 15px (0.9375rem) across all text.
+   ========================================================================== */
+
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Core Matte Surfaces (Warm Charcoal Drafting Table) */
+  --bg: #141413;
+  --bg-elevated: #1A1A18;
+  --surface: #1C1C1A;
+  --surface-2: #242421;
+  --surface-3: #2E2E2A;
+  --canvas-bg: #111110;
+
+  /* Typography Ink */
+  --ink: #E6E2D8;
+  --ink-strong: #F5F2EB;
+  --ink-muted: #9E988C;
+  --ink-subtle: #857F74;
+
+  /* Flat Matte Mineral Accents (subtle soft tints only for tiny active indicators) */
+  --cardinal: #D14D41;
+  --cardinal-soft: rgba(209, 77, 65, 0.13);
+  --cardinal-border: rgba(209, 77, 65, 0.42);
+
+  --teal: #52A391;
+  --teal-soft: rgba(82, 163, 145, 0.13);
+  --teal-border: rgba(82, 163, 145, 0.42);
+
+  --amber: #D49B38;
+  --amber-soft: rgba(212, 155, 56, 0.13);
+  --amber-border: rgba(212, 155, 56, 0.42);
+
+  --blue: #6B96C2;
+  --blue-soft: rgba(107, 150, 194, 0.13);
+  --blue-border: rgba(107, 150, 194, 0.42);
+
+  /* Default Part Cascade */
+  --part-accent: var(--cardinal);
+  --part-soft: var(--cardinal-soft);
+  --part-border: var(--cardinal-border);
+
+  /* Hairline Rules & Structural Elevation */
+  --border: rgba(236, 232, 224, 0.11);
+  --border-strong: rgba(236, 232, 224, 0.22);
+  --border-subtle: rgba(236, 232, 224, 0.06);
+  --focus-ring: #6B96C2;
+
+  --stage-glow: none;
+  --shadow-sm: none;
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.50);
+
+  /* Interactive Controls */
+  --btn-primary-bg: #B8392E;
+  --btn-primary-hover: #CA4539;
+  --btn-primary-ink: #F5F2EB;
+  --backdrop: rgba(14, 14, 13, 0.90);
+
+  /* Hero Readability Scrim (matte warm charcoal over live continuum canvas) */
+  --hero-scrim:
+    radial-gradient(ellipse 76% 76% at 22% 50%, rgba(20, 20, 19, 0.94) 0%, rgba(20, 20, 19, 0.72) 52%, rgba(20, 20, 19, 0.18) 100%),
+    linear-gradient(180deg, rgba(20, 20, 19, 0.45) 0%, rgba(20, 20, 19, 0.10) 40%, rgba(20, 20, 19, 0.56) 100%);
+
+  /* Engineering Typography */
+  --font-display: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Type Scale (Strict 15px / 0.9375rem Minimum Floor) */
+  --fs-min: 0.9375rem;   /* 15px */
+  --fs-sm: 0.9375rem;    /* 15px */
+  --fs-base: 1rem;       /* 16px */
+  --fs-md: 1.0625rem;    /* 17px */
+  --fs-lg: 1.25rem;      /* 20px */
+  --fs-xl: 1.5rem;       /* 24px */
+  --fs-title: clamp(1.85rem, 2.8vw, 2.5rem);
+  --fs-hero: clamp(2.65rem, 5.2vw, 4.55rem);
+
+  /* Sharp Architectural Geometry */
+  --r-xs: 0px;
+  --r-sm: 2px;
+  --r-md: 2px;
+  --r-lg: 2px;
+  --r-xl: 2px;
+  --r-pill: 2px;
+
+  --topbar-h: 46px;
+  --bottombar-h: 42px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Archival Engineering Vellum Theme */
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #F6F4EE;
+  --bg-elevated: #EFECE4;
+  --surface: #FFFFFF;
+  --surface-2: #EAE6DC;
+  --surface-3: #DDD8CC;
+  --canvas-bg: #FCFBF8;
+
+  --ink: #1A1917;
+  --ink-strong: #0F0E0D;
+  --ink-muted: #5C5850;
+  --ink-subtle: #6E6A61;
+
+  --cardinal: #8C1515;
+  --cardinal-soft: rgba(140, 21, 21, 0.11);
+  --cardinal-border: rgba(140, 21, 21, 0.38);
+
+  --teal: #175E54;
+  --teal-soft: rgba(23, 94, 84, 0.11);
+  --teal-border: rgba(23, 94, 84, 0.38);
+
+  --amber: #9A5A12;
+  --amber-soft: rgba(154, 90, 18, 0.11);
+  --amber-border: rgba(154, 90, 18, 0.38);
+
+  --blue: #23538A;
+  --blue-soft: rgba(35, 83, 138, 0.11);
+  --blue-border: rgba(35, 83, 138, 0.38);
+
+  --border: rgba(26, 25, 23, 0.11);
+  --border-strong: rgba(26, 25, 23, 0.22);
+  --border-subtle: rgba(26, 25, 23, 0.06);
+  --focus-ring: #23538A;
+
+  --stage-glow: none;
+  --shadow-sm: none;
+  --shadow-md: 0 8px 24px rgba(26, 25, 23, 0.10);
+  --shadow-lg: 0 18px 44px rgba(26, 25, 23, 0.16);
+
+  --btn-primary-bg: #8C1515;
+  --btn-primary-hover: #731111;
+  --btn-primary-ink: #FFFFFF;
+  --backdrop: rgba(26, 25, 23, 0.72);
+
+  --hero-scrim:
+    radial-gradient(ellipse 76% 76% at 22% 50%, rgba(246, 244, 238, 0.95) 0%, rgba(246, 244, 238, 0.76) 52%, rgba(246, 244, 238, 0.16) 100%),
+    linear-gradient(180deg, rgba(246, 244, 238, 0.48) 0%, rgba(246, 244, 238, 0.10) 40%, rgba(246, 244, 238, 0.60) 100%);
+}
+
+/* ==========================================================================
+   Part Accent Semantic Mapping
+   ========================================================================== */
+
+.part-intro,
+.part-part-1 {
+  --part-accent: var(--cardinal);
+  --part-soft: var(--cardinal-soft);
+  --part-border: var(--cardinal-border);
+}
+
+.part-part-2 {
+  --part-accent: var(--teal);
+  --part-soft: var(--teal-soft);
+  --part-border: var(--teal-border);
+}
+
+.part-part-3 {
+  --part-accent: var(--amber);
+  --part-soft: var(--amber-soft);
+  --part-border: var(--amber-border);
+}
+
+.part-synthesis {
+  --part-accent: var(--blue);
+  --part-soft: var(--blue-soft);
+  --part-border: var(--blue-border);
+}
+
+/* ==========================================================================
+   Global Reset & Accessible Base Defaults
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  height: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, p, ul, ol, figure {
+  margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--part-accent, var(--cardinal));
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--cardinal-soft);
+  color: var(--ink-strong);
+}
+
+/* Restrained Architectural Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-muted);
+}
+
+/* KaTeX Integration (crisp Computer Modern math, >= 15px floor, zero clipping) */
+.katex {
+  font-size: 1.05em;
+  color: inherit;
+}
+
+.katex-display {
+  margin: 0.3em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 0;
+}
+
+.katex-display > .katex {
+  white-space: nowrap;
+}
+
+/* Reduced Motion Respect */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
