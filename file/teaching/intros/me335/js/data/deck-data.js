@@ -363,7 +363,7 @@
         labId: 'bc-methods-compare',
         title: 'Essential vs. natural boundary conditions',
         plainTitle: 'Essential vs. natural boundary conditions',
-        lectureBadges: ['PS1-PS2 · CompMechBook §1 · Dirichlet Enforcement'],
+        lectureBadges: ['PS1-PS2 · FEA Notes · Dirichlet Enforcement'],
         contentHtml: R`
           <div class="airy-banner-card">
             <span class="eq-card-label">Boundary Partition on $\partial\Omega = \Gamma_D \cup \Gamma_N$ (Hughes / PS6-9: $\Gamma_g \cup \Gamma_h$)</span>
@@ -403,7 +403,7 @@
         title: 'Standard elements and isoparametric maps',
         plainTitle: 'Standard elements and isoparametric maps',
         lead: R`One reference element $\hat{\Omega}$ maps to every physical cell $\Omega_e$ using the same shape functions for geometry and field: $\mathbf{x}(\boldsymbol{\xi}) = \sum_a \mathbf{X}_a N_a(\boldsymbol{\xi})$, $\nabla_{\mathbf{x}} N_a = \mathbf{J}^{-\top}\nabla_{\boldsymbol{\xi}} N_a$, $\mathrm{d}\Omega = |\det\mathbf{J}|\,\mathrm{d}\boldsymbol{\xi}$.`,
-        lectureBadges: ['Hughes Ch. 3 · CompMechBook §3 · P1/P2/Q4'],
+        lectureBadges: ['Hughes Ch. 3 · Standard Elements · P1/P2/Q4'],
         contentHtml: '',
         symbols: [
           { sym: R`$\hat{\Omega}, \boldsymbol{\xi}$`, short: 'Reference element', desc: R`Parent reference cell ($\xi,\eta \in [-1,1]$ or unit triangle) where standard shape functions $N_a(\boldsymbol{\xi})$ are defined.` },
@@ -421,7 +421,7 @@
         labId: 'gauss-quadrature-lab',
         title: 'Gauss-Legendre quadrature and integration',
         plainTitle: 'Gauss-Legendre quadrature and integration',
-        lectureBadges: ['Hughes Ch. 3-4 · CompMechBook §3 · Reduced Integration'],
+        lectureBadges: ['Hughes Ch. 3-4 · Quadrature & Reduced Integration'],
         contentHtml: R`
           <div class="eq-card">
             <div class="eq-card-label">1D &amp; Tensor-Product Quadrature Rule</div>
@@ -516,7 +516,7 @@
         labId: 'elasticity-locking-lab',
         title: 'From scalar PDEs to linear elasticity',
         plainTitle: 'From scalar PDEs to linear elasticity',
-        lectureBadges: ['Hughes Ch. 2 & 4 · CompMechBook §4 · Locking'],
+        lectureBadges: ['Hughes Ch. 2 & 4 · Linear Elasticity & Locking'],
         contentHtml: R`
           <div class="eq-card">
             <div class="eq-card-label">Principle of Virtual Work (Vector Elasticity)</div>
@@ -644,7 +644,7 @@
         labId: 'convergence-rates-lab',
         title: 'A priori convergence, duality, and singularities',
         plainTitle: 'A priori convergence, duality, and singularities',
-        lectureBadges: ['PS8 · CompMechBook §5 · Aubin-Nitsche'],
+        lectureBadges: ['PS8 · Convergence & Aubin-Nitsche Duality'],
         contentHtml: R`
           <div class="eq-card">
             <div class="eq-card-label">A Priori Error Rates for $P_k$ Elements (Smooth $u$)</div>
