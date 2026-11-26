@@ -242,7 +242,7 @@
         '<h1 class="hero-title">' + escapeHtml(slide.title) + '</h1>' +
         '<p class="hero-subtitle">' + escapeHtml(slide.subtitle || 'An interactive course map for elasticity, plasticity, and fracture mechanics.') + '</p>' +
         '<div class="hero-meta-links">' +
-          '<a class="hero-link-pill" href="' + escapeHtml(meta.exploreUrl || 'https://explorecourses.stanford.edu/search?view=catalog&filter-coursestatus-Active=on&q=ME340') + '" target="_blank" rel="noopener">ME 340 Catalog ↗</a>' +
+          '<a class="hero-link-pill" href="' + escapeHtml(meta.exploreUrl || 'https://explorecourses.stanford.edu/search?q=ME340&view=catalog&filter-coursestatus-Active=on&academicYear=20252026') + '" target="_blank" rel="noopener">ME 340 Catalog ↗</a>' +
           '<a class="hero-link-pill" href="' + escapeHtml(meta.pdfUrl || 'https://hanfengzhai.com/file/teaching/intros/ME340_Intro.pdf') + '" target="_blank" rel="noopener">Printable PDF ↗</a>' +
           '<a class="hero-link-pill" href="' + escapeHtml(meta.notesUrl || 'https://hanfengzhai.com/file/teaching/notes/elasticity_notes.pdf') + '" target="_blank" rel="noopener">Study Notes ↗</a>' +
         '</div>' +

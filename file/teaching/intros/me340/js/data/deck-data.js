@@ -10,7 +10,7 @@
       author: 'Hanfeng Zhai',
       department: 'Department of Mechanical Engineering, Stanford University',
       term: 'Winter 2025-26',
-      exploreUrl: 'https://explorecourses.stanford.edu/search?view=catalog&filter-coursestatus-Active=on&q=ME340',
+      exploreUrl: 'https://explorecourses.stanford.edu/search?q=ME340&view=catalog&filter-coursestatus-Active=on&academicYear=20252026',
       pdfUrl: 'https://hanfengzhai.com/file/teaching/intros/ME340_Intro.pdf',
       notesUrl: 'https://hanfengzhai.com/file/teaching/notes/elasticity_notes.pdf',
       courseNotesUrl: 'https://micro.stanford.edu/~caiwei/me340/'
@@ -52,7 +52,7 @@
           <article class="bento-card">
             <div class="bento-card-kicker">Scope</div>
             <h3 class="bento-card-title">Stanford ME 340</h3>
-            <p class="bento-card-body">Graduate solid mechanics taught by Prof. Wei Cai (<a href="https://explorecourses.stanford.edu/search?view=catalog&amp;filter-coursestatus-Active=on&amp;q=ME340" target="_blank" rel="noopener">ExploreCourses ↗</a>). Covers linear elasticity, plasticity, and fracture mechanics.</p>
+            <p class="bento-card-body">Graduate solid mechanics taught by Prof. Wei Cai (<a href="https://explorecourses.stanford.edu/search?q=ME340&amp;view=catalog&amp;filter-coursestatus-Active=on&amp;academicYear=20252026" target="_blank" rel="noopener">ExploreCourses ↗</a>). Covers linear elasticity, plasticity, and fracture mechanics.</p>
           </article>
           <article class="bento-card">
             <div class="bento-card-kicker">Three Parts</div>

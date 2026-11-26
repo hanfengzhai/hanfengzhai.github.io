@@ -238,7 +238,7 @@
         '<h1 class="hero-title">' + escapeHtml(slide.title) + '</h1>' +
         '<p class="hero-subtitle">' + escapeHtml(slide.subtitle || 'An interactive course map for Stanford ME 335A covering variational formulations, element assembly, constraints, and error theory.') + '</p>' +
         '<div class="hero-meta-links">' +
-          '<a class="hero-link-pill" href="' + escapeHtml(meta.exploreUrl || 'https://explorecourses.stanford.edu/search?view=catalog&filter-coursestatus-Active=on&q=ME335A') + '" target="_blank" rel="noopener">ME 335A Catalog ↗</a>' +
+          '<a class="hero-link-pill" href="' + escapeHtml(meta.exploreUrl || 'https://explorecourses.stanford.edu/search?q=ME335A&view=catalog&filter-coursestatus-Active=on&academicYear=20242025') + '" target="_blank" rel="noopener">ME 335A Catalog ↗</a>' +
           '<a class="hero-link-pill" href="' + escapeHtml(meta.pdfUrl || 'https://hanfengzhai.com/file/teaching/intros/ME335_Intro.pdf') + '" target="_blank" rel="noopener">Printable PDF ↗</a>' +
           '<a class="hero-link-pill" href="' + escapeHtml(meta.notesUrl || 'https://hanfengzhai.com/file/teaching/notes/FEA_notes.pdf') + '" target="_blank" rel="noopener">Lecture Notes ↗</a>' +
           '<a class="hero-link-pill" href="' + escapeHtml(meta.probSessAllUrl || 'https://hanfengzhai.com/file/teaching/notes/ProbSess_FEA.pdf') + '" target="_blank" rel="noopener">Problem Sessions ↗</a>' +

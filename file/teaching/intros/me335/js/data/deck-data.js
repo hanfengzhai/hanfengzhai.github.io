@@ -10,7 +10,7 @@
       author: 'Hanfeng Zhai',
       department: 'Department of Mechanical Engineering, Stanford University',
       term: 'Winter 2025',
-      exploreUrl: 'https://explorecourses.stanford.edu/search?view=catalog&filter-coursestatus-Active=on&q=ME335A',
+      exploreUrl: 'https://explorecourses.stanford.edu/search?q=ME335A&view=catalog&filter-coursestatus-Active=on&academicYear=20242025',
       webSlidesUrl: 'https://hanfengzhai.com/file/teaching/intros/me335/',
       pdfUrl: 'https://hanfengzhai.com/file/teaching/intros/ME335_Intro.pdf',
       notesUrl: 'https://hanfengzhai.com/file/teaching/notes/FEA_notes.pdf',
@@ -58,7 +58,7 @@
           <article class="bento-card">
             <div class="bento-card-kicker">Scope</div>
             <h3 class="bento-card-title">Stanford ME 335A</h3>
-            <p class="bento-card-body">Graduate primal FEM taught by Prof. Adrian J. Lew (<a href="https://explorecourses.stanford.edu/search?view=catalog&amp;filter-coursestatus-Active=on&amp;q=ME335A" target="_blank" rel="noopener">ExploreCourses ↗</a>). Covers linear elliptic BVPs in 1D, 2D, and 3D for solids, heat transfer, and fluids.</p>
+            <p class="bento-card-body">Graduate primal FEM taught by Prof. Adrian J. Lew (<a href="https://explorecourses.stanford.edu/search?q=ME335A&amp;view=catalog&amp;filter-coursestatus-Active=on&amp;academicYear=20242025" target="_blank" rel="noopener">ExploreCourses ↗</a>). Covers linear elliptic BVPs in 1D, 2D, and 3D for solids, heat transfer, and fluids.</p>
           </article>
           <article class="bento-card">
             <div class="bento-card-kicker">Three Parts</div>
