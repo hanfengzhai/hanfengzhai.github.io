@@ -953,25 +953,41 @@
     }
 
     #post-index .article-entry .paper-item {
-      flex-direction: column;
-      align-items: stretch;
-      padding: 14px 0;
+      flex-direction: row;
+      align-items: flex-start;
+      padding: 13px 0;
       gap: 12px;
     }
 
     #post-index .article-entry .paper-schematic-frame {
-      flex: 0 0 auto !important;
-      width: 100% !important;
-      max-width: 100% !important;
-      height: auto;
-      aspect-ratio: 4 / 3;
-      max-height: 210px;
+      flex: 0 0 104px !important;
+      width: 104px !important;
+      max-width: 104px !important;
+      height: 74px !important;
+      aspect-ratio: auto;
+      max-height: none;
     }
 
     #post-index .article-entry .paper-content {
-      width: 100%;
-      max-width: 100%;
+      flex: 1 1 auto;
+      min-width: 0;
       overflow-wrap: anywhere;
+    }
+
+    #post-index .article-entry .paper-title {
+      font-size: 14.5px;
+      line-height: 1.35;
+    }
+
+    #post-index .article-entry .paper-authors,
+    #post-index .article-entry .paper-venue {
+      font-size: 12.5px;
+      line-height: 1.42;
+    }
+
+    #post-index .article-entry .paper-links .bracket-link,
+    #post-index .article-entry .paper-tldr-btn {
+      font-size: 12px;
     }
 
     #post-index .article-entry .timeline-section {
