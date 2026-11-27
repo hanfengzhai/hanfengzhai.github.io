@@ -547,8 +547,8 @@
   #post-index .article-entry .paper-links {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
+    align-items: baseline;
+    gap: 5px 8px;
     margin: 6px 0 0;
   }
 
@@ -557,38 +557,28 @@
     line-height: 1.35;
   }
 
-  /* Native zero-JS collapsible TL;DR disclosure */
-  #post-index .article-entry details.paper-tldr {
-    margin: 6px 0 0;
-    padding: 0;
-  }
-
-  #post-index .article-entry details.paper-tldr > summary {
+  /* Inline collapsible TL;DR button aligned on the same row as [PDF] [Cite] */
+  #post-index .article-entry .paper-tldr-btn {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    list-style: none;
+    gap: 4px;
+    margin: 0 0 0 2px;
+    padding: 0;
+    border: 0;
+    background: transparent;
     cursor: pointer;
     font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 11.5px;
+    font-size: 12.5px;
     font-weight: 500;
-    letter-spacing: 0.02em;
-    line-height: 1.4;
+    letter-spacing: 0.01em;
+    line-height: 1.35;
     color: #5c5549;
     user-select: none;
+    white-space: nowrap;
     transition: color 0.15s ease;
   }
 
-  #post-index .article-entry details.paper-tldr > summary::-webkit-details-marker {
-    display: none;
-  }
-
-  #post-index .article-entry details.paper-tldr > summary::marker {
-    display: none;
-    content: "";
-  }
-
-  #post-index .article-entry details.paper-tldr > summary::before {
+  #post-index .article-entry .paper-tldr-btn::before {
     content: "\25B8";
     display: inline-block;
     font-size: 11px;
@@ -597,25 +587,37 @@
     transition: transform 0.15s ease;
   }
 
-  #post-index .article-entry details.paper-tldr[open] > summary::before {
-    transform: rotate(90deg);
-  }
-
-  #post-index .article-entry details.paper-tldr > summary:hover,
-  #post-index .article-entry details.paper-tldr > summary:focus-visible {
+  #post-index .article-entry .paper-tldr-btn[aria-expanded="true"] {
     color: #8C1515;
   }
 
-  #post-index .article-entry details.paper-tldr > summary:focus-visible {
+  #post-index .article-entry .paper-tldr-btn[aria-expanded="true"]::before {
+    transform: rotate(90deg);
+  }
+
+  #post-index .article-entry .paper-tldr-btn:hover,
+  #post-index .article-entry .paper-tldr-btn:focus-visible {
+    color: #8C1515;
+  }
+
+  #post-index .article-entry .paper-tldr-btn:focus-visible {
     outline: 2px solid #0645ad;
     outline-offset: 2px;
     border-radius: 0;
   }
 
-  #post-index .article-entry details.paper-tldr > p {
-    margin: 6px 0 0;
+  #post-index .article-entry .paper-tldr-body {
+    margin: 7px 0 0;
     padding: 0 0 0 12px;
     border-left: 1px solid #d5cbb8;
+  }
+
+  #post-index .article-entry .paper-tldr-body[hidden] {
+    display: none;
+  }
+
+  #post-index .article-entry .paper-tldr-body > p {
+    margin: 0;
     font-family: 'TeX Gyre Pagella', 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
     font-size: 14px;
     line-height: 1.5;
@@ -1008,7 +1010,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    #post-index .article-entry details.paper-tldr > summary::before {
+    #post-index .article-entry .paper-tldr-btn::before {
       transition: none;
     }
   }
@@ -1107,11 +1109,11 @@
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/ref/akhondzadeh2026.html">Cite</a>]</span>
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=rkU7lEMtu0s">Video</a>]</span>
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/posters/dislocation2025.pdf">Poster</a>]</span>
+        <button type="button" class="paper-tldr-btn" aria-expanded="false" aria-controls="tldr-1">TL;DR</button>
       </div>
-      <details class="paper-tldr">
-        <summary>TL;DR</summary>
+      <div id="tldr-1" class="paper-tldr-body" hidden>
         <p>Over 100 DDD simulations reveal that inactive slip systems follow single-exponential link length distributions, while active ones evolve into stress-driven double exponentials, explained by a generalized Poisson process.</p>
-      </details>
+      </div>
     </div>
   </article>
   <article class="paper-item">
@@ -1123,11 +1125,11 @@
       <div class="paper-links">
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/publications/zhai_compmech_2025.pdf">PDF</a>]</span>
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/ref/zhai2025.html">Cite</a>]</span>
+        <button type="button" class="paper-tldr-btn" aria-expanded="false" aria-controls="tldr-2">TL;DR</button>
       </div>
-      <details class="paper-tldr">
-        <summary>TL;DR</summary>
+      <div id="tldr-2" class="paper-tldr-body" hidden>
         <p>GNNs are used to efficiently predict stress in polycrystal plasticity, achieving over 150x speedup compared to FEM with high accuracy.</p>
-      </details>
+      </div>
     </div>
   </article>
   <article class="paper-item">
@@ -1139,11 +1141,11 @@
       <div class="paper-links">
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/publications/zhai_aplmat_2024.pdf">PDF</a>]</span>
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/ref/zhai2024.html">Cite</a>]</span>
+        <button type="button" class="paper-tldr-btn" aria-expanded="false" aria-controls="tldr-3">TL;DR</button>
       </div>
-      <details class="paper-tldr">
-        <summary>TL;DR</summary>
+      <div id="tldr-3" class="paper-tldr-body" hidden>
         <p>We benchmarked different heuristic and machine learning optimization algorithms for designing elemental crystals for targeted properties.</p>
-      </details>
+      </div>
     </div>
   </article>
   <article class="paper-item">
@@ -1155,11 +1157,11 @@
       <div class="paper-links">
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/publications/zhai_acsbio_2023.pdf">PDF</a>]</span>
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/ref/zhaiyeo2022.html">Cite</a>]</span>
+        <button type="button" class="paper-tldr-btn" aria-expanded="false" aria-controls="tldr-4">TL;DR</button>
       </div>
-      <details class="paper-tldr">
-        <summary>TL;DR</summary>
+      <div id="tldr-4" class="paper-tldr-body" hidden>
         <p>A new workflow to digitally design antimicrobial surfaces in the mesoscale using Bayesian optimization and discrete element methods.</p>
-      </details>
+      </div>
     </div>
   </article>
   <article class="paper-item">
@@ -1171,11 +1173,11 @@
       <div class="paper-links">
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/publications/zhai_2023_jmbbm.pdf">PDF</a>]</span>
         <span class="bracket-link">[<a target="_blank" rel="noopener" href="/file/ref/zhaiyeo2023.html">Cite</a>]</span>
+        <button type="button" class="paper-tldr-btn" aria-expanded="false" aria-controls="tldr-5">TL;DR</button>
       </div>
-      <details class="paper-tldr">
-        <summary>TL;DR</summary>
+      <div id="tldr-5" class="paper-tldr-body" hidden>
         <p>We use Bayesian optimization to design porous materials with enhanced biomass transport and insights into growth mechanisms.</p>
-      </details>
+      </div>
     </div>
   </article>
 </div>
@@ -1319,6 +1321,19 @@
 </div>
 <script src="/js/scripts.js"></script>
 <script src="/js/intro-nav.js?v=5"></script>
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.paper-tldr-btn');
+    if (!btn) return;
+    var body = document.getElementById(btn.getAttribute('aria-controls'));
+    if (!body) return;
+    var next = btn.getAttribute('aria-expanded') !== 'true';
+    btn.setAttribute('aria-expanded', next ? 'true' : 'false');
+    body.hidden = !next;
+  });
+})();
+</script>
   <a id="rocket" href="#top" class=""></a>
   <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
 </body>
