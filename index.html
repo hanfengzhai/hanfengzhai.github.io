@@ -71,15 +71,15 @@
     color: #26221d;
   }
 
-  /* Row 1: Full-width framed archival header block aligned to the 50/50 centerline */
+  /* Row 1: Centered 75%-width framed archival header block with all info on left and portrait on right */
   #post-index .article-entry .intro-header {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    column-gap: 0;
+    display: flex;
     align-items: center;
-    width: 100%;
-    margin: 0 0 36px;
-    padding: 24px 30px;
+    justify-content: space-between;
+    gap: 36px;
+    width: 75%;
+    margin: 0 auto 38px;
+    padding: 24px 32px;
     background: #faf7f0;
     border: 1px solid #dfd7c7;
     border-radius: 0;
@@ -88,8 +88,8 @@
   }
 
   #post-index .article-entry .intro-header-identity {
+    flex: 1 1 auto;
     min-width: 0;
-    padding-right: clamp(24px, 2.6vw, 44px);
     box-sizing: border-box;
   }
 
@@ -163,21 +163,10 @@
     text-decoration-color: #8C1515;
   }
 
-  #post-index .article-entry .intro-header-right {
-    min-width: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    padding-left: clamp(24px, 2.6vw, 44px);
-    border-left: 1px solid #e4dccd;
-    box-sizing: border-box;
-  }
-
   #post-index .article-entry .intro-header-photo {
-    flex: 0 0 124px;
-    width: 124px;
-    height: 124px;
+    flex: 0 0 156px;
+    width: 156px;
+    height: 156px;
     padding: 0;
     background: transparent;
     border: 1px solid #d5cbb8;
@@ -200,15 +189,17 @@
   #post-index .article-entry .intro-header-contact {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin: 0;
+    gap: 5px;
+    margin: 10px 0 0;
+    padding-top: 10px;
+    border-top: 1px solid #e6dfd1;
     min-width: 0;
   }
 
   #post-index .article-entry .intro-header-contact .intro-header-line {
     margin: 0;
-    font-size: 15px;
-    line-height: 1.5;
+    font-size: 14.5px;
+    line-height: 1.48;
     color: #4a443b;
   }
 
@@ -231,7 +222,7 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 6px;
-    margin: 12px 0 0;
+    margin: 11px 0 0;
     padding: 0;
     list-style: none;
   }
@@ -777,23 +768,16 @@
   /* Compact desktop: 961px to 1159px */
   @media (max-width: 1159px) and (min-width: 961px) {
     #post-index .article-entry .intro-header {
-      padding: 20px 24px;
-      margin-bottom: 30px;
-    }
-
-    #post-index .article-entry .intro-header-identity {
-      padding-right: 22px;
-    }
-
-    #post-index .article-entry .intro-header-right {
-      padding-left: 22px;
-      gap: 16px;
+      width: 82%;
+      gap: 28px;
+      padding: 22px 28px;
+      margin-bottom: 32px;
     }
 
     #post-index .article-entry .intro-header-photo {
-      flex: 0 0 110px;
-      width: 110px;
-      height: 110px;
+      flex: 0 0 140px;
+      width: 140px;
+      height: 140px;
     }
 
     #post-index .article-entry .home-left-rail {
@@ -827,26 +811,16 @@
     }
 
     #post-index .article-entry .intro-header {
-      grid-template-columns: 1fr;
-      row-gap: 16px;
+      width: 100%;
+      gap: 24px;
       padding: 22px 24px;
       margin-bottom: 28px;
     }
 
-    #post-index .article-entry .intro-header-identity {
-      padding-right: 0;
-    }
-
-    #post-index .article-entry .intro-header-right {
-      border-left: 0;
-      border-top: 1px solid #e4dccd;
-      padding: 16px 0 0;
-    }
-
     #post-index .article-entry .intro-header-photo {
-      flex: 0 0 112px;
-      width: 112px;
-      height: 112px;
+      flex: 0 0 132px;
+      width: 132px;
+      height: 132px;
     }
 
     #post-index .article-entry .home-split {
@@ -882,27 +856,27 @@
     }
 
     #post-index .article-entry .intro-header {
+      width: 100%;
+      flex-direction: column-reverse;
+      align-items: center;
+      gap: 14px;
       padding: 18px 18px;
       margin-bottom: 24px;
-      row-gap: 14px;
       text-align: center;
+    }
+
+    #post-index .article-entry .intro-header-identity {
+      width: 100%;
     }
 
     #post-index .article-entry .intro-header-name {
       font-size: 26px;
     }
 
-    #post-index .article-entry .intro-header-right {
-      flex-direction: column-reverse;
-      align-items: center;
-      gap: 12px;
-      padding-top: 14px;
-    }
-
     #post-index .article-entry .intro-header-photo {
-      flex: 0 0 120px;
-      width: 120px;
-      height: 120px;
+      flex: 0 0 124px;
+      width: 124px;
+      height: 124px;
     }
 
     #post-index .article-entry .intro-header-contact {
@@ -1047,6 +1021,10 @@
       <span class="intro-header-affil-role"><a class="intro-header-title" href="https://micronano.stanford.edu/people/hanfeng-zhai" target="_blank" rel="noopener">PhD Candidate</a></span>
       <span class="intro-header-affil-org"><a href="https://me.stanford.edu/" target="_blank" rel="noopener">Mechanical Engineering</a>, <a href="https://www.stanford.edu/" target="_blank" rel="noopener">Stanford University</a></span>
     </p>
+    <div class="intro-header-contact">
+      <p class="intro-header-line">Room 256, 452 Escondido Mall, Stanford, CA 94305</p>
+      <p class="intro-header-line">Email: <span class="intro-header-email">hzhai AT stanford DOT edu</span></p>
+    </div>
     <ul class="intro-header-social" aria-label="Contact links">
         <li><a href="https://profiles.stanford.edu/hanfeng-zhai" target="_blank" rel="noopener" aria-label="Stanford Profile"><img class="intro-header-icon intro-header-icon-stanford" src="/css/images/site/stanford_block_s_gray.png?v=7" width="24" height="24" alt=""></a></li>
         <li><a href="https://www.linkedin.com/in/hanfengzhai/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="intro-header-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.065 2.065 0 1 1 0-4.13 2.065 2.065 0 0 1 0 4.13zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a></li>
@@ -1056,14 +1034,8 @@
         <li><span class="bracket-link intro-header-tree-wrap">[<a href="/file/academic-tree/" aria-label="Academic Tree">Academic Tree</a>]</span></li>
     </ul>
   </div>
-  <div class="intro-header-right">
-    <div class="intro-header-contact">
-      <p class="intro-header-line">Room 256, 452 Escondido Mall<br>Stanford, CA 94305</p>
-      <p class="intro-header-line">Email: <span class="intro-header-email">hzhai AT stanford DOT edu</span></p>
-    </div>
-    <div class="intro-header-photo">
-      <img src="/assets/img/site/hanfeng-zoom.jpg" alt="Hanfeng Zhai" loading="eager">
-    </div>
+  <div class="intro-header-photo">
+    <img src="/assets/img/site/hanfeng-zoom.jpg" alt="Hanfeng Zhai" loading="eager">
   </div>
 </header>
 
