@@ -362,7 +362,7 @@ h1.hero-title {
   gap: 5px;
   padding: 2px 0;
   border: none;
-  border-bottom: 1px solid var(--border-strong);
+  border-bottom: 1px solid transparent;
   border-radius: 0;
   background: transparent;
   color: var(--ink);
@@ -383,10 +383,10 @@ h1.hero-title {
   display: inline-flex;
   align-items: center;
   gap: 14px;
-  padding: 14px 0 0;
+  padding: 6px 0 0;
   width: min(560px, 100%);
   border: none;
-  border-top: 1px solid var(--border);
+  border-top: none;
   border-radius: 0;
   background: transparent;
   box-shadow: none;
@@ -591,6 +591,166 @@ h1.hero-title {
 .point-list strong {
   color: var(--ink-strong);
   font-weight: 600;
+}
+
+/* Slide 20 Interactive Workflow Stepper Sync */
+.point-list.is-numbered li[data-workflow-step] {
+  cursor: pointer;
+  padding: 4px 8px 4px 40px;
+  border-radius: var(--r-sm);
+  transition: background 0.14s ease, color 0.14s ease;
+}
+
+.point-list.is-numbered li[data-workflow-step]::before {
+  left: 6px;
+  top: 4px;
+}
+
+.point-list.is-numbered li[data-workflow-step]:hover {
+  background: var(--bg-elevated);
+  color: var(--ink-strong);
+}
+
+.point-list.is-numbered li[data-workflow-step].is-step-active {
+  background: var(--part-soft);
+  color: var(--ink-strong);
+}
+
+.point-list.is-numbered li[data-workflow-step].is-step-active::before {
+  border-bottom-color: var(--part-accent);
+  color: var(--ink-strong);
+}
+
+/* --------------------------------------------------------------------------
+   Swiss Progressive-Disclosure Primitives (.content-tabs & details.math-drawer)
+   Strict >= 15px (var(--fs-sm)) minimum font floor.
+   -------------------------------------------------------------------------- */
+
+.content-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.content-tab-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2px;
+}
+
+.content-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 0 8px;
+  margin-bottom: -1px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  line-height: 1.25;
+  cursor: pointer;
+  transition: color 0.14s ease, border-color 0.14s ease;
+}
+
+.content-tab-btn:hover {
+  color: var(--ink-strong);
+  border-bottom-color: var(--border-strong);
+}
+
+.content-tab-btn.is-active {
+  color: var(--ink-strong);
+  border-bottom-color: var(--part-accent, var(--cardinal));
+  font-weight: 600;
+}
+
+.content-tab-panel {
+  display: none;
+  min-width: 0;
+}
+
+.content-tab-panel.is-active {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+details.math-drawer {
+  border-top: 1px solid var(--border);
+  padding-top: 9px;
+  min-width: 0;
+}
+
+details.math-drawer > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--part-accent);
+  line-height: 1.35;
+  user-select: none;
+  transition: color 0.14s ease;
+}
+
+details.math-drawer > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.math-drawer > summary::before {
+  content: "▸";
+  display: inline-block;
+  font-size: var(--fs-sm);
+  line-height: 1;
+  transition: transform 0.16s var(--ease-out);
+  flex-shrink: 0;
+}
+
+details.math-drawer[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+details.math-drawer > summary:hover {
+  color: var(--ink-strong);
+}
+
+.math-drawer-body {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: var(--fs-sm);
+  line-height: 1.48;
+  color: var(--ink);
+  min-width: 0;
+}
+
+.math-drawer-body p {
+  font-size: var(--fs-sm);
+  line-height: 1.48;
+  color: var(--ink);
+}
+
+.math-drawer-body strong {
+  color: var(--ink-strong);
+  font-weight: 600;
+}
+
+.math-drawer-body .katex-display,
+.math-drawer-body .katex-display > .katex {
+  text-align: left;
+  padding-left: 0;
+  margin: 0.25em 0;
 }
 
 .callout-card {
@@ -885,18 +1045,13 @@ h1.hero-title {
 }
 
 .wide-header-note {
-  padding: 10px 16px;
+  padding: 0;
   border-radius: 0;
-  background: var(--bg-elevated);
-  border-top: 1px solid var(--border-strong);
-  border-bottom: 1px solid var(--border);
+  background: transparent;
+  border: none;
   font-size: var(--fs-sm);
   color: var(--ink);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 10px;
+  display: block;
 }
 
 /* --------------------------------------------------------------------------
@@ -975,6 +1130,12 @@ h1.hero-title {
   line-height: 1.2;
   letter-spacing: -0.02em;
   color: var(--ink-strong);
+}
+
+@media (min-width: 981px) {
+  .outline-card-title {
+    min-height: 2.35em;
+  }
 }
 
 .outline-card-desc {
@@ -1093,7 +1254,8 @@ h1.hero-title {
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: var(--part-accent);
-  min-width: 26px;
+  min-width: 50px;
+  white-space: nowrap;
   flex-shrink: 0;
 }
 
@@ -1144,28 +1306,24 @@ h1.hero-title {
    -------------------------------------------------------------------------- */
 
 .ref-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  border-top: 1px solid var(--border-strong);
-  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 28px;
+  border: none;
   min-width: 0;
 }
 
 .ref-card {
   display: flex;
   align-items: flex-start;
-  gap: 16px;
-  padding: 7px 4px;
+  gap: 8px;
+  padding: 10px 0 2px;
   border-radius: 0;
   background: transparent;
   border: none;
-  border-bottom: 1px solid var(--border);
+  border-top: 1px solid var(--border);
   box-shadow: none;
-}
-
-.ref-card:last-child {
-  border-bottom: none;
+  min-width: 0;
 }
 
 .ref-num {
@@ -1174,15 +1332,25 @@ h1.hero-title {
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: var(--part-accent);
-  min-width: 30px;
-  padding-top: 2px;
+  min-width: 26px;
+  padding-top: 1px;
   flex-shrink: 0;
 }
 
 .ref-body {
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
+  min-width: 0;
+}
+
+.ref-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 8px;
   min-width: 0;
 }
 
@@ -1210,11 +1378,13 @@ h1.hero-title {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  margin-top: 2px;
+  margin-top: 0;
   font-family: var(--font-mono);
   font-size: var(--fs-sm);
   font-weight: 500;
   color: var(--part-accent);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .closing-signoff {
@@ -1277,7 +1447,7 @@ h1.hero-title {
   min-height: 0;
   min-width: 0;
   max-width: 100%;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .lab-stage {
@@ -1287,8 +1457,8 @@ h1.hero-title {
   width: 100%;
   max-width: 100%;
   border-radius: 2px;
-  background: var(--bg);
-  border: 1px solid var(--border-subtle);
+  background: transparent;
+  border: none;
   overflow: hidden;
   display: flex;
   align-items: stretch;
@@ -1332,7 +1502,7 @@ h1.hero-title {
 
 .lab-controls-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 8px 16px;
   flex-shrink: 0;
 }
@@ -2299,7 +2469,7 @@ kbd {
   }
 
   .compare-lab .lab-stage {
-    min-height: 120px;
+    min-height: 170px;
   }
 
   .outline-card {
@@ -2531,6 +2701,11 @@ kbd {
   .signoff-actions .btn-primary,
   .signoff-actions .btn-ghost {
     flex: 1 1 auto;
+  }
+
+  .ref-list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
   }
 
   /* Compact content spacing so interactive canvases sit closer to the fold */

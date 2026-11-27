@@ -46,28 +46,28 @@
         labId: 'continuum-mini',
         title: 'Course at a glance',
         plainTitle: 'Course at a glance',
-        lead: 'ME 340 (Prof. Wei Cai) progresses from elastic boundary-value problems through yielding to fracture.',
+        lead: 'Graduate solid mechanics at Stanford: from elastic boundary-value problems to yielding and fracture.',
         overviewHint: 'Course Scope & Study Guide',
         contentHtml: R`
           <article class="bento-card">
-            <div class="bento-card-kicker">Scope</div>
+            <div class="bento-card-kicker">Course</div>
             <h3 class="bento-card-title">Stanford ME 340</h3>
-            <p class="bento-card-body">Graduate solid mechanics taught by Prof. Wei Cai (<a href="https://explorecourses.stanford.edu/search?q=ME340&amp;view=catalog&amp;filter-coursestatus-Active=on&amp;academicYear=20252026" target="_blank" rel="noopener">ExploreCourses ↗</a>). Covers linear elasticity, plasticity, and fracture mechanics.</p>
+            <p class="bento-card-body">Taught by Prof. Wei Cai (<a href="https://explorecourses.stanford.edu/search?q=ME340&amp;view=catalog&amp;filter-coursestatus-Active=on&amp;academicYear=20252026" target="_blank" rel="noopener">ExploreCourses ↗</a>); covers linear elasticity, plasticity, and fracture.</p>
           </article>
           <article class="bento-card">
             <div class="bento-card-kicker">Three Parts</div>
             <h3 class="bento-card-title">Unified Progression</h3>
-            <p class="bento-card-body">Part I: 2D Airy $\phi$, 3D Green's functions $\mathbf{G}$, and contact. Part II: yield, flow, and hardening. Part III: LEFM, $J$-integral, and fatigue.</p>
+            <p class="bento-card-body">I: 2D Airy $\phi$, 3D $\mathbf{G}$, contact. II: yield, $J_2$ flow, hardening. III: LEFM, $J$-integral, fatigue.</p>
           </article>
           <article class="bento-card">
             <div class="bento-card-kicker">Methods &amp; Texts</div>
             <h3 class="bento-card-title">Theory &amp; MATLAB</h3>
-            <p class="bento-card-body">Analytic derivations pair directly with MATLAB solvers. Core textbooks are Barber, <em>Elasticity</em> (3rd ed., 2010) and Anderson, <em>Fracture Mechanics</em> (3rd ed., 2005).</p>
+            <p class="bento-card-body">Analytic derivations pair with MATLAB solvers; texts: Barber (2010) and Anderson (2005).</p>
           </article>
           <article class="bento-card">
             <div class="bento-card-kicker">Study Guide</div>
-            <h3 class="bento-card-title">Notes &amp; Companion PDF</h3>
-            <p class="bento-card-body">Access the consolidated <a href="https://hanfengzhai.com/file/teaching/notes/elasticity_notes.pdf" target="_blank" rel="noopener">study notes PDF ↗</a> alongside Prof. Wei Cai's <a href="https://micro.stanford.edu/~caiwei/me340/" target="_blank" rel="noopener">lecture notes ↗</a>.</p>
+            <h3 class="bento-card-title">Notes &amp; Study PDF</h3>
+            <p class="bento-card-body">Read the <a href="https://hanfengzhai.com/file/teaching/notes/elasticity_notes.pdf" target="_blank" rel="noopener">Study Notes PDF ↗</a> alongside Prof. Wei Cai's <a href="https://micro.stanford.edu/~caiwei/me340/" target="_blank" rel="noopener">lecture notes ↗</a>.</p>
           </article>
         `,
         symbols: [
@@ -86,25 +86,25 @@
         labId: 'course-pipeline',
         title: 'Three-part course structure',
         plainTitle: 'Three-part course structure',
-        lead: 'Every mechanics problem follows a progression from elastic equilibrium to inelastic yielding and crack growth.',
+        lead: R`Every problem flows from a well-posed elastic BVP to plasticity ($f^{\mathrm{tr}} \gt 0$) and fracture ($K_I \ge K_{Ic}$).`,
         overviewHint: 'Elasticity → Plasticity → Fracture',
         contentHtml: R`
-          <div class="callout-card">
-            <p><strong>Core idea:</strong> well-posed BVP $\to$ elastic solution $\to$ plasticity if $f^{\mathrm{tr}} \gt 0$ $\to$ fracture if cracks grow. <strong>Applications:</strong> contact, pressure vessels, notched parts, and fatigue.</p>
-          </div>
           <div class="mini-stat-grid">
             <div class="mini-stat part-part-1">
               <strong class="mini-stat-val">I. Elasticity</strong>
-              <span class="mini-stat-label">Stress $\boldsymbol{\sigma}$, strain $\boldsymbol{\varepsilon}$, equilibrium, 2D Airy $\phi$, and 3D Green's functions $\mathbf{G}$.</span>
+              <span class="mini-stat-label">$\boldsymbol{\sigma}, \boldsymbol{\varepsilon}$, equilibrium, 2D Airy $\phi$, 3D Green's $\mathbf{G}$.</span>
             </div>
             <div class="mini-stat part-part-2">
               <strong class="mini-stat-val">II. Plasticity</strong>
-              <span class="mini-stat-label">Yield surface $f$, plastic strain $\varepsilon^p$, associated $J_2$ flow, and hardening.</span>
+              <span class="mini-stat-label">Yield surface $f$, plastic strain $\varepsilon^p$, $J_2$ flow, hardening.</span>
             </div>
             <div class="mini-stat part-part-3">
               <strong class="mini-stat-val">III. Fracture</strong>
-              <span class="mini-stat-label">Crack-tip fields $K_I$, energy release rate $\mathcal{G}$, $J$-integral, and fatigue.</span>
+              <span class="mini-stat-label">Crack-tip $K_I$, energy release $\mathcal{G}$, $J$-integral, fatigue.</span>
             </div>
+          </div>
+          <div class="callout-card is-apps-strip">
+            <span class="callout-label">Applications</span><span>contact · pressure vessels · notched parts · fatigue</span>
           </div>
         `,
         symbols: [
@@ -132,56 +132,56 @@
             partId: 'part-1',
             partTag: 'Part I',
             title: 'Tensors and Einstein notation',
-            summary: R`Index convention, $\delta_{ij}$, $\varepsilon_{ijk}$, comma derivatives, and bold-indicial equivalence.`,
+            summary: R`Index rules, $\delta_{ij}$, $\varepsilon_{ijk}$, comma derivatives, bold-indicial form.`,
             targetId: 'tensors'
           },
           {
             partId: 'part-1',
             partTag: 'Part I',
             title: 'Foundations',
-            summary: R`Reference-to-deformed map, stress, strain, Hooke's law, strain energy, and the 3D BVP.`,
+            summary: R`Motion map, stress $\boldsymbol{\sigma}$, strain $\boldsymbol{\varepsilon}$, Hooke's law, energy $w$, 3D BVP.`,
             targetId: 'continuum'
           },
           {
             partId: 'part-1',
             partTag: 'Part I',
             title: 'One-dimensional and rod problems',
-            summary: R`Axial strain $\varepsilon = \mathrm{d}u/\mathrm{d}x$, rigidity $EA$, and 1D equilibrium as a BVP model.`,
+            summary: R`Axial strain $\varepsilon = \mathrm{d}u/\mathrm{d}x$, rigidity $EA$, 1D BVP template.`,
             targetId: 'rod'
           },
           {
             partId: 'part-1',
             partTag: 'Part I',
             title: 'Two-dimensional elasticity',
-            summary: R`Plane stress, plane strain, Airy $\phi$, beams, Fourier, half-space, contact, and polar wedges.`,
+            summary: R`Plane stress & strain, Airy $\phi$, beams, Fourier, contact, wedges.`,
             targetId: 'formulations-2d'
           },
           {
             partId: 'part-1',
             partTag: 'Part I',
             title: 'Three-dimensional elasticity',
-            summary: R`Kelvin point-force Green's function $\mathbf{G}$, Mindlin images, and dislocation defect fields.`,
+            summary: R`Kelvin Green's tensor $\mathbf{G}$, Mindlin images, dislocation fields.`,
             targetId: 'greens-3d'
           },
           {
             partId: 'part-2',
             partTag: 'Part II',
             title: 'Plasticity',
-            summary: R`Elastic-plastic strain split, von Mises and Tresca yield surfaces, and $J_2$ radial return flow.`,
+            summary: R`Strain split $\varepsilon^e + \varepsilon^p$, von Mises & Tresca yield, $J_2$ radial return.`,
             targetId: 'elas-to-plas'
           },
           {
             partId: 'part-3',
             partTag: 'Part III',
             title: 'Fracture mechanics',
-            summary: R`Slit-crack $r^{-1/2}$ singularity, $K_I$, energy release rate $\mathcal{G}$, $J$-integral, and fatigue.`,
+            summary: R`Slit-crack $r^{-1/2}$ field, $K_I$, energy release $\mathcal{G}$, $J$-integral, fatigue.`,
             targetId: 'fracture-lefm'
           },
           {
             partId: 'synthesis',
             partTag: 'Synthesis',
             title: 'Problem-solving workflow',
-            summary: 'Five-step modeling workflow, interactive 23-lecture map, key takeaways, and references.',
+            summary: 'Five-step modeling workflow, 23-lecture map, takeaways, and references.',
             targetId: 'workflow'
           }
         ],
@@ -203,11 +203,10 @@
             <div>$$\begin{aligned} a_i b_i &= a_1 b_1 + a_2 b_2 + a_3 b_3 \\ \sigma_{ii} &= \sigma_{11} + \sigma_{22} + \sigma_{33} \end{aligned}$$</div>
           </div>
           <ul class="point-list">
-            <li><strong>Tensor ranks:</strong> scalars ($E, \nu, \rho$) carry 0 indices, vectors ($\mathbf{a}, a_i$) carry 1 index, and second-order tensors ($\mathbf{T}, T_{ij}$) carry 2 indices.</li>
-            <li><strong>Summation rule:</strong> any index repeated twice in a term is summed over $1, 2, 3$; unmatched free indices run over each component.</li>
-            <li><strong>Comma derivatives:</strong> $u_{i,j} = \partial u_i / \partial x_j$ denotes a gradient and $\sigma_{ij,j} = \partial \sigma_{ij} / \partial x_j$ denotes divergence.</li>
-            <li><strong>Isotropic tensors:</strong> Kronecker delta $\delta_{ij}$ acts as the identity and Levi-Civita $\varepsilon_{ijk}$ encodes cross products and curl.</li>
-            <li><strong>Bold and indicial equivalence:</strong> direct notation and index notation express identical equations (<span class="nowrap">$\boldsymbol{\sigma}, \mathbf{u} \leftrightarrow \sigma_{ij}, u_i$</span>).</li>
+            <li><strong>Tensor ranks &amp; form:</strong> rank 0 scalars ($E, \nu, \rho$), rank 1 vectors ($\mathbf{a} \leftrightarrow a_i$), rank 2 tensors ($\mathbf{T} \leftrightarrow T_{ij}$, $\boldsymbol{\sigma} \leftrightarrow \sigma_{ij}$).</li>
+            <li><strong>Summation rule:</strong> indices repeated twice sum over $1, 2, 3$; unmatched free indices span each component.</li>
+            <li><strong>Comma derivatives:</strong> $u_{i,j} = \partial u_i / \partial x_j$ gives the gradient; $\sigma_{ij,j} = \partial \sigma_{ij} / \partial x_j$ gives divergence.</li>
+            <li><strong>Isotropic tensors:</strong> Kronecker $\delta_{ij}$ acts as identity; Levi-Civita $\varepsilon_{ijk}$ encodes cross products and curl.</li>
           </ul>
         `,
         symbols: [
@@ -235,9 +234,8 @@
             <div>$$\begin{aligned} \mathbf{x} &= \mathbf{X} + \mathbf{u}(\mathbf{X}) \\ \varepsilon_{ij} &= \frac{1}{2}\left(u_{i,j} + u_{j,i}\right) \end{aligned}$$</div>
           </div>
           <ul class="point-list">
-            <li><strong>Configuration change:</strong> applied loads deform the reference body $\Omega_0$ into the deformed configuration $\Omega$.</li>
-            <li><strong>Material mapping:</strong> each particle moves from reference position $\mathbf{X}$ to current position $\mathbf{x} = \mathbf{X} + \mathbf{u}(\mathbf{X})$.</li>
-            <li><strong>Infinitesimal strain:</strong> under small gradients (<span class="nowrap">$|\nabla\mathbf{u}| \ll 1$</span>), the symmetric displacement gradient measures local stretch and shear distortion.</li>
+            <li><strong>Configuration map:</strong> loads deform reference body $\Omega_0$ into $\Omega$, mapping each particle $\mathbf{X}$ to $\mathbf{x} = \mathbf{X} + \mathbf{u}(\mathbf{X})$.</li>
+            <li><strong>Infinitesimal strain:</strong> under small gradients (<span class="nowrap">$|\nabla\mathbf{u}| \ll 1$</span>), symmetric $\varepsilon_{ij}$ measures local stretch and shear distortion.</li>
             <li><strong>Domain partition:</strong> any bounded continuum occupies volume $V$ with boundary $\partial V = S_u \cup S_t$.</li>
           </ul>
         `,
@@ -261,17 +259,19 @@
         plainTitle: 'Stress and strain',
         lectureBadges: ['Lec. 1–2 · Introduction, Tensors'],
         contentHtml: R`
-          <div class="eq-card">
-            <div class="eq-card-label">Stress Symmetry &amp; Strain Kinematics</div>
-            <div>$$\begin{aligned} \sigma_{ij} &= \sigma_{ji} \\ \varepsilon_{ij} &= \frac{1}{2}\left(\frac{\partial u_i}{\partial x_j} + \frac{\partial u_j}{\partial x_i}\right) \end{aligned}$$</div>
-          </div>
-          <div class="eq-card is-accent">
-            <div class="eq-card-label">Cauchy Traction &amp; Static Equilibrium</div>
-            <div>$$t_i = \sigma_{ij} n_j, \qquad \frac{\partial \sigma_{ij}}{\partial x_j} + f_i = 0$$</div>
+          <div class="eq-stack">
+            <div class="eq-stack-group">
+              <div class="eq-card-label">Stress Symmetry &amp; Strain Kinematics</div>
+              <div>$$\sigma_{ij} = \sigma_{ji}, \quad \varepsilon_{ij} = \frac{1}{2}\left(\frac{\partial u_i}{\partial x_j} + \frac{\partial u_j}{\partial x_i}\right)$$</div>
+            </div>
+            <div class="eq-stack-group">
+              <div class="eq-card-label">Cauchy Traction &amp; Static Equilibrium</div>
+              <div>$$t_i = \sigma_{ij} n_j, \quad \frac{\partial \sigma_{ij}}{\partial x_j} + f_i = 0$$</div>
+            </div>
           </div>
           <ul class="point-list">
-            <li><strong>Cauchy stress $\boldsymbol{\sigma}$:</strong> internal force per unit area inside the body; moment balance enforces symmetry (<span class="nowrap">$\sigma_{ij} = \sigma_{ji}$</span>).</li>
-            <li><strong>Cauchy traction law:</strong> on any cut plane with outward unit normal $\mathbf{n}$, surface traction equals $\mathbf{t} = \boldsymbol{\sigma}\cdot\mathbf{n}$.</li>
+            <li><strong>Cauchy stress $\boldsymbol{\sigma}$:</strong> internal force per area; angular momentum balance enforces symmetry (<span class="nowrap">$\sigma_{ij} = \sigma_{ji}$</span>).</li>
+            <li><strong>Traction law:</strong> on any cut plane with outward normal $\mathbf{n}$, surface traction is $\mathbf{t} = \boldsymbol{\sigma}\cdot\mathbf{n}$.</li>
             <li><strong>Principal frame:</strong> rotating the cut plane aligns $\mathbf{t} \parallel \mathbf{n}$ on orthogonal shear-free planes <span class="nowrap">($\tau = 0$)</span>.</li>
           </ul>
         `,
@@ -295,18 +295,16 @@
         plainTitle: "Hooke's law and elastic energy",
         lectureBadges: ["Lec. 3 · Hooke's Law", 'Lec. 4 · Fundamental Equations'],
         contentHtml: R`
-          <div class="eq-card">
-            <div class="eq-card-label">Hooke's Law &amp; Strain Energy</div>
-            <div>$$\begin{aligned} \sigma_{ij} &= C_{ijkl}\varepsilon_{kl} \\ w &= \frac{1}{2}\sigma_{ij}\varepsilon_{ij}, \qquad U = \int_V w\,\mathrm{d}V \end{aligned}$$</div>
-          </div>
-          <div class="eq-card is-accent">
-            <div class="eq-card-label">Isotropic Compliance &amp; 1D Limit</div>
-            <div>$$\begin{aligned} \varepsilon_{ij} &= \frac{1+\nu}{E}\sigma_{ij} - \frac{\nu}{E}\sigma_{kk}\delta_{ij} \\ \sigma &= E\varepsilon, \qquad w = \frac{1}{2}\sigma\varepsilon\ \text{(1D)} \end{aligned}$$</div>
+          <div class="eq-stack">
+            <div class="eq-stack-group">
+              <div class="eq-card-label">Hooke's Law, Isotropic Compliance &amp; Energy</div>
+              <div>$$\begin{aligned} \sigma_{ij} &= C_{ijkl}\varepsilon_{kl} \\ \varepsilon_{ij} &= \frac{1+\nu}{E}\sigma_{ij} - \frac{\nu}{E}\sigma_{kk}\delta_{ij} \\ w &= \frac{1}{2}\sigma_{ij}\varepsilon_{ij}, \quad U = \int_V w\,\mathrm{d}V \end{aligned}$$</div>
+            </div>
           </div>
           <ul class="point-list">
-            <li><strong>Constitutive symmetry:</strong> isotropic linear elasticity reduces the 81 components of $C_{ijkl}$ to two measurable constants, $E$ and $\nu$ (or Lamé $\lambda, \mu$).</li>
-            <li><strong>Positive definiteness:</strong> positive-definite $C_{ijkl}$ guarantees positive strain-energy density $w \gt 0$ for every nonzero strain.</li>
-            <li><strong>Geometric meaning:</strong> the shaded area under the 1D $\sigma$–$\varepsilon$ curve equals the stored energy density $w = \frac{1}{2}\sigma^*\varepsilon^*$.</li>
+            <li><strong>Isotropic symmetry:</strong> isotropy reduces the 81 components of $C_{ijkl}$ to two constants, $E$ and $\nu$ (or Lamé $\lambda, \mu$).</li>
+            <li><strong>Positive definiteness:</strong> positive-definite $C_{ijkl}$ ensures $w \gt 0$ for every nonzero strain state.</li>
+            <li><strong>1D elastic limit:</strong> under uniaxial stress $\sigma = E\varepsilon$, the area under the $\sigma$–$\varepsilon$ curve equals stored energy $w = \frac{1}{2}\sigma^*\varepsilon^*$.</li>
           </ul>
         `,
         symbols: [
@@ -329,17 +327,19 @@
         plainTitle: 'Fundamental boundary-value problem',
         lectureBadges: ['Lec. 4 · Fundamental Equations'],
         contentHtml: R`
-          <div class="eq-card">
-            <div class="eq-card-label">Field Equations in $V$</div>
-            <div>$$\begin{aligned} \boldsymbol{\varepsilon} &= \frac{1}{2}\left(\nabla\mathbf{u} + \nabla\mathbf{u}^\top\right), \quad \boldsymbol{\sigma} = \mathbb{C} : \boldsymbol{\varepsilon} \\ \nabla \cdot \boldsymbol{\sigma} + \mathbf{f} &= \mathbf{0} \end{aligned}$$</div>
-          </div>
-          <div class="eq-card is-accent">
-            <div class="eq-card-label">Boundary Conditions on $\partial V = S_u \cup S_t$</div>
-            <div>$$\begin{aligned} \mathbf{u} &= \mathbf{u}_0 \text{ on } S_u, \qquad S_u \cap S_t = \emptyset \\ \boldsymbol{\sigma} \cdot \mathbf{n} &= \mathbf{t} \text{ on } S_t \end{aligned}$$</div>
+          <div class="eq-stack">
+            <div class="eq-stack-group">
+              <div class="eq-card-label">Field Equations in $V$</div>
+              <div>$$\begin{aligned} \boldsymbol{\varepsilon} &= \frac{1}{2}\left(\nabla\mathbf{u} + \nabla\mathbf{u}^\top\right), \quad \boldsymbol{\sigma} = \mathbb{C} : \boldsymbol{\varepsilon} \\ \nabla \cdot \boldsymbol{\sigma} + \mathbf{f} &= \mathbf{0} \end{aligned}$$</div>
+            </div>
+            <div class="eq-stack-group">
+              <div class="eq-card-label">BCs on $\partial V = S_u \cup S_t,\; S_u \cap S_t = \emptyset$</div>
+              <div>$$\mathbf{u} = \mathbf{u}_0 \text{ on } S_u, \quad \boldsymbol{\sigma} \cdot \mathbf{n} = \mathbf{t} \text{ on } S_t$$</div>
+            </div>
           </div>
           <ul class="point-list">
-            <li><strong>Closure:</strong> 15 scalar equations (6 kinematics, 6 Hooke, 3 equilibrium) determine 15 fields (<span class="nowrap">$u_i, \varepsilon_{ij}, \sigma_{ij}$</span>).</li>
-            <li><strong>Compatibility &amp; uniqueness:</strong> strain compatibility is required if $\boldsymbol{\varepsilon}$ is posited directly; positive-definite $\mathbb{C}$ with well-posed BCs guarantees a unique solution.</li>
+            <li><strong>Closure:</strong> 15 scalar equations (6 kinematics, 6 Hooke, 3 equilibrium) solve for 15 fields (<span class="nowrap">$u_i, \varepsilon_{ij}, \sigma_{ij}$</span>).</li>
+            <li><strong>Compatibility &amp; uniqueness:</strong> posited strains require compatibility; positive-definite $\mathbb{C}$ with well-posed BCs ensures uniqueness.</li>
           </ul>
         `,
         symbols: [
@@ -364,13 +364,19 @@
         contentHtml: R`
           <div class="eq-card">
             <div class="eq-card-label">1D Kinematics, Hooke's Law &amp; Equilibrium</div>
-            <div>$$\begin{aligned} \varepsilon &= \frac{\mathrm{d}u}{\mathrm{d}x}, \qquad N = EA\varepsilon \\ \frac{\mathrm{d}N}{\mathrm{d}x} + f(x) &= 0 \end{aligned}$$</div>
+            <div>$$\begin{aligned} \varepsilon &= \frac{\mathrm{d}u}{\mathrm{d}x}, \quad N = EA\varepsilon \\ \frac{\mathrm{d}N}{\mathrm{d}x} + f(x) &= 0 \end{aligned}$$</div>
           </div>
           <ul class="point-list">
-            <li><strong>Reference and deformed length:</strong> a rod of initial length $L_0$ and area $A$ stretches to deformed length $L = L_0 + u(L_0)$.</li>
-            <li><strong>Boundary conditions:</strong> fixed at $x = 0$ (<span class="nowrap">$u(0) = 0$</span>) and pulled by end force $P$ at $x = L_0$ (<span class="nowrap">$N(L_0) = P$</span>), with optional distributed load $f(x)$.</li>
-            <li><strong>Closed-form BVP template:</strong> axial rigidity $EA$ and wall reaction $N_0 = P + f_0 L_0$ mirror the full 3D BVP structure in 1D.</li>
+            <li><strong>Deformed length:</strong> a rod of length $L_0$ and area $A$ stretches to deformed length $L = L_0 + u(L_0)$.</li>
+            <li><strong>Boundary conditions:</strong> fixed at $x = 0$ (<span class="nowrap">$u(0) = 0$</span>), tip force $N(L_0) = P$, and distributed load $f(x)$.</li>
+            <li><strong>1D BVP template:</strong> rigidity $EA$ and wall reaction $N_0 = P + f_0 L_0$ mirror the 3D BVP structure.</li>
           </ul>
+          <details class="mono-disclosure">
+            <summary>Closed-form uniform-load solution</summary>
+            <div class="mono-disclosure-body">
+              <div>$$\begin{aligned} N(x) &= P + f_0(L_0 - x) \\ u(x) &= \frac{(P + f_0 L_0)x - \frac{1}{2}f_0 x^2}{EA} \end{aligned}$$</div>
+            </div>
+          </details>
         `,
         symbols: [
           { sym: R`$\varepsilon$`, short: 'Axial strain', desc: R`1D normal axial strain $\varepsilon(x) = \mathrm{d}u/\mathrm{d}x$.` },
@@ -391,7 +397,7 @@
         title: '2D formulations',
         plainTitle: '2D formulations',
         lectureBadges: ['Lec. 5 · 2D Elasticity'],
-        contentHtml: R`
+        bannerHtml: R`
           <div class="airy-banner-card">
             <span class="eq-card-label">Airy Stress Function $\phi(x, y)$ ($\mathbf{f} = \mathbf{0}$)</span>
             <div class="airy-eq-tokens">
@@ -401,21 +407,27 @@
               <span class="eq-token">$\sigma_{xy} = -\phi_{,xy}$</span>
             </div>
           </div>
+        `,
+        contentHtml: R`
           <div class="compare-cols">
             <article class="compare-card is-stress">
-              <div class="eq-card-label">Thin Plate ($t \ll L$, $z = x_3$)</div>
-              <h3>Plane Stress</h3>
-              <p>$\sigma_{zz} = \sigma_{xz} = \sigma_{yz} = 0$</p>
+              <div class="compare-head-row">
+                <h3>Plane Stress</h3>
+                <span class="eq-card-label">Thin Plate ($t \ll L$, $z = x_3$)</span>
+              </div>
+              <p class="compare-card-assumption">$\sigma_{zz} = \sigma_{xz} = \sigma_{yz} = 0$</p>
               <div>$$\begin{aligned} \varepsilon_{xx} &= \frac{1}{E}\left(\sigma_{xx} - \nu\sigma_{yy}\right) \\ \varepsilon_{yy} &= \frac{1}{E}\left(\sigma_{yy} - \nu\sigma_{xx}\right) \\ \varepsilon_{xy} &= \frac{1+\nu}{E}\sigma_{xy} \end{aligned}$$</div>
             </article>
             <article class="compare-card is-strain">
-              <div class="eq-card-label">Long Prism / Cylinder (in $z = x_3$)</div>
-              <h3>Plane Strain</h3>
-              <p>$\varepsilon_{zz} = \varepsilon_{xz} = \varepsilon_{yz} = 0$, $\sigma_{zz} = \nu(\sigma_{xx}+\sigma_{yy})$</p>
+              <div class="compare-head-row">
+                <h3>Plane Strain</h3>
+                <span class="eq-card-label">Long Prism (in $z = x_3$)</span>
+              </div>
+              <p class="compare-card-assumption">$\varepsilon_{zz} = \varepsilon_{xz} = \varepsilon_{yz} = 0,\; \sigma_{zz} = \nu(\sigma_{xx}+\sigma_{yy})$</p>
               <div>$$\begin{aligned} \sigma_{xx} &= \lambda(\varepsilon_{xx} + \varepsilon_{yy}) + 2\mu\varepsilon_{xx} \\ \sigma_{yy} &= \lambda(\varepsilon_{xx} + \varepsilon_{yy}) + 2\mu\varepsilon_{yy} \\ \sigma_{xy} &= 2\mu\varepsilon_{xy} \end{aligned}$$</div>
-              <div class="airy-eq-tokens">
-                <span class="eq-token">$\lambda = \dfrac{E\nu}{(1+\nu)(1-2\nu)},$</span>
-                <span class="eq-token">$\mu = \dfrac{E}{2(1+\nu)}$</span>
+              <div class="compare-lame-row airy-eq-tokens">
+                <span class="eq-token">$\lambda = E\nu/[(1+\nu)(1-2\nu)],$</span>
+                <span class="eq-token">$\mu = E/[2(1+\nu)]$</span>
               </div>
             </article>
           </div>
@@ -464,10 +476,17 @@
             <div>$$\begin{aligned} \nabla^4\phi(r, \theta) &= 0 \\ \phi &\sim r^n,\; \ln r,\; r^2\ln r,\; \theta,\; r\theta\sin\theta \end{aligned}$$</div>
           </div>
           <ul class="point-list">
-            <li><strong>Circular hole and annulus (Lec. 11):</strong> uniaxial tension $\sigma^\infty$ concentrates hoop stress to $\sigma_{\theta\theta} = 3\sigma^\infty$ at $\theta = \pm\pi/2$ and $-\sigma^\infty$ at $\theta = 0, \pi$ (Kirsch).</li>
-            <li><strong>Wedge and notch corners (Lec. 12):</strong> a solid wedge of angle $2\alpha$ admits Williams power modes $r^{\lambda+1}$ (<span class="nowrap">$\sigma \sim r^{\lambda-1}$</span>) that become singular when $2\alpha \gt \pi$.</li>
-            <li><strong>Physical filtering:</strong> symmetry, traction boundary conditions, and finite strain energy isolate admissible Michell terms.</li>
+            <li><strong>Kirsch hole (Lec. 11):</strong> tension $\sigma^\infty$ peaks at $\sigma_{\theta\theta} = 3\sigma^\infty$ ($\theta = \pm\pi/2$) and $-\sigma^\infty$ ($\theta = 0, \pi$).</li>
+            <li><strong>Wedge corners (Lec. 12):</strong> wedge angle $2\alpha$ admits modes $r^{\lambda+1}$ (<span class="nowrap">$\sigma \sim r^{\lambda-1}$</span>), singular for $2\alpha \gt \pi$.</li>
+            <li><strong>Mode filtering:</strong> symmetry, traction BCs, and finite strain energy select admissible Michell terms.</li>
           </ul>
+          <details class="mono-disclosure">
+            <summary>Williams root equation</summary>
+            <div class="mono-disclosure-body">
+              <div>$$\sin(2\alpha\lambda) + \lambda\sin(2\alpha) = 0$$</div>
+              <p>Real singular roots $\lambda \in [0.5, 1)$ for $2\alpha \in (\pi, 2\pi]$ converge to the slit-crack limit $\lambda = \frac{1}{2}$ at $2\alpha = 2\pi$.</p>
+            </div>
+          </details>
         `,
         symbols: [
           { sym: R`$r, \theta$`, short: 'Polar coordinates', desc: R`Radial distance $r$ and polar angle $\theta$ centered on a hole, annulus, or wedge tip.` },
@@ -493,9 +512,9 @@
             <div>$$\begin{aligned} \nabla \cdot \boldsymbol{\sigma} + \mathbf{f} &= \mathbf{0} \\ \mathbf{u}(\mathbf{x}) &= \int_V \mathbf{G}(\mathbf{x}, \mathbf{x}')\,\mathbf{f}(\mathbf{x}')\,\mathrm{d}V' \end{aligned}$$</div>
           </div>
           <ul class="point-list">
-            <li><strong>Kelvin solution:</strong> closed-form displacement and stress field from a concentrated point force $\mathbf{P}$ in infinite 3D space (<span class="nowrap">$u \sim 1/r, \sigma \sim 1/r^2$</span>).</li>
-            <li><strong>Half-space images (Mindlin):</strong> image singularities (mirror point force plus force doublets) placed across $z = 0$ cancel free-surface tractions.</li>
-            <li><strong>Superposition kernel:</strong> convolving $\mathbf{G}(\mathbf{x}, \mathbf{x}')$ with distributed body forces or defect dipoles builds general 3D elastic solutions.</li>
+            <li><strong>Kelvin solution:</strong> point force $\mathbf{P}$ in infinite 3D space gives $u \sim 1/r$ and $\sigma \sim 1/r^2$.</li>
+            <li><strong>Mindlin images:</strong> mirror forces and force doublets across $z = 0$ cancel free-surface tractions.</li>
+            <li><strong>Superposition:</strong> convolving $\mathbf{G}(\mathbf{x}, \mathbf{x}')$ with body forces $\mathbf{f}$ or defect dipoles builds general 3D fields.</li>
           </ul>
         `,
         symbols: [
@@ -522,9 +541,9 @@
             <div>$$\begin{aligned} \mathbf{f}_{\mathrm{PK}} &= (\boldsymbol{\sigma}^\infty \cdot \mathbf{b}) \times \boldsymbol{\xi} \\ \sigma_{xy} &= \frac{\mu b}{2\pi(1-\nu)}\,\frac{x(x^2 - y^2)}{(x^2 + y^2)^2} \end{aligned}$$</div>
           </div>
           <ul class="point-list">
-            <li><strong>Volterra cut and Burgers vector $\mathbf{b}$:</strong> shifting crystal faces across a slip plane by $\mathbf{b}$ creates a line defect with a $1/r$ elastic stress field.</li>
-            <li><strong>Peach–Köhler force:</strong> remote stress $\boldsymbol{\sigma}^\infty$ exerts configurational force per unit length $\mathbf{f}_{\mathrm{PK}}$ on a line with unit tangent $\boldsymbol{\xi}$, driving glide.</li>
-            <li><strong>Bridge to plasticity:</strong> singular core fields combine with free-surface images; collective dislocation glide produces macroscopic plastic strain $\varepsilon^p$.</li>
+            <li><strong>Volterra cut &amp; Burgers vector $\mathbf{b}$:</strong> slipping faces across a plane by $\mathbf{b}$ creates a line defect with $1/r$ stress.</li>
+            <li><strong>Peach–Köhler force:</strong> remote stress $\boldsymbol{\sigma}^\infty$ exerts force per length $\mathbf{f}_{\mathrm{PK}}$ on tangent $\boldsymbol{\xi}$, driving glide.</li>
+            <li><strong>Bridge to plasticity:</strong> core fields pair with surface images; collective glide produces plastic strain $\varepsilon^p$.</li>
           </ul>
         `,
         symbols: [
@@ -574,17 +593,19 @@
         plainTitle: 'Yield criteria: von Mises and Tresca',
         lectureBadges: ['Lec. 13–14 · Yield Surface / Graphical'],
         contentHtml: R`
-          <div class="eq-card">
-            <div class="eq-card-label">Deviatoric Stress &amp; Equivalent Stress</div>
-            <div>$$\begin{aligned} s_{ij} &= \sigma_{ij} - \frac{1}{3}\sigma_{kk}\delta_{ij} \\ J_2 &= \frac{1}{2}s_{ij}s_{ij}, \qquad \sigma_{\mathrm{eq}} = \sqrt{3J_2} \end{aligned}$$</div>
-          </div>
-          <div class="eq-card is-accent">
-            <div class="eq-card-label">von Mises &amp; Tresca Yield Surfaces</div>
-            <div>$$\begin{aligned} f(\boldsymbol{\sigma}) &= J_2 - k^2 \le 0 \quad \left(k = \frac{\sigma_Y}{\sqrt{3}}\right) \\ \max_{i,j}\left|\sigma_i - \sigma_j\right| &\le \sigma_Y \end{aligned}$$</div>
+          <div class="eq-stack">
+            <div class="eq-stack-group">
+              <div class="eq-card-label">Deviatoric &amp; Equivalent Stress</div>
+              <div>$$\begin{aligned} s_{ij} &= \sigma_{ij} - \frac{1}{3}\sigma_{kk}\delta_{ij} \\ J_2 &= \frac{1}{2}s_{ij}s_{ij}, \quad \sigma_{\mathrm{eq}} = \sqrt{3J_2} \end{aligned}$$</div>
+            </div>
+            <div class="eq-stack-group">
+              <div class="eq-card-label">von Mises ($k = \sigma_Y / \sqrt{3}$) &amp; Tresca Yield</div>
+              <div>$$\begin{aligned} f(\boldsymbol{\sigma}) &= J_2 - k^2 \le 0 \\ \max_{i,j}\left|\sigma_i - \sigma_j\right| &\le \sigma_Y \end{aligned}$$</div>
+            </div>
           </div>
           <ul class="point-list">
             <li><strong>Principal stresses:</strong> eigenvalues $\sigma_1 \ge \sigma_2 \ge \sigma_3$ act on orthogonal shear-free planes <span class="nowrap">($\tau = 0$)</span>.</li>
-            <li><strong>$\pi$-plane geometry:</strong> metal yielding ignores hydrostatic pressure $\sigma_{kk}/3$; von Mises projects to a circle circumscribing the Tresca hexagon.</li>
+            <li><strong>$\pi$-plane geometry:</strong> metal yielding ignores hydrostatic stress $\sigma_{kk}/3$; von Mises circumscribes the Tresca hexagon.</li>
           </ul>
         `,
         symbols: [
@@ -608,17 +629,19 @@
         plainTitle: 'J2 associated flow rule',
         lectureBadges: ['Lec. 13–15 · Flow Rule, Tension & Shear'],
         contentHtml: R`
-          <div class="eq-card">
-            <div class="eq-card-label">Normality Flow &amp; Plastic Incompressibility</div>
-            <div>$$\begin{aligned} \dot{\varepsilon}_{ij}^p &= \dot{\lambda}\frac{\partial f}{\partial \sigma_{ij}} = \dot{\lambda}\,s_{ij} \\ \dot{\varepsilon}_{kk}^p &= 0 \end{aligned}$$</div>
-          </div>
-          <div class="eq-card is-accent">
-            <div class="eq-card-label">KKT Consistency &amp; Elastic Predictor</div>
-            <div>$$\begin{aligned} \dot{\lambda} &\ge 0,\quad f \le 0,\quad \dot{\lambda}f = 0 \\ f^{\mathrm{tr}} &= J_2(\boldsymbol{\sigma}^{\mathrm{tr}}) - k^2 \end{aligned}$$</div>
+          <div class="eq-stack">
+            <div class="eq-stack-group">
+              <div class="eq-card-label">Normality Flow &amp; Plastic Incompressibility</div>
+              <div>$$\dot{\varepsilon}_{ij}^p = \dot{\lambda}\frac{\partial f}{\partial \sigma_{ij}} = \dot{\lambda}\,s_{ij}, \quad \dot{\varepsilon}_{kk}^p = 0$$</div>
+            </div>
+            <div class="eq-stack-group">
+              <div class="eq-card-label">KKT Consistency &amp; Elastic Predictor</div>
+              <div>$$\begin{aligned} \dot{\lambda} &\ge 0,\quad f \le 0,\quad \dot{\lambda}f = 0 \\ f^{\mathrm{tr}} &= J_2(\boldsymbol{\sigma}^{\mathrm{tr}}) - k^2 \end{aligned}$$</div>
+            </div>
           </div>
           <ul class="point-list">
             <li><strong>Elastic predictor:</strong> freeze plastic strain to compute trial stress $\boldsymbol{\sigma}^{\mathrm{tr}}$; accept directly when $f^{\mathrm{tr}} \le 0$.</li>
-            <li><strong>Radial return corrector:</strong> when $f^{\mathrm{tr}} \gt 0$, project $\mathbf{s}^{\mathrm{tr}}$ radially onto the yield surface $f = 0$ ($\dot{f} = 0$ during flow).</li>
+            <li><strong>Radial return corrector:</strong> when $f^{\mathrm{tr}} \gt 0$, project $\mathbf{s}^{\mathrm{tr}}$ radially onto $f = 0$ ($\dot{f} = 0$ during flow).</li>
           </ul>
         `,
         symbols: [
@@ -639,14 +662,17 @@
         plainTitle: 'Fracture: LEFM and energy release',
         lectureBadges: ['Lec. 22–26 · Slit Crack, LEFM, Fatigue'],
         contentHtml: R`
-          <div class="eq-card">
-            <div class="eq-card-label">Stress Intensity, Tip Field &amp; Energy Release</div>
-            <div>$$\begin{aligned} K_I &= \sigma^\infty\sqrt{\pi a} \\ \sigma_{ij} &\sim \frac{K_I}{\sqrt{2\pi r}}\,f_{ij}(\theta) \\ \mathcal{G} &= -\frac{\partial \Pi}{\partial A} = \frac{K_I^2}{E'} \end{aligned}$$</div>
+          <div class="eq-stack">
+            <div class="eq-stack-group">
+              <div class="eq-card-label">Stress Intensity, Tip Field &amp; Energy Release</div>
+              <div>$$\begin{aligned} K_I &= \sigma^\infty\sqrt{\pi a} \\ \sigma_{ij} &\sim \frac{K_I}{\sqrt{2\pi r}}\,f_{ij}(\theta) \\ \mathcal{G} &= -\frac{\partial \Pi}{\partial A} = \frac{K_I^2}{E'} \end{aligned}$$</div>
+              <div class="eq-note">$E' = E$ (plane stress), $E/(1-\nu^2)$ (plane strain)</div>
+            </div>
           </div>
           <ul class="point-list">
-            <li><strong>Center slit crack:</strong> a sharp crack of length $2a$ under remote tension $\sigma^\infty$ generates a universal $r^{-1/2}$ near-tip singularity modulated by $f_{ij}(\theta)$.</li>
-            <li><strong>LEFM failure criterion:</strong> unstable crack propagation triggers when Mode-I intensity reaches fracture toughness, $K_I = K_{Ic}$.</li>
-            <li><strong>Energy and nonlinear fracture:</strong> $\mathcal{G} = -\partial\Pi/\partial A = K_I^2/E'$ ($E' = E$ plane stress, $E/(1-\nu^2)$ plane strain) generalizes to the $J$-integral (EPFM) and fatigue.</li>
+            <li><strong>Center slit crack:</strong> a crack of length $2a$ under remote tension $\sigma^\infty$ induces a universal $r^{-1/2}$ field modulated by $f_{ij}(\theta)$.</li>
+            <li><strong>LEFM criterion:</strong> unstable crack growth triggers when Mode-I intensity reaches fracture toughness, $K_I = K_{Ic}$.</li>
+            <li><strong>Beyond LEFM:</strong> $\mathcal{G}$ generalizes to the $J$-integral (EPFM) and cyclic fatigue.</li>
           </ul>
         `,
         symbols: [
@@ -670,15 +696,15 @@
         plainTitle: 'Standard workflow',
         lectureBadges: ['Problem-Solving Strategy'],
         contentHtml: R`
-          <ul class="point-list">
-            <li><strong>1. Model:</strong> define geometry, boundary conditions (<span class="nowrap">$S_u, S_t$</span>), and choose a 2D or 3D idealization.</li>
-            <li><strong>2. Method:</strong> pick an Airy stress function $\phi$ in 2D or Green's functions $\mathbf{G}$ and images in 3D.</li>
-            <li><strong>3. Solve:</strong> apply separated variables, Fourier series and transforms, or multipole expansions.</li>
-            <li><strong>4. Check:</strong> confirm equilibrium, every boundary condition, and finite strain energy at corners.</li>
-            <li><strong>5. Extract:</strong> compute stress $\boldsymbol{\sigma}$, contact pressure, stored energy $U$, and resultant forces.</li>
-          </ul>
+          <ol class="point-list is-numbered">
+            <li><strong>Model:</strong> define geometry, boundary conditions (<span class="nowrap">$S_u, S_t$</span>), and 2D or 3D idealization.</li>
+            <li><strong>Method:</strong> pick Airy $\phi$ in 2D or Green's tensor $\mathbf{G}$ and images in 3D.</li>
+            <li><strong>Solve:</strong> apply separated variables, Fourier transforms, or multipole expansions.</li>
+            <li><strong>Check:</strong> verify equilibrium, boundary conditions, and finite corner strain energy.</li>
+            <li><strong>Extract:</strong> compute stress $\boldsymbol{\sigma}$, contact pressure, stored energy $U$, and resultants.</li>
+          </ol>
           <div class="callout-card">
-            <strong>Benchmark mindset:</strong> keep a closed-form analytic case as a verification reference when switching to numerics.
+            <span class="callout-label">Benchmark mindset</span>Keep a closed-form analytic reference when switching to numerical solvers.
           </div>
         `,
         symbols: [
@@ -717,22 +743,22 @@
           <article class="bento-card">
             <div class="bento-card-kicker">01 · Elasticity</div>
             <h3 class="bento-card-title">Complete BVP Toolkit</h3>
-            <p class="bento-card-body">Kinematics, Hooke's law, equilibrium, and BCs close the problem; 2D Airy $\phi$ and 3D Green's functions $\mathbf{G}$ provide exact solutions.</p>
+            <p class="bento-card-body">Kinematics, Hooke, equilibrium, and BCs close the problem; Airy $\phi$ and Green's $\mathbf{G}$ solve it.</p>
           </article>
           <article class="bento-card">
             <div class="bento-card-kicker">02 · Plasticity</div>
             <h3 class="bento-card-title">Yield &amp; Associated Flow</h3>
-            <p class="bento-card-body">Additive strain decomposition $\boldsymbol{\varepsilon} = \boldsymbol{\varepsilon}^e + \boldsymbol{\varepsilon}^p$ pairs von Mises yield with the associated $J_2$ flow rule.</p>
+            <p class="bento-card-body">Strain split $\boldsymbol{\varepsilon} = \boldsymbol{\varepsilon}^e + \boldsymbol{\varepsilon}^p$ pairs von Mises yield with the $J_2$ flow rule.</p>
           </article>
           <article class="bento-card">
             <div class="bento-card-kicker">03 · Fracture</div>
             <h3 class="bento-card-title">Crack Growth &amp; Fatigue</h3>
-            <p class="bento-card-body">$K_I$, $\mathcal{G}$, and the $J$-integral link near-tip elastic fields directly to brittle fracture, EPFM, and cyclic fatigue.</p>
+            <p class="bento-card-body">$K_I$, $\mathcal{G}$, and the $J$-integral connect tip fields to brittle fracture, EPFM, and fatigue.</p>
           </article>
           <article class="bento-card">
             <div class="bento-card-kicker">04 · Benchmarks</div>
             <h3 class="bento-card-title">Analytic Verification</h3>
-            <p class="bento-card-body">MATLAB implementations paired with closed-form analytic benchmarks validate solutions across all three parts.</p>
+            <p class="bento-card-body">MATLAB solvers paired with closed-form benchmarks validate predictions across all three parts.</p>
           </article>
         `,
         symbols: [

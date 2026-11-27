@@ -80,7 +80,7 @@
   --fs-lg: 1.25rem;      /* 20px */
   --fs-xl: 1.5rem;       /* 24px */
   --fs-title: clamp(1.85rem, 2.8vw, 2.5rem);
-  --fs-hero: clamp(2.65rem, 5.2vw, 4.55rem);
+  --fs-hero: clamp(2.5rem, 4.4vw, 4.1rem);
 
   /* Sharp Architectural Geometry */
   --r-xs: 0px;
@@ -286,8 +286,10 @@ a:hover {
 
 /* KaTeX Integration (crisp Computer Modern math, >= 15px floor, zero clipping) */
 .katex {
-  font-size: 1.05em;
+  font-size: 1.04em;
   color: inherit;
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 .katex-display {
@@ -302,6 +304,7 @@ a:hover {
 }
 
 .katex-display > .katex {
+  font-size: 1.08em;
   white-space: nowrap;
 }
 

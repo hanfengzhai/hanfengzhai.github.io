@@ -352,35 +352,39 @@
     ctx.restore();
   }
 
-  function drawPlotFrame(ctx, box, pal, title, xLabel, yLabel) {
+  function drawDivider(ctx, x1, y1, x2, y2, pal) {
     ctx.save();
-    drawRoundRect(ctx, box.x, box.y, box.w, box.h, 2);
-    ctx.fillStyle = withAlpha(pal.surface2, pal.theme === 'dark' ? 0.48 : 0.55);
-    ctx.fill();
     ctx.strokeStyle = pal.border;
     ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
     ctx.stroke();
+    ctx.restore();
+  }
 
+  function drawPlotFrame(ctx, box, pal, title, xLabel, yLabel) {
+    ctx.save();
     if (title) {
       ctx.font = FONT_SANS_BOLD;
       ctx.fillStyle = pal.text;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillText(title, box.x + 10, box.y + 7);
+      ctx.fillText(title, box.x + 8, box.y + 6);
     }
     if (xLabel) {
       ctx.font = FONT_SANS;
       ctx.fillStyle = pal.textMuted;
       ctx.textAlign = 'right';
       ctx.textBaseline = 'bottom';
-      ctx.fillText(xLabel, box.x + box.w - 10, box.y + box.h - 5);
+      ctx.fillText(xLabel, box.x + box.w - 8, box.y + box.h - 4);
     }
     if (yLabel) {
       ctx.font = FONT_SANS;
       ctx.fillStyle = pal.textMuted;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillText(yLabel, box.x + 10, box.y + (title ? 26 : 7));
+      ctx.fillText(yLabel, box.x + 8, box.y + (title ? 26 : 6));
     }
     ctx.restore();
   }
@@ -823,7 +827,6 @@
     const dom = createLabDom(mountEl, {
       hasToolbar: true,
       readouts: [
-        { id: 'dim', label: 'Domain', value: '1D Bar' },
         { id: 'nel', label: 'Elements Ω_e', value: '4' },
         { id: 'nodes', label: 'Nodes', value: '5' },
         { id: 'bcs', label: 'BCs', value: 'Γ_D + Γ_N' }
@@ -886,10 +889,9 @@
       if (mode === '1d') {
         const nEl = refineLevel === 1 ? 4 : refineLevel === 2 ? 6 : 8;
         const nNodes = nEl + 1;
-        dom.readouts.dim.val.textContent = '1D Bar (Ω = [0, L])';
         dom.readouts.nel.val.textContent = String(nEl);
         dom.readouts.nodes.val.textContent = String(nNodes);
-        dom.readouts.bcs.val.innerHTML = formatMathHtml('x=0: u_D, x=L: t_N');
+        dom.readouts.bcs.val.innerHTML = formatMathHtml('x=0 u_D · x=L t_N');
         badge.textContent = 'Fig. 1 · 1D';
 
         const padL = clamp(w * 0.14, 56, 86);
@@ -958,17 +960,20 @@
           }
         }
 
-        // Domain title pill
-        drawLabelPill(ctx, '1D Linear Mesh: Ω = ⋃ Ω_e', w * 0.5, 24, pal, { clampTo: box });
+        // Borderless top header text
+        ctx.font = FONT_SANS_BOLD;
+        ctx.fillStyle = pal.text;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText('1D Linear Mesh: Ω = ⋃ Ω_e', w * 0.5, 12);
 
       } else if (mode === '2d') {
         const n = refineLevel === 1 ? 2 : refineLevel === 2 ? 3 : 4;
         const nEl = n * n;
         const nNodes = (n + 1) * (n + 1);
-        dom.readouts.dim.val.textContent = '2D Plate (Q4)';
         dom.readouts.nel.val.textContent = String(nEl) + ' (' + n + '×' + n + ')';
         dom.readouts.nodes.val.textContent = String(nNodes);
-        dom.readouts.bcs.val.innerHTML = formatMathHtml('Left Γ_D, Right Γ_N');
+        dom.readouts.bcs.val.innerHTML = formatMathHtml('Left Γ_D · Right Γ_N');
         badge.textContent = 'Fig. 2 · 2D';
 
         const side = clamp(Math.min(w * 0.52, h * 0.64), 126, 230);
@@ -1045,17 +1050,20 @@
           }
         }
 
-        drawLabelPill(ctx, '2D Mesh: ∂Ω = Γ_D ∪ Γ_N', w * 0.5, 22, pal, { clampTo: box });
+        ctx.font = FONT_SANS_BOLD;
+        ctx.fillStyle = pal.text;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText('2D Mesh: ∂Ω = Γ_D ∪ Γ_N', w * 0.5, 10);
 
       } else {
         // 3D Isometric / Oblique Hexahedral Block
         const n = refineLevel === 1 ? 2 : refineLevel === 2 ? 3 : 4;
         const nEl = n * n * n;
         const nNodes = (n + 1) * (n + 1) * (n + 1);
-        dom.readouts.dim.val.textContent = '3D Block (Hex8)';
         dom.readouts.nel.val.textContent = String(nEl) + ' (' + n + '³)';
         dom.readouts.nodes.val.textContent = String(nNodes);
-        dom.readouts.bcs.val.innerHTML = formatMathHtml('Left Γ_D, Right Γ_N');
+        dom.readouts.bcs.val.innerHTML = formatMathHtml('Left Γ_D · Right Γ_N');
         badge.textContent = 'Fig. 3 · 3D';
 
         const L = clamp(Math.min(w * 0.34, h * 0.44), 86, 150);
@@ -1185,7 +1193,11 @@
           ctx.fill();
         });
 
-        drawLabelPill(ctx, '3D Hexahedral Mesh: Ω ⊂ ℝ³', w * 0.5, 22, pal, { clampTo: box });
+        ctx.font = FONT_SANS_BOLD;
+        ctx.fillStyle = pal.text;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText('3D Hexahedral Mesh: Ω ⊂ ℝ³', w * 0.5, 10);
       }
     }
 
@@ -1203,7 +1215,7 @@
    * ========================================================================= */
   registerLab('fem-pipeline', function (mountEl, api) {
     const dom = createLabDom(mountEl, {
-      hasToolbar: true,
+      hasToolbar: false,
       cursor: 'pointer'
     });
 
@@ -1243,19 +1255,6 @@
     let hoveredIdx = -1;
     let boxes = [];
     let timeSec = 0;
-
-    createPillGroup(dom.toolbar, [
-      { id: 'strong-to-weak', label: 'Jump to Part I →', actionOnly: true },
-      { id: 'element-families', label: 'Jump to Part II →', actionOnly: true },
-      { id: 'sobolev-norms', label: 'Jump to Part III →', actionOnly: true }
-    ], '', function (targetId) {
-      api.goToSlide(targetId);
-    });
-
-    const hint = document.createElement('span');
-    hint.className = 'lab-badge-status is-info';
-    hint.textContent = 'Click any stage to jump';
-    dom.toolbar.appendChild(hint);
 
     function hitIndex(pos) {
       for (let i = 0; i < boxes.length; i++) {
@@ -1437,8 +1436,7 @@
       readouts: [
         { id: 'rL2', label: '||R_Ω||_L2', value: '--' },
         { id: 'uL2', label: '||u - û||_L2', value: '--' },
-        { id: 'uMax', label: 'Max |e|', value: '--' },
-        { id: 'meth', label: 'Method', value: 'Galerkin' }
+        { id: 'uMax', label: 'Max |e|', value: '--' }
       ]
     });
 
@@ -1449,7 +1447,7 @@
       { id: 'galerkin', label: 'Galerkin' },
       { id: 'collocation', label: 'Collocation' },
       { id: 'subdomain', label: 'Subdomain' },
-      { id: 'leastsquares', label: 'Least Squares' }
+      { id: 'leastsquares', label: 'Least Sq.' }
     ], 'galerkin', function (id) {
       method = id;
       render();
@@ -1585,27 +1583,21 @@
       const pal = api.getPalette();
 
       const sol = solveMWR(method, degreeM);
-      const methNames = {
-        galerkin: 'Galerkin',
-        collocation: 'Collocation',
-        subdomain: 'Subdomain',
-        leastsquares: 'Least Squares'
-      };
       dom.readouts.rL2.val.textContent = fmt(sol.rL2, 3);
       dom.readouts.uL2.val.textContent = fmt(sol.uL2, 4);
       dom.readouts.uMax.val.textContent = fmt(sol.maxErr, 4);
-      dom.readouts.meth.val.textContent = methNames[method] + ' (M=' + degreeM + ')';
 
       ctx.clearRect(0, 0, w, h);
 
-      const pad = 10;
-      const gap = 10;
+      const pad = 8;
+      const gap = 12;
       const topH = Math.round((h - 2 * pad - gap) * 0.54);
       const botH = h - 2 * pad - gap - topH;
       const topBox = { x: pad, y: pad, w: w - 2 * pad, h: topH };
       const botBox = { x: pad, y: pad + topH + gap, w: w - 2 * pad, h: botH };
 
-      drawPlotFrame(ctx, topBox, pal, 'Solution: Exact u(x) vs Trial û(x)', 'x ∈ [0, 1]', '');
+      drawDivider(ctx, pad, topBox.y + topBox.h + gap * 0.5, w - pad, topBox.y + topBox.h + gap * 0.5, pal);
+      drawPlotFrame(ctx, topBox, pal, 'Exact u(x) vs. Trial û(x)', 'x ∈ [0, 1]', '');
       drawPlotFrame(ctx, botBox, pal, 'Strong Residual: R_Ω(x) = -û"(x) - (1+4x)', 'x', '');
 
       // Top plot coordinates
@@ -1779,8 +1771,7 @@
       readouts: [
         { id: 'u0', label: 'u_h(0)', value: '--' },
         { id: 'err0', label: '|u_h(0)-g_0|', value: '--' },
-        { id: 'l2', label: '||u-u_h||_L2', value: '--' },
-        { id: 'space', label: 'Space S', value: 'Affine' }
+        { id: 'l2', label: '||u-u_h||_L2', value: '--' }
       ],
       sliders: [
         {
@@ -1809,13 +1800,13 @@
 
     const modeBadge = document.createElement('span');
     modeBadge.className = 'lab-badge-status is-safe';
-    modeBadge.textContent = 'SPD (μ > 9)';
+    modeBadge.textContent = 'SPD μ>9';
     dom.toolbar.appendChild(modeBadge);
 
     const resetPills = createPillGroup(dom.toolbar, [
-      { id: 'preset-low', label: 'μ = 3 (Indef.)', actionOnly: true },
-      { id: 'preset-mid', label: 'μ = 18 (SPD)', actionOnly: true },
-      { id: 'preset-hi', label: 'μ = 40 (Tight)', actionOnly: true }
+      { id: 'preset-low', label: 'μ=3', actionOnly: true },
+      { id: 'preset-mid', label: 'μ=18', actionOnly: true },
+      { id: 'preset-hi', label: 'μ=40', actionOnly: true }
     ], '', function (id) {
       if (id === 'preset-low') mu = 3.0;
       if (id === 'preset-mid') mu = 18.0;
@@ -1902,32 +1893,33 @@
       dom.readouts.u0.val.textContent = fmt(sol.c[0], 3);
       dom.readouts.err0.val.textContent = fmt(sol.err0, 4);
       dom.readouts.l2.val.textContent = fmt(sol.l2, 4);
-      dom.readouts.space.val.textContent = g0 < 0.01 ? 'Vector (S=V)' : 'Affine (ū+V)';
 
       if (sol.nearSing) {
         modeBadge.className = 'lab-badge-status is-danger';
-        modeBadge.textContent = 'Near Singular (μ ≈ 9)';
+        modeBadge.textContent = 'Near Sing. μ≈9';
       } else if (mu < 9.0) {
         modeBadge.className = 'lab-badge-status is-warn';
-        modeBadge.textContent = 'Indefinite (μ < 9)';
+        modeBadge.textContent = 'Indef. μ<9';
       } else {
         modeBadge.className = 'lab-badge-status is-safe';
-        modeBadge.textContent = 'SPD Coercive (μ > 9)';
+        modeBadge.textContent = 'SPD μ>9';
       }
 
       ctx.clearRect(0, 0, w, h);
 
-      const pad = 10;
-      const gap = 10;
+      const pad = 8;
+      const gap = 12;
       let leftBox, rightBox;
       if (!stacked) {
-        const lw = Math.round((w - 2 * pad - gap) * 0.42);
+        const lw = Math.round((w - 2 * pad - gap) * 0.41);
         leftBox = { x: pad, y: pad, w: lw, h: h - 2 * pad };
         rightBox = { x: pad + lw + gap, y: pad, w: w - 2 * pad - gap - lw, h: h - 2 * pad };
+        drawDivider(ctx, leftBox.x + leftBox.w + gap * 0.5, pad, leftBox.x + leftBox.w + gap * 0.5, h - pad, pal);
       } else {
         const th = Math.round((h - 2 * pad - gap) * 0.44);
         leftBox = { x: pad, y: pad, w: w - 2 * pad, h: th };
         rightBox = { x: pad, y: pad + th + gap, w: w - 2 * pad, h: h - 2 * pad - gap - th };
+        drawDivider(ctx, pad, leftBox.y + leftBox.h + gap * 0.5, w - pad, leftBox.y + leftBox.h + gap * 0.5, pal);
       }
 
       // LEFT PANEL: Affine Space S = u_bar + V Geometric Schematic
@@ -2009,11 +2001,12 @@
       ctx.fillText(g0 < 0.01 ? 'S = V (g₀=0)' : 'S (u=g₀)', vx2 + liftX - 2, vy2 - liftY - 8);
 
       // RIGHT PANEL: Live Nitsche Ex. 2.20 Cubic Solution
-      drawPlotFrame(ctx, rightBox, pal, 'Ex. 2.20 Nitsche P3 Solve', 'x ∈ [0, 1]', '');
+      drawPlotFrame(ctx, rightBox, pal, 'Ex. 2.20 Nitsche P3', 'x ∈ [0, 1]', '');
 
       const px0 = rightBox.x + 48;
-      const px1 = rightBox.x + rightBox.w - 18;
-      const py0 = rightBox.y + 38;
+      const px1 = rightBox.x + rightBox.w - 16;
+      const legOnRow2 = rightBox.w < 300;
+      const py0 = rightBox.y + (legOnRow2 ? 46 : 36);
       const py1 = rightBox.y + rightBox.h - 24;
 
       // Dynamic clean Y range anchored around exact solution
@@ -2095,14 +2088,15 @@
       ctx.fillStyle = pal.cardinal;
       ctx.fill();
 
-      // Compact legend top-right
+      // Compact legend top-right (drops cleanly to row 2 if panel is narrow)
+      const legY = legOnRow2 ? rightBox.y + 26 : rightBox.y + 6;
       ctx.font = FONT_SANS;
       ctx.textAlign = 'right';
       ctx.textBaseline = 'top';
       ctx.fillStyle = pal.teal;
-      ctx.fillText('--- Exact', px1 - 74, rightBox.y + 8);
+      ctx.fillText('--- Exact', px1 - 68, legY);
       ctx.fillStyle = pal.cardinal;
-      ctx.fillText('─ u_h', px1 - 4, rightBox.y + 8);
+      ctx.fillText('─ u_h', px1 - 2, legY);
     }
 
     render();
@@ -2124,8 +2118,7 @@
       readouts: [
         { id: 'peh', label: 'Pe_h', value: '--' },
         { id: 'err', label: 'Max |e_h|', value: '--' },
-        { id: 'k12', label: 'K_12', value: '--' },
-        { id: 'nEl', label: 'Mesh', value: 'N = 6' }
+        { id: 'k12', label: 'K_12', value: '--' }
       ],
       sliders: [
         {
@@ -2271,7 +2264,6 @@
       dom.readouts.peh.val.textContent = fmt(resGal.peh, 2);
       dom.readouts.err.val.textContent = fmtSci(resAct.maxErr);
       dom.readouts.k12.val.textContent = (resGal.k12 > 0 ? '+' : '') + fmt(resGal.k12, 1);
-      dom.readouts.nEl.val.textContent = 'N = ' + nEl;
 
       if (useSupg) {
         statusBadge.className = 'lab-badge-status is-info';
@@ -2286,12 +2278,12 @@
 
       ctx.clearRect(0, 0, w, h);
 
-      const pad = 10;
+      const pad = 8;
       const hatH = showHats ? Math.round(h * 0.27) : 0;
-      const gap = showHats ? 8 : 0;
+      const gap = showHats ? 10 : 0;
       const mainBox = { x: pad, y: pad, w: w - 2 * pad, h: h - 2 * pad - hatH - gap };
 
-      drawPlotFrame(ctx, mainBox, pal, '1D Advection-Diffusion: -D u" + μ u\' = 1', 'x ∈ [0, 1]', '');
+      drawPlotFrame(ctx, mainBox, pal, '1D Advection–Diffusion', 'x ∈ [0, 1]', '');
 
       const px0 = mainBox.x + 54;
       const px1 = mainBox.x + mainBox.w - 18;
@@ -2412,6 +2404,7 @@
       // Optional Hat Basis Strip
       if (showHats) {
         const hatBox = { x: pad, y: mainBox.y + mainBox.h + gap, w: w - 2 * pad, h: hatH };
+        drawDivider(ctx, pad, mainBox.y + mainBox.h + gap * 0.5, w - pad, mainBox.y + mainBox.h + gap * 0.5, pal);
         drawPlotFrame(ctx, hatBox, pal, 'Hat Basis N_a(x)', '', '');
         const hy0 = hatBox.y + 28;
         const hy1 = hatBox.y + hatBox.h - 10;
@@ -2449,7 +2442,6 @@
     const dom = createLabDom(mountEl, {
       hasToolbar: true,
       readouts: [
-        { id: 'elem', label: 'Active', value: 'All Elements' },
         { id: 'lgCol', label: 'LG(:, e)', value: '3 Columns' },
         { id: 'size', label: 'Global K', value: '4 × 4' },
         { id: 'ov', label: 'Overlap Nodes', value: 'Nodes 2, 3' }
@@ -2460,7 +2452,7 @@
     let stepMode = 'all'; // '1' | '2' | '3' | 'all'
 
     createPillGroup(dom.toolbar, [
-      { id: 'p1', label: 'P1 Non-Uniform (4)' },
+      { id: 'p1', label: 'P1 (4)' },
       { id: 'p2', label: 'P2 Ex. 3.11 (7)' }
     ], 'p1', function (id) {
       meshType = id;
@@ -2468,9 +2460,9 @@
     });
 
     createPillGroup(dom.toolbar, [
-      { id: '1', label: 'Elem 1' },
-      { id: '2', label: 'Elem 2' },
-      { id: '3', label: 'Elem 3' },
+      { id: '1', label: 'e1' },
+      { id: '2', label: 'e2' },
+      { id: '3', label: 'e3' },
       { id: 'all', label: 'All' }
     ], 'all', function (id) {
       stepMode = id;
@@ -2534,7 +2526,6 @@
       const stacked = w < 520;
 
       // Update readouts
-      dom.readouts.elem.val.textContent = activeIdx < 0 ? 'All (e=1..3)' : 'Element ' + (activeIdx + 1);
       if (activeIdx < 0) {
         dom.readouts.lgCol.val.textContent = spec.nLocal + '×3 table';
       } else {
@@ -2547,12 +2538,15 @@
 
       ctx.clearRect(0, 0, w, h);
 
-      const pad = 10;
-      const gap = 10;
-      const meshH = 92;
+      const pad = 8;
+      const gap = 12;
+      const meshH = 90;
       const meshBox = { x: pad, y: pad, w: w - 2 * pad, h: meshH };
       const lowerY = pad + meshH + gap;
       const lowerH = h - lowerY - pad;
+
+      // Hairline horizontal divider below 1D mesh
+      drawDivider(ctx, pad, pad + meshH + gap * 0.5, w - pad, pad + meshH + gap * 0.5, pal);
 
       // TOP ZONE: 1D Mesh Schematic
       drawPlotFrame(ctx, meshBox, pal, meshType === 'p1' ? 'PS4 Non-Uniform P1 Mesh' : 'PS4 Ex. 3.11 P2 Mesh (7 DOFs)', '', '');
@@ -2612,10 +2606,12 @@
         const lw = Math.round((w - 2 * pad - gap) * 0.43);
         lgBox = { x: pad, y: lowerY, w: lw, h: lowerH };
         kBox = { x: pad + lw + gap, y: lowerY, w: w - 2 * pad - gap - lw, h: lowerH };
+        drawDivider(ctx, lgBox.x + lgBox.w + gap * 0.5, lowerY + 2, lgBox.x + lgBox.w + gap * 0.5, h - pad, pal);
       } else {
         const lh = Math.round((lowerH - gap) * 0.42);
         lgBox = { x: pad, y: lowerY, w: w - 2 * pad, h: lh };
         kBox = { x: pad, y: lowerY + lh + gap, w: w - 2 * pad, h: lowerH - lh - gap };
+        drawDivider(ctx, pad, lowerY + lh + gap * 0.5, w - pad, lowerY + lh + gap * 0.5, pal);
       }
 
       // BOTTOM-LEFT: LG(a, e) Connectivity Table
@@ -2806,8 +2802,7 @@
       readouts: [
         { id: 'umid', label: 'u_h(0.5)', value: '--' },
         { id: 'uex', label: 'Exact u(0.5)', value: '--' },
-        { id: 'mmid', label: 'M(0.5)', value: '--' },
-        { id: 'dofs', label: 'System', value: '6×6 SPD' }
+        { id: 'mmid', label: 'M(0.5)', value: '--' }
       ],
       sliders: [
         {
@@ -2836,8 +2831,8 @@
     let eiVal = 1.0;
 
     createPillGroup(dom.toolbar, [
-      { id: 'beam', label: '4-Elem Clamped Beam' },
-      { id: 'basis', label: 'Hermite Basis N1..N4' }
+      { id: 'beam', label: '4-Elem Beam' },
+      { id: 'basis', label: 'Basis N1..N4' }
     ], 'beam', function (id) {
       mode = id;
       dom.sliders.load.input.disabled = mode !== 'beam';
@@ -2847,7 +2842,7 @@
 
     const badge = document.createElement('span');
     badge.className = 'lab-badge-status is-safe';
-    badge.textContent = 'C¹ Continuous (H²)';
+    badge.textContent = 'C¹ · 6×6 SPD';
     dom.toolbar.appendChild(badge);
 
     dom.sliders.load.input.addEventListener('input', function () {
@@ -2975,15 +2970,15 @@
         dom.readouts.umid.val.textContent = fmt(uMid, 4);
         dom.readouts.uex.val.textContent = fmt(uExMid, 4);
         dom.readouts.mmid.val.textContent = fmt(mMid, 2);
-        dom.readouts.dofs.val.textContent = '6×6 SPD';
-        badge.textContent = 'PS5 · 4-Elem Clamped';
+        badge.textContent = 'C¹ · 6×6 SPD';
 
-        const gap = 10;
+        const gap = 12;
         const topH = Math.round((h - 2 * pad - gap) * 0.54);
         const botH = h - 2 * pad - gap - topH;
         const topBox = { x: pad, y: pad, w: w - 2 * pad, h: topH };
         const botBox = { x: pad, y: pad + topH + gap, w: w - 2 * pad, h: botH };
 
+        drawDivider(ctx, pad, topBox.y + topBox.h + gap * 0.5, w - pad, topBox.y + topBox.h + gap * 0.5, pal);
         drawPlotFrame(ctx, topBox, pal, 'Deflection: Exact Quartic vs C¹ Hermite u_h', 'x ∈ [0, 1]', '');
         drawPlotFrame(ctx, botBox, pal, 'Bending Moment: M(x) = EI u"(x)', 'x', '');
 
@@ -3128,8 +3123,7 @@
         dom.readouts.umid.val.textContent = 'N1(0)=1, N3(1)=1';
         dom.readouts.uex.val.textContent = "N2'(0)=1, N4'(1)=1";
         dom.readouts.mmid.val.textContent = 'deg = 3 (Cubic)';
-        dom.readouts.dofs.val.textContent = '4 Local DOFs';
-        badge.textContent = 'Parent Element ξ ∈ [0, 1]';
+        badge.textContent = 'Parent ξ ∈ [0, 1]';
 
         const box = { x: pad, y: pad, w: w - 2 * pad, h: h - 2 * pad };
         drawPlotFrame(ctx, box, pal, 'Cubic Hermite Shape Functions N1..N4 (l_e = 1)', 'ξ ∈ [0, 1]', '');
@@ -3234,15 +3228,14 @@
     const dom = createLabDom(mountEl, {
       hasToolbar: true,
       readouts: [
-        { id: 'err0', label: '|u_h(0)-1|', value: '0.0000' },
+        { id: 'err0', label: '|u_h(0)−1|', value: '0.0000' },
         { id: 'kappa', label: 'Cond. κ_1', value: '--' },
-        { id: 'type', label: 'Matrix', value: '4×4 SPD' },
-        { id: 'flux', label: 'u_h(0)', value: '1.000' }
+        { id: 'type', label: 'Matrix', value: '4×4 SPD' }
       ],
       sliders: [
         {
           id: 'param',
-          label: 'Method Parameter (exact: none)',
+          label: 'Method Parameter',
           min: 0,
           max: 7,
           step: 0.25,
@@ -3259,6 +3252,8 @@
     function syncSliderSpec() {
       const sl = dom.sliders.param;
       if (method === 'penalty') {
+        if (dom.controlsGrid) dom.controlsGrid.style.display = '';
+        sl.wrap.style.display = '';
         sl.input.disabled = false;
         sl.input.min = '0';
         sl.input.max = '7';
@@ -3267,6 +3262,8 @@
         sl.labelEl.innerHTML = formatMathHtml('Penalty log_10(β)');
         sl.valEl.textContent = '10^' + fmt(logBeta, 2);
       } else if (method === 'nitsche') {
+        if (dom.controlsGrid) dom.controlsGrid.style.display = '';
+        sl.wrap.style.display = '';
         sl.input.disabled = false;
         sl.input.min = '5';
         sl.input.max = '80';
@@ -3275,9 +3272,9 @@
         sl.labelEl.innerHTML = formatMathHtml('Nitsche Parameter μ (μ > 1/h = 4)');
         sl.valEl.textContent = fmt(muNitsche, 0);
       } else {
+        if (dom.controlsGrid) dom.controlsGrid.style.display = 'none';
+        sl.wrap.style.display = 'none';
         sl.input.disabled = true;
-        sl.labelEl.innerHTML = formatMathHtml(method === 'elim' ? 'Elimination / Lift (Exact)' : 'Lagrange Multiplier (Exact)');
-        sl.valEl.textContent = 'No penalty param';
       }
     }
 
@@ -3450,23 +3447,24 @@
       dom.readouts.err0.val.textContent = fmtSci(res.err0);
       dom.readouts.kappa.val.textContent = fmtSci(res.kappa);
       dom.readouts.type.val.textContent = res.matType;
-      dom.readouts.flux.val.textContent = fmt(res.U[0], 3);
       badge.className = 'lab-badge-status ' + res.badgeClass;
       badge.textContent = res.badgeText;
 
       ctx.clearRect(0, 0, w, h);
 
-      const pad = 8;
-      const gap = 10;
+      const pad = 6;
+      const gap = 14;
       let leftBox, rightBox;
       if (!stacked) {
-        const lw = Math.round((w - 2 * pad - gap) * 0.58);
+        const lw = Math.round((w - 2 * pad - gap) * 0.56);
         leftBox = { x: pad, y: pad, w: lw, h: h - 2 * pad };
         rightBox = { x: pad + lw + gap, y: pad, w: w - 2 * pad - gap - lw, h: h - 2 * pad };
+        drawDivider(ctx, leftBox.x + leftBox.w + gap * 0.5, pad, leftBox.x + leftBox.w + gap * 0.5, h - pad, pal);
       } else {
         const lh = Math.round((h - 2 * pad - gap) * 0.54);
         leftBox = { x: pad, y: pad, w: w - 2 * pad, h: lh };
         rightBox = { x: pad, y: pad + lh + gap, w: w - 2 * pad, h: h - 2 * pad - gap - lh };
+        drawDivider(ctx, pad, leftBox.y + leftBox.h + gap * 0.5, w - pad, leftBox.y + leftBox.h + gap * 0.5, pal);
       }
 
       // LEFT: Live 4-element solution plot
@@ -3550,10 +3548,10 @@
       drawPlotFrame(ctx, rightBox, pal, 'System Structure (' + res.matType + ')', '', '');
 
       const n = res.sysSize;
-      const mTop = rightBox.y + 34;
-      const availW = rightBox.w - 32;
-      const availH = rightBox.h - 62;
-      const cell = Math.floor(Math.min(availW / n, availH / n, 26));
+      const mTop = rightBox.y + 30;
+      const availW = rightBox.w - 24;
+      const availH = rightBox.h - 56;
+      const cell = Math.floor(Math.min(availW / n, availH / n, 30));
       const gW = cell * n;
       const gH = cell * n;
       const gx = rightBox.x + Math.round((rightBox.w - gW) * 0.5);

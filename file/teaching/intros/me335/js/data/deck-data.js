@@ -52,28 +52,28 @@
         labId: 'domain-dimensions',
         title: 'Course at a glance',
         plainTitle: 'Course at a glance',
-        lead: 'ME 335A (Prof. Adrian J. Lew, cross-listed CME 335) develops primal finite element methods from weak forms to implementation and convergence proofs.',
+        lead: 'ME 335A (Prof. Adrian J. Lew, CME 335) develops primal FEM from weak forms to implementation and convergence proofs.',
         overviewHint: 'Course Scope & Study Guide',
         contentHtml: R`
           <article class="bento-card">
             <div class="bento-card-kicker">Scope</div>
             <h3 class="bento-card-title">Stanford ME 335A</h3>
-            <p class="bento-card-body">Graduate primal FEM taught by Prof. Adrian J. Lew (<a href="https://explorecourses.stanford.edu/search?q=ME335A&amp;view=catalog&amp;filter-coursestatus-Active=on&amp;academicYear=20242025" target="_blank" rel="noopener">ExploreCourses ↗</a>). Covers linear elliptic BVPs in 1D, 2D, and 3D for solids, heat transfer, and fluids.</p>
+            <p class="bento-card-body">Graduate primal FEM by Prof. Adrian J. Lew (<a href="https://explorecourses.stanford.edu/search?q=ME335A&amp;view=catalog&amp;filter-coursestatus-Active=on&amp;academicYear=20242025" target="_blank" rel="noopener">ExploreCourses ↗</a>) for linear elliptic BVPs in 1D, 2D, and 3D.</p>
           </article>
           <article class="bento-card">
             <div class="bento-card-kicker">Three Parts</div>
             <h3 class="bento-card-title">Theory to Code</h3>
-            <p class="bento-card-body">Part I: weighted residuals, weak forms, 1D <code>LG</code> assembly, and Hermite beams. Part II: 2D/3D isoparametric elements, quadrature, elasticity, and constraints. Part III: Sobolev norms, Céa's lemma, and convergence.</p>
+            <p class="bento-card-body">Part I: weak forms, 1D <code>LG</code>, Hermite beams. Part II: 2D/3D maps, elasticity, constraints. Part III: Sobolev norms and convergence.</p>
           </article>
           <article class="bento-card">
             <div class="bento-card-kicker">Methods &amp; Texts</div>
             <h3 class="bento-card-title">MATLAB &amp; UFL</h3>
-            <p class="bento-card-body">Hands-on MATLAB assembly (<code>LG</code>/<code>IEN</code>/<code>ID</code>) pairs with Firedrake and FEniCS. Core textbook: Hughes, <em>The Finite Element Method</em> (Dover, 2000/2003).</p>
+            <p class="bento-card-body">MATLAB assembly (<code>LG</code>/<code>IEN</code>/<code>ID</code>) pairs with Firedrake and FEniCS. Core text: Hughes, <em>The Finite Element Method</em> (Dover, 2000/2003).</p>
           </article>
           <article class="bento-card">
             <div class="bento-card-kicker">Personal Notes</div>
             <h3 class="bento-card-title">Sessions &amp; Reviews</h3>
-            <p class="bento-card-body">Linked directly to Hanfeng Zhai's ME 335A <a href="https://hanfengzhai.com/file/teaching/notes/FEA_notes.pdf" target="_blank" rel="noopener">lecture notes ↗</a>, Winter 2025 <a href="https://hanfengzhai.com/file/teaching/notes/ProbSess_FEA.pdf" target="_blank" rel="noopener">Problem Sessions 1-9 ↗</a>, and <a href="https://hanfengzhai.com/file/teaching/fea/FEARev.pdf" target="_blank" rel="noopener">short FEA review ↗</a>.</p>
+            <p class="bento-card-body">Linked to Hanfeng Zhai's <a href="https://hanfengzhai.com/file/teaching/notes/FEA_notes.pdf" target="_blank" rel="noopener">lecture notes ↗</a>, Winter 2025 <a href="https://hanfengzhai.com/file/teaching/notes/ProbSess_FEA.pdf" target="_blank" rel="noopener">PS 1–9 ↗</a>, and <a href="https://hanfengzhai.com/file/teaching/fea/FEARev.pdf" target="_blank" rel="noopener">short FEA review ↗</a>.</p>
           </article>
         `,
         symbols: [
@@ -95,21 +95,24 @@
         lead: 'Every primal finite element solver follows one pipeline from differential equation to verified discrete solution.',
         overviewHint: 'Variational → Elements → Theory',
         contentHtml: R`
-          <div class="callout-card">
-            <p><strong>Core ladder:</strong> strong BVP $\to$ weak form $a(u,v) = \ell(v)$ $\to$ Galerkin assembly $\mathbf{K}\mathbf{U} = \mathbf{F}$ $\to$ error bound via Céa's lemma and $\mathcal{O}(h^p)$ convergence.</p>
+          <div class="airy-banner-card">
+            <span class="eq-card-label">Core Ladder</span>
+            <div class="airy-eq-tokens">
+              <span class="eq-token">Strong BVP $\to$ Weak $a(u,v)=\ell(v)$ $\to$ Galerkin $\mathbf{K}\mathbf{U}=\mathbf{F}$ $\to$ Céa &amp; $\mathcal{O}(h^p)$</span>
+            </div>
           </div>
           <div class="mini-stat-grid">
             <div class="mini-stat part-part-1">
               <strong class="mini-stat-val">I. Variational &amp; 1D</strong>
-              <span class="mini-stat-label">Strong-to-weak form, $\mathcal{S}$ and $\mathcal{V}$, hat and Hermite bases $N_a$, and <code>LG</code> scatter assembly.</span>
+              <span class="mini-stat-label">Weighted residuals, $\mathcal{S}$/$\mathcal{V}$, hat &amp; Hermite $N_a$, and <code>LG</code> scatter assembly.</span>
             </div>
             <div class="mini-stat part-part-2">
               <strong class="mini-stat-val">II. 2D/3D &amp; Solvers</strong>
-              <span class="mini-stat-label">Isoparametric maps, Gauss quadrature, $P_1$ heat fin, elasticity $\mathbf{B}^\top\mathbb{C}\mathbf{B}$, constraints, and UFL.</span>
+              <span class="mini-stat-label">Isoparametric maps, Gauss rules, $P_1$ heat fin, $\mathbf{B}^\top\mathbf{D}\mathbf{B}$, constraints, and UFL.</span>
             </div>
             <div class="mini-stat part-part-3">
               <strong class="mini-stat-val">III. Math Theory</strong>
-              <span class="mini-stat-label">Sobolev norms $L^2$ and $H^1$, coercivity $\alpha$, Céa's lemma, Aubin-Nitsche duality, and singularities.</span>
+              <span class="mini-stat-label">Sobolev $L^2$/$H^1$ norms, coercivity $\alpha$, Céa's lemma, Aubin-Nitsche duality, and corners.</span>
             </div>
           </div>
         `,
@@ -204,17 +207,23 @@
         contentHtml: R`
           <div class="eq-card">
             <div class="eq-card-label">1D &amp; Multi-D Strong Form</div>
-            <div>$$-(k u')' + b u' + c u = f \quad \text{in } \Omega, \qquad -\Delta u = f \text{ in } \Omega$$</div>
+            <div>$$\begin{aligned} -(k u')' + b u' + c u &= f \quad \text{in } \Omega \\ -\Delta u &= f \quad \text{in } \Omega \end{aligned}$$</div>
           </div>
           <div class="eq-card is-accent">
             <div class="eq-card-label">Weighted Residual &amp; Weak Form</div>
-            <div>$$\begin{aligned} \int_\Omega R_\Omega v\,\mathrm{d}\Omega &= 0 \;\Longrightarrow\; a(u,v) = \ell(v) \quad \forall v \in \mathcal{V} \\ a(u,v) &= \int_\Omega \nabla u \cdot \nabla v\,\mathrm{d}\Omega, \qquad \ell(v) = \int_\Omega f v\,\mathrm{d}\Omega + \int_{\Gamma_N} t_N v\,\mathrm{d}s \end{aligned}$$</div>
+            <div>$$\begin{aligned} \int_\Omega R_\Omega v\,\mathrm{d}\Omega &= 0 \;\Longrightarrow\; a(u,v) = \ell(v) \quad \forall v \in \mathcal{V} \\ a(u,v) &= \int_\Omega \nabla u \cdot \nabla v\,\mathrm{d}\Omega \\ \ell(v) &= \int_\Omega f v\,\mathrm{d}\Omega + \int_{\Gamma_N} t_N v\,\mathrm{d}s \end{aligned}$$</div>
           </div>
           <ul class="point-list">
             <li><strong>Domain residual:</strong> an approximate trial $\hat{u}$ leaves $R_\Omega = \mathcal{L}\hat{u} - f \neq 0$; weighted residuals force projections against test functions $v$ to vanish.</li>
-            <li><strong>Integration by parts:</strong> shifts one derivative from $u$ onto $v$, relaxing regularity from $C^2$ to $H^1$ and incorporating Neumann flux $t_N$ naturally.</li>
-            <li><strong>Higher-order BVP (PS1 Ex. 1.10):</strong> for $u'''=f$ with $u(a)=1, u'(b)=2, u''(a)=3$, one integration by parts yields $-\int_a^b u'' v'\,\mathrm{d}x = \int_a^b f v\,\mathrm{d}x + 3v(a)$ with $v(b)=0$.</li>
+            <li><strong>Integration by parts:</strong> shifts one derivative onto $v$, relaxing regularity from $C^2$ to $H^1$ and folding Neumann flux $t_N$ naturally into $\ell(v)$.</li>
           </ul>
+          <details class="math-drawer">
+            <summary>PS1 Ex. 1.10 · Higher-Order 3rd-Order BVP</summary>
+            <div class="math-drawer-body">
+              <p>For $u'''=f$ with $u(a)=1$, $u'(b)=2$, and $u''(a)=3$, one integration by parts gives:</p>
+              <div>$$-\int_a^b u'' v'\,\mathrm{d}x = \int_a^b f v\,\mathrm{d}x + 3v(a), \qquad v(b)=0$$</div>
+            </div>
+          </details>
         `,
         symbols: [
           { sym: R`$R_\Omega$`, short: 'Strong residual', desc: R`Pointwise PDE residual $R_\Omega = \mathcal{L}\hat{u} - f$ left by an approximate trial function $\hat{u}$.` },
@@ -235,19 +244,39 @@
         plainTitle: 'Function spaces and calculus of variations',
         lectureBadges: ['PS2 · Vector Spaces, Euler-Lagrange, Ex. 2.20'],
         contentHtml: R`
-          <div class="eq-card">
-            <div class="eq-card-label">Affine Trial Space &amp; Linear Test Space</div>
-            <div>$$\mathcal{S} = \{u \in H^1(\Omega) \mid u|_{\Gamma_D} = u_D\}, \qquad \mathcal{V} = \{v \in H^1(\Omega) \mid v|_{\Gamma_D} = 0\}$$</div>
+          <div class="content-tabs">
+            <div class="content-tab-bar" role="tablist">
+              <button type="button" class="content-tab-btn is-active" data-content-tab="spaces" role="tab" aria-selected="true">Spaces &amp; Variations</button>
+              <button type="button" class="content-tab-btn" data-content-tab="nitsche" role="tab" aria-selected="false">PS2 Ex. 2.20 · Nitsche</button>
+            </div>
+            <div class="content-tab-panel is-active" data-content-panel="spaces">
+              <div class="eq-card">
+                <div class="eq-card-label">Affine Trial Space &amp; Linear Test Space</div>
+                <div>$$\begin{aligned} \mathcal{S} &= \bar{u} + \mathcal{V} = \{u \in H^1(\Omega) \mid u|_{\Gamma_D} = u_D\} \\ \mathcal{V} &= \{v \in H^1(\Omega) \mid v|_{\Gamma_D} = 0\} \end{aligned}$$</div>
+              </div>
+              <div class="eq-card is-accent">
+                <div class="eq-card-label">First Variation &amp; Euler-Lagrange Equation</div>
+                <div>$$\delta P = \int_0^1 v\!\left(\frac{\partial F}{\partial u} - \frac{\mathrm{d}}{\mathrm{d}x}\frac{\partial F}{\partial u'}\right)\mathrm{d}x = 0$$</div>
+              </div>
+              <ul class="point-list">
+                <li><strong>Affine vs. vector space:</strong> non-zero $u_D$ makes $\mathcal{S} = \bar{u} + \mathcal{V}$ an affine translate (no zero vector), while $\mathcal{V}$ satisfies all 10 vector space axioms.</li>
+                <li><strong>Test, basis, and shape functions:</strong> test $v$ probes PDE error, basis functions span $\mathcal{V}_h$, and shape functions $N_a$ interpolate nodal DOFs (coinciding in Galerkin FEM).</li>
+              </ul>
+            </div>
+            <div class="content-tab-panel" data-content-panel="nitsche">
+              <div class="eq-card">
+                <div class="eq-card-label">Nitsche Symmetric Weak Dirichlet (PS2 Ex. 2.20)</div>
+                <div>$$\begin{aligned} \int_0^L u'v'\,\mathrm{d}x &+ u'(0)v(0) + u(0)v'(0) + \mu u(0)v(0) \\ &= \int_0^L f v\,\mathrm{d}x + d_L v(L) + g_0 v'(0) + \mu g_0 v(0) \end{aligned}$$</div>
+              </div>
+              <div class="eq-card is-accent">
+                <div class="eq-card-label">Weak-to-Strong Reversal Proof</div>
+                <div>$$\begin{aligned} -\int_0^L (u''+f)v\,\mathrm{d}x &+ \bigl(u'(L)-d_L\bigr)v(L) \\ &+ \bigl(u(0)-g_0\bigr)\bigl(v'(0)+\mu v(0)\bigr) = 0 \end{aligned}$$</div>
+              </div>
+              <ul class="point-list">
+                <li><strong>Consistent recovery:</strong> integrating $\int_0^L u'v'\,\mathrm{d}x$ by parts cancels $+u'(0)v(0)$ and recovers $u''+f=0$, $u'(L)=d_L$, and $u(0)=g_0$ for unconstrained $v$.</li>
+              </ul>
+            </div>
           </div>
-          <div class="eq-card is-accent">
-            <div class="eq-card-label">First Variation &amp; Nitsche Weak Dirichlet (Ex. 2.20)</div>
-            <div>$$\begin{aligned} \delta P &= \int_0^1 v\!\left(\frac{\partial F}{\partial u} - \frac{\mathrm{d}}{\mathrm{d}x}\frac{\partial F}{\partial u'}\right)\mathrm{d}x = 0 \\ \int_0^L u'v'\,\mathrm{d}x &+ u'(0)v(0) + u(0)v'(0) + \mu u(0)v(0) = \ell_{\mathrm{N}}(v) \end{aligned}$$</div>
-          </div>
-          <ul class="point-list">
-            <li><strong>Affine vs. vector space:</strong> non-zero Dirichlet data makes $\mathcal{S} = \bar{u} + \mathcal{V}$ an affine translate (no zero vector), while $\mathcal{V}$ satisfies all 10 vector space axioms.</li>
-            <li><strong>Test, basis, and shape functions:</strong> test functions $v$ probe PDE error, basis functions span $\mathcal{V}_h$, and shape functions $N_a$ interpolate nodal DOFs (in Galerkin FEM they coincide).</li>
-            <li><strong>Weak-to-strong reversal (Ex. 2.20):</strong> integrating by parts cancels $u'(0)v(0)$ and recovers $u''+f=0$, $u'(L)=d_L$, and $u(0)=g_0$ consistently for unconstrained $v$.</li>
-          </ul>
         `,
         symbols: [
           { sym: R`$\mathcal{S}, \bar{u}$`, short: 'Affine space & lift', desc: R`Affine trial set $\mathcal{S} = \bar{u} + \mathcal{V}$ shifted from linear subspace $\mathcal{V}$ by a lifting function $\bar{u}$.` },
@@ -269,18 +298,25 @@
         lectureBadges: ['PS3 · Hat Basis & Non-Symmetric Stiffness'],
         contentHtml: R`
           <div class="eq-card">
-            <div class="eq-card-label">1D Advection-Diffusion BVP &amp; Exact Layer</div>
-            <div>$$-D u'' + \mu u' = f, \qquad u(x) = \frac{1}{\mu}\!\left(x - \frac{1 - e^{(\mu/D)x}}{1 - e^{\mu/D}}\right)$$</div>
+            <div class="eq-card-label">1D Advection-Diffusion BVP &amp; Element Péclet</div>
+            <div>$$-D u'' + \mu u' = f, \qquad \mathrm{Pe}_h = \frac{\mu \Delta x}{2D}$$</div>
           </div>
           <div class="eq-card is-accent">
-            <div class="eq-card-label">Non-Symmetric Galerkin System ($N = 3$)</div>
-            <div>$$\begin{aligned} K_{ab} &= a(N_b, N_a) = D\!\int_0^1 N_b' N_a'\,\mathrm{d}x + \mu\!\int_0^1 N_b' N_a\,\mathrm{d}x \neq K_{ba} \\ \mathbf{K} &= \begin{bmatrix} 2D/\Delta x & \mu/2 - D/\Delta x \\ -\mu/2 - D/\Delta x & 2D/\Delta x \end{bmatrix}, \qquad \mathrm{Pe}_h = \frac{\mu \Delta x}{2D} \end{aligned}$$</div>
+            <div class="eq-card-label">Trial-First Non-Symmetric Stiffness</div>
+            <div>$$\begin{aligned} K_{ab} &= a(N_b, N_a) \neq K_{ba} \\ &= D\!\int_0^1 N_b' N_a'\,\mathrm{d}x + \mu\!\int_0^1 N_b' N_a\,\mathrm{d}x \end{aligned}$$</div>
           </div>
           <ul class="point-list">
-            <li><strong>Piecewise linear hat basis:</strong> each $N_a(x)$ equals $1$ at node $x_a$, $0$ at all other nodes, and vanishes outside $[x_{a-1}, x_{a+1}]$, producing a tridiagonal sparse matrix.</li>
-            <li><strong>Trial-first indexing:</strong> $K_{ab} = a(N_b, N_a)$ places trial $N_b$ first and test $N_a$ second; advection breaks symmetry while $\det(\mathbf{K}) = 3D^2/\Delta x^2 + \mu^2/4 \gt 0$ preserves invertibility.</li>
-            <li><strong>Element Péclet threshold:</strong> when $\mathrm{Pe}_h = \mu\Delta x/(2D) \gt 1$, off-diagonal entry $K_{12}$ flips sign and standard Galerkin develops node-to-node oscillations (cured by refinement or SUPG).</li>
+            <li><strong>Piecewise-linear hat basis:</strong> $N_a(x_b)=\delta_{ab}$ with local support $[x_{a-1}, x_{a+1}]$, producing a sparse tridiagonal stiffness matrix.</li>
+            <li><strong>Trial-first indexing:</strong> advection breaks symmetry, yet $\det(\mathbf{K}) = 3D^2/\Delta x^2 + \mu^2/4 \gt 0$ preserves invertibility.</li>
+            <li><strong>Péclet limit ($\mathrm{Pe}_h \gt 1$):</strong> off-diagonal $K_{12}$ flips sign and triggers node-to-node oscillations (cured by mesh refinement or SUPG).</li>
           </ul>
+          <details class="math-drawer">
+            <summary>PS3 Exact Layer &amp; N = 3 Matrix K</summary>
+            <div class="math-drawer-body">
+              <div>$$u(x) = \frac{1}{\mu}\!\left(x - \frac{1 - e^{(\mu/D)x}}{1 - e^{\mu/D}}\right)$$</div>
+              <div>$$\mathbf{K} = \begin{bmatrix} 2D/\Delta x & \mu/2 - D/\Delta x \\ -\mu/2 - D/\Delta x & 2D/\Delta x \end{bmatrix}$$</div>
+            </div>
+          </details>
         `,
         symbols: [
           { sym: R`$N_a(x)$`, short: 'Hat shape function', desc: R`Global piecewise-linear $C^0$ basis function satisfying $N_a(x_b) = \delta_{ab}$ with local support $[x_{a-1}, x_{a+1}]$.` },
@@ -303,16 +339,16 @@
         contentHtml: R`
           <div class="eq-card">
             <div class="eq-card-label">Global Basis Stitching &amp; Scatter Assembly</div>
-            <div>$$N_A = \sum_{\{(a,e)\,\mid\, \mathrm{LG}(a,e) = A\}} N_a^e, \qquad K_{\mathrm{LG}(a,e),\,\mathrm{LG}(b,e)} \mathrel{+}= K_{ab}^e$$</div>
+            <div>$$\begin{aligned} N_A &= \sum_{\{(a,e)\,\mid\, \mathrm{LG}(a,e) = A\}} N_a^e \\ K_{\mathrm{LG}(a,e),\,\mathrm{LG}(b,e)} &\mathrel{+}= K_{ab}^e \end{aligned}$$</div>
           </div>
           <div class="eq-card is-accent">
             <div class="eq-card-label">Matrix Scatter &amp; Dirichlet Lifting</div>
-            <div>$$\mathbf{K} = \sum_{e=1}^{n_{\mathrm{el}}} \mathbf{L}_e^\top \mathbf{k}^e \mathbf{L}_e, \qquad a(v_h, T_h) = \ell(v_h) - a(v_h, T_h^g)$$</div>
+            <div>$$\begin{aligned} \mathbf{K} &= \sum_{e=1}^{n_{\mathrm{el}}} \mathbf{L}_e^\top \mathbf{k}^e \mathbf{L}_e \\ a(v_h, T_h) &= \ell(v_h) - a(v_h, T_h^g) \end{aligned}$$</div>
           </div>
           <ul class="point-list">
-            <li><strong>Connectivity table <code>LG(a, e)</code>:</strong> row $a$ indexes local element shape functions, column $e$ indexes elements, and entry $\mathrm{LG}(a,e)$ gives the global DOF number.</li>
-            <li><strong>Overlapping broken sum:</strong> local $2\times 2$ ($P_1$) or $3\times 3$ ($P_2$, Ex. 3.11) element matrices $\mathbf{k}^e$ scatter into overlapping blocks along the diagonal of sparse $\mathbf{K}$.</li>
-            <li><strong>Dirichlet lift $T_h^g$:</strong> splitting $T_h^{\mathrm{total}} = T_h + T_h^g$ moves known boundary contributions $-a(v_h, T_h^g)$ to the right-hand side on non-uniform meshes (PS4: $\{-1, -0.5, 0.5, 1\}$).</li>
+            <li><strong>Connectivity <code>LG(a, e)</code>:</strong> row $a$ indexes local shape functions, column $e$ indexes elements, and entry $\mathrm{LG}(a,e)$ gives the global DOF number.</li>
+            <li><strong>Overlapping sum:</strong> local $2\times 2$ ($P_1$) or $3\times 3$ ($P_2$, Ex. 3.11) blocks $\mathbf{k}^e$ scatter into overlapping diagonal entries of sparse $\mathbf{K}$.</li>
+            <li><strong>Dirichlet lift $T_h^g$:</strong> splitting $T_h^{\mathrm{total}} = T_h + T_h^g$ moves known boundary data to the RHS on non-uniform meshes (PS4: $\{-1,-0.5,0.5,1\}$).</li>
           </ul>
         `,
         symbols: [
@@ -333,19 +369,37 @@
         plainTitle: 'C1 Hermite elements and beams',
         lectureBadges: ['PS5 · Eqns. 4.29, Ex. 4.8 & Euler-Bernoulli'],
         contentHtml: R`
-          <div class="eq-card">
-            <div class="eq-card-label">4th-Order Euler-Bernoulli Beam Weak Form</div>
-            <div>$$(EI u_{,xx})_{,xx} = f \;\Longrightarrow\; \int_0^1 u_h''\, EI\, v_h''\,\mathrm{d}x = \int_0^1 f v_h\,\mathrm{d}x$$</div>
+          <div class="content-tabs">
+            <div class="content-tab-bar" role="tablist">
+              <button type="button" class="content-tab-btn is-active" data-content-tab="beam" role="tab" aria-selected="true">C¹ Beam &amp; Basis</button>
+              <button type="button" class="content-tab-btn" data-content-tab="matrices" role="tab" aria-selected="false">4×4 kᵉ &amp; fᵉ Matrices</button>
+            </div>
+            <div class="content-tab-panel is-active" data-content-panel="beam">
+              <div class="eq-card">
+                <div class="eq-card-label">4th-Order Euler-Bernoulli Beam Weak Form</div>
+                <div>$$\begin{aligned} (EI u_{,xx})_{,xx} &= f \quad \text{on } (0,1) \\ \int_0^1 u_h''\, EI\, v_h''\,\mathrm{d}x &= \int_0^1 f v_h\,\mathrm{d}x \end{aligned}$$</div>
+              </div>
+              <div class="eq-card is-accent">
+                <div class="eq-card-label">Cubic Hermite Basis ($\xi \in [0, 1]$)</div>
+                <div>$$N_1^e = (1-\xi)^2(1+2\xi), \qquad N_2^e = l_e\xi(\xi-1)^2$$</div>
+              </div>
+              <ul class="point-list">
+                <li><strong>$C^1$ continuity ($H^2$):</strong> second derivatives $u''v''$ in $a(u,v)$ require continuous deflection $u$ and slope $u'$ across every node.</li>
+                <li><strong>Two DOFs per node:</strong> each node stores $(u_A, \theta_A = u'_A)$; $N_1^e,\dots,N_4^e$ satisfy Kronecker delta on values and slopes simultaneously.</li>
+                <li><strong>Clamped 4-element beam (PS5):</strong> 10 DOFs minus clamped $\{1,2,9,10\}$ reduce to a $6\times 6$ SPD system recovering exact $u(x) = \frac{f}{24EI}x^2(1-x)^2$.</li>
+              </ul>
+            </div>
+            <div class="content-tab-panel" data-content-panel="matrices">
+              <div class="eq-card">
+                <div class="eq-card-label">Element Stiffness Matrix $\mathbf{k}^e$</div>
+                <div>$$\mathbf{k}^e = \frac{EI}{l_e^3}\begin{bmatrix} 12 & 6l_e & -12 & 6l_e \\ 6l_e & 4l_e^2 & -6l_e & 2l_e^2 \\ -12 & -6l_e & 12 & -6l_e \\ 6l_e & 2l_e^2 & -6l_e & 4l_e^2 \end{bmatrix}$$</div>
+              </div>
+              <div class="eq-card is-accent">
+                <div class="eq-card-label">Consistent Load $\mathbf{f}^e$ &amp; Right-Node Basis</div>
+                <div>$$\mathbf{f}^e = f\begin{bmatrix} l_e/2 \\ l_e^2/12 \\ l_e/2 \\ -l_e^2/12 \end{bmatrix}, \qquad \begin{aligned} N_3^e &= \xi^2(3-2\xi) \\ N_4^e &= l_e\xi^2(\xi-1) \end{aligned}$$</div>
+              </div>
+            </div>
           </div>
-          <div class="eq-card is-accent">
-            <div class="eq-card-label">Cubic Hermite Basis ($\xi \in [0,1]$) &amp; Element Stiffness</div>
-            <div>$$\begin{aligned} N_1^e &= (1-\xi)^2(1+2\xi), \qquad N_2^e = l_e\xi(\xi-1)^2 \\ \mathbf{k}^e &= \frac{EI}{l_e^3}\begin{bmatrix} 12 & 6l_e & -12 & 6l_e \\ 6l_e & 4l_e^2 & -6l_e & 2l_e^2 \\ -12 & -6l_e & 12 & -6l_e \\ 6l_e & 2l_e^2 & -6l_e & 4l_e^2 \end{bmatrix}, \quad \mathbf{f}^e = f\begin{bmatrix} l_e/2 \\ l_e^2/12 \\ l_e/2 \\ -l_e^2/12 \end{bmatrix} \end{aligned}$$</div>
-          </div>
-          <ul class="point-list">
-            <li><strong>$C^1$ continuity requirement:</strong> fourth-order bending places second derivatives $u''v''$ in $a(u,v)$, requiring continuous displacement $u$ and slope $u'$ across every node ($u_h \in H^2$).</li>
-            <li><strong>Two DOFs per node:</strong> each node stores $(u_A, \theta_A = u'_A)$; cubic Hermite functions $N_1^e,\dots,N_4^e$ satisfy Kronecker delta on values and slopes simultaneously.</li>
-            <li><strong>Clamped 4-element beam (PS5):</strong> 10 total DOFs reduce by eliminating $\{1,2,9,10\}$ at $x=0,1$ to an SPD $6\times 6$ system recovering the exact quartic deflection $u(x) = \frac{f}{24EI}x^2(1-x)^2$.</li>
-          </ul>
         `,
         symbols: [
           { sym: R`$EI$`, short: 'Flexural rigidity', desc: R`Product of Young's modulus $E$ and cross-sectional moment of inertia $I$ resisting bending.` },
@@ -366,7 +420,7 @@
         lectureBadges: ['PS1-PS2 · FEA Notes · Dirichlet Enforcement'],
         contentHtml: R`
           <div class="airy-banner-card">
-            <span class="eq-card-label">Boundary Partition on $\partial\Omega = \Gamma_D \cup \Gamma_N$ (Hughes / PS6-9: $\Gamma_g \cup \Gamma_h$)</span>
+            <span class="eq-card-label">Boundary Partition $\partial\Omega = \Gamma_D \cup \Gamma_N$ ($\Gamma_g \cup \Gamma_h$)</span>
             <div class="airy-eq-tokens">
               <span class="eq-token">$\Gamma_D \cap \Gamma_N = \emptyset,$</span>
               <span class="eq-token">$u = u_D \text{ on } \Gamma_D,$</span>
@@ -377,12 +431,12 @@
             <article class="compare-card is-stress">
               <div class="eq-card-label">Dirichlet on $\Gamma_D$ ($\Gamma_g$)</div>
               <h3>Essential Boundary Conditions</h3>
-              <p>Constrains the primary field $u$ (and slope $u'$ for $H^2$ beams). Built directly into $\mathcal{S}$ via lifting/elimination, or enforced weakly with penalty $\beta$, Nitsche $\mu$, or Lagrange multipliers.</p>
+              <p>Prescribes $u$ (and $u'$ for $H^2$ beams). Built into $\mathcal{S}$ via lift/elimination, or weakly via penalty $\beta$, Nitsche $\mu$, or Lagrange multipliers.</p>
             </article>
             <article class="compare-card is-strain">
               <div class="eq-card-label">Neumann &amp; Robin on $\Gamma_N$ ($\Gamma_h$)</div>
               <h3>Natural Boundary Conditions</h3>
-              <p>Constrains boundary flux $k\partial_n u = t_N$ (or Robin $k\partial_n u + \gamma u = \alpha$). Emerges automatically from integration by parts into $\ell(v)$ (and adds $\int_{\Gamma_R}\gamma uv\,\mathrm{d}s$ to $a(u,v)$ for Robin).</p>
+              <p>Prescribes flux $k\partial_n u = t_N$ (or Robin $k\partial_n u + \gamma u = \alpha$). Enters $\ell(v)$ via IBP, with Robin adding $\int_{\Gamma_R}\gamma uv\,\mathrm{d}s$ to $a(u,v)$.</p>
             </article>
           </div>
         `,
@@ -402,9 +456,18 @@
         labId: 'isoparametric-gallery',
         title: 'Standard elements and isoparametric maps',
         plainTitle: 'Standard elements and isoparametric maps',
-        lead: R`One reference element $\hat{\Omega}$ maps to every physical cell $\Omega_e$ using the same shape functions for geometry and field: $\mathbf{x}(\boldsymbol{\xi}) = \sum_a \mathbf{X}_a N_a(\boldsymbol{\xi})$, $\nabla_{\mathbf{x}} N_a = \mathbf{J}^{-\top}\nabla_{\boldsymbol{\xi}} N_a$, $\mathrm{d}\Omega = |\det\mathbf{J}|\,\mathrm{d}\boldsymbol{\xi}$.`,
+        lead: R`One reference element $\hat{\Omega}$ maps to every physical cell $\Omega_e$ using the same shape functions for geometry and field.`,
         lectureBadges: ['Hughes Ch. 3 · Standard Elements · P1/P2/Q4'],
-        contentHtml: '',
+        contentHtml: R`
+          <div class="airy-banner-card">
+            <span class="eq-card-label">Isoparametric Map</span>
+            <div class="airy-eq-tokens">
+              <span class="eq-token">$\mathbf{x}(\boldsymbol{\xi}) = \sum_a \mathbf{X}_a N_a(\boldsymbol{\xi}),$</span>
+              <span class="eq-token">$\nabla_{\mathbf{x}} N_a = \mathbf{J}^{-\top}\nabla_{\boldsymbol{\xi}} N_a,$</span>
+              <span class="eq-token">$\mathrm{d}\Omega = |\det\mathbf{J}|\,\mathrm{d}\boldsymbol{\xi}$</span>
+            </div>
+          </div>
+        `,
         symbols: [
           { sym: R`$\hat{\Omega}, \boldsymbol{\xi}$`, short: 'Reference element', desc: R`Parent reference cell ($\xi,\eta \in [-1,1]$ or unit triangle) where standard shape functions $N_a(\boldsymbol{\xi})$ are defined.` },
           { sym: R`$\mathbf{J}$`, short: 'Jacobian matrix', desc: R`Geometric mapping Jacobian $J_{ij} = \partial x_i / \partial \xi_j$ transforming parent gradients and area elements.` },
@@ -425,16 +488,16 @@
         contentHtml: R`
           <div class="eq-card">
             <div class="eq-card-label">1D &amp; Tensor-Product Quadrature Rule</div>
-            <div>$$\int_{-1}^{1} g(\xi)\,\mathrm{d}\xi \approx \sum_{q=1}^{Q} w_q\, g(\xi_q), \qquad \text{exact for } \deg(g) \le 2Q - 1$$</div>
+            <div>$$\int_{-1}^{1} g(\xi)\,\mathrm{d}\xi \approx \sum_{q=1}^{Q} w_q\, g(\xi_q), \quad \text{exact for } \deg(g) \le 2Q - 1$$</div>
           </div>
           <div class="eq-card is-accent">
             <div class="eq-card-label">Isoparametric Element Stiffness Assembly</div>
-            <div>$$k_{ab}^e \approx \sum_{q=1}^{Q_{\mathrm{tot}}} w_q\, \bigl(\nabla_{\mathbf{x}} N_b(\boldsymbol{\xi}_q)\cdot k\nabla_{\mathbf{x}} N_a(\boldsymbol{\xi}_q)\bigr)\,\bigl|\det \mathbf{J}(\boldsymbol{\xi}_q)\bigr|$$</div>
+            <div>$$k_{ab}^e \approx \sum_{q=1}^{Q_{\mathrm{tot}}} w_q \bigl(\nabla_{\mathbf{x}} N_b \cdot k\nabla_{\mathbf{x}} N_a\bigr)\Big|_{\boldsymbol{\xi}_q} |\det \mathbf{J}(\boldsymbol{\xi}_q)|$$</div>
           </div>
           <ul class="point-list">
-            <li><strong>Optimal polynomial exactness:</strong> $Q$ Gauss-Legendre points integrate degree $2Q-1$ polynomials exactly using $2Q$ free parameters (nodes $\xi_q$ and weights $w_q$).</li>
-            <li><strong>Standard rules:</strong> $P_1$ triangles have constant gradients (1-point centroid rule is exact); $Q_4$ bilinear quads need $2\times 2$ Gauss points for full stiffness rank.</li>
-            <li><strong>Under-integration and hourglassing:</strong> 1-point reduced integration on $Q_4$ leaves two spurious zero-energy hourglass modes with $\nabla u_h(0,0) = \mathbf{0}$, creating checkerboard instability unless stabilized.</li>
+            <li><strong>Optimal exactness:</strong> $Q$ Gauss-Legendre points integrate degree $2Q-1$ polynomials exactly using $2Q$ free parameters ($\xi_q, w_q$).</li>
+            <li><strong>Standard rules:</strong> $P_1$ triangles have constant gradients (1-point centroid is exact); $Q_4$ quads need $2\times 2$ points for full rank.</li>
+            <li><strong>Hourglassing:</strong> 1-point reduced integration on $Q_4$ leaves two zero-energy modes with $\nabla u_h(0,0)=\mathbf{0}$, causing checkerboard instability without stabilization.</li>
           </ul>
         `,
         symbols: [
@@ -456,17 +519,23 @@
         contentHtml: R`
           <div class="eq-card">
             <div class="eq-card-label">2D Advection-Diffusion Weak Form (Einstein Notation)</div>
-            <div>$$k T_{,ii} + v_i T_{,i} = f \;\Longrightarrow\; a(T,w) = \int_\Omega \bigl(k T_{,i} w_{,i} - v_i T_{,i} w\bigr)\,\mathrm{d}\Omega$$</div>
+            <div>$$\begin{aligned} k T_{,ii} + v_i T_{,i} &= f \quad \text{in } \Omega \\ a(T,w) &= \int_\Omega \bigl(k T_{,i} w_{,i} - v_i T_{,i} w\bigr)\,\mathrm{d}\Omega \end{aligned}$$</div>
           </div>
           <div class="eq-card is-accent">
-            <div class="eq-card-label">PS6 6-Node 4-Triangle Connectivity &amp; Lift</div>
-            <div>$$\begin{aligned} \mathrm{LG} &= \begin{bmatrix} 1 & 2 & 4 & 4 \\ 3 & 3 & 3 & 5 \\ 2 & 4 & 5 & 6 \end{bmatrix}, \quad \mathrm{LG}^e = \begin{bmatrix} 0 & 0 & 2 & 2 \\ 1 & 1 & 1 & 0 \\ 0 & 2 & 0 & 0 \end{bmatrix} \\ \ell_a^e &= \ell(N_a^e) - \sum_b K_{ab}^e g_b^e \end{aligned}$$</div>
+            <div class="eq-card-label">Element Dirichlet Lift</div>
+            <div>$$\ell_a^e = \ell(N_a^e) - \sum_b K_{ab}^e g_b^e$$</div>
           </div>
           <ul class="point-list">
-            <li><strong>Counter-clockwise orientation (<code>LV</code>):</strong> numbering local vertices $(1,2,3)$ anti-clockwise guarantees positive signed triangle area $A \gt 0$ and valid $P_1$ linear gradients $\nabla N_a^e = \mathrm{const}$.</li>
-            <li><strong>Full <code>LG</code> vs. reduced <code>LG^e</code>:</strong> setting Dirichlet vertices $\{1,2,5,6\}$ to <code>0</code> maps free interior nodes $\{3,4\} \mapsto \{1,2\}$, shrinking global solve size directly during element assembly.</li>
-            <li><strong>Sparsity from mesh topology:</strong> entry $K_{AB}$ is non-zero only if nodes $A$ and $B$ share a triangle edge, enabling compact CSR storage for millions of DOFs.</li>
+            <li><strong>CCW orientation (<code>LV</code>):</strong> counter-clockwise local vertices $(1,2,3)$ guarantee positive signed area $A \gt 0$ and constant $P_1$ gradients $\nabla N_a^e$.</li>
+            <li><strong>Full <code>LG</code> vs. reduced <code>LG^e</code>:</strong> setting Dirichlet vertices $\{1,2,5,6\}$ to <code>0</code> maps free interior nodes $\{3,4\}\mapsto\{1,2\}$, shrinking global solves directly at assembly.</li>
+            <li><strong>Sparsity from mesh topology:</strong> $K_{AB}\neq 0$ only when nodes $A$ and $B$ share a triangle edge, enabling compact CSR storage for millions of DOFs.</li>
           </ul>
+          <details class="math-drawer">
+            <summary>PS6 Full 3×4 LG &amp; Reduced LG<sup>e</sup> Matrices</summary>
+            <div class="math-drawer-body">
+              <div>$$\mathrm{LG} = \begin{bmatrix} 1 & 2 & 4 & 4 \\ 3 & 3 & 3 & 5 \\ 2 & 4 & 5 & 6 \end{bmatrix}, \qquad \mathrm{LG}^e = \begin{bmatrix} 0 & 0 & 2 & 2 \\ 1 & 1 & 1 & 0 \\ 0 & 2 & 0 & 0 \end{bmatrix}$$</div>
+            </div>
+          </details>
         `,
         symbols: [
           { sym: R`$\mathrm{LV}$`, short: 'Local-to-vertex map', desc: R`Counter-clockwise vertex ordering per triangle ensuring positive signed area $A \gt 0$.` },
@@ -487,18 +556,24 @@
         lectureBadges: ['PS9 Final Review · 4-Triangle Fin · P1 & P2'],
         contentHtml: R`
           <div class="eq-card">
-            <div class="eq-card-label">Heterogeneous Conduction &amp; Closed-Form P1 Basis</div>
-            <div>$$\begin{aligned} -\nabla\cdot\bigl(k^e\nabla T\bigr) &= 0, \qquad k^e \in \{14, 27, 45, 27\} \\ N_1^e &= \frac{-(X_2^3 - X_2^2)(x_1 - X_1^2) + (X_1^3 - X_1^2)(x_2 - X_2^2)}{2A} \end{aligned}$$</div>
+            <div class="eq-card-label">Heterogeneous Conduction (PS9 4-Triangle Fin)</div>
+            <div>$$-\nabla\cdot\bigl(k^e\nabla T\bigr) = 0, \qquad k^e \in \{14, 27, 45, 27\}$$</div>
           </div>
           <div class="eq-card is-accent">
             <div class="eq-card-label">Assembled Row 5 &amp; Exact Free-Node Temperature</div>
             <div>$$\begin{aligned} 100(-3A) + 50(-72A - 3A) + 78A\,u_5 &= 0 \\ \Longrightarrow\; u_5 = \frac{675}{13} &\approx 51.923^\circ\mathrm{C} \end{aligned}$$</div>
           </div>
           <ul class="point-list">
-            <li><strong>4 congruent $P_1$ triangles:</strong> 6 nodes with $T=100^\circ\mathrm{C}$ on $\Gamma_{g_1}$ ($x_1=0$), $T=50^\circ\mathrm{C}$ on $\Gamma_{g_2}$, insulated bottom $\Gamma_h$ ($x_2=0$), leaving Node 5 at $(3,0)$ as the sole free DOF.</li>
-            <li><strong>Row-sum verification:</strong> partition of unity $\sum_b N_b \equiv 1$ implies $\sum_B K_{5B} = 0$ ($-3A - 72A + 78A - 3A = 0$), catching hand-assembly sign mistakes instantly.</li>
-            <li><strong>Post-processing and $P_2$ upgrade:</strong> evaluate $T_h(\bar{\mathbf{x}}^e)$ at centroids and constant heat flux $\mathbf{q}^e = -k^e\nabla T_h$; upgrading to quadratic $P_2$ adds 9 mid-edge nodes (15 total, 6 free DOFs).</li>
+            <li><strong>4 congruent $P_1$ triangles:</strong> 6 nodes with $T=100^\circ\mathrm{C}$ on $\Gamma_{g_1}$ ($x_1=0$), $T=50^\circ\mathrm{C}$ on $\Gamma_{g_2}$, insulated bottom $\Gamma_h$ ($x_2=0$), leaving Node 5 $(3,0)$ as the sole free DOF.</li>
+            <li><strong>Row-sum check:</strong> partition of unity $\sum_b N_b \equiv 1$ implies $\sum_B K_{5B} = 0$ ($-3A - 72A + 78A - 3A = 0$), catching sign mistakes instantly.</li>
+            <li><strong>Flux &amp; $P_2$ upgrade:</strong> evaluate centroid $T_h(\bar{\mathbf{x}}^e)$ and constant flux $\mathbf{q}^e = -k^e\nabla T_h$; $P_2$ adds 9 mid-edge nodes (15 total, 6 free DOFs).</li>
           </ul>
+          <details class="math-drawer">
+            <summary>Closed-Form P1 Basis N<sub>1</sub><sup>e</sup>(x<sub>1</sub>, x<sub>2</sub>)</summary>
+            <div class="math-drawer-body">
+              <div>$$N_1^e(x_1, x_2) = \frac{-(X_2^3 - X_2^2)(x_1 - X_1^2) + (X_1^3 - X_1^2)(x_2 - X_2^2)}{2A}$$</div>
+            </div>
+          </details>
         `,
         symbols: [
           { sym: R`$k^e$`, short: 'Element conductivity', desc: R`Piecewise-constant thermal conductivity on triangle $\Omega_e$ ($k^1=14, k^2=27, k^3=45, k^4=27$).` },
@@ -520,16 +595,16 @@
         contentHtml: R`
           <div class="eq-card">
             <div class="eq-card-label">Principle of Virtual Work (Vector Elasticity)</div>
-            <div>$$\int_\Omega \boldsymbol{\varepsilon}(\mathbf{u}) : \mathbb{C} : \boldsymbol{\varepsilon}(\mathbf{v})\,\mathrm{d}\Omega = \int_\Omega \mathbf{f}\cdot\mathbf{v}\,\mathrm{d}\Omega + \int_{\Gamma_N} \mathbf{t}\cdot\mathbf{v}\,\mathrm{d}S$$</div>
+            <div>$$\begin{aligned} \int_\Omega \boldsymbol{\varepsilon}(\mathbf{u}) : \mathbb{C} : \boldsymbol{\varepsilon}(\mathbf{v})\,\mathrm{d}\Omega &= \int_\Omega \mathbf{f}\cdot\mathbf{v}\,\mathrm{d}\Omega \\ &\quad + \int_{\Gamma_N} \mathbf{t}\cdot\mathbf{v}\,\mathrm{d}S \end{aligned}$$</div>
           </div>
           <div class="eq-card is-accent">
-            <div class="eq-card-label">Voigt Strain-Displacement Matrix &amp; Element Stiffness</div>
-            <div>$$\mathbf{k}^e = \int_{\Omega_e} \mathbf{B}^\top \mathbf{D} \mathbf{B}\,\mathrm{d}\Omega, \qquad \lambda = \frac{E\nu}{(1+\nu)(1-2\nu)} \xrightarrow{\nu\to 0.5} \infty$$</div>
+            <div class="eq-card-label">Voigt Strain Matrix &amp; Incompressible Limit</div>
+            <div>$$\begin{aligned} \mathbf{k}^e &= \int_{\Omega_e} \mathbf{B}^\top \mathbf{D} \mathbf{B}\,\mathrm{d}\Omega \\ \lambda &= \frac{E\nu}{(1+\nu)(1-2\nu)} \xrightarrow{\nu\to 0.5} \infty \end{aligned}$$</div>
           </div>
           <ul class="point-list">
-            <li><strong>Identical assembly pipeline:</strong> replacing scalar gradient $\nabla N_a$ with strain matrix $\mathbf{B}_a$ and conductivity $k$ with elasticity matrix $\mathbf{D}$ turns Poisson code into 2D/3D solid mechanics ($d$ DOFs per node).</li>
-            <li><strong>Volumetric locking ($\nu \to 0.5$):</strong> as $\lambda/\mu \to \infty$, full-integration $P_1$ and $Q_4$ elements impose too many incompressibility constraints ($\nabla\cdot\mathbf{u}_h = 0$), artificially freezing bending deformation.</li>
-            <li><strong>Remedies and patch test:</strong> Selective Reduced Integration (SRI / $\bar{B}$ split of deviatoric and volumetric terms) or inf-sup stable Taylor-Hood $P_2$-$P_1$ mixed elements eliminate locking while passing the patch test.</li>
+            <li><strong>Identical pipeline:</strong> replacing scalar $\nabla N_a$ with strain matrix $\mathbf{B}_a$ and $k$ with $\mathbf{D}$ converts Poisson code into 2D/3D elasticity ($d$ DOFs/node).</li>
+            <li><strong>Volumetric locking ($\nu\to 0.5$):</strong> as $\lambda/\mu\to\infty$, full $P_1$/$Q_4$ over-constrains $\nabla\cdot\mathbf{u}_h=0$, artificially freezing bending deformation.</li>
+            <li><strong>Remedies &amp; patch test:</strong> Selective Reduced Integration (SRI / $\bar{B}$ split) or inf-sup stable Taylor-Hood $P_2$-$P_1$ elements cure locking and pass the patch test.</li>
           </ul>
         `,
         symbols: [
@@ -550,19 +625,38 @@
         plainTitle: 'Constraints and modern FEM software',
         lectureBadges: ['ExploreCourses · Week 7 Firedrake & FEniCS Tutorials'],
         contentHtml: R`
-          <div class="eq-card">
-            <div class="eq-card-label">Penalty vs. Lagrange Multiplier Saddle-Point System</div>
-            <div>$$(\mathbf{K} + \beta\,\mathbf{C}^\top\mathbf{C})\mathbf{U} = \mathbf{F} + \beta\,\mathbf{C}^\top\mathbf{g}, \qquad \begin{bmatrix} \mathbf{K} & \mathbf{C}^\top \\ \mathbf{C} & \mathbf{0} \end{bmatrix}\begin{bmatrix}\mathbf{U}\\ \boldsymbol{\lambda}\end{bmatrix} = \begin{bmatrix}\mathbf{F}\\ \mathbf{g}\end{bmatrix}$$</div>
+          <div class="content-tabs">
+            <div class="content-tab-bar" role="tablist">
+              <button type="button" class="content-tab-btn is-active" data-content-tab="constraints" role="tab" aria-selected="true">Penalty vs. LM</button>
+              <button type="button" class="content-tab-btn" data-content-tab="ufl" role="tab" aria-selected="false">UFL &amp; Week 7 Benchmarks</button>
+            </div>
+            <div class="content-tab-panel is-active" data-content-panel="constraints">
+              <div class="eq-card">
+                <div class="eq-card-label">Penalty SPD System</div>
+                <div>$$(\mathbf{K} + \beta\,\mathbf{C}^\top\mathbf{C})\mathbf{U} = \mathbf{F} + \beta\,\mathbf{C}^\top\mathbf{g}$$</div>
+              </div>
+              <div class="eq-card is-accent">
+                <div class="eq-card-label">Lagrange Multiplier Saddle-Point System</div>
+                <div>$$\begin{bmatrix} \mathbf{K} & \mathbf{C}^\top \\ \mathbf{C} & \mathbf{0} \end{bmatrix}\begin{bmatrix}\mathbf{U}\\ \boldsymbol{\lambda}\end{bmatrix} = \begin{bmatrix}\mathbf{F}\\ \mathbf{g}\end{bmatrix}$$</div>
+              </div>
+              <ul class="point-list">
+                <li><strong>Penalty trade-off:</strong> preserves SPD matrix size while trading constraint error $\mathcal{O}(\beta^{-1})$ against conditioning $\kappa \sim \mathcal{O}(\beta)$.</li>
+                <li><strong>Exact multipliers:</strong> enforce $\mathbf{C}\mathbf{U}=\mathbf{g}$ exactly via an indefinite saddle-point block where $\boldsymbol{\lambda}$ equals reaction flux.</li>
+                <li><strong>MATLAB to UFL:</strong> low-level MATLAB teaches <code>LG</code>/<code>IEN</code>/<code>ID</code> explicitly; Firedrake and FEniCS compile symbolic UFL to C/PETSc kernels.</li>
+              </ul>
+            </div>
+            <div class="content-tab-panel" data-content-panel="ufl">
+              <div class="eq-card">
+                <div class="eq-card-label">High-Level UFL Variational Syntax</div>
+                <div>$$\begin{aligned} \texttt{a} &= \texttt{k * dot(grad(u), grad(v)) * dx} \\ \texttt{L} &= \texttt{f * v * dx} \end{aligned}$$</div>
+              </div>
+              <ul class="point-list">
+                <li><strong>Firedrake (Week 7, Colab):</strong> 2D Poisson on $[-1,1]^2$ with $k=1$, $f=1$, and $u|_{\partial\Omega}=0$ gives center peak $u_{\max} \approx 0.295$.</li>
+                <li><strong>FEniCS + Gmsh (Week 7):</strong> same domain with $k=2\times 10^{-4}$, $f=0.2$, and $u|_{\partial\Omega}=1000$ gives $u(0.25,0.25) = 1263.32$.</li>
+                <li><strong>Live probe:</strong> switch the lab to <em>Week 7 Poisson</em> and hover or click $[-1,1]^2$ to verify both benchmarks directly.</li>
+              </ul>
+            </div>
           </div>
-          <div class="eq-card is-accent">
-            <div class="eq-card-label">High-Level UFL Variational Syntax (Firedrake / FEniCS)</div>
-            <div>$$\texttt{a = k * dot(grad(u), grad(v)) * dx}, \qquad \texttt{L = f * v * dx}$$</div>
-          </div>
-          <ul class="point-list">
-            <li><strong>Penalty vs. Lagrange multipliers:</strong> penalty preserves SPD size while trading constraint accuracy $\mathcal{O}(\beta^{-1})$ against conditioning $\kappa \sim \mathcal{O}(\beta)$; multipliers enforce $\mathbf{C}\mathbf{U}=\mathbf{g}$ exactly via an indefinite saddle-point system.</li>
-            <li><strong>MATLAB to UFL:</strong> low-level MATLAB routines teach <code>LG</code>/<code>IEN</code>/<code>ID</code> assembly directly; Firedrake and FEniCS compile UFL weak forms directly to C/PETSc kernels.</li>
-            <li><strong>Week 7 benchmark on $[-1,1]^2$:</strong> Firedrake ($k=1, f=1, u|_{\partial\Omega}=0 \implies u_{\max}\approx 0.295$) and FEniCS + Gmsh ($k=2\times 10^{-4}, f=0.2, u|_{\partial\Omega}=1000 \implies u(0.25,0.25)=1263.32$).</li>
-          </ul>
         `,
         symbols: [
           { sym: R`$\mathbf{C}, \mathbf{g}$`, short: 'Constraint operator', desc: R`Linear constraint matrix $\mathbf{C}$ and target vector $\mathbf{g}$ expressing multipoint or Dirichlet constraints $\mathbf{C}\mathbf{U}=\mathbf{g}$.` },
@@ -588,13 +682,18 @@
           </div>
           <div class="eq-card is-accent">
             <div class="eq-card-label">PS8 Membership Examples on $\Omega = [-1, 1]^2$</div>
-            <div>$$x_1^2 + x_2^3 \in H^1(\Omega), \qquad \ln(1+x_1) + \ln(1+x_2) \in L^2(\Omega) \setminus H^1(\Omega)$$</div>
+            <div>$$\begin{aligned} x_1^2 + x_2^3 &\in H^1(\Omega) \\ \ln(1+x_1) + \ln(1+x_2) &\in L^2(\Omega) \setminus H^1(\Omega) \end{aligned}$$</div>
           </div>
           <ul class="point-list">
-            <li><strong>Why Sobolev spaces:</strong> weak forms require finite energy $\int_\Omega |\nabla v|^2\,\mathrm{d}\Omega \lt \infty$, so $H^1(\Omega)$ admits piecewise-linear hat functions with kinks while rejecting jumps.</li>
-            <li><strong>Norm axioms (Defs B.1-B.2):</strong> positivity and definiteness, homogeneity $\|\alpha v\|=|\alpha|\|v\|$, and the triangle inequality define distance in function space ($H^1(\Omega) \subset L^2(\Omega)$).</li>
-            <li><strong>PS8 counterexamples:</strong> the Heaviside step $H(x)$ and $\ln(1+x_1)+\ln(1+x_2)$ are square-integrable ($L^2$), yet their weak derivatives fail square-integrability ($\int_{-1}^1 (1+x_1)^{-2}\mathrm{d}x_1 = \infty$).</li>
+            <li><strong>Why Sobolev spaces:</strong> weak forms require finite gradient energy $\int_\Omega |\nabla v|^2\,\mathrm{d}\Omega \lt \infty$, so $H^1(\Omega)$ admits $C^0$ hat functions with kinks while rejecting jumps.</li>
+            <li><strong>PS8 counterexamples:</strong> Heaviside $H(x)$ and $\ln(1+x_1)+\ln(1+x_2)$ lie in $L^2(\Omega)$, yet their weak derivatives diverge ($\int_{-1}^1 (1+x_1)^{-2}\mathrm{d}x_1 = \infty$).</li>
           </ul>
+          <details class="math-drawer">
+            <summary>Appendix B Norm Axioms (Defs B.1–B.2)</summary>
+            <div class="math-drawer-body">
+              <p>A norm $\|\cdot\|$ satisfies positivity/definiteness ($\|v\|\ge 0$, $\|v\|=0 \Leftrightarrow v=0$), homogeneity $\|\alpha v\|=|\alpha|\|v\|$, and the triangle inequality $\|u+v\|\le \|u\|+\|v\|$, giving $H^1(\Omega) \subset L^2(\Omega)$.</p>
+            </div>
+          </details>
         `,
         symbols: [
           { sym: R`$\|v\|_{0,2}$`, short: 'L2 norm', desc: R`Square-integrable root-mean magnitude $\left(\int_\Omega v^2\,\mathrm{d}\Omega\right)^{1/2}$ defining $L^2(\Omega)$.` },
@@ -619,14 +718,21 @@
             <div>$$\begin{aligned} |a(u,v)| &\le M\|u\|\|v\|, \qquad a(v,v) \ge \alpha\|v\|^2 \;\; (\alpha \gt 0) \\ a(u - u_h, v_h) &= 0 \quad \forall v_h \in \mathcal{V}_h \end{aligned}$$</div>
           </div>
           <div class="eq-card is-accent">
-            <div class="eq-card-label">Prof. Lew's Affine Céa's Lemma &amp; Stability Bound</div>
+            <div class="eq-card-label">Prof. Lew's Affine Céa's Lemma</div>
             <div>$$\|u - u_h\|_{H^1} \le \left(1 + \frac{M}{\alpha}\right) \min_{w_h \in \mathcal{S}_h} \|u - w_h\|_{H^1}$$</div>
           </div>
           <ul class="point-list">
-            <li><strong>Well-posedness (Lax-Milgram):</strong> continuity $M$ and coercivity $\alpha \gt 0$ guarantee existence, uniqueness, and stability ($\|u_h\| \le \frac{m}{\alpha} + (1+\frac{M}{\alpha})\min_{w_h\in\mathcal{S}_h}\|w_h\|$).</li>
-            <li><strong>Best approximation up to a constant:</strong> Galerkin orthogonality forces $u - u_h$ to be $a$-orthogonal to $\mathcal{V}_h$; when $a$ is symmetric, $u_h$ minimizes energy error $\|u-u_h\|_a$ exactly.</li>
-            <li><strong>Non-symmetry penalty:</strong> when advection or high anisotropy pushes $M/\alpha \gg 1$, the oblique projection factor $(1 + M/\alpha)$ degrades quasi-optimality unless stabilized.</li>
+            <li><strong>Well-posedness (Lax-Milgram):</strong> continuity $M$ and coercivity $\alpha \gt 0$ guarantee existence, uniqueness, and continuous stability of $u_h$.</li>
+            <li><strong>Energy optimality:</strong> Galerkin orthogonality makes $u - u_h$ $a$-orthogonal to $\mathcal{V}_h$; when $a$ is symmetric, $u_h$ minimizes $\|u-u_h\|_a$ exactly.</li>
+            <li><strong>Non-symmetry penalty:</strong> strong advection or anisotropy pushes $M/\alpha \gg 1$, degrading oblique quasi-optimality unless stabilized.</li>
           </ul>
+          <details class="math-drawer">
+            <summary>Affine Stability Bound (FEA_notes p. 133)</summary>
+            <div class="math-drawer-body">
+              <p>For bounded load functional $|\ell(v)| \le m\|v\|$, Lax-Milgram on affine $\mathcal{S}_h = \bar{u}_h + \mathcal{V}_h$ guarantees:</p>
+              <div>$$\|u_h\| \le \frac{m}{\alpha} + \left(1 + \frac{M}{\alpha}\right)\min_{w_h \in \mathcal{S}_h}\|w_h\|$$</div>
+            </div>
+          </details>
         `,
         symbols: [
           { sym: R`$M$`, short: 'Continuity constant', desc: R`Boundedness constant in $|a(u,v)| \le M\|u\|\|v\|$ on $H^1(\Omega)$.` },
@@ -648,17 +754,22 @@
         contentHtml: R`
           <div class="eq-card">
             <div class="eq-card-label">A Priori Error Rates for $P_k$ Elements (Smooth $u$)</div>
-            <div>$$\|u - u_h\|_{1,2} = \mathcal{O}(h^k), \qquad \|u - u_h\|_{0,2},\; \|u - u_h\|_{L^1} = \mathcal{O}(h^{k+1})$$</div>
+            <div>$$\begin{aligned} \|u - u_h\|_{1,2} &= \mathcal{O}(h^k) \\ \|u - u_h\|_{0,2},\; \|u - u_h\|_{L^1} &= \mathcal{O}(h^{k+1}) \end{aligned}$$</div>
           </div>
           <div class="eq-card is-accent">
             <div class="eq-card-label">Singular Regularity Limit (1D $x^\gamma$ vs. 2D Corner $r^\gamma$)</div>
-            <div>$$\begin{aligned} \|u - u_h\|_{H^1} &= \mathcal{O}\bigl(h^{\min(k,\,\gamma - 1/2)}\bigr) \quad \text{in 1D } (x^\gamma) \\ \|u - u_h\|_{H^1} &= \mathcal{O}\bigl(h^{\min(k,\,\gamma)}\bigr) \quad \text{in 2D } (r^\gamma,\; \text{L-corner } \gamma = \tfrac{2}{3}) \end{aligned}$$</div>
+            <div>$$\begin{aligned} \|u - u_h\|_{H^1} &= \mathcal{O}\bigl(h^{\min(k,\,\gamma - 1/2)}\bigr) \quad \text{1D } (x^\gamma) \\ \|u - u_h\|_{H^1} &= \mathcal{O}\bigl(h^{\min(k,\,\gamma)}\bigr) \quad \text{2D } (r^\gamma,\; \text{L-corner } \gamma = \tfrac{2}{3}) \end{aligned}$$</div>
           </div>
           <ul class="point-list">
-            <li><strong>Polynomial order $k$:</strong> combining Céa's lemma with interpolation error gives $H^1$ rate $k$ (gradients) and Aubin-Nitsche duality lifts $L^2$ and $L^1$ rates to $k+1$.</li>
-            <li><strong>Verification table ($-u'' = \sin(\pi x)$):</strong> halving $h$ cuts $P_1$ $H^1$ error by $2\times$ and $L^2$ error by $4\times$; $P_2$ cuts them by $4\times$ and $8\times$.</li>
-            <li><strong>When assumptions fail (PS8 closing question):</strong> re-entrant corners, cracks, or discontinuous coefficients limit regularity $u \notin H^{k+1}$, capping uniform $h$-refinement unless graded or adaptive ($hp$) meshes concentrate elements at the singularity.</li>
+            <li><strong>Polynomial order $k$:</strong> Céa's lemma plus interpolation yields $H^1$ rate $k$, while Aubin-Nitsche duality lifts $L^2$ and $L^1$ rates to $k+1$.</li>
+            <li><strong>When assumptions fail (PS8):</strong> re-entrant corners, cracks, or jumping coefficients cap uniform $h$-refinement unless graded or adaptive ($hp$) meshes cluster near the singularity.</li>
           </ul>
+          <details class="math-drawer">
+            <summary>Halving-Factor Verification (-u'' = sin πx)</summary>
+            <div class="math-drawer-body">
+              <p>Halving mesh size ($h \to h/2$) cuts $P_1$ errors by $2\times$ ($H^1$) and $4\times$ ($L^2$); quadratic $P_2$ cuts them by $4\times$ ($H^1$) and $8\times$ ($L^2$).</p>
+            </div>
+          </details>
         `,
         symbols: [
           { sym: R`$h, k$`, short: 'Mesh size & degree', desc: R`Characteristic element diameter $h$ and complete polynomial degree $k$ of the finite element basis.` },
@@ -679,17 +790,14 @@
         lectureBadges: ['FEARev §3 · Verification Mindset'],
         contentHtml: R`
           <ul class="point-list is-numbered">
-            <li><strong>Strong form:</strong> state PDE on $\Omega$ with Dirichlet ($\Gamma_D$), Neumann ($\Gamma_N$), and Robin BCs.</li>
-            <li><strong>Weak form:</strong> multiply by $v \in \mathcal{V}$ and integrate by parts to obtain $a(u,v) = \ell(v)$.</li>
-            <li><strong>Mesh and elements:</strong> partition $\Omega$ into 1D/2D/3D elements $\Omega_e$ and build connectivity <code>LG</code>/<code>LV</code>.</li>
-            <li><strong>Shape functions and quadrature:</strong> pick $P_1/P_2/Q_4$/Hermite $N_a^e$ and integrate $\mathbf{k}^e, \mathbf{f}^e$ with Gauss rules.</li>
-            <li><strong>Global assembly and BCs:</strong> scatter via $K_{\mathrm{LG}(a,e),\mathrm{LG}(b,e)} \mathrel{+}= K_{ab}^e$ and impose essential BCs (lift, penalty, LM, or Nitsche).</li>
-            <li><strong>Solve and post-process:</strong> solve $\mathbf{K}\mathbf{U} = \mathbf{F}$ and recover gradients, fluxes, and stresses.</li>
-            <li><strong>Verify:</strong> check row sums, patch tests, and log-log $L^2$/$H^1$ convergence rates on a manufactured solution.</li>
+            <li class="is-step-active" data-workflow-step="0" tabindex="0"><strong>Strong form:</strong> state PDE on $\Omega$ with Dirichlet ($\Gamma_D$), Neumann ($\Gamma_N$), and Robin BCs.</li>
+            <li data-workflow-step="1" tabindex="0"><strong>Weak form:</strong> test with $v \in \mathcal{V}$ and integrate by parts to obtain $a(u,v) = \ell(v)$.</li>
+            <li data-workflow-step="2" tabindex="0"><strong>Mesh &amp; topology:</strong> partition $\Omega$ into elements $\Omega_e$ and build CCW tables <code>LV</code>/<code>LG</code>.</li>
+            <li data-workflow-step="3" tabindex="0"><strong>Basis &amp; quadrature:</strong> pick $P_1/P_2/Q_4$/Hermite $N_a^e$ and integrate $\mathbf{k}^e, \mathbf{f}^e$ with Gauss rules.</li>
+            <li data-workflow-step="4" tabindex="0"><strong>Assembly &amp; BCs:</strong> scatter $K_{\mathrm{LG}(a,e),\mathrm{LG}(b,e)} \mathrel{+}= K_{ab}^e$ and impose essential BCs.</li>
+            <li data-workflow-step="5" tabindex="0"><strong>Solve &amp; post-process:</strong> solve $\mathbf{K}\mathbf{U} = \mathbf{F}$ and recover gradients, heat fluxes, and stresses.</li>
+            <li data-workflow-step="6" tabindex="0"><strong>Verify (MMS):</strong> check row sums, patch tests, and $\mathcal{O}(h^{k+1})$ / $\mathcal{O}(h^k)$ manufactured slopes.</li>
           </ul>
-          <div class="callout-card">
-            <strong>Benchmark mindset:</strong> verify every new element or solver on a manufactured solution and check the $\mathcal{O}(h^{k+1})$ / $\mathcal{O}(h^k)$ slope before trusting production meshes.
-          </div>
         `,
         symbols: [
           { sym: R`$\text{MMS}$`, short: 'Manufactured solution', desc: R`Method of Manufactured Solutions choosing a known smooth $u_{\mathrm{ex}}$, deriving $f = \mathcal{L}u_{\mathrm{ex}}$, and verifying exact $\mathcal{O}(h^p)$ slopes.` },
@@ -772,31 +880,36 @@
         lectures: [
           {
             num: 1,
-            title: 'PS 1: Variational formulations (Ex. 1.10)',
+            code: 'PS1',
+            title: 'Variational formulations (Ex. 1.10)',
             targetId: 'strong-to-weak',
             pdfUrl: 'https://hanfengzhai.com/file/teaching/fea/ProbSess1.pdf'
           },
           {
             num: 2,
-            title: 'PS 2: Vector spaces, Euler-Lagrange & Nitsche',
+            code: 'PS2',
+            title: 'Vector spaces, Euler-Lagrange & Nitsche',
             targetId: 'spaces-variations',
             pdfUrl: 'https://hanfengzhai.com/file/teaching/fea/ProbSess2.pdf'
           },
           {
             num: 3,
-            title: 'PS 3: 1D advection-diffusion & hat basis',
+            code: 'PS3',
+            title: '1D advection-diffusion & hat basis',
             targetId: 'galerkin-1d',
             pdfUrl: 'https://hanfengzhai.com/file/teaching/fea/ProbSess3.pdf'
           },
           {
             num: 4,
-            title: 'PS 4: LG map (P1, P2 Ex. 3.11) & 1D assembly',
+            code: 'PS4',
+            title: 'LG map (P1, P2 Ex. 3.11) & 1D assembly',
             targetId: 'lg-assembly',
             pdfUrl: 'https://hanfengzhai.com/file/teaching/fea/ProbSess4.pdf'
           },
           {
             num: 5,
-            title: 'PS 5: C1 Hermite elements & beam bending',
+            code: 'PS5',
+            title: 'C1 Hermite elements & beam bending',
             targetId: 'hermite-beam',
             pdfUrl: 'https://hanfengzhai.com/file/teaching/fea/ProbSess5.pdf'
           }
@@ -809,25 +922,29 @@
         lectures: [
           {
             num: 6,
-            title: 'PS 6: 2D P1 assembly & reduced LGe',
+            code: 'PS6',
+            title: '2D P1 assembly & reduced LGe',
             targetId: 'assembly-2d-p1',
             pdfUrl: 'https://hanfengzhai.com/file/teaching/fea/ProbSess6.pdf'
           },
           {
             num: 7,
-            title: 'Tutorial A: Firedrake 2D Poisson (Colab)',
+            code: 'TUT A',
+            title: 'Firedrake 2D Poisson (Colab)',
             targetId: 'constraints-solvers',
             pdfUrl: 'https://hanfengzhai.com/file/teaching/fea/Firedrake_tutorial.pdf'
           },
           {
             num: 8,
-            title: 'Tutorial B: FEniCS + Gmsh 2D Poisson',
+            code: 'TUT B',
+            title: 'FEniCS + Gmsh 2D Poisson',
             targetId: 'constraints-solvers',
             pdfUrl: 'https://hanfengzhai.com/file/teaching/fea/FEniCS_tutorial.pdf'
           },
           {
             num: 9,
-            title: 'PS 9: Final review, 2D heterogeneous heat fin',
+            code: 'PS9',
+            title: 'Final review, 2D heterogeneous heat fin',
             targetId: 'heat-fin-2d',
             pdfUrl: 'https://hanfengzhai.com/file/teaching/fea/ProbSess9.pdf'
           }
@@ -840,31 +957,36 @@
         lectures: [
           {
             num: 10,
-            title: "PS 8: L2/H1 norms, coercivity & Céa's lemma",
+            code: 'PS8',
+            title: "L2/H1 norms, coercivity & Céa's lemma",
             targetId: 'sobolev-norms',
             pdfUrl: 'https://hanfengzhai.com/file/teaching/fea/ProbSess8.pdf'
           },
           {
             num: 11,
-            title: 'FEARev: Short Introduction to FEA (5 pp.)',
+            code: 'REV',
+            title: 'Short Introduction to FEA (5 pp.)',
             targetId: 'workflow',
             pdfUrl: 'https://hanfengzhai.com/file/teaching/fea/FEARev.pdf'
           },
           {
             num: 12,
-            title: 'FEA_notes: Complete ME 335A Lecture Notes (133 pp.)',
+            code: 'NOTE',
+            title: 'Complete ME 335A Lecture Notes (133 pp.)',
             targetId: 'cea-coercivity',
             pdfUrl: 'https://hanfengzhai.com/file/teaching/notes/FEA_notes.pdf'
           },
           {
             num: 13,
-            title: 'ProbSess_FEA: Compiled Sessions Omnibus (67 pp.)',
+            code: 'ALL',
+            title: 'Compiled Sessions Omnibus (67 pp.)',
             targetId: 'glance',
             pdfUrl: 'https://hanfengzhai.com/file/teaching/notes/ProbSess_FEA.pdf'
           },
           {
             num: 14,
-            title: 'NonlinFEA_note: Nonlinear FEA Extension (85 pp.)',
+            code: 'NL',
+            title: 'Nonlinear FEA Extension (85 pp.)',
             targetId: 'takeaways',
             pdfUrl: 'https://hanfengzhai.com/file/teaching/notes/NonlinFEA_note.pdf'
           }
@@ -933,37 +1055,37 @@
       },
       {
         kind: 'Mathematical Theory',
-        title: 'Numerical Solution of PDEs by the Finite Element Method & Mathematical Theory of FEM',
+        title: 'Numerical Solution of PDEs by FEM & Mathematical Theory of FEM',
         citation: 'C. Johnson (Dover, 2009); S. C. Brenner & L. R. Scott (3rd ed., Springer, 2008); G. Strang & G. J. Fix (2nd ed., 2008).',
         url: null
       },
       {
-        kind: 'Personal Lecture Notes',
+        kind: 'Lecture Notes',
         title: 'ME 335A Finite Element Analysis Notes (133 pp.)',
         citation: 'Hanfeng Zhai, Stanford ME 335A (Prof. Adrian J. Lew).',
         url: 'https://hanfengzhai.com/file/teaching/notes/FEA_notes.pdf',
-        linkLabel: 'Open Lecture Notes PDF'
+        linkLabel: 'PDF'
       },
       {
-        kind: 'Problem Sessions & Summary',
-        title: 'Winter 2025 Problem Sessions Omnibus & Short FEA Review',
-        citation: 'Hanfeng Zhai, PS1-PS9 and Firedrake/FEniCS tutorials (67 pp.).',
+        kind: 'Problem Sessions',
+        title: 'Winter 2025 Sessions Omnibus & Short FEA Review',
+        citation: 'Hanfeng Zhai, PS1–PS9 and Firedrake/FEniCS tutorials (67 pp.).',
         url: 'https://hanfengzhai.com/file/teaching/notes/ProbSess_FEA.pdf',
-        linkLabel: 'Open Problem Sessions PDF'
+        linkLabel: 'PDF'
       },
       {
-        kind: 'Open Variational Solvers',
+        kind: 'Open Solvers',
         title: 'Firedrake & FEniCSx (UFL Documentation)',
         citation: 'High-level Python and UFL finite element frameworks.',
         url: 'https://www.firedrakeproject.org/',
-        linkLabel: 'Open Firedrake Project'
+        linkLabel: 'Firedrake'
       },
       {
         kind: 'Printable Edition',
         title: 'ME 335A Intro Slides (PDF) & Short Summary',
         citation: 'Archival printable monograph matching this interactive deck.',
         url: 'https://hanfengzhai.com/file/teaching/intros/ME335_Intro.pdf',
-        linkLabel: 'Download Intro PDF'
+        linkLabel: 'Intro PDF'
       }
     ]
   };

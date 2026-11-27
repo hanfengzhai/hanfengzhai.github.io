@@ -254,8 +254,8 @@
     ctx.save();
     ctx.font = o.font || FONT_SANS_BOLD;
     const metrics = ctx.measureText(text);
-    const padX = o.padX || 8;
-    const boxH = o.boxH || 24;
+    const padX = o.padX || 6;
+    const boxH = o.boxH || 22;
     const boxW = metrics.width + padX * 2;
     const align = o.align || 'center';
     let rx = x - boxW * 0.5;
@@ -274,11 +274,8 @@
     }
 
     drawRoundRect(ctx, rx, ry, boxW, boxH, 2);
-    ctx.fillStyle = o.bg || pal.surface;
+    ctx.fillStyle = o.bg || withAlpha(pal.bg, 0.84);
     ctx.fill();
-    ctx.strokeStyle = o.border || pal.border;
-    ctx.lineWidth = 1;
-    ctx.stroke();
 
     ctx.fillStyle = o.color || pal.text;
     ctx.textAlign = 'center';
@@ -311,11 +308,12 @@
 
   function drawPlotFrame(ctx, box, pal, title, xLabel, yLabel) {
     ctx.save();
-    drawRoundRect(ctx, box.x, box.y, box.w, box.h, 10);
-    ctx.fillStyle = withAlpha(pal.surface2, pal.theme === 'dark' ? 0.52 : 0.58);
-    ctx.fill();
-    ctx.strokeStyle = pal.border;
-    ctx.lineWidth = 1.1;
+    // Tufte-open plot frame: transparent background + subtle hairline top divider (no heavy boxed fill)
+    ctx.strokeStyle = withAlpha(pal.border, 0.85);
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(box.x + 8, box.y + 1);
+    ctx.lineTo(box.x + box.w - 8, box.y + 1);
     ctx.stroke();
 
     if (title) {
@@ -323,21 +321,21 @@
       ctx.fillStyle = pal.text;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillText(title, box.x + 12, box.y + 8);
+      ctx.fillText(title, box.x + 10, box.y + 7);
     }
     if (xLabel) {
       ctx.font = FONT_SANS;
       ctx.fillStyle = pal.textMuted;
       ctx.textAlign = 'right';
       ctx.textBaseline = 'bottom';
-      ctx.fillText(xLabel, box.x + box.w - 10, box.y + box.h - 6);
+      ctx.fillText(xLabel, box.x + box.w - 8, box.y + box.h - 4);
     }
     if (yLabel) {
       ctx.font = FONT_SANS;
       ctx.fillStyle = pal.textMuted;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
-      ctx.fillText(yLabel, box.x + 12, box.y + (title ? 28 : 8));
+      ctx.fillText(yLabel, box.x + 10, box.y + (title ? 27 : 7));
     }
     ctx.restore();
   }
@@ -824,7 +822,7 @@
       sliders: [
         {
           id: 'load',
-          label: 'Deformation Load λ',
+          label: 'Load λ',
           min: 0,
           max: 1,
           step: 0.01,
@@ -846,11 +844,6 @@
       autoPlay = id === 'auto';
       render();
     });
-
-    const badge = document.createElement('span');
-    badge.className = 'lab-badge-status';
-    badge.textContent = 'X → x';
-    dom.toolbar.appendChild(badge);
 
     dom.sliders.load.input.addEventListener('input', function () {
       autoPlay = false;
@@ -1067,7 +1060,7 @@
         ],
         free: [],
         dummy: ['i'],
-        rank: 'Rank 0 (Scalar)',
+        rank: '0 (Scalar)',
         terms: '3 terms',
         expanded: 'a₁b₁ + a₂b₂ + a₃b₃ = (2)(4) + (−1)(2) + (3)(1) = 9',
         expandedNarrow: ['a₁b₁ + a₂b₂ + a₃b₃', '= 2·4 + (−1)·2 + 3·1 = 9'],
@@ -1081,8 +1074,8 @@
         ],
         free: [],
         dummy: ['i'],
-        rank: 'Rank 0 (Scalar)',
-        terms: '3 diagonal terms',
+        rank: '0 (Scalar)',
+        terms: '3 diag.',
         expanded: 'σ₁₁ + σ₂₂ + σ₃₃ = 120 + 40 + (−30) = 130 MPa',
         expandedNarrow: ['σ₁₁ + σ₂₂ + σ₃₃', '= 120 + 40 − 30 = 130 MPa'],
         summary: 'Repeated index i sums the diagonal entries of σ.'
@@ -1096,8 +1089,8 @@
         ],
         free: ['i'],
         dummy: ['j'],
-        rank: 'Rank 1 (Vector)',
-        terms: '3 eqns × 3 terms',
+        rank: '1 (Vector)',
+        terms: '3 × 3',
         expanded: 'i = 1: σ₁₁,₁ + σ₁₂,₂ + σ₁₃,₃   (same for i = 2, 3)',
         expandedNarrow: ['i = 1: σ₁₁,₁ + σ₁₂,₂ + σ₁₃,₃', '(same sum for i = 2, 3)'],
         summary: 'Dummy j sums across columns; free i labels 3 balance rows.'
@@ -1111,8 +1104,8 @@
         ],
         free: ['i', 'j'],
         dummy: ['k', 'l'],
-        rank: 'Rank 2 (Tensor)',
-        terms: '9 comps × 9 sums',
+        rank: '2 (Tensor)',
+        terms: '9 × 9',
         expanded: 'σᵢⱼ = Σₖ Σₗ Cᵢⱼₖₗ εₖₗ = λ εₖₖ δᵢⱼ + 2μ εᵢⱼ',
         expandedNarrow: ['σᵢⱼ = Σₖ Σₗ Cᵢⱼₖₗ εₖₗ', '= λ εₖₖ δᵢⱼ + 2μ εᵢⱼ'],
         summary: 'Double contraction over (k, l) maps strain ε to stress σ_ij.'
@@ -1122,17 +1115,18 @@
     const dom = createLabDom(mountEl, {
       hasToolbar: true,
       readouts: [
-        { id: 'free', label: 'Free (Cardinal)', value: 'None' },
-        { id: 'dummy', label: 'Dummy (Teal)', value: 'i' },
-        { id: 'rank', label: 'Output Rank', value: 'Rank 0 (Scalar)' },
-        { id: 'terms', label: 'Expansion', value: '3 terms' }
+        { id: 'free', label: 'Free', value: 'None' },
+        { id: 'dummy', label: 'Dummy', value: 'i' },
+        { id: 'rank', label: 'Rank', value: '0 (Scalar)' },
+        { id: 'terms', label: 'Terms', value: '3 terms' }
       ],
-      caption: 'Click or hover an index pill to inspect free vs. summed contractions.'
+      caption: 'Click or hover an index chip on the canvas to inspect free vs. summed contractions.'
     });
 
     let currentId = 'dot';
     let focusIndex = 'i';
     let animTick = 0;
+    let indexChipHits = [];
 
     createPillGroup(dom.toolbar, [
       { id: 'dot', label: 'Dot: a_i b_i' },
@@ -1143,56 +1137,43 @@
       currentId = id;
       const expr = EXPRESSIONS[id];
       focusIndex = expr.dummy[0] || expr.free[0] || null;
-      rebuildIndexPills();
       render();
     });
 
-    // Interactive index pill bar right under main toolbar
-    const idxBar = document.createElement('div');
-    idxBar.className = 'lab-toolbar';
-    idxBar.style.marginTop = '0';
-    dom.shell.insertBefore(idxBar, dom.stage);
+    const idxHint = document.createElement('span');
+    idxHint.className = 'lab-toolbar-hint';
+    idxHint.textContent = 'Hover index';
+    dom.toolbar.appendChild(idxHint);
 
-    function rebuildIndexPills() {
-      idxBar.innerHTML = '';
-      const expr = EXPRESSIONS[currentId];
-      const allIdx = [];
-      expr.free.concat(expr.dummy).forEach(function (k) {
-        if (allIdx.indexOf(k) === -1) allIdx.push(k);
-      });
-
-      const lbl = document.createElement('span');
-      lbl.style.fontSize = '15px';
-      lbl.style.fontWeight = '600';
-      lbl.textContent = 'Inspect Index:';
-      idxBar.appendChild(lbl);
-
-      const grp = document.createElement('div');
-      grp.className = 'lab-pill-group';
-      allIdx.forEach(function (idxName) {
-        const isDummy = expr.dummy.indexOf(idxName) !== -1;
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'lab-pill' + (focusIndex === idxName ? ' is-active' : '');
-        btn.textContent = idxName + ' (' + (isDummy ? 'dummy' : 'free') + ')';
-        btn.addEventListener('mouseenter', function () {
-          focusIndex = idxName;
-          Array.prototype.forEach.call(grp.children, function (c) {
-            c.classList.toggle('is-active', c === btn);
-          });
-          render();
-        });
-        btn.addEventListener('click', function () {
-          focusIndex = idxName;
-          Array.prototype.forEach.call(grp.children, function (c) {
-            c.classList.toggle('is-active', c === btn);
-          });
-          render();
-        });
-        grp.appendChild(btn);
-      });
-      idxBar.appendChild(grp);
+    function hitIndexChip(pos) {
+      for (let i = 0; i < indexChipHits.length; i++) {
+        const c = indexChipHits[i];
+        if (pos.x >= c.x && pos.x <= c.x + c.w && pos.y >= c.y && pos.y <= c.y + c.h) {
+          return c.ch;
+        }
+      }
+      return null;
     }
+
+    function onCanvasMove(ev) {
+      const ch = hitIndexChip(getPointerPos(dom.canvas, ev));
+      dom.canvas.style.cursor = ch ? 'pointer' : 'default';
+      if (ch && ch !== focusIndex) {
+        focusIndex = ch;
+        render();
+      }
+    }
+
+    function onCanvasDown(ev) {
+      const ch = hitIndexChip(getPointerPos(dom.canvas, ev));
+      if (ch && ch !== focusIndex) {
+        focusIndex = ch;
+        render();
+      }
+    }
+
+    dom.canvas.addEventListener('pointermove', onCanvasMove);
+    dom.canvas.addEventListener('pointerdown', onCanvasDown);
 
     function drawIndexHeader(ctx, expr, w, topY, pal) {
       // Measure total width of visual tensor symbol + index chips
@@ -1205,6 +1186,7 @@
       const chipGap = isNarrow ? 3 : 4;
 
       const slots = [];
+      indexChipHits = [];
       let totalW = 0;
       expr.tokens.forEach(function (tok, ti) {
         const tw = (tok.sym.length > 2 ? wideSymW : symW) + tok.indices.length * (chipW + chipGap);
@@ -1249,6 +1231,7 @@
           ctx.textBaseline = 'middle';
           ctx.fillText(ch, cx, cy);
 
+          indexChipHits.push({ ch: ch, x: curX - 4, y: topY + 7, w: chipW + 8, h: chipH + 8 });
           slots.push({ ch: ch, x: cx, yTop: topY + 11, yBot: topY + 37, isDummy: isDummy, isFocus: isFocus });
           curX += chipW + chipGap;
         });
@@ -1512,13 +1495,13 @@
           }
         }
       }
-      const boxH = lines.length > 1 ? 50 : 32;
-      const boxY = h - boxH - 8;
-      drawRoundRect(ctx, 10, boxY, w - 20, boxH, 8);
-      ctx.fillStyle = withAlpha(pal.surface2, 0.85);
-      ctx.fill();
+      const boxH = lines.length > 1 ? 48 : 30;
+      const boxY = h - boxH - 6;
       ctx.strokeStyle = pal.border;
-      ctx.lineWidth = 1.2;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(14, boxY);
+      ctx.lineTo(w - 14, boxY);
       ctx.stroke();
 
       ctx.font = FONT_MONO;
@@ -1526,10 +1509,10 @@
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       if (lines.length === 1) {
-        ctx.fillText(lines[0], w * 0.5, boxY + boxH * 0.5 + 0.5);
+        ctx.fillText(lines[0], w * 0.5, boxY + boxH * 0.5 + 1);
       } else {
         ctx.fillText(lines[0], w * 0.5, boxY + 15);
-        ctx.fillText(lines[1], w * 0.5, boxY + 35);
+        ctx.fillText(lines[1], w * 0.5, boxY + 34);
       }
     }
 
@@ -1538,14 +1521,17 @@
       render();
     });
 
-    rebuildIndexPills();
     render();
 
     return {
       onResize: render,
       onThemeChange: render,
       onSlideEnter: render,
-      destroy: function () { stopLoop(); }
+      destroy: function () {
+        stopLoop();
+        dom.canvas.removeEventListener('pointermove', onCanvasMove);
+        dom.canvas.removeEventListener('pointerdown', onCanvasDown);
+      }
     };
   });
 
@@ -1557,15 +1543,15 @@
       hasToolbar: true,
       cursor: 'grab',
       readouts: [
-        { id: 'X', label: 'X (Ref)', value: '(0.45, 0.30)' },
-        { id: 'x', label: 'x (Def)', value: '(0.58, 0.34)' },
-        { id: 'u', label: 'u = x − X', value: '(+0.13, +0.04)' },
+        { id: 'X', label: 'X', value: '(0.45, 0.30)' },
+        { id: 'x', label: 'x', value: '(0.58, 0.34)' },
+        { id: 'u', label: 'u', value: '(+0.13, +0.04)' },
         { id: 'eps', label: 'ε₁₁, ε₂₂, ε₁₂', value: '0.22, -0.07, 0.09' }
       ],
       sliders: [
         {
           id: 'e11',
-          label: 'Axial Stretch ε₁₁',
+          label: 'Stretch ε₁₁',
           min: -0.25,
           max: 0.35,
           step: 0.01,
@@ -1607,7 +1593,7 @@
 
     const presetPills = createPillGroup(dom.toolbar, [
       { id: 'uniaxial', label: 'Uniaxial' },
-      { id: 'shear', label: 'Pure Shear' },
+      { id: 'shear', label: 'Shear' },
       { id: 'biaxial', label: 'Biaxial' },
       { id: 'reset', label: 'Reset' }
     ], 'uniaxial', function (id) {
@@ -1625,7 +1611,7 @@
     });
 
     createPillGroup(dom.toolbar, [
-      { id: 'split', label: 'Side-by-Side' },
+      { id: 'split', label: 'Split' },
       { id: 'overlay', label: 'Overlay' }
     ], 'split', function (id) {
       st.overlay = id === 'overlay';
@@ -1976,13 +1962,15 @@
         { id: 'tmax', label: 'τ_max', value: '60.2 MPa' }
       ],
       sliders: [
-        { id: 'sxx', label: 'σ_xx (MPa)', min: -150, max: 150, step: 5, value: 100, format: function (v) { return fmtSigned(v, 0); } },
-        { id: 'syy', label: 'σ_yy (MPa)', min: -150, max: 150, step: 5, value: 20, format: function (v) { return fmtSigned(v, 0); } },
-        { id: 'txy', label: 'τ_xy (MPa)', min: -100, max: 100, step: 5, value: 45, format: function (v) { return fmtSigned(v, 0); } },
-        { id: 'theta', label: 'Cut Angle θ', min: -90, max: 90, step: 1, value: 28, format: function (v) { return fmtSigned(v, 0) + '°'; } }
+        { id: 'sxx', label: 'σ_xx', min: -150, max: 150, step: 5, value: 100, format: function (v) { return fmtSigned(v, 0); } },
+        { id: 'syy', label: 'σ_yy', min: -150, max: 150, step: 5, value: 20, format: function (v) { return fmtSigned(v, 0); } },
+        { id: 'txy', label: 'τ_xy', min: -100, max: 100, step: 5, value: 45, format: function (v) { return fmtSigned(v, 0); } },
+        { id: 'theta', label: 'Angle θ', min: -90, max: 90, step: 1, value: 28, format: function (v) { return fmtSigned(v, 0) + '°'; } }
       ],
       caption: 'Drag the plane normal n on the left or adjust stress components to rotate on Mohr circle.'
     });
+
+    if (dom.controlsGrid) dom.controlsGrid.classList.add('is-4col');
 
     const st = { sxx: 100, syy: 20, txy: 45, thetaDeg: 28, dragging: false };
 
@@ -2000,8 +1988,8 @@
     createPillGroup(dom.toolbar, [
       { id: 'general', label: 'General' },
       { id: 'uniaxial', label: 'Uniaxial' },
-      { id: 'shear', label: 'Pure Shear' },
-      { id: 'principal', label: 'Principal Plane', actionOnly: true }
+      { id: 'shear', label: 'Shear' },
+      { id: 'principal', label: 'Principal', actionOnly: true }
     ], 'general', function (id) {
       if (id === 'general') {
         st.sxx = 100; st.syy = 20; st.txy = 45; st.thetaDeg = 28;
@@ -2422,15 +2410,15 @@
       hasToolbar: true,
       cursor: 'ew-resize',
       readouts: [
-        { id: 'sig', label: 'Stress σ*', value: '600 MPa' },
-        { id: 'w', label: 'Energy w', value: '0.90 MJ/m³' },
-        { id: 'lat', label: 'Lateral ε_lat', value: '−0.090%' },
-        { id: 'vol', label: 'ΔV / V', value: '+0.120%' }
+        { id: 'sig', label: 'σ*', value: '600 MPa' },
+        { id: 'w', label: 'w', value: '0.90 MJ/m³' },
+        { id: 'lat', label: 'ε_lat', value: '−0.090%' },
+        { id: 'vol', label: 'ΔV/V', value: '+0.120%' }
       ],
       sliders: [
-        { id: 'E', label: "Young's Modulus E", min: 50, max: 300, step: 5, value: 200, format: function (v) { return v + ' GPa'; } },
-        { id: 'nu', label: "Poisson's Ratio ν", min: 0.00, max: 0.48, step: 0.01, value: 0.30, format: function (v) { return fmt(v, 2); } },
-        { id: 'eps', label: 'Axial Strain ε*', min: 0.00, max: 0.50, step: 0.01, value: 0.30, format: function (v) { return fmt(v, 2) + '%'; } }
+        { id: 'E', label: 'Modulus E', min: 50, max: 300, step: 5, value: 200, format: function (v) { return v + ' GPa'; } },
+        { id: 'nu', label: 'Poisson ν', min: 0.00, max: 0.48, step: 0.01, value: 0.30, format: function (v) { return fmt(v, 2); } },
+        { id: 'eps', label: 'Strain ε*', min: 0.00, max: 0.50, step: 0.01, value: 0.30, format: function (v) { return fmt(v, 2) + '%'; } }
       ],
       caption: 'Area under σ(ε) equals stored strain energy density w = ½σ*ε*. Scrub the plot to vary ε*.'
     });
@@ -2747,18 +2735,25 @@
    * LAB 7: 'bvp-domain' (Slide 9: Boundary-Value Problem Inspector)
    * ========================================================================= */
   registerLab('bvp-domain', function (mountEl, api) {
+    const FOCUS_LABELS = {
+      all: 'Full BVP',
+      kin: 'Kinematics',
+      su: 'Dirichlet Sᵤ',
+      st: 'Neumann Sₜ',
+      body: 'Body Force f'
+    };
+
     const dom = createLabDom(mountEl, {
       hasToolbar: true,
       readouts: [
-        { id: 'eq', label: 'Balance in V', value: '∇·σ + f = 0' },
-        { id: 'su', label: 'Dirichlet S_u', value: 'u = 0' },
-        { id: 'st', label: 'Neumann S_t', value: 'σ·n = t̄' },
+        { id: 'focus', label: 'Focus', value: 'Full BVP' },
+        { id: 'tip', label: 'Tip Defl.', value: '−0.17 L' },
         { id: 'load', label: 'Load Scale', value: '65%' }
       ],
       sliders: [
         {
           id: 'load',
-          label: 'Applied Load Magnitude',
+          label: 'Load Scale',
           min: 0,
           max: 1,
           step: 0.01,
@@ -2773,10 +2768,10 @@
 
     createPillGroup(dom.toolbar, [
       { id: 'all', label: 'All' },
-      { id: 'kin', label: 'Kinematics (u, ε)' },
-      { id: 'su', label: 'Dirichlet (S_u)' },
-      { id: 'st', label: 'Neumann (S_t)' },
-      { id: 'body', label: 'Body Force (f)' }
+      { id: 'kin', label: 'Kinematics' },
+      { id: 'su', label: 'S_u' },
+      { id: 'st', label: 'S_t' },
+      { id: 'body', label: 'Body f' }
     ], 'all', function (id) {
       st.focus = id;
       render();
@@ -2973,6 +2968,8 @@
         clampTo: bounds
       });
 
+      dom.readouts.focus.val.textContent = FOCUS_LABELS[st.focus] || 'Full BVP';
+      dom.readouts.tip.val.textContent = fmtSigned(-0.26 * st.load, 2) + ' L';
       dom.readouts.load.val.textContent = Math.round(st.load * 100) + '%';
     }
 
@@ -2999,15 +2996,15 @@
 
     const dom = createLabDom(mountEl, {
       readouts: [
-        { id: 'uTip', label: 'Tip u(L₀)', value: '5.60 mm' },
-        { id: 'nWall', label: 'Wall N(0)', value: '100 kN' },
-        { id: 'epsMax', label: 'Max |ε|', value: '0.400%' },
-        { id: 'len', label: 'Length L', value: '2.006 m' }
+        { id: 'uTip', label: 'u(L₀)', value: '5.60 mm' },
+        { id: 'nWall', label: 'N(0)', value: '100 kN' },
+        { id: 'epsMax', label: 'max|ε|', value: '0.400%' },
+        { id: 'len', label: 'L', value: '2.006 m' }
       ],
       sliders: [
-        { id: 'P', label: 'End Force P', min: -50, max: 100, step: 5, value: 40, format: function (v) { return fmtSigned(v, 0) + ' kN'; } },
-        { id: 'f', label: 'Body Load f₀', min: 0, max: 80, step: 5, value: 30, format: function (v) { return v + ' kN/m'; } },
-        { id: 'EA', label: 'Stiffness EA', min: 10, max: 60, step: 2, value: 25, format: function (v) { return v + ' MN'; } }
+        { id: 'P', label: 'Tip P', min: -50, max: 100, step: 5, value: 40, format: function (v) { return fmtSigned(v, 0) + ' kN'; } },
+        { id: 'f', label: 'Load f₀', min: 0, max: 80, step: 5, value: 30, format: function (v) { return v + ' kN/m'; } },
+        { id: 'EA', label: 'Rigidity EA', min: 10, max: 60, step: 2, value: 25, format: function (v) { return v + ' MN'; } }
       ],
       caption: 'Exact 1D elasticity: N(x) = P + f₀(L₀ − x), N(0) = P + f₀L₀, and u(x) = [(P + f₀L₀)x − ½f₀x²] / EA (L₀ = 2 m).'
     });
@@ -3269,8 +3266,8 @@
         { id: 'muE', label: 'μ / E', value: '0.38' }
       ],
       sliders: [
-        { id: 'nu', label: "Poisson's Ratio ν", min: 0.00, max: 0.48, step: 0.01, value: 0.33, format: function (v) { return fmt(v, 2); } },
-        { id: 'exx', label: 'In-Plane Stretch ε_xx', min: -0.30, max: 0.50, step: 0.02, value: 0.35, format: function (v) { return fmtSigned(v, 2) + '%'; } }
+        { id: 'nu', label: 'Poisson ν', min: 0.00, max: 0.48, step: 0.01, value: 0.33, format: function (v) { return fmt(v, 2); } },
+        { id: 'exx', label: 'Stretch ε_xx', min: -0.30, max: 0.50, step: 0.02, value: 0.35, format: function (v) { return fmtSigned(v, 2) + '%'; } }
       ],
       caption: 'Compare free out-of-plane thinning (Plane Stress) against clamped reaction stress σ₃₃ (Plane Strain).'
     });
@@ -3278,8 +3275,8 @@
     const st = { mode: 'pstress', nu: 0.33, exxPct: 0.35 };
 
     createPillGroup(dom.toolbar, [
-      { id: 'pstress', label: 'Plane Stress (Thin Plate)' },
-      { id: 'pstrain', label: 'Plane Strain (Long Prism)' }
+      { id: 'pstress', label: 'Plane Stress (Thin)' },
+      { id: 'pstrain', label: 'Plane Strain (Long)' }
     ], 'pstress', function (id) {
       st.mode = id;
       render();
@@ -3335,7 +3332,7 @@
       const slabW = isWide ? Math.floor(w * 0.46) : w;
       const scale = isWide
         ? Math.min(slabW * 0.28, h * 0.72)
-        : Math.min(slabW * (isNarrow ? 0.24 : 0.24), h * (isNarrow ? 0.60 : 0.74));
+        : Math.min(slabW * (isNarrow ? 0.24 : 0.27), h * (isNarrow ? 0.56 : 0.46));
       const ox = isWide ? slabW * 0.52 : slabW * (isNarrow ? 0.52 : 0.50);
       const oy = h * (isNarrow ? 0.57 : 0.56);
 
@@ -3699,24 +3696,24 @@
 
     const TAB_CONFIG = {
       beam: {
-        s1: { label: 'Distributed Load q₀', min: 10, max: 100, step: 2, get: function () { return st.beamQ; }, set: function (v) { st.beamQ = v; }, fmt: function (v) { return v + ' kN/m'; } },
-        s2: { label: 'Cut Position x / L', min: 0.10, max: 0.90, step: 0.02, get: function () { return st.beamX; }, set: function (v) { st.beamX = v; }, fmt: function (v) { return fmt(v, 2); } },
-        caption: 'Simply supported beam (L, 2h): parabolic deflection & bending stress σ_xx across depth.'
+        s1: { label: 'Load q₀', min: 10, max: 100, step: 2, get: function () { return st.beamQ; }, set: function (v) { st.beamQ = v; }, fmt: function (v) { return v + ' kN/m'; } },
+        s2: { label: 'Cut x / L', min: 0.10, max: 0.90, step: 0.02, get: function () { return st.beamX; }, set: function (v) { st.beamX = v; }, fmt: function (v) { return fmt(v, 2); } },
+        caption: 'Beam (L, 2h): σ_xx = −My/I + Timoshenko correction · polynomial Airy φ(x,y)'
       },
       fourier: {
-        s1: { label: 'Fourier Mode n', min: 1, max: 6, step: 1, get: function () { return st.fourierN; }, set: function (v) { st.fourierN = v; }, fmt: function (v) { return 'n = ' + v; } },
-        s2: { label: 'Surface Pressure p₀', min: 20, max: 100, step: 5, get: function () { return st.fourierP; }, set: function (v) { st.fourierP = v; }, fmt: function (v) { return v + ' MPa'; } },
-        caption: 'Periodic load p(x) = p₀ cos(2πnx/L): higher modes decay rapidly into depth as e^(-ky) (Saint-Venant).'
+        s1: { label: 'Mode n', min: 1, max: 6, step: 1, get: function () { return st.fourierN; }, set: function (v) { st.fourierN = v; }, fmt: function (v) { return 'n = ' + v; } },
+        s2: { label: 'Pressure p₀', min: 20, max: 100, step: 5, get: function () { return st.fourierP; }, set: function (v) { st.fourierP = v; }, fmt: function (v) { return v + ' MPa'; } },
+        caption: 'Fourier: p(x) = p₀ cos(2πnx/L) · σ_yy = −p₀(1+ky)e^(-ky) cos(kx) (Saint-Venant decay)'
       },
       halfspace: {
         s1: { label: 'Line Load P', min: 20, max: 150, step: 5, get: function () { return st.flamantP; }, set: function (v) { st.flamantP = v; }, fmt: function (v) { return v + ' kN/m'; } },
-        s2: { label: 'Probe Radius r', min: 0.20, max: 1.00, step: 0.02, get: function () { return st.flamantR; }, set: function (v) { st.flamantR = v; }, fmt: function (v) { return fmt(v, 2) + ' m'; } },
-        caption: 'Flamant half-space: pure radial stress σ_rr = -(2P/πr) cosθ forms circular isochromatics tangent to surface.'
+        s2: { label: 'Radius r', min: 0.20, max: 1.00, step: 0.02, get: function () { return st.flamantR; }, set: function (v) { st.flamantR = v; }, fmt: function (v) { return fmt(v, 2) + ' m'; } },
+        caption: 'Flamant half-space: φ = −(P/π)rθ sinθ · σ_rr = −(2P/πr)cosθ, σ_θθ = τ_rθ = 0'
       },
       contact: {
-        s1: { label: 'Contact Load P', min: 10, max: 120, step: 2, get: function () { return st.contactP; }, set: function (v) { st.contactP = v; }, fmt: function (v) { return v + ' kN/m'; } },
-        s2: { label: 'Cylinder Radius R', min: 0.25, max: 1.00, step: 0.05, get: function () { return st.contactR; }, set: function (v) { st.contactR = v; }, fmt: function (v) { return fmt(v, 2) + ' m'; } },
-        caption: 'Hertzian contact: p(x) = p₀√(1-(x/a)²) widens as a ∝ √P with peak shear τ_max at depth z ≈ 0.786a.'
+        s1: { label: 'Load P', min: 10, max: 120, step: 2, get: function () { return st.contactP; }, set: function (v) { st.contactP = v; }, fmt: function (v) { return v + ' kN/m'; } },
+        s2: { label: 'Radius R', min: 0.25, max: 1.00, step: 0.05, get: function () { return st.contactR; }, set: function (v) { st.contactR = v; }, fmt: function (v) { return fmt(v, 2) + ' m'; } },
+        caption: 'Hertz contact: p(x) = p₀√(1−(x/a)²), a ∝ √P · peak subsurface shear τ_max at z ≈ 0.786a'
       }
     };
 
@@ -4503,14 +4500,14 @@
       hasToolbar: true,
       cursor: 'crosshair',
       readouts: [
-        { id: 'r1', label: 'Peak SCF', value: '3.00' },
-        { id: 'r2', label: 'Probe (r/a, θ)', value: '1.00, 90°' },
-        { id: 'r3', label: 'σ_θθ / σ∞', value: '+3.00' },
-        { id: 'r4', label: 'σ_rr / σ∞', value: '0.00' }
+        { id: 'r1', label: 'Rim Peak', value: '3σ∞ (300 MPa)' },
+        { id: 'r2', label: 'Probe', value: '1.00a, 90°' },
+        { id: 'r3', label: 'σ_θθ', value: '+300.0 MPa' },
+        { id: 'r4', label: 'σ_rr', value: '0.0 MPa' }
       ],
       sliders: [
-        { id: 's1', label: 'Remote Tension σ∞', min: 50, max: 200, step: 5, value: 100, format: function (v) { return v + ' MPa'; } },
-        { id: 's2', label: 'Probe Radius r / a', min: 1.00, max: 3.00, step: 0.05, value: 1.00, format: function (v) { return fmt(v, 2); } }
+        { id: 's1', label: 'Tension σ∞', min: 50, max: 200, step: 5, value: 100, format: function (v) { return v + ' MPa'; } },
+        { id: 's2', label: 'Radius r/a', min: 1.00, max: 3.00, step: 0.05, value: 1.00, format: function (v) { return fmt(v, 2); } }
       ],
       caption: 'Move pointer across the plate to probe Kirsch stresses, or switch to Wedge to morph 2α toward a crack.'
     });
@@ -4531,19 +4528,19 @@
 
     function applyModeUI() {
       if (st.mode === 'kirsch') {
-        dom.sliders.s1.labelEl.textContent = 'Remote Tension σ∞';
+        dom.sliders.s1.labelEl.textContent = 'Tension σ∞';
         dom.sliders.s1.input.min = '50'; dom.sliders.s1.input.max = '200'; dom.sliders.s1.input.step = '5';
         dom.sliders.s1.input.value = String(st.sigInf);
         dom.sliders.s1.valEl.textContent = st.sigInf + ' MPa';
 
         dom.sliders.s2.wrap.style.display = '';
-        dom.sliders.s2.labelEl.textContent = 'Probe Radius r / a';
+        dom.sliders.s2.labelEl.textContent = 'Radius r/a';
         dom.sliders.s2.input.min = '1.00'; dom.sliders.s2.input.max = '3.00'; dom.sliders.s2.input.step = '0.05';
         dom.sliders.s2.input.value = String(st.probeR);
         dom.sliders.s2.valEl.textContent = fmt(st.probeR, 2);
         dom.captionEl.innerHTML = formatMathHtml('Hover or drag on the plate to inspect Kirsch hoop stress σ_θθ(r, θ) around the hole.');
       } else {
-        dom.sliders.s1.labelEl.textContent = 'Solid Wedge Angle 2α';
+        dom.sliders.s1.labelEl.textContent = 'Wedge 2α';
         dom.sliders.s1.input.min = '60'; dom.sliders.s1.input.max = '360'; dom.sliders.s1.input.step = '2';
         dom.sliders.s1.input.value = String(st.wedgeDeg);
         dom.sliders.s1.valEl.textContent = st.wedgeDeg + '°';
@@ -4871,8 +4868,8 @@
         ctx.fillText(d + '°', toP(d, 0).x, axB + 5);
       });
 
-      setReadout('r1', 'Rim Peak (r=a)', '3.00 σ∞ (' + fmt(3 * st.sigInf, 0) + ' MPa)');
-      setReadout('r2', 'Probe (r/a, θ)', fmt(st.probeR, 2) + ', ' + Math.round(foldDeg) + '°');
+      setReadout('r1', 'Rim Peak', '3σ∞ (' + fmt(3 * st.sigInf, 0) + ' MPa)');
+      setReadout('r2', 'Probe', fmt(st.probeR, 2) + 'a, ' + Math.round(foldDeg) + '°');
       setReadout('r3', 'σ_θθ', fmtSigned(kProbe.stt * st.sigInf, 1) + ' MPa');
       setReadout('r4', 'σ_rr', fmtSigned(kProbe.srr * st.sigInf, 1) + ' MPa');
     }
@@ -5037,16 +5034,16 @@
       });
 
       const regime = twoAlpha >= 356
-        ? 'LEFM Crack (r⁻¹/²)'
+        ? 'LEFM Crack'
         : twoAlpha > 180.5
           ? 'Singular Notch'
           : twoAlpha > 179.5
-            ? 'Flat Half-Space'
-            : 'Regular Corner';
+            ? 'Half-Space'
+            : 'Regular';
 
-      setReadout('r1', 'Solid Wedge Angle 2α', twoAlpha + '°');
-      setReadout('r2', 'Eigenvalue λ', fmt(lam, 3));
-      setReadout('r3', 'Order r^(λ−1)', isSingular ? 'r^(' + fmt(order, 3) + ')' : 'Finite (λ ≥ 1)');
+      setReadout('r1', 'Wedge 2α', twoAlpha + '°');
+      setReadout('r2', 'λ', fmt(lam, 3));
+      setReadout('r3', 'Order', isSingular ? 'r^(' + fmt(order, 2) + ')' : 'Finite');
       setReadout('r4', 'Regime', regime);
     }
 
@@ -5086,15 +5083,15 @@
       hasToolbar: true,
       cursor: 'grab',
       readouts: [
-        { id: 'mode', label: 'Domain', value: 'Infinite Space' },
-        { id: 'depth', label: 'Source Depth d', value: '0.70 L' },
-        { id: 'surf', label: 'Surface |u|', value: '1/r Kelvin' },
-        { id: 'bc', label: 'Surface Traction', value: 'None (∞)' }
+        { id: 'mode', label: 'Domain', value: 'Half-Space' },
+        { id: 'depth', label: 'Depth d', value: '0.70 L' },
+        { id: 'surf', label: 'Surf |u|', value: '1/r Kelvin' },
+        { id: 'bc', label: 'Free BC', value: 'σᵧᵧ = τₓᵧ = 0' }
       ],
       sliders: [
-        { id: 'depth', label: 'Source Depth d', min: 0.25, max: 1.50, step: 0.05, value: 0.70, format: function (v) { return fmt(v, 2) + ' L'; } },
-        { id: 'angle', label: 'Load Angle φ', min: -90, max: 90, step: 5, value: 0, format: function (v) { return fmtSigned(v, 0) + '°'; } },
-        { id: 'nu', label: "Poisson's Ratio ν", min: 0.00, max: 0.48, step: 0.02, value: 0.30, format: function (v) { return fmt(v, 2); } }
+        { id: 'depth', label: 'Depth d', min: 0.25, max: 1.50, step: 0.05, value: 0.70, format: function (v) { return fmt(v, 2) + ' L'; } },
+        { id: 'angle', label: 'Angle φ', min: -90, max: 90, step: 5, value: 0, format: function (v) { return fmtSigned(v, 0) + '°'; } },
+        { id: 'nu', label: 'Poisson ν', min: 0.00, max: 0.48, step: 0.02, value: 0.30, format: function (v) { return fmt(v, 2); } }
       ],
       caption: 'Drag point force P vertically to change depth d, or switch between Infinite Kelvin and Half-Space Image.'
     });
@@ -5403,10 +5400,10 @@
       }
 
       // Update readouts
-      dom.readouts.mode.val.textContent = isImage ? 'Half-Space (y ≥ 0)' : 'Infinite Space';
-      dom.readouts.depth.val.textContent = isImage ? fmt(st.depth, 2) + ' L' : 'Origin (0, 0)';
-      dom.readouts.surf.val.textContent = isImage ? fmt(maxSurfU, 2) + ' P/μL' : 'uᵢ = Gᵢⱼ Pⱼ';
-      dom.readouts.bc.val.textContent = isImage ? 'σᵧᵧ = τₓᵧ = 0' : 'Decays as 1/r';
+      dom.readouts.mode.val.textContent = isImage ? 'Half-Space' : 'Infinite';
+      dom.readouts.depth.val.textContent = isImage ? fmt(st.depth, 2) + ' L' : '(0, 0)';
+      dom.readouts.surf.val.textContent = isImage ? fmt(maxSurfU, 2) + ' P/μL' : 'Gᵢⱼ Pⱼ';
+      dom.readouts.bc.val.textContent = isImage ? 'σᵧᵧ = τₓᵧ = 0' : '1/r decay';
     }
 
     render();

@@ -125,9 +125,35 @@
     return { ctx: ctx, w: w, h: h, dpr: dpr, ready: true };
   }
 
-  function fillStageBg(ctx, w, h, pal) {
-    ctx.fillStyle = pal.bg;
-    ctx.fillRect(0, 0, w, h);
+  function fillStageBg(ctx, w, h) {
+    ctx.clearRect(0, 0, w, h);
+  }
+
+  function drawHairline(ctx, x1, y1, x2, y2, pal) {
+    ctx.save();
+    ctx.strokeStyle = pal.border;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawOpenAxes(ctx, x, y, w, h, pal, hasRightAxis) {
+    ctx.save();
+    ctx.strokeStyle = pal.axis;
+    ctx.lineWidth = 1.1;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x, y + h);
+    ctx.lineTo(x + w, y + h);
+    if (hasRightAxis) {
+      ctx.moveTo(x + w, y);
+      ctx.lineTo(x + w, y + h);
+    }
+    ctx.stroke();
+    ctx.restore();
   }
 
   function roundRectPath(ctx, x, y, w, h, r) {
@@ -845,13 +871,6 @@
 
     function draw2DPanel(ctx, x0, y0, pw, ph, isRef, stats, pal) {
       ctx.save();
-      roundRectPath(ctx, x0, y0, pw, ph, 2);
-      ctx.fillStyle = pal.surface;
-      ctx.fill();
-      ctx.strokeStyle = pal.border;
-      ctx.lineWidth = 1.2;
-      ctx.stroke();
-
       const headerH = 30;
       const cx = x0 + pw * 0.5;
       const cy = y0 + headerH + (ph - headerH - 12) * 0.5;
@@ -1125,15 +1144,6 @@
     function draw1DBarPanels(ctx, leftBox, rightBox, stats, pal) {
       // Left panel: Reference [-1, 1] + P2 shape functions N1, N2, N3
       ctx.save();
-      [leftBox, rightBox].forEach(function (b) {
-        roundRectPath(ctx, b.x, b.y, b.w, b.h, 2);
-        ctx.fillStyle = pal.surface;
-        ctx.fill();
-        ctx.strokeStyle = pal.border;
-        ctx.lineWidth = 1.2;
-        ctx.stroke();
-      });
-
       drawMathRun(ctx, 'Reference Ω̂ = [-1, 1] & P2 Basis', leftBox.x + 12, leftBox.y + 16, {
         px: 15,
         weight: 600,
@@ -1351,9 +1361,12 @@
         }
         const midX1 = leftBox.x + leftBox.w + 6;
         const midX2 = rightBox.x - 6;
+        const midX = (midX1 + midX2) * 0.5;
         const midY = h * 0.5;
+        drawHairline(ctx, midX, pad, midX, midY - 34, pal);
+        drawHairline(ctx, midX, midY + 18, midX, h - pad, pal);
         drawArrow(ctx, midX1, midY, midX2, midY, pal.amber, 2.2, 9);
-        drawMathRun(ctx, 'x(ξ)', (midX1 + midX2) * 0.5, midY - 16, {
+        drawMathRun(ctx, 'x(ξ)', midX, midY - 16, {
           px: 15,
           mono: true,
           align: 'center',
@@ -1460,14 +1473,14 @@
     const shell = el('div', 'lab-shell');
     const toolbar = el('div', 'lab-toolbar');
     const pillGroup = el('div', 'lab-pill-group');
-    const btnExact = el('button', 'lab-pill is-active', '1D Exactness Cliff');
-    const btnHG = el('button', 'lab-pill', 'Q4 Hourglass Mode');
+    const btnExact = el('button', 'lab-pill is-active', '1D Exactness');
+    const btnHG = el('button', 'lab-pill', 'Q4 Hourglass');
     btnExact.type = 'button';
     btnHG.type = 'button';
     pillGroup.appendChild(btnExact);
     pillGroup.appendChild(btnHG);
 
-    const badgeEl = el('span', 'lab-badge-status is-warn', 'INEXACT (d >= 2Q)');
+    const badgeEl = el('span', 'lab-badge-status is-danger', 'CLIFF d≥2Q');
     toolbar.appendChild(pillGroup);
     toolbar.appendChild(badgeEl);
 
@@ -1519,16 +1532,14 @@
     const r1 = createReadoutChip('Exact I', '0.000');
     const r2 = createReadoutChip('Gauss I_Q', '0.000');
     const r3 = createReadoutChip('Rel. Error', '0.0e+0');
-    const r4 = createReadoutChip('Exact Limit', '2Q - 1 = 3');
     readouts.appendChild(r1.chip);
     readouts.appendChild(r2.chip);
     readouts.appendChild(r3.chip);
-    readouts.appendChild(r4.chip);
 
     shell.appendChild(toolbar);
     shell.appendChild(stage);
-    shell.appendChild(controlsGrid);
     shell.appendChild(readouts);
+    shell.appendChild(controlsGrid);
     mountEl.innerHTML = '';
     mountEl.appendChild(shell);
 
@@ -1568,12 +1579,8 @@
       function x1(xi) { return padL + ((xi + 1) * 0.5) * plotW; }
       function y1(val) { return padT + topH - ((val - gMin) / (gMax - gMin)) * topH; }
 
-      // Top panel box
-      ctx.fillStyle = pal.surface;
-      ctx.fillRect(padL, padT, plotW, topH);
-      ctx.strokeStyle = pal.border;
-      ctx.lineWidth = 1;
-      ctx.strokeRect(padL, padT, plotW, topH);
+      // Top panel open axes
+      drawOpenAxes(ctx, padL, padT, plotW, topH, pal, false);
 
       // Zero line
       const yZero = y1(0);
@@ -1647,12 +1654,8 @@
         color: pal.text
       });
 
-      // Bottom panel: log10(rel err) vs degree d = 1..9
-      ctx.fillStyle = pal.surface;
-      ctx.fillRect(padL, botY, plotW, botH);
-      ctx.strokeStyle = pal.border;
-      ctx.lineWidth = 1;
-      ctx.strokeRect(padL, botY, plotW, botH);
+      // Bottom panel: log10(rel err) vs degree d = 1..9 (open axes)
+      drawOpenAxes(ctx, padL, botY, plotW, botH, pal, false);
 
       const minLog = -16;
       const maxLog = 0.5;
@@ -1769,13 +1772,11 @@
       r2.valEl.textContent = apCur.toFixed(5);
       setMathText(r3.keyEl, 'Rel. Error');
       r3.valEl.textContent = relCur < 1e-14 ? '< 1e-15 (exact)' : relCur.toExponential(2);
-      setMathText(r4.keyEl, 'Exactness');
-      r4.valEl.textContent = 'd <= ' + (2 * Q - 1);
 
       if (deg <= 2 * Q - 1) {
-        setStatusBadge(badgeEl, 'EXACT (d <= 2Q - 1)', 'safe');
+        setStatusBadge(badgeEl, 'EXACT d≤2Q−1', 'safe');
       } else {
-        setStatusBadge(badgeEl, 'CLIFF ERROR (d >= 2Q)', 'danger');
+        setStatusBadge(badgeEl, 'CLIFF d≥2Q', 'danger');
       }
     }
 
@@ -1792,6 +1793,14 @@
             { x: pad * 2 + Math.floor((w - pad * 3) * 0.5), y: pad, w: w - pad * 3 - Math.floor((w - pad * 3) * 0.5), h: h - pad * 2, reduced: false }
           ];
 
+      if (isNarrow) {
+        const divY = panels[0].y + panels[0].h + pad * 0.5;
+        drawHairline(ctx, pad, divY, w - pad, divY, pal);
+      } else {
+        const divX = panels[0].x + panels[0].w + pad * 0.5;
+        drawHairline(ctx, divX, pad, divX, h - pad, pal);
+      }
+
       // Pure Q4 scalar hourglass field u_h(xi, eta) = hgAmp * xi * eta
       // Geometric butterfly distortion: x_a = xi_a + hgAmp * sign_a, y_a = eta_a + 0.55 * hgAmp * sign_a
       const refC = [[-1, -1], [1, -1], [1, 1], [-1, 1]];
@@ -1805,13 +1814,6 @@
 
       panels.forEach(function (p) {
         ctx.save();
-        roundRectPath(ctx, p.x, p.y, p.w, p.h, 2);
-        ctx.fillStyle = pal.surface;
-        ctx.fill();
-        ctx.strokeStyle = p.reduced && hgAmp > 0.02 ? withAlpha(pal.cardinal, 0.55) : pal.border;
-        ctx.lineWidth = p.reduced && hgAmp > 0.02 ? 1.8 : 1.2;
-        ctx.stroke();
-
         const title = p.reduced ? '1-pt Reduced: Zero Energy!' : '2x2 Full: Positive Energy';
         drawMathRun(ctx, title, p.x + 12, p.y + 18, {
           px: 15,
@@ -1924,13 +1926,11 @@
       r2.valEl.textContent = e2x2.toFixed(4);
       setMathText(r3.keyEl, '|∇u_h(0,0)|');
       r3.valEl.textContent = '0.0000';
-      setMathText(r4.keyEl, 'Rank Defic.');
-      r4.valEl.textContent = '2 zero modes';
 
       if (hgAmp > 0.02) {
-        setStatusBadge(badgeEl, 'ZERO-ENERGY HOURGLASS MODE', 'danger');
+        setStatusBadge(badgeEl, 'HOURGLASS MODE', 'danger');
       } else {
-        setStatusBadge(badgeEl, 'UNDEFORMED (α = 0)', 'safe');
+        setStatusBadge(badgeEl, 'UNDEFORMED (α=0)', 'safe');
       }
     }
 
@@ -2047,10 +2047,10 @@
     const toolbar = el('div', 'lab-toolbar');
     const pillGroup = el('div', 'lab-pill-group');
     const elemBtns = [
-      { label: 'Elem 1', idx: 0 },
-      { label: 'Elem 2', idx: 1 },
-      { label: 'Elem 3', idx: 2 },
-      { label: 'Elem 4', idx: 3 },
+      { label: 'e1', idx: 0 },
+      { label: 'e2', idx: 1 },
+      { label: 'e3', idx: 2 },
+      { label: 'e4', idx: 3 },
       { label: 'All', idx: -1 }
     ].map(function (spec) {
       const b = el('button', 'lab-pill' + (spec.idx === activeElem ? ' is-active' : ''), spec.label);
@@ -2059,7 +2059,7 @@
       return { idx: spec.idx, btn: b };
     });
 
-    const modeBtn = el('button', 'lab-pill', 'Full LG (6x6)');
+    const modeBtn = el('button', 'lab-pill', 'Full LG');
     modeBtn.type = 'button';
     toolbar.appendChild(pillGroup);
     toolbar.appendChild(modeBtn);
@@ -2072,11 +2072,9 @@
     const readouts = el('div', 'lab-readout-row');
     const rLG = createReadoutChip('LG(:,e)', '[1, 3, 2]^T');
     const rLGe = createReadoutChip('LG^e(:,e)', '[0, 1, 0]^T');
-    const rFree = createReadoutChip('Free DOFs', 'Nodes 3, 4 (2x2)');
     const rNNZ = createReadoutChip('Nonzeros', '24 / 36');
     readouts.appendChild(rLG.chip);
     readouts.appendChild(rLGe.chip);
-    readouts.appendChild(rFree.chip);
     readouts.appendChild(rNNZ.chip);
 
     shell.appendChild(toolbar);
@@ -2106,22 +2104,14 @@
         rLG.valEl.textContent = '[' + ed.lg.join(', ') + ']^T';
         rLGe.valEl.textContent = '[' + ed.lge.join(', ') + ']^T';
       }
-      rFree.valEl.textContent = reducedMode ? 'Active 2x2 (3,4)' : 'Nodes 3, 4';
-      rNNZ.valEl.textContent = reducedMode ? '4 / 4 (reduced)' : '24 / 36 (sparse)';
-      modeBtn.textContent = reducedMode ? 'Reduced LGe (2x2)' : 'Full LG (6x6)';
+      rNNZ.valEl.textContent = reducedMode ? '4 / 4 (2×2 free)' : '24 / 36 (sparse)';
+      setMathText(modeBtn, reducedMode ? 'Reduced LG^e' : 'Full LG');
       modeBtn.classList.toggle('is-active', reducedMode);
     }
 
     function drawMeshPanel(ctx, box, pal) {
       ctx.save();
-      roundRectPath(ctx, box.x, box.y, box.w, box.h, 2);
-      ctx.fillStyle = pal.surface;
-      ctx.fill();
-      ctx.strokeStyle = pal.border;
-      ctx.lineWidth = 1.2;
-      ctx.stroke();
-
-      drawMathRun(ctx, 'PS6 Mesh [-1,1]x[0,1] (click Ω^e)', box.x + 12, box.y + 18, {
+      drawMathRun(ctx, 'PS6 Mesh [-1,1]x[0,1] (click Ω^e)', box.x + 10, box.y + 16, {
         px: 15,
         weight: 600,
         color: pal.text
@@ -2251,15 +2241,8 @@
 
     function drawSpyPanel(ctx, box, pal) {
       ctx.save();
-      roundRectPath(ctx, box.x, box.y, box.w, box.h, 2);
-      ctx.fillStyle = pal.surface;
-      ctx.fill();
-      ctx.strokeStyle = pal.border;
-      ctx.lineWidth = 1.2;
-      ctx.stroke();
-
       const headerTxt = reducedMode ? 'spy(K): Reduced 2x2 Free Block' : 'spy(K): 6x6 Global Scatter';
-      drawMathRun(ctx, headerTxt, box.x + 12, box.y + 18, {
+      drawMathRun(ctx, headerTxt, box.x + 10, box.y + 16, {
         px: 15,
         weight: 600,
         color: pal.text
@@ -2346,10 +2329,12 @@
       if (isNarrow) {
         const topH = Math.floor((fit.h - pad * 3) * 0.48);
         drawMeshPanel(fit.ctx, { x: pad, y: pad, w: fit.w - pad * 2, h: topH }, pal);
+        drawHairline(fit.ctx, pad, pad * 1.5 + topH, fit.w - pad, pad * 1.5 + topH, pal);
         drawSpyPanel(fit.ctx, { x: pad, y: pad * 2 + topH, w: fit.w - pad * 2, h: fit.h - topH - pad * 3 }, pal);
       } else {
         const leftW = Math.floor((fit.w - pad * 3) * 0.53);
         drawMeshPanel(fit.ctx, { x: pad, y: pad, w: leftW, h: fit.h - pad * 2 }, pal);
+        drawHairline(fit.ctx, pad * 1.5 + leftW, pad, pad * 1.5 + leftW, fit.h - pad, pal);
         drawSpyPanel(fit.ctx, { x: pad * 2 + leftW, y: pad, w: fit.w - leftW - pad * 3, h: fit.h - pad * 2 }, pal);
       }
     }
@@ -2621,8 +2606,8 @@
     const shell = el('div', 'lab-shell');
     const toolbar = el('div', 'lab-toolbar');
     const pillGroup = el('div', 'lab-pill-group');
-    const btnP1 = el('button', 'lab-pill is-active', 'P1 (6 nodes, 1 free)');
-    const btnP2 = el('button', 'lab-pill', 'P2 (15 nodes, 6 free)');
+    const btnP1 = el('button', 'lab-pill is-active', 'P1 (6)');
+    const btnP2 = el('button', 'lab-pill', 'P2 (15)');
     btnP1.type = 'button';
     btnP2.type = 'button';
     pillGroup.appendChild(btnP1);
@@ -2670,8 +2655,8 @@
 
     shell.appendChild(toolbar);
     shell.appendChild(stage);
-    shell.appendChild(controlsGrid);
     shell.appendChild(readouts);
+    shell.appendChild(controlsGrid);
     mountEl.innerHTML = '';
     mountEl.appendChild(shell);
 
@@ -2905,8 +2890,8 @@
         color: pal.text
       });
 
-      // Bottom legend: conductivities
-      drawMathRun(ctx, 'k^e = {' + k1 + ', ' + Math.round(k24) + ', ' + Math.round(k3) + ', ' + Math.round(k24) + '}   |   u_5 = ' + res.T[4].toFixed(3) + '°C', 12, h - 14, {
+      // Bottom legend: element conductivities (u_5 shown in live readout row below)
+      drawMathRun(ctx, 'k^e = {' + k1 + ', ' + Math.round(k24) + ', ' + Math.round(k3) + ', ' + Math.round(k24) + '} W/(m·K)', 12, h - 14, {
         px: 15,
         mono: true,
         color: pal.textMuted
@@ -3145,7 +3130,7 @@
       return { val: p.val, btn: b };
     });
 
-    const badgeEl = el('span', 'lab-badge-status is-danger', 'VOLUMETRIC LOCKING');
+    const badgeEl = el('span', 'lab-badge-status is-danger', 'LOCKING (Full Q4)');
     toolbar.appendChild(pillGroup);
     toolbar.appendChild(badgeEl);
 
@@ -3179,8 +3164,8 @@
 
     shell.appendChild(toolbar);
     shell.appendChild(stage);
-    shell.appendChild(controlsGrid);
     shell.appendChild(readouts);
+    shell.appendChild(controlsGrid);
     mountEl.innerHTML = '';
     mountEl.appendChild(shell);
 
@@ -3251,11 +3236,11 @@
       rFull.valEl.textContent = fullSol.ratio.toFixed(3);
       rSRI.valEl.textContent = sriSol.ratio.toFixed(3);
       if (fullSol.ratio < 0.25) {
-        setStatusBadge(badgeEl, 'SEVERE LOCKING (Full Q4 freezes)', 'danger');
+        setStatusBadge(badgeEl, 'LOCKING (Full Q4)', 'danger');
       } else if (fullSol.ratio < 0.65) {
-        setStatusBadge(badgeEl, 'VOLUMETRIC STIFFENING', 'warn');
+        setStatusBadge(badgeEl, 'STIFFENING', 'warn');
       } else {
-        setStatusBadge(badgeEl, 'COMPRESSIBLE REGIME', 'safe');
+        setStatusBadge(badgeEl, 'COMPRESSIBLE', 'safe');
       }
 
       const padL = 56;
@@ -3268,12 +3253,8 @@
       const botH = Math.max(76, h - botY - padB);
       const plotW = Math.max(120, w - padL - padR);
 
-      // Top panel: Deformed cantilever comparison
-      ctx.fillStyle = pal.surface;
-      ctx.fillRect(padL, padT, plotW, topH);
-      ctx.strokeStyle = pal.border;
-      ctx.lineWidth = 1;
-      ctx.strokeRect(padL, padT, plotW, topH);
+      // Top panel: Deformed cantilever comparison (open transparent stage)
+      drawHairline(ctx, padL, padT + topH + midGap * 0.32, padL + plotW, padT + topH + midGap * 0.32, pal);
 
       const beamSc = Math.min((plotW - 56) / L, (topH - 28) / 2.25);
       const ox = padL + 26;
@@ -3322,12 +3303,8 @@
         color: pal.text
       });
 
-      // Bottom panel: Normalized tip deflection w / w_ref vs nu
-      ctx.fillStyle = pal.surface;
-      ctx.fillRect(padL, botY, plotW, botH);
-      ctx.strokeStyle = pal.border;
-      ctx.lineWidth = 1;
-      ctx.strokeRect(padL, botY, plotW, botH);
+      // Bottom panel: Normalized tip deflection w / w_ref vs nu (open axes)
+      drawOpenAxes(ctx, padL, botY, plotW, botH, pal, false);
 
       function xNu(nv) { return padL + ((nv - 0.25) / (0.50 - 0.25)) * plotW; }
       function yRat(rv) { return botY + botH - (clamp(rv, 0, 1.05) / 1.05) * botH; }
@@ -3608,16 +3585,16 @@
     const shell = el('div', 'lab-shell');
     const toolbar = el('div', 'lab-toolbar');
     const mainTabs = el('div', 'lab-pill-group');
-    const btnTabCon = el('button', 'lab-pill is-active', 'Penalty vs Lagrange Mult.');
-    const btnTabPoi = el('button', 'lab-pill', 'Week 7 Poisson [-1,1]^2');
+    const btnTabCon = el('button', 'lab-pill is-active', 'Penalty vs. LM');
+    const btnTabPoi = el('button', 'lab-pill', 'Week 7 Poisson');
     btnTabCon.type = 'button';
     btnTabPoi.type = 'button';
     mainTabs.appendChild(btnTabCon);
     mainTabs.appendChild(btnTabPoi);
 
     const subTabs = el('div', 'lab-pill-group');
-    const btnFiredrake = el('button', 'lab-pill', 'Firedrake (k=1, f=1)');
-    const btnFenics = el('button', 'lab-pill is-active', 'FEniCS (k=2e-4, u=1000)');
+    const btnFiredrake = el('button', 'lab-pill', 'Firedrake');
+    const btnFenics = el('button', 'lab-pill is-active', 'FEniCS');
     btnFiredrake.type = 'button';
     btnFenics.type = 'button';
     subTabs.appendChild(btnFiredrake);
@@ -3648,19 +3625,17 @@
     controlsGrid.appendChild(slBeta.wrap);
 
     const readouts = el('div', 'lab-readout-row');
-    const r1 = createReadoutChip('Penalty β', '1.0e+5');
-    const r2 = createReadoutChip('|u_h(0) - g|', '2.0e-5');
+    const r2 = createReadoutChip('|u_h(0) − g|', '2.0e-5');
     const r3 = createReadoutChip('κ(K_β)', '2.1e+5');
     const r4 = createReadoutChip('LM Reaction λ', '2.000');
-    readouts.appendChild(r1.chip);
     readouts.appendChild(r2.chip);
     readouts.appendChild(r3.chip);
     readouts.appendChild(r4.chip);
 
     shell.appendChild(toolbar);
     shell.appendChild(stage);
-    shell.appendChild(controlsGrid);
     shell.appendChild(readouts);
+    shell.appendChild(controlsGrid);
     mountEl.innerHTML = '';
     mountEl.appendChild(shell);
 
@@ -3684,11 +3659,7 @@
       const plotW = Math.max(120, w - padL - padR);
       const plotH = Math.max(120, h - padT - padB);
 
-      ctx.fillStyle = pal.surface;
-      ctx.fillRect(padL, padT, plotW, plotH);
-      ctx.strokeStyle = pal.border;
-      ctx.lineWidth = 1;
-      ctx.strokeRect(padL, padT, plotW, plotH);
+      drawOpenAxes(ctx, padL, padT, plotW, plotH, pal, true);
 
       function xP(p) { return padL + (p / 12) * plotW; }
       function yErr(lg) { return padT + plotH - ((clamp(lg, -13, 1) - (-13)) / 14) * plotH; }
@@ -3811,18 +3782,16 @@
       });
 
       // Readouts & badge
-      setMathText(r1.keyEl, 'Penalty β');
-      r1.valEl.textContent = cur.beta.toExponential(1);
-      setMathText(r2.keyEl, '|u_h(0) - g|');
+      setMathText(r2.keyEl, '|u_h(0) − g|');
       r2.valEl.textContent = cur.bcErr < 1e-14 ? '< 1e-14' : cur.bcErr.toExponential(2);
       setMathText(r3.keyEl, 'κ(K_β)');
       r3.valEl.textContent = cur.kappa.toExponential(2);
       setMathText(r4.keyEl, 'LM Reaction λ');
       r4.valEl.textContent = LM_SOL.lam.toFixed(3) + ' (exact)';
 
-      if (logBeta < 3.5) setStatusBadge(badgeEl, 'WEAK CONSTRAINT (O(1/β))', 'warn');
-      else if (logBeta <= 8.5) setStatusBadge(badgeEl, 'OPTIMAL PENALTY WINDOW', 'safe');
-      else setStatusBadge(badgeEl, 'ILL-CONDITIONED (κ > 10^9)', 'danger');
+      if (logBeta < 3.5) setStatusBadge(badgeEl, 'WEAK O(1/β)', 'warn');
+      else if (logBeta <= 8.5) setStatusBadge(badgeEl, 'OPTIMAL WINDOW', 'safe');
+      else setStatusBadge(badgeEl, 'ILL-COND. κ>10^9', 'danger');
     }
 
     function drawPoissonTab(ctx, w, h, pal) {
@@ -3831,14 +3800,8 @@
       const uMax = scalePoisson(UNIT_POISSON[(M_GRID / 2) * N + (M_GRID / 2)]);
       const uSpan = Math.max(1e-9, uMax - uMin);
 
-      // UFL header bar
-      const headerH = 34;
-      roundRectPath(ctx, 10, 8, w - 20, headerH - 4, 2);
-      ctx.fillStyle = pal.surface2;
-      ctx.fill();
-      ctx.strokeStyle = pal.border;
-      ctx.lineWidth = 1;
-      ctx.stroke();
+      // Borderless UFL header strip + hairline underline
+      const headerH = 30;
       setFont(ctx, 15, true, 500);
       ctx.fillStyle = pal.teal;
       ctx.textAlign = 'left';
@@ -3846,7 +3809,8 @@
       const uflTxt = w < 440
         ? 'a = k*dot(grad(u),grad(v))*dx; L = f*v*dx'
         : 'UFL:  a = k * dot(grad(u), grad(v)) * dx;  L = f * v * dx';
-      ctx.fillText(uflTxt, 18, 8 + (headerH - 4) * 0.5);
+      ctx.fillText(uflTxt, 10, 14);
+      drawHairline(ctx, 10, headerH, w - 10, headerH, pal);
 
       const padT = headerH + 16;
       const padB = 34;
@@ -3946,8 +3910,6 @@
       ctx.stroke();
 
       const uProbe = scalePoisson(evalUnitPoisson(probeX, probeY));
-      setMathText(r1.keyEl, 'Framework');
-      r1.valEl.textContent = uflMode === 'firedrake' ? 'Firedrake CG1' : 'FEniCS CG1';
       setMathText(r2.keyEl, 'Probe (x,y)');
       r2.valEl.textContent = '(' + probeX.toFixed(2) + ', ' + probeY.toFixed(2) + ')';
       setMathText(r3.keyEl, 'u_h(x,y)');
@@ -4038,7 +4000,7 @@
 
     const FUNCS = {
       smooth: {
-        label: 'Smooth x^2',
+        label: 'x^2',
         formula: 'v(x) = x^2   |   v\'(x) = 2x',
         inL2: true,
         inH1: true,
@@ -4049,7 +4011,7 @@
         }
       },
       hat: {
-        label: 'Hat Function (H^1)',
+        label: 'Hat (H^1)',
         formula: 'v(x) = 1 - |x|   |   v\'(x) = -sgn(x)',
         inL2: true,
         inH1: true,
@@ -4060,7 +4022,7 @@
         }
       },
       heaviside: {
-        label: 'Heaviside Step',
+        label: 'Step',
         formula: 'H_ε(x) = 0.5(1 + tanh(x/ε))   |   H\'_ε -> δ_0',
         inL2: true,
         inH1: false,
@@ -4078,7 +4040,7 @@
         }
       },
       log: {
-        label: 'PS8 Log: ln(1+x)',
+        label: 'ln(1+x)',
         formula: 'v(x) = ln(1+x) on [-1+ε, 1]   |   v\'(x) = 1/(1+x)',
         inL2: true,
         inH1: false,
@@ -4115,7 +4077,7 @@
       return { key: k, btn: b };
     });
 
-    const badgeEl = el('span', 'lab-badge-status is-danger', 'L^2 FINITE · H^1 DIVERGES');
+    const badgeEl = el('span', 'lab-badge-status is-danger', 'L^2 Finite · H^1 ∞');
     toolbar.appendChild(pillGroup);
     toolbar.appendChild(badgeEl);
 
@@ -4139,19 +4101,15 @@
     controlsGrid.appendChild(slEps.wrap);
 
     const readouts = el('div', 'lab-readout-row');
-    const rL2 = createReadoutChip('‖v‖_{0,2} (L^2)', '1.48');
-    const rH1s = createReadoutChip('|v|_{1,2} (H^1 semi)', '17.8');
-    const rL2St = createReadoutChip('L^2(Ω)', 'FINITE');
-    const rH1St = createReadoutChip('H^1(Ω)', 'DIVERGES');
+    const rL2 = createReadoutChip('‖v‖_{0,2}', '1.48');
+    const rH1s = createReadoutChip('|v|_{1,2}', '17.8');
     readouts.appendChild(rL2.chip);
     readouts.appendChild(rH1s.chip);
-    readouts.appendChild(rL2St.chip);
-    readouts.appendChild(rH1St.chip);
 
     shell.appendChild(toolbar);
     shell.appendChild(stage);
-    shell.appendChild(controlsGrid);
     shell.appendChild(readouts);
+    shell.appendChild(controlsGrid);
     mountEl.innerHTML = '';
     mountEl.appendChild(shell);
 
@@ -4175,12 +4133,10 @@
 
       rL2.valEl.textContent = curN.l2.toFixed(3);
       rH1s.valEl.textContent = curN.h1s > 99 ? curN.h1s.toFixed(1) : curN.h1s.toFixed(3);
-      rL2St.valEl.textContent = fn.inL2 ? 'FINITE' : 'DIVERGES';
-      rH1St.valEl.textContent = fn.inH1 ? 'FINITE' : 'DIVERGES';
       if (fn.inH1) {
-        setStatusBadge(badgeEl, 'L^2: FINITE · H^1: FINITE', 'safe');
+        setStatusBadge(badgeEl, 'L^2 & H^1 Finite', 'safe');
       } else {
-        setStatusBadge(badgeEl, 'L^2: FINITE · H^1: DIVERGES', 'danger');
+        setStatusBadge(badgeEl, 'L^2 Finite · H^1 ∞', 'danger');
       }
 
       const padL = 56;
@@ -4193,12 +4149,8 @@
       const botH = Math.max(72, h - botY - padB);
       const plotW = Math.max(120, w - padL - padR);
 
-      // Top panel: v(x) (Teal) and weak derivative v'(x) (Cardinal) on [-1, 1]
-      ctx.fillStyle = pal.surface;
-      ctx.fillRect(padL, padT, plotW, topH);
-      ctx.strokeStyle = pal.border;
-      ctx.lineWidth = 1;
-      ctx.strokeRect(padL, padT, plotW, topH);
+      // Top panel: v(x) (Teal) and weak derivative v'(x) (Cardinal) on [-1, 1] (open axes)
+      drawOpenAxes(ctx, padL, padT, plotW, topH, pal, false);
 
       const yLo = funcKey === 'log' ? -4.2 : -2.4;
       const yHi = funcKey === 'log' ? 6.0 : (funcKey === 'heaviside' ? 5.5 : 2.6);
@@ -4272,12 +4224,8 @@
       ctx.fillStyle = pal.cardinal;
       ctx.fillText('v\'(x)', padL + plotW - 10, padT + 6);
 
-      // Bottom panel: log10 growth of ||v||_{0,2} vs |v|_{1,2} across s in [1, 5]
-      ctx.fillStyle = pal.surface;
-      ctx.fillRect(padL, botY, plotW, botH);
-      ctx.strokeStyle = pal.border;
-      ctx.lineWidth = 1;
-      ctx.strokeRect(padL, botY, plotW, botH);
+      // Bottom panel: log10 growth of ||v||_{0,2} vs |v|_{1,2} across s in [1, 5] (open axes)
+      drawOpenAxes(ctx, padL, botY, plotW, botH, pal, false);
 
       const lgMin = -0.5;
       const lgMax = 2.8;
@@ -4399,14 +4347,14 @@
     const shell = el('div', 'lab-shell');
     const toolbar = el('div', 'lab-toolbar');
     const pillGroup = el('div', 'lab-pill-group');
-    const btnSym = el('button', 'lab-pill is-active', 'Symmetric (a-Orthogonal)');
-    const btnNonSym = el('button', 'lab-pill', 'Non-Symmetric (Advection)');
+    const btnSym = el('button', 'lab-pill is-active', 'Symmetric');
+    const btnNonSym = el('button', 'lab-pill', 'Non-Symmetric');
     btnSym.type = 'button';
     btnNonSym.type = 'button';
     pillGroup.appendChild(btnSym);
     pillGroup.appendChild(btnNonSym);
 
-    const badgeEl = el('span', 'lab-badge-status is-safe', 'ENERGY OPTIMAL');
+    const badgeEl = el('span', 'lab-badge-status is-safe', 'Energy Optimal ≤ √(M/α)');
     toolbar.appendChild(pillGroup);
     toolbar.appendChild(badgeEl);
 
@@ -4430,19 +4378,17 @@
     controlsGrid.appendChild(slMA.wrap);
 
     const readouts = el('div', 'lab-readout-row');
-    const rMA = createReadoutChip('M / α', '2.0');
-    const rCea = createReadoutChip('Céa (1 + M/α)', '3.00');
-    const rAct = createReadoutChip('‖u-u_h‖ / ‖u-w_h*‖', '1.22');
-    const rSymB = createReadoutChip('Sym. Bound √(M/α)', '1.41');
-    readouts.appendChild(rMA.chip);
+    const rCea = createReadoutChip('Céa 1+M/α', '3.00');
+    const rAct = createReadoutChip('Actual Ratio', '1.22');
+    const rSymB = createReadoutChip('Sym. √(M/α)', '1.41');
     readouts.appendChild(rCea.chip);
     readouts.appendChild(rAct.chip);
     readouts.appendChild(rSymB.chip);
 
     shell.appendChild(toolbar);
     shell.appendChild(stage);
-    shell.appendChild(controlsGrid);
     shell.appendChild(readouts);
+    shell.appendChild(controlsGrid);
     mountEl.innerHTML = '';
     mountEl.appendChild(shell);
 
@@ -4480,19 +4426,18 @@
       }
       const actualRatio = Math.hypot(1, tanShift);
 
-      rMA.valEl.textContent = ratioMA.toFixed(1);
       rCea.valEl.textContent = ceaBound.toFixed(2);
       rAct.valEl.textContent = actualRatio.toFixed(2);
-      rSymB.valEl.textContent = symMode ? symBound.toFixed(2) : 'N/A (non-sym)';
+      rSymB.valEl.textContent = symMode ? symBound.toFixed(2) : 'N/A';
 
       if (actualRatio < 1.15) {
-        setStatusBadge(badgeEl, 'NEAR-ORTHOGONAL OPTIMAL', 'safe');
+        setStatusBadge(badgeEl, 'Near-Orthogonal', 'safe');
       } else if (symMode) {
-        setStatusBadge(badgeEl, 'ENERGY-NORM OPTIMAL (≤ √(M/α))', 'safe');
+        setStatusBadge(badgeEl, 'Energy Optimal ≤ √(M/α)', 'safe');
       } else if (ratioMA > 4.0) {
-        setStatusBadge(badgeEl, 'OBLIQUE DEGRADATION (stabilize!)', 'danger');
+        setStatusBadge(badgeEl, 'Oblique Degradation', 'danger');
       } else {
-        setStatusBadge(badgeEl, 'QUASI-OPTIMAL OBLIQUE PROJ.', 'warn');
+        setStatusBadge(badgeEl, 'Oblique Proj.', 'warn');
       }
 
       // Geometric layout
@@ -4635,16 +4580,12 @@
         });
       });
 
-      // Top-right theorem summary badge
-      drawMathRun(ctx, 'a(u - u_h, v_h) = 0  ∀v_h ∈ V_h', w - 16, 20, {
+      // Top-right theorem summary label (borderless)
+      drawMathRun(ctx, 'a(u − u_h, v_h) = 0  ∀v_h ∈ V_h', w - 12, 16, {
         px: 15,
         mono: true,
         align: 'right',
-        color: pal.amber,
-        bg: withAlpha(pal.surface2, 0.85),
-        border: pal.border,
-        padX: 8,
-        padY: 4
+        color: pal.amber
       });
     }
 
@@ -4906,16 +4847,16 @@
     const shell = el('div', 'lab-shell');
     const toolbar = el('div', 'lab-toolbar');
     const probGroup = el('div', 'lab-pill-group');
-    const btnSmooth = el('button', 'lab-pill is-active', 'Smooth: -u\'\' = sin(πx)');
-    const btnSing = el('button', 'lab-pill', 'Singular: u = x^γ - x^3');
+    const btnSmooth = el('button', 'lab-pill is-active', 'Smooth (sin πx)');
+    const btnSing = el('button', 'lab-pill', 'Singular (x^γ)');
     btnSmooth.type = 'button';
     btnSing.type = 'button';
     probGroup.appendChild(btnSmooth);
     probGroup.appendChild(btnSing);
 
     const ordGroup = el('div', 'lab-pill-group');
-    const btnP1 = el('button', 'lab-pill is-active', 'P1 Linear');
-    const btnP2 = el('button', 'lab-pill', 'P2 Quadratic');
+    const btnP1 = el('button', 'lab-pill is-active', 'P1');
+    const btnP2 = el('button', 'lab-pill', 'P2');
     btnP1.type = 'button';
     btnP2.type = 'button';
     ordGroup.appendChild(btnP1);
@@ -4944,19 +4885,15 @@
     controlsGrid.appendChild(slGam.wrap);
 
     const readouts = el('div', 'lab-readout-row');
-    const rH1 = createReadoutChip('Measured r_{H1}', '1.00');
-    const rL2 = createReadoutChip('Measured r_{L2}', '2.00');
-    const rThH1 = createReadoutChip('Theory H^1', '1.00');
-    const rThL2 = createReadoutChip('Theory L^2', '2.00');
+    const rH1 = createReadoutChip('H^1 Slope', '1.00 (theory 1.00)');
+    const rL2 = createReadoutChip('L^2 Slope', '2.00 (theory 2.00)');
     readouts.appendChild(rH1.chip);
     readouts.appendChild(rL2.chip);
-    readouts.appendChild(rThH1.chip);
-    readouts.appendChild(rThL2.chip);
 
     shell.appendChild(toolbar);
     shell.appendChild(stage);
-    shell.appendChild(controlsGrid);
     shell.appendChild(readouts);
+    shell.appendChild(controlsGrid);
     mountEl.innerHTML = '';
     mountEl.appendChild(shell);
 
@@ -4988,10 +4925,8 @@
       const thH1 = probType === 'smooth' ? elemOrder : Math.min(elemOrder, gamma - 0.5);
       const thL2 = probType === 'smooth' ? elemOrder + 1 : Math.min(elemOrder + 1, gamma + 0.5);
 
-      rH1.valEl.textContent = slopeH1.toFixed(2);
-      rL2.valEl.textContent = slopeL2.toFixed(2);
-      rThH1.valEl.textContent = thH1.toFixed(2);
-      rThL2.valEl.textContent = thL2.toFixed(2);
+      rH1.valEl.textContent = slopeH1.toFixed(2) + ' (theory ' + thH1.toFixed(2) + ')';
+      rL2.valEl.textContent = slopeL2.toFixed(2) + ' (theory ' + thL2.toFixed(2) + ')';
 
       // Compute clean log-log axis bounds
       const xLogMin = Math.log10(1 / 80);
@@ -5015,11 +4950,7 @@
       const plotW = Math.max(120, w - padL - padR);
       const plotH = Math.max(120, h - padT - padB);
 
-      ctx.fillStyle = pal.surface;
-      ctx.fillRect(padL, padT, plotW, plotH);
-      ctx.strokeStyle = pal.border;
-      ctx.lineWidth = 1;
-      ctx.strokeRect(padL, padT, plotW, plotH);
+      drawOpenAxes(ctx, padL, padT, plotW, plotH, pal, false);
 
       function xMap(hv) {
         return padL + ((Math.log10(hv) - xLogMin) / (xLogMax - xLogMin)) * plotW;
@@ -5242,27 +5173,27 @@
     canvas.className = 'lab-canvas';
     stage.appendChild(canvas);
 
-    const readouts = el('div', 'lab-readout-row');
-    const rStage = createReadoutChip('Stage', '01 · Strong Form');
-    const rSanity = createReadoutChip('Sanity Check', 'Γ_D ∩ Γ_N = ∅');
-    readouts.appendChild(rStage.chip);
-    readouts.appendChild(rSanity.chip);
-
     shell.appendChild(toolbar);
     shell.appendChild(stage);
-    shell.appendChild(readouts);
     mountEl.innerHTML = '';
     mountEl.appendChild(shell);
 
+    function syncLeftList() {
+      const slideRoot = mountEl.closest ? mountEl.closest('.slide') : null;
+      if (!slideRoot) return;
+      slideRoot.querySelectorAll('[data-workflow-step]').forEach(function (li) {
+        li.classList.toggle('is-step-active', parseInt(li.dataset.workflowStep, 10) === activeStep);
+      });
+    }
+
+    function setStep(idx) {
+      activeStep = ((idx % STEPS.length) + STEPS.length) % STEPS.length;
+      syncLeftList();
+      draw();
+    }
+
     function drawMicroVisual(ctx, stepIdx, x, y, w, h, col, pal) {
       ctx.save();
-      roundRectPath(ctx, x, y, w, h, 2);
-      ctx.fillStyle = pal.surface2;
-      ctx.fill();
-      ctx.strokeStyle = pal.border;
-      ctx.lineWidth = 1;
-      ctx.stroke();
-
       const cx = x + w * 0.5;
       const cy = y + h * 0.5;
 
@@ -5452,8 +5383,6 @@
       const cur = STEPS[activeStep];
       const curCol = pal[cur.colorKey];
       setStatusBadge(badgeEl, 'STEP ' + cur.num + ' / 07', 'safe');
-      rStage.valEl.textContent = cur.title;
-      setMathText(rSanity.valEl, cur.check.replace(/^Check:\s*/, ''));
 
       const pad = 10;
       tileRects = [];
@@ -5523,33 +5452,29 @@
         }
       });
 
-      // Bottom detail plate for the active step
-      const detailY = railBottomY + 12;
+      // Bottom detail zone for the active step (borderless with crisp accent top rule)
+      const detailY = railBottomY + 14;
       const detailH = Math.max(120, h - detailY - pad);
       const detailW = w - pad * 2;
-      roundRectPath(ctx, pad, detailY, detailW, detailH, 2);
-      ctx.fillStyle = pal.surface;
-      ctx.fill();
-      ctx.strokeStyle = withAlpha(curCol, 0.72);
-      ctx.lineWidth = 1.6;
-      ctx.stroke();
+      ctx.fillStyle = curCol;
+      ctx.fillRect(pad, detailY, detailW, 2);
 
       // Detail header & formula
-      drawMathRun(ctx, cur.title, pad + 14, detailY + 20, { px: 16, weight: 700, color: curCol });
+      drawMathRun(ctx, cur.title, pad + 6, detailY + 20, { px: 16, weight: 700, color: curCol });
 
-      // Micro visual inside detail plate
+      // Micro visual inside detail zone
       const visTop = detailY + 38;
       const visBot = detailY + detailH - 58;
       const visH = Math.max(66, visBot - visTop);
-      drawMicroVisual(ctx, activeStep, pad + 14, visTop, detailW - 28, visH, curCol, pal);
+      drawMicroVisual(ctx, activeStep, pad + 6, visTop, detailW - 12, visH, curCol, pal);
 
       // Core formula & verification line below micro visual
-      drawMathRun(ctx, cur.eq, pad + 14, detailY + detailH - 38, {
+      drawMathRun(ctx, cur.eq, pad + 6, detailY + detailH - 36, {
         px: 15,
         mono: true,
         color: pal.text
       });
-      drawMathRun(ctx, cur.check, pad + 14, detailY + detailH - 16, {
+      drawMathRun(ctx, cur.check, pad + 6, detailY + detailH - 14, {
         px: 15,
         weight: 500,
         color: pal.teal
@@ -5561,27 +5486,32 @@
       for (let i = 0; i < tileRects.length; i++) {
         const r = tileRects[i];
         if (pt.x >= r.x && pt.x <= r.x + r.w && pt.y >= r.y && pt.y <= r.y + r.h) {
-          activeStep = i;
-          draw();
+          setStep(i);
           return;
         }
       }
     });
 
     bag.on(btnPrev, 'click', function () {
-      activeStep = (activeStep + STEPS.length - 1) % STEPS.length;
-      draw();
+      setStep(activeStep - 1);
     });
     bag.on(btnNext, 'click', function () {
-      activeStep = (activeStep + 1) % STEPS.length;
-      draw();
+      setStep(activeStep + 1);
     });
     bag.on(btnReset, 'click', function () {
-      activeStep = 0;
-      draw();
+      setStep(0);
+    });
+    bag.on(window, 'me335:workflow-step', function (ev) {
+      const step = ev && ev.detail && typeof ev.detail.step === 'number' ? ev.detail.step : 0;
+      if (step >= 0 && step < STEPS.length) {
+        activeStep = step;
+        syncLeftList();
+        draw();
+      }
     });
 
     bag.observe(stage, draw);
+    syncLeftList();
     draw();
 
     return {
@@ -5632,32 +5562,15 @@
     let tierRects = [];
 
     const shell = el('div', 'lab-shell');
-    const toolbar = el('div', 'lab-toolbar');
-    const pillGroup = el('div', 'lab-pill-group');
-    const pillBtns = TIERS.map(function (t, i) {
-      const b = el('button', 'lab-pill' + (i === activeTier ? ' is-active' : ''), t.label);
-      b.type = 'button';
-      pillGroup.appendChild(b);
-      return b;
-    });
-    const badgeEl = el('span', 'lab-badge-status is-safe', 'KU = F');
-    toolbar.appendChild(pillGroup);
-    toolbar.appendChild(badgeEl);
-
     const stage = el('div', 'lab-stage');
     const canvas = document.createElement('canvas');
     canvas.className = 'lab-canvas';
     stage.appendChild(canvas);
 
     const readouts = el('div', 'lab-readout-row');
-    const rCourse = createReadoutChip('Course', TIERS[0].code);
-    const rEq = createReadoutChip('System', TIERS[0].eq);
-    const rKey = createReadoutChip('Focus', TIERS[0].challenge);
-    readouts.appendChild(rCourse.chip);
-    readouts.appendChild(rEq.chip);
+    const rKey = createReadoutChip('Focus', TIERS[0].code + ' · ' + TIERS[0].challenge);
     readouts.appendChild(rKey.chip);
 
-    shell.appendChild(toolbar);
     shell.appendChild(stage);
     shell.appendChild(readouts);
     mountEl.innerHTML = '';
@@ -5665,14 +5578,8 @@
 
     function selectTier(idx) {
       activeTier = idx;
-      pillBtns.forEach(function (b, i) {
-        b.classList.toggle('is-active', i === activeTier);
-      });
       const t = TIERS[activeTier];
-      rCourse.valEl.textContent = t.code;
-      setMathText(rEq.valEl, t.eq);
-      setMathText(rKey.valEl, t.challenge);
-      setStatusBadge(badgeEl, t.eq, activeTier === 0 ? 'safe' : (activeTier === 1 ? 'warn' : 'danger'));
+      setMathText(rKey.valEl, t.code + ' · ' + t.challenge);
       draw();
     }
 
@@ -5681,14 +5588,10 @@
       const col = pal[t.colorKey];
 
       ctx.save();
-      roundRectPath(ctx, box.x, box.y, box.w, box.h, 2);
-      ctx.fillStyle = pal.surface;
-      ctx.fill();
-      ctx.strokeStyle = withAlpha(col, 0.72);
-      ctx.lineWidth = 1.6;
-      ctx.stroke();
+      ctx.fillStyle = col;
+      ctx.fillRect(box.x, box.y, box.w, 2);
 
-      drawMathRun(ctx, t.code + ': ' + t.name, box.x + 12, box.y + 18, {
+      drawMathRun(ctx, t.code + ': ' + t.name, box.x + 8, box.y + 18, {
         px: 15,
         weight: 700,
         color: col
@@ -5927,10 +5830,6 @@
         drawPreviewPane(ctx, { x: rightX, y: pad, w: w - rightX - pad, h: h - pad * 2 }, pal);
       }
     }
-
-    pillBtns.forEach(function (btn, idx) {
-      bag.on(btn, 'click', function () { selectTier(idx); });
-    });
 
     bag.on(canvas, 'click', function (ev) {
       const pt = getPointerPos(canvas, ev);

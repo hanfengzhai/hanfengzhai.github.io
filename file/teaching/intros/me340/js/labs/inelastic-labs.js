@@ -545,16 +545,10 @@
 
     const shell = el('div', 'lab-shell');
     const toolbar = el('div', 'lab-toolbar');
-    const pillGroup = el('div', 'lab-pill-group');
-    const pillBtns = parts.map(function (p, i) {
-      const b = el('button', 'lab-pill' + (i === 0 ? ' is-active' : ''), p.short);
-      b.type = 'button';
-      pillGroup.appendChild(b);
-      return b;
-    });
+    const gateBadge = el('span', 'lab-badge-status', parts[0].title + ' · ' + parts[0].gate);
     const jumpBtn = el('button', 'lab-pill is-active', parts[0].jumpLabel);
     jumpBtn.type = 'button';
-    toolbar.appendChild(pillGroup);
+    toolbar.appendChild(gateBadge);
     toolbar.appendChild(jumpBtn);
 
     const stage = el('div', 'lab-stage');
@@ -583,10 +577,9 @@
 
     function selectPart(idx) {
       activeIdx = clamp(idx, 0, 2);
-      pillBtns.forEach(function (b, i) {
-        b.classList.toggle('is-active', i === activeIdx);
-      });
       const p = parts[activeIdx];
+      const lvl = activeIdx === 0 ? 'danger' : (activeIdx === 1 ? 'safe' : 'warn');
+      setStatusBadge(gateBadge, p.title + ' · ' + p.gate, lvl);
       jumpBtn.textContent = p.jumpLabel;
       setMathText(rFields.valEl, p.fields);
       setMathText(rGate.valEl, p.gate);
@@ -594,11 +587,7 @@
       draw();
     }
 
-    pillBtns.forEach(function (b, i) {
-      bag.on(b, 'click', function () {
-        selectPart(i);
-      });
-    });
+    setStatusBadge(gateBadge, parts[0].title + ' · ' + parts[0].gate, 'danger');
 
     bag.on(jumpBtn, 'click', function () {
       api.goToSlide(parts[activeIdx].targetId);
@@ -923,20 +912,17 @@
         return;
       }
 
-      // Desktop / wide horizontal 3-pillar layout (W >= 560)
+      // Desktop / wide horizontal 3-pillar layout (W >= 560) — full stage height for animated pillars
       const gateW0 = measureMathRun(ctx, gateLabels[0], 16, true, 500) + 16;
       const gateW1 = measureMathRun(ctx, gateLabels[1], 16, true, 500) + 16;
       const minGap = Math.ceil(Math.max(gateW0, gateW1)) + 10;
       const padX = w >= 680 ? Math.max(14, Math.min(32, w * 0.03)) : 10;
       const gap = Math.max(minGap, Math.min(136, w * 0.13));
       const cardW = Math.max(106, (w - padX * 2 - gap * 2) / 3);
-      const topY = Math.max(10, h * 0.05);
-      const appH = Math.max(36, Math.min(44, h * 0.18));
-      const appY = h - appH - 8;
-      const cardH = Math.max(96, Math.min(appY - topY - 20, 185));
+      const padY = Math.max(12, Math.min(22, h * 0.07));
+      const cardH = Math.max(120, Math.min(h - padY * 2, 240));
+      const topY = Math.max(10, Math.floor((h - cardH) * 0.5));
       const midY = topY + cardH * 0.5;
-      const appX = padX;
-      const appW = w - padX * 2;
 
       nodeRects = parts.map(function (_, i) {
         return {
@@ -982,34 +968,6 @@
         pendingGates.push({ cx: (x1 + x2) * 0.5, cy: midY - 28, text: gateLabels[i] });
       }
 
-      // Vertical feeder conduits down into Applications foundation bar
-      for (let i = 0; i < 3; i++) {
-        const r = nodeRects[i];
-        const cx = r.x + r.w * 0.5;
-        const y1 = r.y + r.h;
-        const y2 = appY;
-        const col = pal[parts[i].colorKey];
-        const isLit = i === activeIdx || i === hoverIdx;
-
-        ctx.save();
-        ctx.strokeStyle = withAlpha(col, isLit ? 0.85 : 0.42);
-        ctx.lineWidth = isLit ? 2.4 : 1.6;
-        ctx.setLineDash([5, 4]);
-        ctx.beginPath();
-        ctx.moveTo(cx, y1 + 2);
-        ctx.lineTo(cx, y2 - 4);
-        ctx.stroke();
-        ctx.setLineDash([]);
-
-        const u = (phase * 0.55 + i * 0.31) % 1;
-        const py = lerp(y1 + 5, y2 - 6, u);
-        ctx.fillStyle = col;
-        ctx.beginPath();
-        ctx.arc(cx, py, isLit ? 4 : 3, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-      }
-
       // Draw 3 pillar cards
       for (let i = 0; i < 3; i++) {
         const p = parts[i];
@@ -1034,9 +992,9 @@
         setFont(ctx, cardW < 172 ? 15 : 16, false, 600);
         ctx.fillStyle = boost ? col : pal.text;
         const headText = cardW < 172 ? (p.title.replace('Part ', '') + ' · ' + p.sub) : (p.title + ' · ' + p.sub);
-        ctx.fillText(headText, r.x + r.w * 0.5, r.y + 10);
+        ctx.fillText(headText, r.x + r.w * 0.5, r.y + 12);
 
-        drawMathRun(ctx, p.sym, r.x + r.w * 0.5, r.y + 40, {
+        drawMathRun(ctx, p.sym, r.x + r.w * 0.5, r.y + 42, {
           px: 15,
           mono: true,
           weight: 500,
@@ -1046,10 +1004,10 @@
         });
 
         // Mini physical signature area
-        const miniX = r.x + 8;
-        const miniY = r.y + 56;
-        const miniW = r.w - 16;
-        const miniH = Math.max(38, r.h - 64);
+        const miniX = r.x + 10;
+        const miniY = r.y + 58;
+        const miniW = r.w - 20;
+        const miniH = Math.max(48, r.h - 68);
         if (i === 0) {
           drawElasticMini(ctx, miniX, miniY, miniW, miniH, col, phase, boost);
         } else if (i === 1) {
@@ -1060,7 +1018,7 @@
         ctx.restore();
       }
 
-      // Render threshold gate pills centered cleanly in conduit gaps
+      // Render threshold gate labels centered cleanly in conduit gaps (borderless soft halo)
       for (let g = 0; g < pendingGates.length; g++) {
         const gt = pendingGates[g];
         drawMathRun(ctx, gt.text, gt.cx, gt.cy, {
@@ -1070,29 +1028,12 @@
           align: 'center',
           baseline: 'middle',
           color: pal.text,
-          bg: pal.surface2,
-          border: pal.border,
-          padX: 7,
-          padY: 4,
+          bg: withAlpha(pal.bg, 0.84),
+          padX: 6,
+          padY: 3,
           radius: 2
         });
       }
-
-      // Foundation Applications bar
-      ctx.save();
-      roundRectPath(ctx, appX, appY, appW, appH, 2);
-      ctx.fillStyle = pal.surface2;
-      ctx.fill();
-      ctx.strokeStyle = pal.border;
-      ctx.lineWidth = 1.4;
-      ctx.stroke();
-
-      setFont(ctx, 15, false, 500);
-      ctx.fillStyle = pal.text;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('Applications: Contact · Vessels · Fatigue', appX + appW * 0.5, appY + appH * 0.5);
-      ctx.restore();
     }
 
     bag.loop(api, function (dt) {
@@ -1138,15 +1079,15 @@
     const shell = el('div', 'lab-shell');
     const toolbar = el('div', 'lab-toolbar');
     const pillGroup = el('div', 'lab-pill-group');
-    const btnPlay = el('button', 'lab-pill', '▶ Play Glide');
-    const btnStep = el('button', 'lab-pill', 'Step +b');
-    const btnCircuit = el('button', 'lab-pill is-active', 'Burgers Circuit');
+    const btnPlay = el('button', 'lab-pill', '▶ Glide');
+    const btnStep = el('button', 'lab-pill', '+b');
+    const btnCircuit = el('button', 'lab-pill is-active', 'Circuit');
     const btnReset = el('button', 'lab-pill', 'Reset');
     [btnPlay, btnStep, btnCircuit, btnReset].forEach(function (b) {
       b.type = 'button';
       pillGroup.appendChild(b);
     });
-    const statusBadge = el('span', 'lab-badge-status is-safe', 'Core Inside Lattice');
+    const statusBadge = el('span', 'lab-badge-status is-safe', 'Ready');
     toolbar.appendChild(pillGroup);
     toolbar.appendChild(statusBadge);
 
@@ -1159,7 +1100,7 @@
 
     const controls = el('div', 'lab-controls-grid');
     const tauCtrl = createSliderControl(
-      'Remote Shear Stress τ^∞',
+      'Shear τ^∞',
       {
         min: -120,
         max: 160,
@@ -1178,21 +1119,21 @@
     controls.appendChild(tauCtrl.wrap);
 
     const readouts = el('div', 'lab-readout-row');
-    const rPos = createReadoutChip('Core x_c / L', '0.45');
-    const rBurgers = createReadoutChip('Burgers |b|', B_NM.toFixed(3) + ' nm');
-    const rPK = createReadoutChip('PK Force f_{PK}', '16.6 mN/m');
-    const rGamma = createReadoutChip('Plastic Shear γ^p', '5.6%');
+    const rPos = createReadoutChip('x_c/L', '0.45');
+    const rBurgers = createReadoutChip('|b|', B_NM.toFixed(3) + ' nm');
+    const rPK = createReadoutChip('f_{PK}', '16.6 mN/m');
+    const rGamma = createReadoutChip('γ^p', '5.6%');
     readouts.appendChild(rPos.chip);
     readouts.appendChild(rBurgers.chip);
     readouts.appendChild(rPK.chip);
     readouts.appendChild(rGamma.chip);
 
-    const caption = el('p', 'lab-caption', 'Apply shear τ^∞ and press Play Glide, or drag the ⊥ core across the slip plane to form a permanent step b.');
+    const caption = el('p', 'lab-caption', 'Apply shear τ^∞ and press Glide, or drag the ⊥ core across the slip plane to form a permanent step b.');
 
     shell.appendChild(toolbar);
     shell.appendChild(stage);
-    shell.appendChild(controls);
     shell.appendChild(readouts);
+    shell.appendChild(controls);
     shell.appendChild(caption);
     mountEl.innerHTML = '';
     mountEl.appendChild(shell);
@@ -1207,13 +1148,13 @@
       }
       targetXc = null;
       playing = !playing;
-      btnPlay.textContent = playing ? '❚❚ Pause' : '▶ Play Glide';
+      btnPlay.textContent = playing ? '❚❚ Pause' : '▶ Glide';
       btnPlay.classList.toggle('is-active', playing);
     });
 
     bag.on(btnStep, 'click', function () {
       playing = false;
-      btnPlay.textContent = '▶ Play Glide';
+      btnPlay.textContent = '▶ Glide';
       btnPlay.classList.remove('is-active');
       if (xc >= L_SPAN + 1.1) {
         xc = 1.2;
@@ -1232,7 +1173,7 @@
     bag.on(btnReset, 'click', function () {
       playing = false;
       targetXc = null;
-      btnPlay.textContent = '▶ Play Glide';
+      btnPlay.textContent = '▶ Glide';
       btnPlay.classList.remove('is-active');
       xc = 5.4;
       tau = 65;
@@ -1274,7 +1215,7 @@
       const frac = clamp(xc / L_SPAN, 0, 1);
       const exited = xc >= L_SPAN + 0.8;
       const enteredLeft = xc <= -0.4;
-      rPos.valEl.textContent = exited ? 'Exited (1.00)' : (enteredLeft ? '0.00' : frac.toFixed(2));
+      rPos.valEl.textContent = exited ? '1.00 (Exit)' : (enteredLeft ? '0.00' : frac.toFixed(2));
       // f_PK = tau * b: MPa * nm = (1e6 N/m^2)*(1e-9 m) = 1e-3 N/m = mN/m
       const fpk = tau * B_NM;
       rPK.valEl.textContent = (fpk >= 0 ? '+' : '') + fpk.toFixed(1) + ' mN/m';
@@ -1283,11 +1224,11 @@
       rGamma.valEl.textContent = gammaP.toFixed(1) + '%';
 
       if (exited) {
-        setStatusBadge(statusBadge, 'Slip Step Formed (+b)', 'warn');
+        setStatusBadge(statusBadge, 'Slip Step (+b)', 'warn');
       } else if (Math.abs(tau) > TAU_PEIERLS) {
-        setStatusBadge(statusBadge, playing ? 'Gliding via f_{PK}' : 'Ready to Glide', 'safe');
+        setStatusBadge(statusBadge, playing ? 'Gliding' : 'Ready', 'safe');
       } else {
-        setStatusBadge(statusBadge, 'Pinned (|τ^∞| < τ_P)', 'warn');
+        setStatusBadge(statusBadge, 'Pinned', 'warn');
       }
     }
 
@@ -1306,7 +1247,7 @@
         dragging = true;
         playing = false;
         targetXc = null;
-        btnPlay.textContent = '▶ Play Glide';
+        btnPlay.textContent = '▶ Glide';
         btnPlay.classList.remove('is-active');
         setCoreFromPoint(pt);
       },
@@ -1320,7 +1261,7 @@
       onTap: function (pt) {
         playing = false;
         targetXc = null;
-        btnPlay.textContent = '▶ Play Glide';
+        btnPlay.textContent = '▶ Glide';
         btnPlay.classList.remove('is-active');
         setCoreFromPoint(pt);
       }
@@ -1658,7 +1599,7 @@
           xc = clamp(xc + dir * speed * dt, -0.5, L_SPAN + 1.4);
           if ((dir > 0 && xc >= L_SPAN + 1.35) || (dir < 0 && xc <= -0.45)) {
             playing = false;
-            btnPlay.textContent = '▶ Play Glide';
+            btnPlay.textContent = '▶ Glide';
             btnPlay.classList.remove('is-active');
           }
           changed = true;
@@ -1677,7 +1618,7 @@
       onSlideEnter: draw,
       onSlideLeave: function () {
         playing = false;
-        btnPlay.textContent = '▶ Play Glide';
+        btnPlay.textContent = '▶ Glide';
         btnPlay.classList.remove('is-active');
       },
       destroy: function () {
@@ -1794,15 +1735,15 @@
     const toolbar = el('div', 'lab-toolbar');
 
     const hardGroup = el('div', 'lab-pill-group');
-    const btnH0 = el('button', 'lab-pill', 'Perfectly Plastic (H = 0)');
-    const btnH15 = el('button', 'lab-pill is-active', 'Linear Hardening (H = 0.15E)');
+    const btnH0 = el('button', 'lab-pill', 'H = 0');
+    const btnH15 = el('button', 'lab-pill is-active', 'H = 0.15E');
     btnH0.type = 'button';
     btnH15.type = 'button';
     hardGroup.appendChild(btnH0);
     hardGroup.appendChild(btnH15);
 
     const actGroup = el('div', 'lab-pill-group');
-    const btnDemo = el('button', 'lab-pill is-active', 'Run Load → Yield → Unload');
+    const btnDemo = el('button', 'lab-pill is-active', '▶ Cycle');
     const btnReset = el('button', 'lab-pill', 'Reset');
     btnDemo.type = 'button';
     btnReset.type = 'button';
@@ -1824,7 +1765,7 @@
 
     const controls = el('div', 'lab-controls-grid');
     const strainCtrl = createSliderControl(
-      'Applied Strain ε (%)',
+      'Strain ε (%)',
       {
         min: -0.25,
         max: 0.55,
@@ -1844,10 +1785,10 @@
     controls.appendChild(strainCtrl.wrap);
 
     const readouts = el('div', 'lab-readout-row');
-    const rSig = createReadoutChip('σ / σ_Y', '0.00');
-    const rEps = createReadoutChip('Total ε', '0.000%');
-    const rEpsE = createReadoutChip('Elastic ε^e', '0.000%');
-    const rEpsP = createReadoutChip('Plastic ε^p', '0.000%');
+    const rSig = createReadoutChip('σ/σ_Y', '0.00');
+    const rEps = createReadoutChip('ε', '0.000%');
+    const rEpsE = createReadoutChip('ε^e', '0.000%');
+    const rEpsP = createReadoutChip('ε^p', '0.000%');
     readouts.appendChild(rSig.chip);
     readouts.appendChild(rEps.chip);
     readouts.appendChild(rEpsE.chip);
@@ -1857,8 +1798,8 @@
 
     shell.appendChild(toolbar);
     shell.appendChild(stage);
-    shell.appendChild(controls);
     shell.appendChild(readouts);
+    shell.appendChild(controls);
     shell.appendChild(caption);
     mountEl.innerHTML = '';
     mountEl.appendChild(shell);
@@ -2217,23 +2158,23 @@
     const toolbar = el('div', 'lab-toolbar');
 
     const viewGroup = el('div', 'lab-pill-group');
-    const btnPlane = el('button', 'lab-pill is-active', 'Plane Stress (σ_1, σ_2)');
-    const btnPi = el('button', 'lab-pill', 'π-Plane (σ_3 = const)');
+    const btnPlane = el('button', 'lab-pill is-active', 'σ_1–σ_2');
+    const btnPi = el('button', 'lab-pill', 'π-Plane');
     btnPlane.type = 'button';
     btnPi.type = 'button';
     viewGroup.appendChild(btnPlane);
     viewGroup.appendChild(btnPi);
 
     const presetGroup = el('div', 'lab-pill-group');
-    const btnSliver = el('button', 'lab-pill', 'Shear Sliver');
+    const btnSliver = el('button', 'lab-pill', 'Sliver');
     const btnUni = el('button', 'lab-pill', 'Uniaxial');
-    const btnBi = el('button', 'lab-pill', 'Equibiaxial');
+    const btnBi = el('button', 'lab-pill', 'Biaxial');
     [btnSliver, btnUni, btnBi].forEach(function (b) {
       b.type = 'button';
       presetGroup.appendChild(b);
     });
 
-    const statusBadge = el('span', 'lab-badge-status is-warn', 'Tresca Yields · Mises Safe');
+    const statusBadge = el('span', 'lab-badge-status is-warn', 'Tresca Only');
 
     toolbar.appendChild(viewGroup);
     toolbar.appendChild(presetGroup);
@@ -2247,10 +2188,10 @@
     stage.appendChild(canvas);
 
     const readouts = el('div', 'lab-readout-row');
-    const rS1 = createReadoutChip('σ_1 / σ_Y', '0.54');
-    const rS2 = createReadoutChip('σ_2 / σ_Y', '−0.54');
-    const rVM = createReadoutChip('Mises σ_{eq} / σ_Y', '0.94');
-    const rTr = createReadoutChip('Tresca max|σ_i−σ_j| / σ_Y', '1.08');
+    const rS1 = createReadoutChip('σ_1/σ_Y', '0.54');
+    const rS2 = createReadoutChip('σ_2/σ_Y', '−0.54');
+    const rVM = createReadoutChip('Mises', '0.94');
+    const rTr = createReadoutChip('Tresca', '1.08');
     readouts.appendChild(rS1.chip);
     readouts.appendChild(rS2.chip);
     readouts.appendChild(rVM.chip);
@@ -2295,11 +2236,11 @@
       rTr.valEl.textContent = m.tr.toFixed(2);
 
       if (m.vm >= 1.0) {
-        setStatusBadge(statusBadge, 'Yielding (Both Exceeded)', 'danger');
+        setStatusBadge(statusBadge, 'Both Yield', 'danger');
       } else if (m.tr >= 1.0) {
-        setStatusBadge(statusBadge, 'Tresca Yields · Mises Safe', 'warn');
+        setStatusBadge(statusBadge, 'Tresca Only', 'warn');
       } else {
-        setStatusBadge(statusBadge, 'Elastic (Both Safe)', 'safe');
+        setStatusBadge(statusBadge, 'Elastic', 'safe');
       }
     }
 
@@ -2645,19 +2586,9 @@
           color: pal.textMuted
         });
       } else {
-        // Desktop top-left compact archival legend (strictly clear of σ_2/σ_Y axis) + bottom criterion bar
+        // Desktop top-left borderless archival legend (strictly clear of σ_2/σ_Y axis) + bottom criterion bar
         const lx = 14;
         const ly = 12;
-        const legW = Math.max(
-          measureMathRun(ctx, 'von Mises', 15, false, 500),
-          measureMathRun(ctx, 'Tresca', 15, false, 500)
-        ) + 36;
-        roundRectPath(ctx, lx - 6, ly - 4, legW, 50, 2);
-        ctx.fillStyle = withAlpha(pal.bg, 0.9);
-        ctx.fill();
-        ctx.strokeStyle = pal.border;
-        ctx.lineWidth = 1;
-        ctx.stroke();
 
         ctx.strokeStyle = pal.teal;
         ctx.lineWidth = 2.8;
@@ -2734,15 +2665,15 @@
     const toolbar = el('div', 'lab-toolbar');
 
     const pillGroup = el('div', 'lab-pill-group');
-    const btnPlastic = el('button', 'lab-pill is-active', 'Plastic Trial (f^{tr} > 0)');
-    const btnElastic = el('button', 'lab-pill', 'Elastic Trial (f^{tr} ≤ 0)');
-    const btnReplay = el('button', 'lab-pill', '↺ Replay Return');
+    const btnPlastic = el('button', 'lab-pill is-active', 'Plastic (f^{tr} > 0)');
+    const btnElastic = el('button', 'lab-pill', 'Elastic (f^{tr} ≤ 0)');
+    const btnReplay = el('button', 'lab-pill', '↺ Replay');
     [btnPlastic, btnElastic, btnReplay].forEach(function (b) {
       b.type = 'button';
       pillGroup.appendChild(b);
     });
 
-    const statusBadge = el('span', 'lab-badge-status is-danger', 'f^{tr} > 0 → Return to f = 0');
+    const statusBadge = el('span', 'lab-badge-status is-danger', 'Return → f = 0');
     toolbar.appendChild(pillGroup);
     toolbar.appendChild(statusBadge);
 
@@ -2754,9 +2685,9 @@
     stage.appendChild(canvas);
 
     const readouts = el('div', 'lab-readout-row');
-    const rFtr = createReadoutChip('Trial f^{tr} / k^2', '+1.06');
-    const rFret = createReadoutChip('Returned f / k^2', '0.00');
-    const rDlam = createReadoutChip('2G·Δλ', '0.434');
+    const rFtr = createReadoutChip('f^{tr}/k^2', '+1.06');
+    const rFret = createReadoutChip('f/k^2', '0.00');
+    const rDlam = createReadoutChip('2GΔλ', '0.434');
     const rDepsP = createReadoutChip('|Δε^p|', '0.58‰');
     readouts.appendChild(rFtr.chip);
     readouts.appendChild(rFret.chip);
@@ -2819,9 +2750,9 @@
       btnElastic.classList.toggle('is-active', !c.isPlastic);
 
       if (c.isPlastic) {
-        setStatusBadge(statusBadge, 'f^{tr} > 0 → Return to f = 0', 'danger');
+        setStatusBadge(statusBadge, 'Return → f = 0', 'danger');
       } else {
-        setStatusBadge(statusBadge, 'f^{tr} ≤ 0 · Elastic Accepted', 'safe');
+        setStatusBadge(statusBadge, 'Elastic', 'safe');
       }
     }
 
@@ -2947,7 +2878,7 @@
       ctx.lineWidth = 2.8;
       ctx.stroke();
 
-      // Header plate strictly above vertical y-axis (never crosses y-axis!)
+      // Borderless header equation top-left & subtle drag cue top-right (strictly clear of axes)
       const hdrText = w < 460 ? 'f = J_2 − k^2 = 0' : 'f = J_2 − k^2 = 0  (R = √2 k)';
       drawMathRun(ctx, hdrText, 12, 19, {
         px: 15,
@@ -2955,12 +2886,15 @@
         weight: 500,
         align: 'left',
         baseline: 'middle',
-        color: pal.teal,
-        bg: pal.surface2,
-        border: pal.border,
-        padX: 7,
-        padY: 3,
-        radius: 2
+        color: pal.teal
+      });
+      drawMathRun(ctx, 'Drag σ^{tr}', w - 12, 19, {
+        px: 15,
+        mono: true,
+        weight: 400,
+        align: 'right',
+        baseline: 'middle',
+        color: pal.textMuted
       });
       ctx.restore();
 
@@ -3322,7 +3256,7 @@
     toggleGroup.appendChild(btnPZ);
     toggleGroup.appendChild(btnJ);
 
-    const statusBadge = el('span', 'lab-badge-status is-safe', 'Safe · Subcritical');
+    const statusBadge = el('span', 'lab-badge-status is-safe', 'Subcritical');
     toolbar.appendChild(toggleGroup);
     toolbar.appendChild(statusBadge);
 
@@ -3335,17 +3269,17 @@
 
     const controls = el('div', 'lab-controls-grid');
     const sigCtrl = createSliderControl(
-      'Remote Stress σ^∞',
+      'Stress σ^∞',
       { min: 50, max: 400, step: 5, value: sigmaInf, format: function (v) { return Math.round(v) + ' MPa'; } },
       function (v) { sigmaInf = v; updateReadouts(); draw(); }
     );
     const aCtrl = createSliderControl(
-      'Half-Crack a',
+      'Crack a',
       { min: 2, max: 25, step: 0.5, value: crackA_mm, format: function (v) { return v.toFixed(1) + ' mm'; } },
       function (v) { crackA_mm = v; updateReadouts(); draw(); }
     );
     const kicCtrl = createSliderControl(
-      'Toughness K_{Ic}',
+      'K_{Ic}',
       { min: 25, max: 80, step: 1, value: kIc, format: function (v) { return Math.round(v) + ' MPa√m'; } },
       function (v) { kIc = v; updateReadouts(); draw(); }
     );
@@ -3355,8 +3289,8 @@
 
     const readouts = el('div', 'lab-readout-row');
     const rKI = createReadoutChip('K_I', '31.9 MPa√m');
-    const rRatio = createReadoutChip('K_I / K_{Ic}', '0.71');
-    const rG = createReadoutChip('G = −∂Π/∂A', '4.63 kJ/m²');
+    const rRatio = createReadoutChip('K_I/K_{Ic}', '0.71');
+    const rG = createReadoutChip('𝒢', '4.63 kJ/m²');
     readouts.appendChild(rKI.chip);
     readouts.appendChild(rRatio.chip);
     readouts.appendChild(rG.chip);
@@ -3365,8 +3299,8 @@
 
     shell.appendChild(toolbar);
     shell.appendChild(stage);
-    shell.appendChild(controls);
     shell.appendChild(readouts);
+    shell.appendChild(controls);
     shell.appendChild(caption);
     mountEl.innerHTML = '';
     mountEl.appendChild(shell);
@@ -3402,11 +3336,11 @@
       rG.valEl.textContent = m.gKJ.toFixed(2) + ' kJ/m²';
 
       if (m.ratio >= 1.0) {
-        setStatusBadge(statusBadge, 'CRITICAL FRACTURE · K_I ≥ K_{Ic}', 'danger');
+        setStatusBadge(statusBadge, 'CRITICAL · K_I ≥ K_{Ic}', 'danger');
       } else if (m.ratio >= 0.75) {
-        setStatusBadge(statusBadge, 'Warning · Approaching K_{Ic}', 'warn');
+        setStatusBadge(statusBadge, 'Near K_{Ic}', 'warn');
       } else {
-        setStatusBadge(statusBadge, 'Safe · Subcritical', 'safe');
+        setStatusBadge(statusBadge, 'Subcritical', 'safe');
       }
     }
 
@@ -3834,14 +3768,6 @@
     const shell = el('div', 'lab-shell');
     const toolbar = el('div', 'lab-toolbar');
 
-    const stepGroup = el('div', 'lab-pill-group');
-    const stepBtns = steps.map(function (st, idx) {
-      const b = el('button', 'lab-pill' + (idx === activeStep ? ' is-active' : ''), st.title);
-      b.type = 'button';
-      stepGroup.appendChild(b);
-      return b;
-    });
-
     const routeGroup = el('div', 'lab-pill-group');
     const routeKeys = ['airy', 'green', 'fem'];
     const routeBtns = routeKeys.map(function (rk) {
@@ -3851,8 +3777,9 @@
       return b;
     });
 
-    toolbar.appendChild(stepGroup);
+    const stageHint = el('span', 'lab-toolbar-hint', 'Click stage');
     toolbar.appendChild(routeGroup);
+    toolbar.appendChild(stageHint);
 
     const stage = el('div', 'lab-stage');
     stage.style.touchAction = 'pan-y';
@@ -3862,14 +3789,16 @@
     stage.appendChild(canvas);
 
     const readouts = el('div', 'lab-readout-row');
-    const rC1 = createReadoutChip('Check 1', '', true);
-    const rC2 = createReadoutChip('Check 2', '', true);
-    const rC3 = createReadoutChip('Check 3', '', true);
+    const rStage = createReadoutChip('Stage', steps[activeStep].title);
+    const rC1 = createReadoutChip('01', '', true);
+    const rC2 = createReadoutChip('02', '', true);
+    const rC3 = createReadoutChip('03', '', true);
+    readouts.appendChild(rStage.chip);
     readouts.appendChild(rC1.chip);
     readouts.appendChild(rC2.chip);
     readouts.appendChild(rC3.chip);
 
-    const caption = el('p', 'lab-caption', 'Select a workflow step or switch solution route to trace analytic derivations and the FEM verification branch.');
+    const caption = el('p', 'lab-caption', 'Click any workflow stage on the canvas or switch solution route to trace analytic derivations and the FEM verification branch.');
 
     shell.appendChild(toolbar);
     shell.appendChild(stage);
@@ -3890,28 +3819,16 @@
     }
 
     function updateUI() {
-      stepBtns.forEach(function (b, i) {
-        b.classList.toggle('is-active', i === activeStep);
-      });
       routeBtns.forEach(function (b, i) {
         b.classList.toggle('is-active', routeKeys[i] === routeKey);
       });
       const checks = getChecks(activeStep);
-      rC1.keyEl.textContent = steps[activeStep].title + ' · A';
+      rStage.valEl.textContent = steps[activeStep].title;
       setMathText(rC1.valEl, checks[0] || '');
-      rC2.keyEl.textContent = steps[activeStep].title + ' · B';
       setMathText(rC2.valEl, checks[1] || '');
-      rC3.keyEl.textContent = steps[activeStep].title + ' · C';
       setMathText(rC3.valEl, checks[2] || '');
       draw();
     }
-
-    stepBtns.forEach(function (b, i) {
-      bag.on(b, 'click', function () {
-        activeStep = i;
-        updateUI();
-      });
-    });
 
     routeBtns.forEach(function (b, i) {
       bag.on(b, 'click', function () {
@@ -4208,7 +4125,7 @@
     const components = {
       notch: {
         label: 'Notched Plate',
-        elasticName: 'Kirsch / Airy φ',
+        elasticName: 'Airy φ',
         elasticSub: 'K_t ≈ 3 at notch root',
         plasticSub: 'Local J_2 root yield',
         fractureSub: 'Root flaw K_I vs K_{Ic}',
@@ -4217,8 +4134,8 @@
         errPct: '0.8%'
       },
       vessel: {
-        label: 'Pressure Vessel',
-        elasticName: 'Lamé Thick Cylinder',
+        label: 'Vessel',
+        elasticName: 'Lamé',
         elasticSub: 'Hoop σ_θ peak at r = a',
         plasticSub: 'Autofrettage J_2 ring',
         fractureSub: 'Axial crack K_I, J',
@@ -4227,8 +4144,8 @@
         errPct: '1.1%'
       },
       roller: {
-        label: 'Contact Roller',
-        elasticName: 'Hertz Contact G_{ij}',
+        label: 'Roller',
+        elasticName: 'Hertz G_{ij}',
         elasticSub: 'Max shear at z = 0.78a',
         plasticSub: 'Subsurface J_2 pocket',
         fractureSub: 'Spalling crack K_I, J',
@@ -4256,7 +4173,7 @@
       return b;
     });
 
-    const statusBadge = el('span', 'lab-badge-status is-warn', 'Contained Plasticity');
+    const statusBadge = el('span', 'lab-badge-status is-warn', 'Plasticity');
     toolbar.appendChild(compGroup);
     toolbar.appendChild(statusBadge);
 
@@ -4269,7 +4186,7 @@
 
     const controls = el('div', 'lab-controls-grid');
     const loadCtrl = createSliderControl(
-      'Service Load Level',
+      'Load Level',
       {
         min: 0.20,
         max: 1.15,
@@ -4286,21 +4203,21 @@
     controls.appendChild(loadCtrl.wrap);
 
     const readouts = el('div', 'lab-readout-row');
-    const rModel = createReadoutChip('Elastic Model', components[compKey].elasticName, true);
-    const rMises = createReadoutChip('Hotspot σ_{eq} / σ_Y', '1.13');
-    const rFract = createReadoutChip('Crack K_I / K_{Ic}', '0.72');
-    const rBench = createReadoutChip('Matlab Benchmark', '< 0.8% diff');
+    const rModel = createReadoutChip('Model', components[compKey].elasticName, true);
+    const rMises = createReadoutChip('σ_{eq}/σ_Y', '1.13');
+    const rFract = createReadoutChip('K_I/K_{Ic}', '0.72');
+    const rBench = createReadoutChip('MATLAB', '< 0.8%');
     readouts.appendChild(rModel.chip);
     readouts.appendChild(rMises.chip);
     readouts.appendChild(rFract.chip);
     readouts.appendChild(rBench.chip);
 
-    const caption = el('p', 'lab-caption', 'Ramp the load or switch components to trace one structure from elastic field to J_2 yield, fracture K_I, and Matlab validation.');
+    const caption = el('p', 'lab-caption', 'Ramp the load or switch components to trace one structure from elastic field to J_2 yield, fracture K_I, and MATLAB validation.');
 
     shell.appendChild(toolbar);
     shell.appendChild(stage);
-    shell.appendChild(controls);
     shell.appendChild(readouts);
+    shell.appendChild(controls);
     shell.appendChild(caption);
     mountEl.innerHTML = '';
     mountEl.appendChild(shell);
@@ -4344,14 +4261,14 @@
       setMathText(rModel.valEl, st.c.elasticName);
       rMises.valEl.textContent = st.misesRatio.toFixed(2);
       rFract.valEl.textContent = st.kRatio.toFixed(2);
-      rBench.valEl.textContent = '< ' + st.c.errPct + ' diff';
+      rBench.valEl.textContent = '< ' + st.c.errPct;
 
       if (st.kRatio >= 1.0) {
-        setStatusBadge(statusBadge, 'Fracture Threshold', 'danger');
+        setStatusBadge(statusBadge, 'Fracture', 'danger');
       } else if (st.misesRatio >= 1.0) {
-        setStatusBadge(statusBadge, 'Contained Plasticity', 'warn');
+        setStatusBadge(statusBadge, 'Plasticity', 'warn');
       } else {
-        setStatusBadge(statusBadge, 'Elastic Regime', 'safe');
+        setStatusBadge(statusBadge, 'Elastic', 'safe');
       }
     }
 
@@ -4592,38 +4509,53 @@
       const dimmed = focusStage >= 0 && !isFocused;
 
       ctx.save();
-      roundRectPath(ctx, x, y, w, h, 2);
-      ctx.fillStyle = isFocused ? card.soft : pal.surface2;
-      ctx.fill();
-      ctx.strokeStyle = isFocused || card.active ? withAlpha(card.col, dimmed ? 0.3 : 0.9) : pal.border;
-      ctx.lineWidth = isFocused ? 2.2 : 1.3;
+      // Clean borderless hairline-divided row (no heavy filled boxed rectangle)
+      if (isFocused) {
+        ctx.fillStyle = withAlpha(card.col, 0.10);
+        ctx.fillRect(x, y, w, h);
+      }
+
+      // Top hairline divider
+      ctx.strokeStyle = isFocused || card.active ? withAlpha(card.col, dimmed ? 0.25 : 0.72) : pal.border;
+      ctx.lineWidth = isFocused ? 2.0 : 1.0;
+      ctx.beginPath();
+      ctx.moveTo(x, y + 0.5);
+      ctx.lineTo(x + w, y + 0.5);
       ctx.stroke();
 
-      // Card title & math subtitle (>= 15px)
+      // Subtle active status tick on left edge
+      ctx.fillStyle = dimmed ? pal.border : (card.active || isFocused ? card.col : pal.border);
+      ctx.fillRect(x, y + Math.round(h * 0.22), isFocused ? 3.5 : 2.5, Math.round(h * 0.56));
+
+      // Row title & math subtitle (>= 15px)
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
       setFont(ctx, 15, false, 600);
       ctx.fillStyle = dimmed ? pal.textMuted : card.col;
-      ctx.fillText(card.title, x + 10, y + h * 0.31);
+      ctx.fillText(card.title, x + 12, y + h * 0.31);
 
-      drawMathRun(ctx, card.sub, x + 10, y + h * 0.72, {
+      drawMathRun(ctx, card.sub, x + 12, y + h * 0.72, {
         px: 15,
         mono: false,
         weight: 400,
         align: 'left',
         baseline: 'middle',
-        color: pal.text
+        color: dimmed ? pal.textMuted : pal.text
       });
 
-      // Live mini parity plot inside Card 4 (Analytic vs Matlab)
+      // Live mini parity plot inside Row 4 (Analytic vs MATLAB) with open Tufte L-axes
       if (idx === 3 && w >= 225 && h >= 44) {
         const mx = x + w - 70;
-        const my = y + 6;
+        const my = y + 7;
         const mw = 60;
-        const mh = h - 12;
-        ctx.strokeStyle = pal.border;
-        ctx.lineWidth = 1;
-        ctx.strokeRect(mx, my, mw, mh);
+        const mh = h - 14;
+        ctx.strokeStyle = pal.axis;
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(mx, my);
+        ctx.lineTo(mx, my + mh);
+        ctx.lineTo(mx + mw, my + mh);
+        ctx.stroke();
         ctx.strokeStyle = pal.blue;
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -4667,7 +4599,7 @@
         { title: 'I · Elasticity', sub: st.c.elasticSub, col: pal.cardinal, soft: pal.cardinalSoft, active: true },
         { title: 'II · Plasticity', sub: st.c.plasticSub, col: pal.teal, soft: pal.tealSoft, active: st.misesRatio >= 0.85 },
         { title: 'III · Fracture', sub: st.c.fractureSub, col: pal.amber, soft: pal.amberSoft, active: st.kRatio >= 0.5 },
-        { title: 'Analytic vs Matlab', sub: 'Diff < ' + st.c.errPct, col: pal.blue, soft: pal.blueSoft, active: true }
+        { title: 'Analytic vs MATLAB', sub: 'Diff < ' + st.c.errPct, col: pal.blue, soft: pal.blueSoft, active: true }
       ];
 
       stageRects = [];

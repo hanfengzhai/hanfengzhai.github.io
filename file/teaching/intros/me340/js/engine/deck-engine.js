@@ -261,7 +261,7 @@
         '<div class="hero-cta-row">' +
           '<button type="button" class="btn-primary" data-action="start-deck">Explore Course Map →</button>' +
         '</div>' +
-        '<p class="hero-canvas-hint">Move pointer across the stage to apply traction to the continuum mesh.</p>' +
+        '<p class="hero-canvas-hint">Move pointer across stage to deform the elastic mesh.</p>' +
       '</div>'
     );
   }
@@ -290,7 +290,10 @@
         '<button type="button" class="outline-card part-' + escapeHtml(item.partId) + '" data-jump="' + escapeHtml(item.targetId) + '">' +
           '<div class="outline-card-top">' +
             '<span class="outline-num">' + pad2(k + 1) + '</span>' +
-            '<span class="outline-part-tag">' + escapeHtml(item.partTag) + '</span>' +
+            '<span class="outline-top-meta">' +
+              '<span class="outline-part-tag">' + escapeHtml(item.partTag) + '</span>' +
+              '<span class="outline-arrow" aria-hidden="true">↗</span>' +
+            '</span>' +
           '</div>' +
           '<h3 class="outline-card-title">' + escapeHtml(item.title) + '</h3>' +
           '<p class="outline-card-desc">' + item.summary + '</p>' +
@@ -345,7 +348,10 @@
               '<button type="button" class="lab-pill" data-atlas-filter="part-2">Part II: Plasticity</button>' +
               '<button type="button" class="lab-pill" data-atlas-filter="part-3">Part III: Fracture</button>' +
             '</div>' +
-            '<a class="hero-link-pill" href="' + escapeHtml((deck.meta && deck.meta.notesUrl) || 'https://hanfengzhai.com/file/teaching/notes/elasticity_notes.pdf') + '" target="_blank" rel="noopener">Consolidated Study Notes (PDF) ↗</a>' +
+            '<div class="atlas-toolbar-right">' +
+              '<span class="atlas-hint">Click any lecture ↗</span>' +
+              '<a class="hero-link-pill" href="' + escapeHtml((deck.meta && deck.meta.notesUrl) || 'https://hanfengzhai.com/file/teaching/notes/elasticity_notes.pdf') + '" target="_blank" rel="noopener">Consolidated Study Notes (PDF) ↗</a>' +
+            '</div>' +
           '</div>' +
           '<div class="atlas-columns">' + colsHtml + '</div>' +
         '</div>' +
@@ -362,10 +368,12 @@
         '<article class="ref-card">' +
           '<div class="ref-num">' + pad2(k + 1) + '</div>' +
           '<div class="ref-body">' +
-            '<div class="ref-kind">' + escapeHtml(ref.kind) + '</div>' +
+            '<div class="ref-top-row">' +
+              '<span class="ref-kind">' + escapeHtml(ref.kind) + '</span>' +
+              linkHtml +
+            '</div>' +
             '<h3 class="ref-title">' + escapeHtml(ref.title) + '</h3>' +
             '<p class="ref-authors">' + escapeHtml(ref.citation) + '</p>' +
-            linkHtml +
           '</div>' +
         '</article>'
       );
@@ -415,9 +423,12 @@
     } else if (layout === 'compare') {
       bodyInner =
         '<div class="compare-layout">' +
-          '<div class="compare-equations">' + (slide.contentHtml || '') + '</div>' +
-          '<div class="compare-lab">' +
-            '<div class="lab-mount" data-lab="' + escapeHtml(slide.labId || '') + '"></div>' +
+          (slide.bannerHtml || '') +
+          '<div class="compare-split">' +
+            '<div class="compare-equations">' + (slide.contentHtml || '') + '</div>' +
+            '<div class="compare-lab">' +
+              '<div class="lab-mount" data-lab="' + escapeHtml(slide.labId || '') + '"></div>' +
+            '</div>' +
           '</div>' +
         '</div>';
     } else if (layout === 'flow') {
@@ -1216,6 +1227,12 @@
       if (activeLab && typeof activeLab.onResize === 'function') {
         activeLab.onResize();
       }
+    });
+
+    window.addEventListener('beforeprint', function () {
+      document.querySelectorAll('details.mono-disclosure').forEach(function (d) {
+        d.open = true;
+      });
     });
   }
 

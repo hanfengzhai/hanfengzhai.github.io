@@ -212,19 +212,6 @@
     }
   }
 
-  function buildSlideFooterSymbols(slide) {
-    if (!slide.symbols || slide.symbols.length === 0) return '';
-    const chips = slide.symbols.map(function (item, idx) {
-      return (
-        '<button type="button" class="sym-chip" data-sym-idx="' + idx + '" title="Inspect notation">' +
-        '<span class="sym-chip-math">' + item.sym + '</span>' +
-        '<span class="sym-chip-label">' + escapeHtml(item.short || item.desc) + '</span>' +
-        '</button>'
-      );
-    }).join('');
-    return '<div class="slide-footer-bar"><span class="sym-strip-kicker">Symbols</span><div class="sym-chip-row">' + chips + '</div></div>';
-  }
-
   function buildHeroSlide(slide, deck) {
     const meta = deck.meta || {};
     return (
@@ -295,7 +282,6 @@
         '<div class="slide-body">' +
           '<div class="outline-grid">' + cards + '</div>' +
         '</div>' +
-        '<div class="slide-footer-bar"><span class="sym-strip-kicker">Tip</span><span class="footer-note-text">Click any module card to jump directly, or use ← → keys, swipe, or press G for the full grid.</span></div>' +
       '</div>'
     );
   }
@@ -313,10 +299,11 @@
         const pdfHtml = lec.pdfUrl
           ? '<a class="lecture-pdf-badge" href="' + escapeHtml(lec.pdfUrl) + '" target="_blank" rel="noopener" title="Open PDF resource">PDF ↗</a>'
           : '';
+        const codeLabel = lec.code ? escapeHtml(lec.code) : pad2(lec.num);
         return (
           '<div class="lecture-row-wrap">' +
             '<button type="button" class="lecture-row' + clickable + '"' + jumpAttr + '>' +
-              '<span class="lecture-num">' + pad2(lec.num) + '</span>' +
+              '<span class="lecture-num">' + codeLabel + '</span>' +
               '<span class="lecture-name">' + escapeHtml(lec.title) + '</span>' +
               (lec.targetId ? '<span class="lecture-arrow" aria-hidden="true">→</span>' : '') +
             '</button>' +
@@ -363,10 +350,12 @@
         '<article class="ref-card">' +
           '<div class="ref-num">' + pad2(k + 1) + '</div>' +
           '<div class="ref-body">' +
-            '<div class="ref-kind">' + escapeHtml(ref.kind) + '</div>' +
+            '<div class="ref-top-row">' +
+              '<span class="ref-kind">' + escapeHtml(ref.kind) + '</span>' +
+              linkHtml +
+            '</div>' +
             '<h3 class="ref-title">' + escapeHtml(ref.title) + '</h3>' +
             '<p class="ref-authors">' + escapeHtml(ref.citation) + '</p>' +
-            linkHtml +
           '</div>' +
         '</article>'
       );
@@ -443,7 +432,6 @@
       '<div class="slide-inner">' +
         buildStandardHeader(slide, idx, total, deck) +
         '<div class="slide-body">' + bodyInner + '</div>' +
-        buildSlideFooterSymbols(slide) +
       '</div>'
     );
   }
@@ -521,6 +509,47 @@
           const match = filter === 'all' || col.dataset.atlasPart === filter;
           col.classList.toggle('is-hidden', !match);
         });
+        return;
+      }
+
+      const contentTabBtn = e.target.closest('[data-content-tab]');
+      if (contentTabBtn) {
+        const tabId = contentTabBtn.dataset.contentTab;
+        const tabsRoot = contentTabBtn.closest('.content-tabs');
+        if (!tabsRoot) return;
+        tabsRoot.querySelectorAll('[data-content-tab]').forEach(function (btn) {
+          const active = btn === contentTabBtn;
+          btn.classList.toggle('is-active', active);
+          btn.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+        tabsRoot.querySelectorAll('[data-content-panel]').forEach(function (panel) {
+          panel.classList.toggle('is-active', panel.dataset.contentPanel === tabId);
+        });
+        return;
+      }
+
+      const wfStep = e.target.closest('[data-workflow-step]');
+      if (wfStep) {
+        const idx = parseInt(wfStep.dataset.workflowStep, 10);
+        if (!isNaN(idx)) {
+          const slideRoot = wfStep.closest('.slide');
+          if (slideRoot) {
+            slideRoot.querySelectorAll('[data-workflow-step]').forEach(function (li) {
+              li.classList.toggle('is-step-active', parseInt(li.dataset.workflowStep, 10) === idx);
+            });
+          }
+          window.dispatchEvent(new CustomEvent('me335:workflow-step', { detail: { step: idx } }));
+        }
+        return;
+      }
+    });
+
+    stage.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter') return;
+      const wfStep = e.target.closest('[data-workflow-step]');
+      if (wfStep) {
+        e.preventDefault();
+        wfStep.click();
       }
     });
 
@@ -1208,6 +1237,12 @@
       if (activeLab && typeof activeLab.onResize === 'function') {
         activeLab.onResize();
       }
+    });
+
+    window.addEventListener('beforeprint', function () {
+      document.querySelectorAll('details.math-drawer').forEach(function (d) {
+        d.open = true;
+      });
     });
   }
 
